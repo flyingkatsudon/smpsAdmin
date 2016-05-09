@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">전형별 응시현황</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="hm-ui-search">
+                        <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
+                        <label for="typeNm">계열</label> <select id="typeNm"> </select>
+                        <label for="attendDate">시험일자</label> <select id="attendDate"> </select>
+                        <label for="attendTime">시험시간</label> <select id="attendTime"> </select>
+                        <button id="search">검색</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="panel">
+                <div class="hm-ui-grid"></div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>계열별 응시 인원</label>
+                </div>
+                <div class="panel-body">
+                    <div id="hm-ui-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>응시 현황</label>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div id="hm-ui-chart-all-1"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div id="hm-ui-chart-all-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>

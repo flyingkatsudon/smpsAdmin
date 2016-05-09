@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot and Thymeleaf - Thymeleaf Layout Dialect</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" th:href="@{css/styles.css}"/>
+</head>
+<body style="overflow-x:hidden;">
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div th:replace="fragments/header :: div"></div>
+        <div class="navbar-default sidebar" role="navigation" th:replace="fragments/sidebar :: div"></div>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="page-wrapper" layout:fragment="content"></div>
+</div>
+<!-- /#wrapper -->
+<script th:src="@{bower_components/raphael/raphael.min.js}"></script>
+<script th:src="@{bower_components/requirejs/require.js}"></script>
+<script>
+    require(['require.config'], function () {
+        require(['js/main']);
+    });
+</script>
+</body>
+</html>

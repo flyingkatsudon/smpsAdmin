@@ -1,0 +1,129 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">산출물 다운로드</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="panel panel-heading">응시율 통계</h4>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="status/attend/xlsx" method="get">
+                        <label>전형별 통계표</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="status/dept/xlsx" method="get">
+                        <label>모집단위별 통계표</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="status/hall/xlsx" method="get">
+                        <label>고사실별 통계표</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="status/group/xlsx" method="get">
+                        <label>조별 통계표</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="panel panel-heading">특이사항 리스트</h4>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="data/noIdCard/xlsx" method="get">
+                        <label>신분증 미소지자</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="data/recheck/xlsx" method="get">
+                        <label>재확인 대상자</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="data/otherHall/xlsx" method="get">
+                        <label>타고사실 응시자</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="panel panel-heading">데이터 리스트</h4>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="data/examinee/xlsx" method="get">
+                        <label>수험생별 리스트</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="data/paper/xlsx" method="get">
+                        <label>답안지 리스트</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="data/signature/xlsx" method="get">
+                        <label>감독관 서명 리스트</label>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">전체 다운로드</h3>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>전체 데이터 다운로드</label>
+                </div>
+                <div class="panel-body">
+                    <form action="data/signature/xlsx" method="get">
+                        <span>전체 데이터를 다운로드 합니다.</span>
+                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

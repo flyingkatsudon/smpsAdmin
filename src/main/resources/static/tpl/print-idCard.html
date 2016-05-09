@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">수험표 출력</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>고사실별</h4>
+                </div>
+                <div class="panel-body">
+                    <label for="headNm">고사본부</label><select id="headNm"></select>
+                    <label for="bldgNm">고사건물</label><select id="bldgNm"></select>
+                    <label for="hallNm">고사실</label><select id="hallNm"></select>
+                    <label for="attendDate">시험일자</label><select id="attendDate"></select>
+                    <label for="attendTime">시험시간</label><select id="attendTime"></select>
+                </div>
+                <div class="panel-footer">
+                    <button id="printHall" class="btn btn-primary">출력</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>모집단위 및 전공 별</h4>
+                </div>
+                <div class="panel-body">
+                    <label for="typeNm">전형</label><select id="typeNm"></select>
+                    <label for="deptNm">모집단위</label><select id="deptNm"></select>
+                    <label for="majorNm">전공</label><select id="majorNm"></select>
+                </div>
+                <div class="panel-footer">
+                    <button id="printDept" class="btn btn-primary">출력</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>수험번호 별</h4>
+                </div>
+                <div class="panel-body">
+                    <label for="fromExamineeCd">시작 번호</label><input type="text" id="fromExamineeCd"/>
+                    <label for="toExamineeCd">종료 번호</label><input type="text" id="toExamineeCd"/>
+                </div>
+                <div class="panel-footer">
+                    <button id="printExamineeList" class="btn btn-primary">출력</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>수험생 별</h4>
+                </div>
+                <div class="panel-body">
+                    <label for="examineeCd">수험번호</label><input type="text" id="examineeCd"/>
+                    <label for="examineeNm">수험생명</label><input type="text" id="examineeNm"/>
+                </div>
+                <div class="panel-footer">
+                    <button id="printExaminee" class="btn btn-primary">출력</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
