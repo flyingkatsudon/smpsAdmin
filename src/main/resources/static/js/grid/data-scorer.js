@@ -1,6 +1,5 @@
 define(function (require) {
     "use strict";
-
     var GridBase = require('../dist/jqgrid.js');
 
     return GridBase.extend({
@@ -10,14 +9,15 @@ define(function (require) {
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'examNm', label: 'APP UI'},
-                {name: 'bldgNm', label: '고사건물'},
-                {name: 'hallNm', label: '고사실'},
-                {name: 'hallNm', label: '순번'},
-                {name: 'isSend', label: '전송여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
-                {name: 'uuid', label: 'UUID'},
-                {name: 'sendDttm', label: '전송시간'},
-                {name: 'scorerNm', label: '평가위원'}
+                {name: 'virtNo', label: '가번호'},
+                {name: 'scorerNm', label: '평가위원'},
+                {name: 'score1', label: '항목1'},
+                {name: 'score2', label: '항목2'},
+                {name: 'score3', label: '항목3'},
+                {name: 'totalScore', label: '총점'},
+                {name: 'memo', label: '메모'},
+                {name: 'isPhoto', label: '사진', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
+                {name: 'regDttm', label: '등록시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -26,7 +26,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'check/send/list',
+                    url: 'data/scorer/list',
                     colModel: colModel
                 }
             }, options);
@@ -35,7 +35,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('check/send/xlsx');
+            this.addExcel('data/scorer/xlsx');
             return this;
         }
     });

@@ -38,15 +38,15 @@ define(function (require) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
                     deptNm: _this.$('#deptNm').val(),
-                    majorNm: _this.$('#majorNm').val(),
-                    scorerNm: _this.$('#scorerNm').val(),
+                    majorNm : _this.$('#majorNm').val(),
+                    scorerNm : _this.$('#scorerNm').val(),
+                    virtNo : _this.$('#virtNo').val(),
                     bldgNm: _this.$('#bldgNm').val(),
-                    hallNm : _this.$('#hallNm').val(),
-                    isSend : _this.$('#isSend').val()
+                    hallNm : _this.$('#hallNm').val()
                 });
             }
         },
-        admissionNmChanged: function (e) {
+        admissionNmChanged: function (e){
             var param = {
                 admissionNm: e.currentTarget.value
             };
@@ -56,7 +56,7 @@ define(function (require) {
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
-        deptNmChanged: function (e) {
+        deptNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: e.currentTarget.value
@@ -66,7 +66,7 @@ define(function (require) {
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
-        majorNm: function (e) {
+        majorNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),
@@ -76,17 +76,18 @@ define(function (require) {
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
-        scorerNmChanged: function (e) {
+        scorerNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
                 scorerNm: e.currentTarget.value
             };
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
-        bldgNmChanged: function (e) {
+        bldgNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),

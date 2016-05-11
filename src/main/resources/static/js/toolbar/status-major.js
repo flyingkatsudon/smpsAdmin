@@ -14,15 +14,14 @@ define(function (require) {
         },
         render: function () {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
-
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
             return this;
         },
         events: {
             'click #search': 'searchClicked',
             'change #admissionNm': 'admissionNmChanged',
-            'change #bldgNm': 'bldgNmChanged'
+            'change #deptNm': 'deptNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -31,24 +30,25 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    bldgNm: _this.$('#bldgNm').val(),
-                    hallNm: _this.$('#hallNm').val()
+                    deptNm : _this.$('#deptNm').val(),
+                    majorNm : _this.$('#majorNm').val()
                 });
             }
         },
-        admissionNmChanged: function (e) {
+        admissionNmChanged: function (e){
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
         },
-        bldgNmChanged: function (e) {
+
+        deptNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
-                bldgNm: e.currentTarget.value
+                deptNm: e.currentTarget.value
             };
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
         }
     });
 });

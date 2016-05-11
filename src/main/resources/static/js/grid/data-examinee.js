@@ -7,21 +7,19 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
-                {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
-                {name: 'attendTime', label: '시험시간'},
-                {name: 'examineeCd', label: '수험번호'},
-                {name: 'examineeNm', label: '수험생명'},
-                {name: 'birth', label: '생년월일'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'finalPaper', label: '답안지번호'},
-                {name: 'isOtherHall', label: '타고사실여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
-                {name: 'isChangePaper', label: '답안지교체여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
-                {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
+                {name: 'virtNo', label: '가번호'},
+                {name: 'score1Avg', label: '항목1평균'},
+                {name: 'score2Avg', label: '항목2평균'},
+                {name: 'score3Avg', label: '항목3평균'},
+                {name: 'scoreSum', label: '합계'},
+                {name: 'scorerCnt', label: '평가위원수'},
+                {name: 'memo', label: '메모'},
+                {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: '응시', false: '미응시'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

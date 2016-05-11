@@ -38,14 +38,14 @@ public class DataController {
     public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
         switch (format) {
             case LIST:
-                Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
+                Response<PageResponse<StatusDto>> pageResponse = apiService.examinee(
                         ObjectConvert.asMap(statusDto),
                         pager.getPage() - 1,
                         pager.getRows(),
                         pager.getSort());
                 return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             default:
-                List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(statusDto), pager.getSort());
+                List<StatusDto> list = apiService.examinee(ObjectConvert.asMap(statusDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
                         response,
                         "jrxml/data-examinee.jrxml",
@@ -55,9 +55,30 @@ public class DataController {
         }
     }
 
+    @RequestMapping(value = "scorer/{format:list|pdf|xls|xlsx}")
+    public ResponseEntity scorer(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+        switch (format) {
+            case LIST:
+                Response<PageResponse<StatusDto>> pageResponse = apiService.scorer(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort());
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+            default:
+                List<StatusDto> list = apiService.scorer(ObjectConvert.asMap(statusDto), pager.getSort());
+                return JasperReportsExportHelper.toResponseEntity(
+                        response,
+                        "jrxml/data-scorer.jrxml",
+                        format,
+                        list
+                );
+        }
+    }
+
     @RequestMapping(value = "examineeId/{format:pdf}")
     public ResponseEntity examineeId(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
-        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
+        List<StatusDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
 
         list.forEach(item -> {
             try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
@@ -74,118 +95,5 @@ public class DataController {
                 format,
                 list
         );
-    }
-
-    @RequestMapping(value = "otherHall/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
-        examineeDto.setIsOtherHall(true);
-
-        switch (format) {
-            case LIST:
-                Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
-                        ObjectConvert.asMap(examineeDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
-                        pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
-            default:
-                List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
-                return JasperReportsExportHelper.toResponseEntity(
-                        response,
-                        "jrxml/data-otherHall.jrxml",
-                        format,
-                        list
-                );
-        }
-    }
-
-    @RequestMapping(value = "noIdCard/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity noIdCard(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
-        examineeDto.setIsNoIdCard(true);
-        switch (format) {
-            case LIST:
-                Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
-                        ObjectConvert.asMap(examineeDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
-                        pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
-            default:
-                List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
-                return JasperReportsExportHelper.toResponseEntity(
-                        response,
-                        "jrxml/data-noIdCard.jrxml",
-                        format,
-                        list
-                );
-        }
-    }
-
-    @RequestMapping(value = "recheck/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
-        examineeDto.setIsRecheck(true);
-        switch (format) {
-            case LIST:
-                Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
-                        ObjectConvert.asMap(examineeDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
-                        pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
-            default:
-                List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
-                return JasperReportsExportHelper.toResponseEntity(
-                        response,
-                        "jrxml/data-recheck.jrxml",
-                        format,
-                        list
-                );
-        }
-    }
-
-    @RequestMapping(value = "signature/{format:list|xlsx}")
-    public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-
-        switch (format) {
-            case LIST:
-                Response<PageResponse<StatusDto>> pageResponse = apiService.signature(
-                        ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
-                        pager.getSort()
-                );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
-            default:
-                List<StatusDto> list = apiService.signature(ObjectConvert.asMap(statusDto), pager.getSort());
-                return JasperReportsExportHelper.toResponseEntity(
-                        response,
-                        "jrxml/data-noIdCard.jrxml",
-                        format,
-                        list
-                );
-        }
-    }
-
-    @RequestMapping(value = "paper/{format:list|xlsx}")
-    public ResponseEntity paper(@PathVariable String format, ExamineeDto statusDto, JqgridPager pager, HttpServletResponse response) {
-
-        switch (format) {
-            case LIST:
-                Response<PageResponse<ExamineeDto>> pageResponse = apiService.paper(
-                        ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
-                        pager.getSort()
-                );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
-            default:
-                List<ExamineeDto> list = apiService.paper(ObjectConvert.asMap(statusDto), pager.getSort());
-                return JasperReportsExportHelper.toResponseEntity(
-                        response,
-                        "jrxml/data-paper.jrxml",
-                        format,
-                        list
-                );
-        }
     }
 }
