@@ -7,18 +7,19 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
-                {name: 'attendDate', label: '시험일자'},
-                {name: 'attendTime', label: '시험시간'},
-                {name: 'admissionNm', label: '모집단위'},
+                {name: 'examDate', label: '시험일자'},
+                {name: 'examTime', label: '시험시간'},
+                {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'examNm', label: 'APP UI'},
+                {name: 'examNm', label: '시험명'},
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'virtNo', label: '가번호'},
                 {name: 'scorerNm', label: '평가위원'},
-                {name: 'rewriteCnt', label: '수정횟수'}
+                {name: 'itemCnt', label: '항목수'},
+                {name: 'scoredCnt', label: '채점항목수'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -27,7 +28,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'score/sheet-log/list',
+                    url: 'check/checkItem/list',
                     colModel: colModel
                 }
             }, options);
@@ -36,7 +37,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('score/sheet-log/xlsx');
+            this.addExcel('check/checkItem/xlsx');
             return this;
         }
     });

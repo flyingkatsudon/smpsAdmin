@@ -2,9 +2,9 @@ define(function (require) {
     "use strict";
     var Backbone = require('backbone');
 
-    var List = require('../grid/score-log.js');
-    var Toolbar = require('../toolbar/score-log.js');
-    var Template = require('text!/tpl/score-log.html');
+    var List = require('../grid/score-cancel.js');
+    var Toolbar = require('../toolbar/score-cancel.js');
+    var Template = require('text!/tpl/score-cancel.html');
 
     return Backbone.View.extend({
         render: function () {

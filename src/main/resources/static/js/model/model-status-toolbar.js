@@ -46,30 +46,24 @@ define(function (require) {
             return this.getObjectList(obj, 'deptNm', 'deptNm');
         }, getMajorNm: function (obj) {
             return this.getObjectList(obj, 'majorNm', 'majorNm');
-        }, getGroupNm: function (obj) {
-            return this.getObjectList(obj, 'groupNm', 'groupNm');
         }, getHeadNm: function (obj) {
             return this.getObjectList(obj, 'headNm', 'headNm');
         }, getBldgNm: function (obj) {
             return this.getObjectList(obj, 'bldgNm', 'bldgNm');
         }, getHallNm: function (obj) {
             return this.getObjectList(obj, 'hallNm', 'hallNm');
-        }, getAttendHeadNm: function (obj) {
-            return this.getObjectList(obj, 'attendHeadNm', 'attendHeadNm');
-        }, getAttendBldgNm: function (obj) {
-            return this.getObjectList(obj, 'attendBldgNm', 'attendBldgNm');
-        }, getAttendHallNm: function (obj) {
-            return this.getObjectList(obj, 'attendHallNm', 'attendHallNm');
+        }, getGroupNm: function (obj) {
+            return this.getObjectList(obj, 'groupNm', 'groupNm');
         }, getAttendDate: function (obj) {
             return this.getObjectList(obj, 'attendDate', 'attendDate');
         }, getAttendTime: function (obj) {
             return this.getObjectList(obj, 'attendTime', 'attendTime');
+        }, getExamDate: function (obj) {
+            return this.getObjectList(obj, 'examDate', 'examDate');
+        }, getExamTime: function (obj) {
+            return this.getObjectList(obj, 'examTime', 'examTime');
         }, getScorerNm: function (obj) {
             return this.getObjectList(obj, 'scorerNm', 'scorerNm');
-        }, getIsSend: function (obj) {
-            return this.getObjectList(obj, 'isSend', 'isSend');
-        }, getIsAttend: function (obj) {
-            return this.getObjectList(obj, 'isAttend', 'isAttend');
         }
     });
     return new Collection();

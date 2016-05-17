@@ -1,7 +1,7 @@
 package com.humane.admin.smps.service;
 
 import com.humane.admin.smps.api.RestApi;
-import com.humane.admin.smps.dto.StatusDto;
+import com.humane.admin.smps.dto.*;
 import com.humane.util.spring.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +18,25 @@ import java.util.Map;
 public class ApiService {
     private final RestApi restApi;
 
+    public Response<StatusDto> all(Map<String, Object> params, String... sort) {
+        Observable<Response<StatusDto>> observable = restApi.all(params,sort);
+        return observable.toBlocking().first();
+    }
+
     public Response<List<StatusDto>> toolbar(Map<String, Object> params) {
         Observable<Response<List<StatusDto>>> observable = restApi.toolbar(params);
 
         return observable.toBlocking().first();
     }
 
-    public Response<StatusDto> all(Map<String, Object> params, String... sort) {
-        Observable<Response<StatusDto>> observable = restApi.all(params,sort);
+    public Response<PageResponse<StatusDeptDto>> attendDept(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<StatusDeptDto>>> observable = restApi.attendDept(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> dept(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.dept(params, page, rows, sort);
-        return observable.toBlocking().first();
-    }
-
-    public List<StatusDto> dept(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.dept(params, currentPage, Integer.MAX_VALUE, sort))
+    public List<StatusDeptDto> attendDept(Map<String, Object> params, String... sort) {
+        Observable<List<StatusDeptDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.attendDept(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -45,31 +45,14 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> hall(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.hall(params, page, rows, sort);
+    public Response<PageResponse<StatusMajorDto>> attendMajor(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<StatusMajorDto>>> observable = restApi.attendMajor(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public List<StatusDto> hall(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.hall(params, currentPage, Integer.MAX_VALUE, sort))
-                .takeUntil(pageResponse -> pageResponse.body().isLast())
-                .reduce(new ArrayList<>(), (list, pageResponse) -> {
-                    list.addAll(pageResponse.body().getContent());
-                    return list;
-                });
-        return observable.toBlocking().first();
-
-    }
-
-    public Response<PageResponse<StatusDto>> major(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.major(params, page, rows, sort);
-        return observable.toBlocking().first();
-    }
-
-    public List<StatusDto> major(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.major(params, currentPage, Integer.MAX_VALUE, sort))
+    public List<StatusMajorDto> attendMajor(Map<String, Object> params, String... sort) {
+        Observable<List<StatusMajorDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.attendMajor(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -78,13 +61,45 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> sheet(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.sheet(params, page, rows, sort);
+    public Response<PageResponse<StatusHallDto>> attendHall(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<StatusHallDto>>> observable = restApi.attendHall(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public List<StatusDto> sheet(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+    public List<StatusHallDto> attendHall(Map<String, Object> params, String... sort) {
+        Observable<List<StatusHallDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.attendHall(params, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                });
+        return observable.toBlocking().first();
+    }
+
+    public Response<PageResponse<StatusGroupDto>> attendGroup(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<StatusGroupDto>>> observable = restApi.attendGroup(params, page, rows, sort);
+        return observable.toBlocking().first();
+    }
+
+    public List<StatusGroupDto> attendGroup(Map<String, Object> params, String... sort) {
+        Observable<List<StatusGroupDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.attendGroup(params, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                });
+        return observable.toBlocking().first();
+    }
+
+    public Response<PageResponse<SheetDto>> sheet(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<SheetDto>>> observable = restApi.sheet(params, page, rows, sort);
+        return observable.toBlocking().first();
+    }
+
+    public List<SheetDto> sheet(Map<String, Object> params, String... sort) {
+        Observable<List<SheetDto>> observable = Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.sheet(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
@@ -94,13 +109,13 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> examinee(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.examinee(params, page, rows, sort);
+    public Response<PageResponse<ExamineeDto>> examinee(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<ExamineeDto>>> observable = restApi.examinee(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public List<StatusDto> examinee(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+    public List<ExamineeDto> examinee(Map<String, Object> params, String... sort) {
+        Observable<List<ExamineeDto>> observable = Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.examinee(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
@@ -110,14 +125,14 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> scorer(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.scorer(params, page, rows, sort);
+    public Response<PageResponse<ScoreDto>> score(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<ScoreDto>>> observable = restApi.score(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public List<StatusDto> scorer(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.scorer(params, currentPage, Integer.MAX_VALUE, sort))
+    public List<ScoreDto> score(Map<String, Object> params, String... sort) {
+        Observable<List<ScoreDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.score(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -126,13 +141,30 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> send(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.send(params, page, rows, sort);
+    public Response<PageResponse<ScoreFixDto>> scoreFix(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<ScoreFixDto>>> observable = restApi.scoreFix(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public List<StatusDto> send(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+    public List<ScoreFixDto> scoreFix(Map<String, Object> params, String... sort) {
+        Observable<List<ScoreFixDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.scoreFix(params, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                });
+        return observable.toBlocking().first();
+    }
+
+
+    public Response<PageResponse<CheckSendDto>> send(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<CheckSendDto>>> observable = restApi.send(params, page, rows, sort);
+        return observable.toBlocking().first();
+    }
+
+    public List<CheckSendDto> send(Map<String, Object> params, String... sort) {
+        Observable<List<CheckSendDto>> observable = Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.send(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
@@ -142,14 +174,14 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> virtNo(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.virtNo(params, page, rows, sort);
+    public Response<PageResponse<CheckItemDto>> checkItem(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<CheckItemDto>>> observable = restApi.checkItem(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public List<StatusDto> virtNo(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.virtNo(params, currentPage, Integer.MAX_VALUE, sort))
+    public List<CheckItemDto> checkItem(Map<String, Object> params, String... sort) {
+        Observable<List<CheckItemDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.checkItem(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -158,14 +190,14 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
-    public Response<PageResponse<StatusDto>> scoring(Map<String, Object> params, int page, int rows, String... sort) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.scoring(params, page, rows, sort);
+    public Response<PageResponse<CheckScorerDto>> checkScorer(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<CheckScorerDto>>> observable = restApi.checkScorer(params, page, rows, sort);
         return observable.toBlocking().first();
     }
 
-    public List<StatusDto> scoring(Map<String, Object> params, String... sort) {
-        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.scoring(params, currentPage, Integer.MAX_VALUE, sort))
+    public List<CheckScorerDto> checkScorer(Map<String, Object> params, String... sort) {
+        Observable<List<CheckScorerDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.checkScorer(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -173,5 +205,4 @@ public class ApiService {
                 });
         return observable.toBlocking().first();
     }
-
 }

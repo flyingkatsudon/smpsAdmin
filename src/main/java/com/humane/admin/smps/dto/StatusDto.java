@@ -24,6 +24,7 @@ public class StatusDto implements Serializable {
     private String headNm;
     private String bldgNm;
     private String hallNm;
+    private String groupNm;
 
     private Long examineeCnt;
     private Long attendCnt;
@@ -42,6 +43,7 @@ public class StatusDto implements Serializable {
     @DateTimeFormat(pattern = "HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     private Date examTime;
+    private Long sheetNo;
 
 
     /* examinee */
@@ -76,5 +78,23 @@ public class StatusDto implements Serializable {
     private String totalScore;
     private Boolean isAttend;
     private Boolean isCancel;
+
+    private Long itemCnt;
+    private Long scoredCnt;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date regDttm;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date cancelDttm;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date scoreDttm;
+
     private BufferedImage examineeImage;
+    private String fromExamineeCd;
+    private String toExamineeCd;
 }

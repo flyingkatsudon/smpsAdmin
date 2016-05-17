@@ -16,22 +16,22 @@ define(function (require) {
         render: function () {
             this.$el.html(Template);
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm()));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime()));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
 
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
+            this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
         }, events: {
             'change #headNm': 'headNmChanged',
             'change #bldgNm': 'bldgNmChanged',
             'change #hallNm': 'hallNmChanged',
-            'change #attendDate': 'attendDateChanged',
-            'change #attendTime': 'attendTimeChanged',
+            'change #examDate': 'examDateChanged',
+            'change #examTime': 'examTimeChanged',
 
-            'change #typeNm': 'typeNmChanged',
+            'change #admissionNm': 'admissionNmChanged',
             'change #deptNm': 'deptNmChanged',
             'change #majorNm': 'majorNmChanged',
 
@@ -45,41 +45,41 @@ define(function (require) {
             };
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
         }, bldgNmChanged: function (e) {
             var param = {
                 headNm: this.$('#headNm').val(),
                 bldgNm: e.currentTarget.value
             };
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
         }, hallNmChanged: function (e) {
             var param = {
                 headNm: this.$('#headNm').val(),
                 bldgNm: this.$('#bldgNm').val(),
                 hallNm: e.currentTarget.value
             };
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        }, attendDateChanged: function (e) {
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
+        }, examDateChanged: function (e) {
             var param = {
                 headNm: this.$('#headNm').val(),
                 bldgNm: this.$('#bldgNm').val(),
                 hallNm: this.$('#hallNm').val(),
-                attendDate: e.currentTarget.value
+                examDate: e.currentTarget.value
             };
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        }, typeNmChanged: function (e) {
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
+        }, admissionNmChanged: function (e) {
             var param = {
-                typeNm: e.currentTarget.value
+                admissionNm: e.currentTarget.value
             };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
         }, deptNmChanged: function (e) {
             var param = {
-                typeNm: this.$('#typeNm').val(),
+                admissionNm: this.$('#admissionNm').val(),
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
@@ -90,15 +90,15 @@ define(function (require) {
                 headNm: this.$('#headNm').val(),
                 bldgNm: this.$('#bldgNm').val(),
                 hallNm: this.$('#hallNm').val(),
-                attendDate: this.$('#attendDate').val(),
-                attendTime: this.$('#attendTime').val()
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val()
             };
             this.openPrintWindow(param);
         }, printDeptClicked: function (e) {
             e.preventDefault();
 
             var param = {
-                typeNm: this.$('#typeNm').val(),
+                admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val()
             };
@@ -107,11 +107,11 @@ define(function (require) {
             e.preventDefault();
 
             var param = {
-                firstExamineeCd: this.$('#firstExamineeCd').val(),
-                lastExamineeCd: this.$('#lastExamineeCd').val()
+                fromExamineeCd: this.$('#fromExamineeCd').val(),
+                toExamineeCd: this.$('#toExamineeCd').val()
             };
 
-            if (param.firstExamineeCd || param.lastExamineeCd) this.openPrintWindow(param);
+            if (param.fromExamineeCd || param.toExamineeCd) this.openPrintWindow(param);
 
         }, printExamineeClicked: function (e) {
             e.preventDefault();

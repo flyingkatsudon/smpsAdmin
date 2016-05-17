@@ -34,7 +34,7 @@ define(function (require) {
                 var data = [];
                 for (var i = 0; i < response.length; i++) {
                     data.push({
-                        name: response[i].name,
+                        name: response[i].deptNm + "\n" + response[i].majorNm,
                         attendCnt: response[i].attendCnt,
                         absentCnt: response[i].absentCnt
                     })

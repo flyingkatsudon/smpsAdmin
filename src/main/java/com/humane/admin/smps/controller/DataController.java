@@ -1,7 +1,7 @@
 package com.humane.admin.smps.controller;
 
 import com.humane.admin.smps.dto.ExamineeDto;
-import com.humane.admin.smps.dto.StatusDto;
+import com.humane.admin.smps.dto.ScoreDto;
 import com.humane.admin.smps.service.ApiService;
 import com.humane.admin.smps.service.ImageService;
 import com.humane.util.ObjectConvert;
@@ -35,17 +35,17 @@ public class DataController {
     private static final String LIST = "list";
 
     @RequestMapping(value = "examinee/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity examinee(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
         switch (format) {
             case LIST:
-                Response<PageResponse<StatusDto>> pageResponse = apiService.examinee(
-                        ObjectConvert.asMap(statusDto),
+                Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
+                        ObjectConvert.asMap(examineeDto),
                         pager.getPage() - 1,
                         pager.getRows(),
                         pager.getSort());
                 return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             default:
-                List<StatusDto> list = apiService.examinee(ObjectConvert.asMap(statusDto), pager.getSort());
+                List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
                         response,
                         "jrxml/data-examinee.jrxml",
@@ -55,30 +55,9 @@ public class DataController {
         }
     }
 
-    @RequestMapping(value = "scorer/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity scorer(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-        switch (format) {
-            case LIST:
-                Response<PageResponse<StatusDto>> pageResponse = apiService.scorer(
-                        ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
-                        pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
-            default:
-                List<StatusDto> list = apiService.scorer(ObjectConvert.asMap(statusDto), pager.getSort());
-                return JasperReportsExportHelper.toResponseEntity(
-                        response,
-                        "jrxml/data-scorer.jrxml",
-                        format,
-                        list
-                );
-        }
-    }
-
     @RequestMapping(value = "examineeId/{format:pdf}")
     public ResponseEntity examineeId(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
-        List<StatusDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
+        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
 
         list.forEach(item -> {
             try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
@@ -95,5 +74,26 @@ public class DataController {
                 format,
                 list
         );
+    }
+
+    @RequestMapping(value = "scorer/{format:list|pdf|xls|xlsx}")
+    public ResponseEntity scorer(@PathVariable String format, ScoreDto scoreDto, JqgridPager pager, HttpServletResponse response) {
+        switch (format) {
+            case LIST:
+                Response<PageResponse<ScoreDto>> pageResponse = apiService.score(
+                        ObjectConvert.asMap(scoreDto) ,
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort());
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+            default:
+                List<ScoreDto> list = apiService.score(ObjectConvert.asMap(scoreDto), pager.getSort());
+                return JasperReportsExportHelper.toResponseEntity(
+                        response,
+                        "jrxml/data-scorer.jrxml",
+                        format,
+                        list
+                );
+        }
     }
 }

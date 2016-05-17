@@ -16,7 +16,7 @@ define(function (require) {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
-            this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm()));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm()));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
             return this;
@@ -26,9 +26,8 @@ define(function (require) {
             'change #admissionNm': 'admissionNmChanged',
             'change #deptNm': 'deptNmChanged',
             'change #majorNm': 'majorNmChanged',
-            'change #scorerNm': 'scorerNmChanged',
-            'change #bldgNm': 'bldgNmChanged',
-            'change #hallNm': 'hallNmChanged'
+            'change #headNm' : 'headNmChanged',
+            'change #bldgNm': 'bldgNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -39,9 +38,10 @@ define(function (require) {
                     admissionNm: _this.$('#admissionNm').val(),
                     deptNm: _this.$('#deptNm').val(),
                     majorNm: _this.$('#majorNm').val(),
-                    scorerNm: _this.$('#scorerNm').val(),
+                    headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
+                    scorerNm: _this.$('#scorerNm').val(),
                     isSend : _this.$('#isSend').val()
                 });
             }
@@ -52,7 +52,7 @@ define(function (require) {
             };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
-            this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
@@ -62,7 +62,7 @@ define(function (require) {
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
-            this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
@@ -72,16 +72,16 @@ define(function (require) {
                 deptNm: this.$('#deptNm').val(),
                 majorNm: e.currentTarget.value
             };
-            this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
-        scorerNmChanged: function (e) {
+        headNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
-                scorerNm: e.currentTarget.value
+                headNm: e.currentTarget.value
             };
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
@@ -91,7 +91,7 @@ define(function (require) {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
-                scorerNm: this.$('#scorerNm').val(),
+                headNm: this.$('#headNm').val(),
                 bldgNm: e.currentTarget.value
             };
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));

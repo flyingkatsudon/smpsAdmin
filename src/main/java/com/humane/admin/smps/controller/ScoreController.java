@@ -1,6 +1,7 @@
 package com.humane.admin.smps.controller;
 
-import com.humane.admin.smps.dto.StatusDto;
+import com.humane.admin.smps.dto.ScoreFixDto;
+import com.humane.admin.smps.dto.SheetDto;
 import com.humane.admin.smps.service.ApiService;
 import com.humane.util.ObjectConvert;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
@@ -26,12 +27,12 @@ public class ScoreController {
     private final ApiService apiService;
     private static final String LIST = "list";
 
-    @RequestMapping(value = "sheet-print/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity sheetPrint(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    @RequestMapping(value = "print/{format:list|pdf|xls|xlsx}")
+    public ResponseEntity print(@PathVariable String format, SheetDto sheetDto, JqgridPager pager, HttpServletResponse response) {
         switch (format) {
             case LIST:
-                Response<PageResponse<StatusDto>> pageResponse = apiService.sheet(
-                        ObjectConvert.asMap(statusDto),
+                Response<PageResponse<SheetDto>> pageResponse = apiService.sheet(
+                        ObjectConvert.asMap(sheetDto),
                         pager.getPage() - 1,
                         pager.getRows(),
                         pager.getSort()
@@ -39,20 +40,20 @@ public class ScoreController {
                 return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             default:
                 return JasperReportsExportHelper.toResponseEntity(response,
-                        "jrxml/status-sheet-print.jrxml",
+                        "jrxml/score-print.jrxml",
                         format,
-                        apiService.sheet(ObjectConvert.asMap(statusDto), pager.getSort())
+                        apiService.sheet(ObjectConvert.asMap(sheetDto), pager.getSort())
                 );
         }
     }
 
-    @RequestMapping(value = "sheet-cancel/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity sheetCancel(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-        statusDto.setIsCancel(true);
+    @RequestMapping(value = "cancel/{format:list|pdf|xls|xlsx}")
+    public ResponseEntity cancel(@PathVariable String format, SheetDto sheetDto, JqgridPager pager, HttpServletResponse response) {
+        sheetDto.setIsCancel(true);
         switch (format) {
             case LIST:
-                Response<PageResponse<StatusDto>> pageResponse = apiService.sheet(
-                        ObjectConvert.asMap(statusDto),
+                Response<PageResponse<SheetDto>> pageResponse = apiService.sheet(
+                        ObjectConvert.asMap(sheetDto),
                         pager.getPage() - 1,
                         pager.getRows(),
                         pager.getSort()
@@ -60,19 +61,19 @@ public class ScoreController {
                 return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             default:
                 return JasperReportsExportHelper.toResponseEntity(response,
-                        "jrxml/status-sheet-cancel.jrxml",
+                        "jrxml/score-cancel.jrxml",
                         format,
-                        apiService.sheet(ObjectConvert.asMap(statusDto), pager.getSort())
+                        apiService.sheet(ObjectConvert.asMap(sheetDto), pager.getSort())
                 );
         }
     }
 
-    @RequestMapping(value = "sheet-log/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity sheetLog(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    @RequestMapping(value = "scoreFix/{format:list|pdf|xls|xlsx}")
+    public ResponseEntity scoreFix(@PathVariable String format, ScoreFixDto scoreFixDto, JqgridPager pager, HttpServletResponse response) {
         switch (format) {
             case LIST:
-                Response<PageResponse<StatusDto>> pageResponse = apiService.examinee(
-                        ObjectConvert.asMap(statusDto),
+                Response<PageResponse<ScoreFixDto>> pageResponse = apiService.scoreFix(
+                        ObjectConvert.asMap(scoreFixDto),
                         pager.getPage() - 1,
                         pager.getRows(),
                         pager.getSort()
@@ -80,9 +81,9 @@ public class ScoreController {
                 return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             default:
                 return JasperReportsExportHelper.toResponseEntity(response,
-                        "jrxml/status-sheet-log.jrxml",
+                        "jrxml/score-scoreFix.jrxml",
                         format,
-                        apiService.examinee(ObjectConvert.asMap(statusDto), pager.getSort())
+                        apiService.scoreFix(ObjectConvert.asMap(scoreFixDto), pager.getSort())
                 );
         }
     }
