@@ -130,11 +130,6 @@
             <version>${jasperreports.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itextAsian</artifactId>
             <version>2.1.7</version>
@@ -159,6 +154,23 @@
             <groupId>com.humane</groupId>
             <artifactId>util-common</artifactId>
             <version>${humane-util-common.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>${poi.version}</version>
         </dependency>
     </dependencies>
 
