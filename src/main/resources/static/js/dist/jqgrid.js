@@ -21,8 +21,18 @@ define(function (require) {
             ignoreCase: true,
             gridview: true,
             hidegrid: false,
-            jsonReader: {repeatitems: false},
-            multiSort: true,
+            jsonReader: {
+                repeatitems: false
+                , total: 'totalPages'
+                , page: function (obj) {
+                    return obj.number + 1;
+                }
+                , records: function (obj) {
+                    return obj.totalElements;
+                }
+                , root: 'content'
+            },
+            multiSort: false,
             height: 'auto',
             rownumbers: true,
             rowNum: 20,
@@ -33,9 +43,16 @@ define(function (require) {
             gridComplete: function () {
                 $(window).trigger('resize');
             },
-            prmNames: {search: null, nd: null},
-            serializeRowData: function (postData) {
+            prmNames: {search: null, nd: null, rows: 'size'},
+            serializeGridData: function (postData) {
+                if (postData.sidx.length) postData.sort = postData.sidx + ',' + postData.sord;
+
+                postData.page--;
+
                 delete postData.filters;
+                delete postData.sidx;
+                delete postData.sord;
+
                 return postData;
             },
             loadError: function (jqXHR, status, error) {

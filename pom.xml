@@ -20,6 +20,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <lombok.version>1.16.8</lombok.version>
         <querydsl.version>3.7.2</querydsl.version>
@@ -181,13 +182,16 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <environment>local</environment>
+                <springboot-profile>local</springboot-profile>
             </properties>
         </profile>
         <profile>
             <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
-                <environment>dev</environment>
+                <springboot-profile>dev</springboot-profile>
             </properties>
         </profile>
     </profiles>
@@ -200,7 +204,7 @@
                 <configuration>
                     <fork>true</fork>
                     <profiles>
-                        <profile>${environment}</profile>
+                        <profile>${springboot-profile}</profile>
                     </profiles>
                 </configuration>
             </plugin>
