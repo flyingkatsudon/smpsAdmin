@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +41,15 @@ public class JasperReportsExportHelper {
     }
 
     public static ResponseEntity<byte[]> toResponseEntity(HttpServletResponse response, String viewName, String format, List<?> content) {
+        JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
         try {
             switch (format) {
                 case EXT_PDF:
-                    return instance.toPdf(response, viewName, content);
+                    return instance.toPdf(response, viewName, dataSource);
                 case EXT_XLS:
-                    return instance.toXls(response, viewName, content);
+                    return instance.toXls(response, viewName, dataSource);
                 case EXT_XLSX:
-                    return instance.toXlsx(response, viewName, content);
+                    return instance.toXlsx(response, viewName, dataSource);
                 default:
                     return null;
             }
@@ -59,15 +59,15 @@ public class JasperReportsExportHelper {
         }
     }
 
-    private ResponseEntity<byte[]> toXlsx(HttpServletResponse response, String viewName, Collection<?> collection) throws JRException {
-        return toXlsx(response, viewName, new LinkedHashMap<>(), collection);
+    private ResponseEntity<byte[]> toXlsx(HttpServletResponse response, String viewName, JRRewindableDataSource dataSource) throws JRException {
+        return toXlsx(response, viewName, new LinkedHashMap<>(), dataSource);
     }
 
-    private ResponseEntity<byte[]> toXlsx(HttpServletResponse response, String viewName, Map<String, Object> params, Collection<?> collection) throws JRException {
+    private ResponseEntity<byte[]> toXlsx(HttpServletResponse response, String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
         JasperReport jasperReport = loadReport(viewName);
         if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JRBeanCollectionDataSource(collection));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         JRXlsxExporter exporter = new JRXlsxExporter();
@@ -85,17 +85,17 @@ public class JasperReportsExportHelper {
         return ResponseEntity.ok(ba);
     }
 
-    private ResponseEntity<byte[]> toXls(HttpServletResponse response, String viewName, Collection<?> collection) throws JRException {
-        return toXls(response, viewName, new LinkedHashMap<>(), collection);
+    private ResponseEntity<byte[]> toXls(HttpServletResponse response, String viewName, JRRewindableDataSource dataSource) throws JRException {
+        return toXls(response, viewName, new LinkedHashMap<>(), dataSource);
     }
 
-    private ResponseEntity<byte[]> toXls(HttpServletResponse response, String viewName, Map<String, Object> params, Collection<?> collection) throws JRException {
+    private ResponseEntity<byte[]> toXls(HttpServletResponse response, String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
         JasperReport jasperReport = loadReport(viewName);
         if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 
         if (params == null) params = new LinkedHashMap<>();
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JRBeanCollectionDataSource(collection));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         JRXlsExporter exporter = new JRXlsExporter();
@@ -113,15 +113,15 @@ public class JasperReportsExportHelper {
         return ResponseEntity.ok(ba);
     }
 
-    private ResponseEntity<byte[]> toPdf(HttpServletResponse response, String viewName, Collection<?> collection) throws JRException {
-        return toPdf(response, viewName, new LinkedHashMap<>(), collection);
+    private ResponseEntity<byte[]> toPdf(HttpServletResponse response, String viewName, JRRewindableDataSource dataSource) throws JRException {
+        return toPdf(response, viewName, new LinkedHashMap<>(), dataSource);
     }
 
-    private ResponseEntity<byte[]> toPdf(HttpServletResponse response, String viewName, Map<String, Object> params, Collection<?> collection) throws JRException {
+    private ResponseEntity<byte[]> toPdf(HttpServletResponse response, String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
         JasperReport jasperReport = loadReport(viewName);
         if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JRBeanCollectionDataSource(collection));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
