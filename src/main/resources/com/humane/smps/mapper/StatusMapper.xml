@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.humane.smps.mapper.StatusMapper">
+    <select id="findAll" resultType="com.humane.smps.dto.StatusDto">
+        SELECT
+        100 AS examinee_cnt,
+        1 AS attend_cnt,
+        99 AS absent_cnt,
+        1 * 100 / 100 AS attend_per,
+        99 * 100 / 100 AS absent_per
+    </select>
+
+    <select id="dept" resultType="com.humane.smps.dto.StatusDeptDto">
+        SELECT
+          *,
+          examinee_cnt - absent_cnt                        AS attend_cnt,
+          absent_cnt * 100 / examinee_cnt                  AS absent_per,
+          (examinee_cnt - absent_cnt) * 100 / examinee_cnt AS attend_per
+        FROM (
+               SELECT
+                 admission.admission_nm
+                 ,  exam.exam_date, exam.exam_time, examinee.dept_nm
+                 , COUNT(examinee.examinee_cd) AS examinee_cnt
+                 , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
+                       WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no) = 0 THEN 1
+                       WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1
+                       END) AS absent_cnt
+               FROM exam_map
+                 INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+                 INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+                 INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+                 INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
+                <where>
+                    <if test="param != null">
+                        <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                        <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                        <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                        <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                    </if>
+                </where>
+               GROUP BY admission.admission_nm
+                 ,  exam.exam_date, exam.exam_time, examinee.dept_nm
+             ) AS result
+    </select>
+
+    <select id="major" resultType="com.humane.smps.dto.StatusMajorDto">
+        SELECT
+        *,
+        examinee_cnt - absent_cnt                        AS attend_cnt,
+        absent_cnt * 100 / examinee_cnt                  AS absent_per,
+        (examinee_cnt - absent_cnt) * 100 / examinee_cnt AS attend_per
+        FROM (
+                SELECT
+                        admission.admission_nm, exam.exam_nm
+                        , exam.exam_date, exam.exam_time
+                        , examinee.dept_nm, examinee.major_nm
+                        , COUNT(examinee.examinee_cd) AS examinee_cnt
+                        , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
+                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no) = 0 THEN 1
+                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1
+                        END) AS absent_cnt
+                        FROM exam_map
+                        INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+                        INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+                        INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+                        INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
+                        <where>
+                            <if test="param != null">
+                                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                                <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                            </if>
+                        </where>
+                        GROUP BY admission.admission_nm
+                        , exam.exam_nm, exam.exam_date, exam.exam_time
+                        , examinee.dept_nm, examinee.major_nm
+                        ) AS result
+    </select>
+
+    <select id="hall" resultType="com.humane.smps.dto.StatusHallDto">
+        SELECT
+        *,
+        examinee_cnt - absent_cnt                        AS attend_cnt,
+        absent_cnt * 100 / examinee_cnt                  AS absent_per,
+        (examinee_cnt - absent_cnt) * 100 / examinee_cnt AS attend_per
+        FROM (
+                SELECT
+                    admission.admission_nm
+                    , exam.exam_date, exam.exam_time
+                    , examinee.dept_nm, examinee.major_nm
+                    , hall.head_nm, hall.bldg_nm, hall.hall_nm
+                    , COUNT(examinee.examinee_cd) AS examinee_cnt
+                    , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
+                    WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no) = 0 THEN 1
+                    WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1
+                    END) AS absent_cnt
+                FROM exam_map
+                INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+                INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+                INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+                INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
+                <where>
+                    <if test="param != null">
+                        <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                        <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                        <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                        <if test="param.headNm != null">AND examinee.dept_nm = #{param.headNm}</if>
+                        <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                        <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                        <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                    </if>
+                </where>
+                GROUP BY admission.admission_nm, exam.exam_nm
+                ,  exam.exam_date, exam.exam_time
+                , examinee.dept_nm, examinee.major_nm
+                , hall.head_nm, hall.bldg_nm, hall.hall_nm
+                ) AS result
+    </select>
+
+    <select id="group" resultType="com.humane.smps.dto.StatusGroupDto">
+        SELECT
+                *,
+                examinee_cnt - absent_cnt                        AS attend_cnt,
+                absent_cnt * 100 / examinee_cnt                  AS absent_per,
+                (examinee_cnt - absent_cnt) * 100 / examinee_cnt AS attend_per
+                FROM (
+                        SELECT
+                        admission.admission_nm
+                        , exam.exam_date, exam.exam_time
+                        , examinee.major_nm
+                        , hall.head_nm, hall.bldg_nm, hall.hall_nm
+                        , COUNT(examinee.examinee_cd) AS examinee_cnt
+                        , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
+                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no) = 0 THEN 1
+                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1
+                        END) AS absent_cnt
+                        FROM exam_map
+                        INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+                        INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+                        INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+                        INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
+                        <where>
+                            <if test="param != null">
+                                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                            </if>
+                        </where>
+                        GROUP BY admission.admission_nm
+                        , exam.exam_date, exam.exam_time
+                        , examinee.major_nm
+                        , hall.head_nm, hall.bldg_nm, hall.hall_nm
+                        ) AS result
+    </select>
+</mapper>

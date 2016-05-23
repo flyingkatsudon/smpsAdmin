@@ -10,7 +10,7 @@
 	<field name="examTime" class="java.util.Date"/>
 	<field name="deptNm" class="java.lang.String"/>
 	<field name="majorNm" class="java.lang.String"/>
-	<field name="regDttm" class="java.util.Date"/>
+	<field name="scoreDttm" class="java.util.Date"/>
 	<field name="virtNo" class="java.lang.String"/>
 	<field name="scorerNm" class="java.lang.String"/>
 	<field name="score01" class="java.lang.String"/>
@@ -380,7 +380,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{regDttm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{scoreDttm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="450" y="0" width="50" height="20" uuid="3c5bded0-ebef-4386-9e08-ccbcbc0444cf"/>

@@ -27,7 +27,7 @@ define(function (require) {
         }, search: function (o) {
             var _this = this;
             $.ajax({
-                url: 'status/all/chart',
+                url: 'status/all',
                 data: o
             }).done(function (response) {
                 _this.chart.setData([

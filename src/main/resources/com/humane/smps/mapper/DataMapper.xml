@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.humane.smps.mapper.DataMapper">
+    <select id="examinee" resultType="com.humane.smps.dto.ExamineeDto">
+        SELECT
+            admission.admission_nm,
+            exam.exam_date, exam.exam_time,
+            examinee.dept_nm, examinee.major_nm,
+            exam.exam_nm,
+            hall.head_nm, hall.bldg_nm, hall.hall_nm,
+            examinee.examinee_cd, examinee.examinee_nm,
+            exam_map.virt_no,
+            COUNT(score.scorer_nm)                                             AS scorer_cnt,
+            SUM(score.score01) / COUNT(score.scorer_nm)                        AS avg_score01,
+            SUM(score.score02) / COUNT(score.scorer_nm)                        AS avg_score02,
+            SUM(score.score03) / COUNT(score.scorer_nm)                        AS avg_score03,
+            SUM(score.score04) / COUNT(score.scorer_nm)                        AS avg_score04,
+            SUM(score.score05) / COUNT(score.scorer_nm)                        AS avg_score05,
+            SUM(score.score06) / COUNT(score.scorer_nm)                        AS avg_score06,
+            SUM(score.score07) / COUNT(score.scorer_nm)                        AS avg_score07,
+            SUM(score.score08) / COUNT(score.scorer_nm)                        AS avg_score08,
+            SUM(score.score09) / COUNT(score.scorer_nm)                        AS avg_score09,
+            SUM(score.score10) / COUNT(score.scorer_nm)                        AS avg_score10,
+            SUM(score.score01 + score.score02 + score.score03 + score.score04 + score.score05
+                + score.score06 + score.score07 + score.score08 + score.score09 + score.score10) AS total_score,
+            CASE WHEN exam_map.virt_no IS NULL THEN FALSE
+                  WHEN COUNT(score.scorer_nm) = 0 THEN FALSE
+                  WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN FALSE
+                  ELSE TRUE
+            END                                                                AS is_attend
+        FROM exam_map
+            INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+            INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
+            INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+            LEFT JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
+            INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
+                <if test="param.isAttend != null"></if>
+                <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
+                <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
+                <if test="param.fromExamineeCd != null and param.toExamineeCd">AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}</if>
+            </if>
+        </where>
+        GROUP BY
+                admission.admission_nm
+                , exam.exam_date
+                , exam.exam_time
+                , examinee.dept_nm
+                , examinee.major_nm
+                , exam.exam_nm
+                , hall.head_nm
+                , hall.bldg_nm
+                , hall.hall_nm
+                , examinee.examinee_cd
+                , examinee.examinee_nm
+                , exam_map.virt_no
+    </select>
+
+    <select id="score" resultType="com.humane.smps.dto.ScoreDto">
+        SELECT
+            admission.admission_nm,
+            exam.exam_date,
+            exam.exam_time,
+            examinee.dept_nm,
+            examinee.major_nm,
+            exam_map.virt_no,
+            score.scorer_nm,
+            score.score01,
+            score.score02,
+            score.score03,
+            score.score04,
+            score.score05,
+            score.score06,
+            score.score07,
+            score.score08,
+            score.score09,
+            score.score10,
+            score.total_score,
+            score.score_dttm
+        FROM exam_map
+            INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+            INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+            INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+            LEFT JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
+                <if test="param.scorerNm != null">score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
+            </if>
+        </where>
+        GROUP BY
+                admission.admission_nm
+                , exam.exam_date
+                , exam.exam_time
+                , examinee.dept_nm
+                , examinee.major_nm
+                , exam_map.virt_no
+                , score.scorer_nm
+    </select>
+</mapper>

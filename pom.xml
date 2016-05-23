@@ -3,7 +3,7 @@
          xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd'>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.humane.admin</groupId>
+    <groupId>com.humane</groupId>
     <artifactId>smps</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -57,6 +57,14 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
@@ -89,40 +97,64 @@
         </dependency>
 
         <dependency>
-            <groupId>com.squareup.retrofit2</groupId>
-            <artifactId>retrofit</artifactId>
-            <version>${retrofit2.version}</version>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.squareup.retrofit2</groupId>
-            <artifactId>converter-scalars</artifactId>
-            <version>${retrofit2.version}</version>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-spring</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.squareup.retrofit2</groupId>
-            <artifactId>converter-jackson</artifactId>
-            <version>${retrofit2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.retrofit2</groupId>
-            <artifactId>adapter-rxjava</artifactId>
-            <version>${retrofit2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>logging-interceptor</artifactId>
-            <version>3.2.0</version>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-hibernate4</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava</artifactId>
-            <version>${rxjava.version}</version>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate4</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis-starter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.humane</groupId>
+            <artifactId>util-common</artifactId>
+            <version>${humane-util-common.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
         </dependency>
 
         <dependency>
@@ -140,23 +172,6 @@
             <artifactId>barbecue</artifactId>
             <version>1.5-beta1</version>
         </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.humane</groupId>
-            <artifactId>util-common</artifactId>
-            <version>${humane-util-common.version}</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -183,15 +198,24 @@
             </activation>
             <properties>
                 <springboot-profile>local</springboot-profile>
+                <tomcat-url>http://localhost:8000/manager/text</tomcat-url>
+                <tomcat-username>etmsApi</tomcat-username>
+                <tomcat-password>humane12!</tomcat-password>
             </properties>
         </profile>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <springboot-profile>dev</springboot-profile>
+                <tomcat-url>http://humane.ipdisk.co.kr:8000/manager/text</tomcat-url>
+                <tomcat-username>etmsApi</tomcat-username>
+                <tomcat-password>humane12!</tomcat-password>
+            </properties>
+        </profile>
+        <profile>
+            <id>dbtest</id>
+            <properties>
+                <springboot-profile>dbtest</springboot-profile>
             </properties>
         </profile>
     </profiles>
@@ -223,6 +247,44 @@
                     <argLine>-Dfile.encoding=UTF-8</argLine>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <processor>
+                                lombok.launch.AnnotationProcessorHider$AnnotationProcessor,com.mysema.query.apt.jpa.JPAAnnotationProcessor
+                            </processor>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.mysema.querydsl</groupId>
+                        <artifactId>querydsl-apt</artifactId>
+                        <version>${querydsl.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/ROOT</path>
+                    <update>true</update>
+                    <url>${tomcat-url}</url>
+                    <username>${tomcat-username}</username>
+                    <password>${tomcat-password}</password>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>

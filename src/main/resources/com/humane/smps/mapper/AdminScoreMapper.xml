@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.humane.smps.mapper.AdminScoreMapper">
+    <select id="sheet" resultType="com.humane.smps.dto.SheetDto">
+        SELECT DISTINCT
+        admission.admission_nm
+        , exam.exam_nm
+        , exam.exam_date
+        , exam.exam_time
+        , hall.head_nm
+        , hall.bldg_nm
+        , hall.hall_nm
+        , sheet.scorer_nm
+        , sheet.sheet_no
+        , sheet.reg_dttm
+        , sheet.cancel_dttm
+        FROM sheet
+        INNER JOIN exam ON sheet.exam_cd = exam.exam_cd
+        INNER JOIN exam_map ON exam_map.exam_cd = exam.exam_cd
+        INNER JOIN admission ON admission.admission_cd = exam.admission_cd
+        INNER JOIN hall on hall.hall_cd = exam_map.hall_cd
+        <where>
+            <if test="param != null">
+                <if test="param.isCancel == true">AND sheet.cancel_dttm IS NOT NULL</if>
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.scorerNm != null"> AND sheet.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
+            </if>
+        </where>
+    </select>
+
+    <select id="fix" resultType="com.humane.smps.dto.ScoreFixDto">
+        SELECT
+            admission.admission_nm
+            , exam.exam_date
+            , exam.exam_time
+            , examinee.dept_nm
+            , examinee.major_nm
+            , exam.exam_nm
+            , hall.head_nm
+            , hall.bldg_nm
+            , hall.hall_nm
+            , examinee.examinee_cd
+            , exam_map.virt_no
+            , score.scorer_nm
+            , COUNT(*) AS update_cnt
+        FROM exam_map
+            INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+            INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+            INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
+            INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+            INNER JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
+        <where>
+            <if test="param != null">
+                <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.scorerNm != null">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
+            </if>
+        </where>
+        GROUP BY exam.exam_nm
+            , exam.exam_date
+            , exam.exam_time
+            , examinee.dept_nm
+            , examinee.major_nm
+            , hall.head_nm
+            , hall.bldg_nm
+            , hall.hall_nm
+            , exam_map.virt_no
+            , score.scorer_nm
+        HAVING COUNT(*) > 1
+    </select>
+</mapper>
