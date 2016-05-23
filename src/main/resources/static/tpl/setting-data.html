@@ -13,31 +13,37 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
-                    <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px" value="다운로드"/>
-                    <form action="status/dept/xlsx" method="get">
-                        <label>평가항목</label>
-                        <input type="submit" class="btn btn-primary pull-right" value="양식 다운로드"/>
+                    <label>평가항목</label>
+                    <form action="setting/downloadItem" method="post">
+                        <input type="submit" class="btn btn-primary pull-left" style="height:35px; margin-left:10px" value="양식 다운로드"/>
+                    </form>
+                    <form action="setting/uploadItem" method="post" enctype="multipart/form-data">
+                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
+                        <input type="file" name="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px"/>
                     </form>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
-                    <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px" value="다운로드"/>
-                    <form action="status/major/xlsx" method="get">
-                        <label>응시고사실</label>
-                        <input type="submit" class="btn btn-primary pull-right" value="양식 다운로드"/>
+                    <label>응시고사실</label>
+                    <form action="setting/downloadHall" method="get">
+                        <input type="submit" class="btn btn-primary pull-left" style="height:35px; margin-left:10px" value="양식 다운로드"/>
+                    </form>
+                    <form action="setting/uploadHall" method="post" enctype="multipart/form-data">
+                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
+                        <input type="file" name="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px"/>
                     </form>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
-                    <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px" value="다운로드"/>
-                    <form action="status/hall/xlsx" method="get">
-                        <label>수험생 정보</label>
-                        <input type="submit" class="btn btn-primary pull-right" value="양식 다운로드"/>
+                    <label>수험생 정보</label>
+                    <form action="setting/downloadExaminee" method="get">
+                        <input type="submit" class="btn btn-primary pull-left" style="height:35px; margin-left:10px" value="양식 다운로드"/>
+                    </form>
+                    <form action="setting/uploadExaminee" method="post" enctype="multipart/form-data">
+                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
+                        <input type="file" name="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px"/>
                     </form>
                 </div>
             </div>
@@ -121,8 +127,10 @@
                 <div class="panel-body">
                     <form action="data/signature/xlsx" method="get">
                         <span>중간관리자 데이터</span>
-                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
-                        <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px" value="다운로드"/>
+                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px"
+                               value="등록"/>
+                        <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px"
+                               value="다운로드"/>
                     </form>
                 </div>
             </div>
@@ -132,8 +140,10 @@
                 <div class="panel-body">
                     <form action="data/signature/xlsx" method="get">
                         <span>평가위원 데이터</span>
-                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px" value="등록"/>
-                        <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px" value="다운로드"/>
+                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px"
+                               value="등록"/>
+                        <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px"
+                               value="다운로드"/>
                     </form>
                 </div>
             </div>
