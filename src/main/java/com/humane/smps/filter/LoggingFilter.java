@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 
 @Slf4j
@@ -28,12 +27,6 @@ public class LoggingFilter implements Filter {
         String uri = requestWrapper.getRequestUri();
         //Map<String, String> headerMap = requestWrapper.headerMap();
         Map<String, String> parameterMap = requestWrapper.parameterMap();
-
-        Iterator<Map.Entry<String, String>> it = parameterMap.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry<String, String> entry = it.next();
-            if(entry.getValue().equals("")) it.remove();
-        }
 
         String body = requestWrapper.getBody();
         if (uri.matches("^(/)(api|score|check|data|model|setting|status)(/).*$"))

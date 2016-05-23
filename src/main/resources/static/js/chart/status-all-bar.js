@@ -1,6 +1,7 @@
 define(function (require) {
     "use strict";
-
+    
+    require('jquery.emptyFilter');
     require('morris');
 
     var Backbone = require('backbone');
@@ -28,7 +29,7 @@ define(function (require) {
             var _this = this;
             $.ajax({
                 url: 'status/all',
-                data: o
+                data: $.emptyFilter(o)
             }).done(function (response) {
                 _this.chart.setData([{
                     name: '응시현황',

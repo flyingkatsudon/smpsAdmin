@@ -1,6 +1,7 @@
 define(function (require) {
     "use strict";
 
+    require('jquery.emptyFilter');
     require('jqgrid');
 
     var DlgDownload = require('./dlg-download.js');
@@ -126,7 +127,9 @@ define(function (require) {
                 return this;
             }
         }, search: function (o) {
-            $.extend(this.$grid[0].p.postData, o);
+            var postData = this.$grid[0].p.postData;
+            this.$grid[0].p.postData = $.emptyFilter($.extend(postData, o));
+
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         }, close: function () {
             $('#alertmod_' + this.$grid[0].p.id).remove();
