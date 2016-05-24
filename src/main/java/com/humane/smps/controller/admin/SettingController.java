@@ -1,9 +1,12 @@
 package com.humane.smps.controller.admin;
 
 import com.blogspot.na5cent.exom.ExOM;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humane.smps.dto.UploadExamineeDto;
 import com.humane.smps.dto.UploadHallDto;
 import com.humane.smps.dto.UploadItemDto;
+import com.humane.smps.model.Exam;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +31,17 @@ public class SettingController {
         File tempFile = File.createTempFile("test", ".tmp");
         multipartFile.transferTo(tempFile);
 
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         try {
             List<UploadItemDto> itemList = ExOM.mapFromExcel(tempFile).to(UploadItemDto.class).map(1);
-            itemList.forEach(uploadItemDto -> log.debug("{}", uploadItemDto));
+            itemList.forEach(uploadItemDto -> {
+                log.debug("{}", uploadItemDto);
+                Exam a = mapper.convertValue(uploadItemDto, Exam.class);
+                log.debug("{}", a);
+            });
+
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         } finally {
