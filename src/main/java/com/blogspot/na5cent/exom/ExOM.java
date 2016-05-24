@@ -5,6 +5,7 @@ package com.blogspot.na5cent.exom;
 
 import com.blogspot.na5cent.exom.util.EachFieldCallback;
 import com.blogspot.na5cent.exom.util.ReflectionUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,14 +21,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * https://github.com/jittagornp/excel-object-mapping
- * @author redcrow
  *
- * changed :
- *   1. override map(head position)
+ * @author redcrow
+ *         <p>
+ *         changed :
+ *         1. override map(head position)
  */
 public class ExOM {
 
@@ -103,6 +106,7 @@ public class ExOM {
             return new XSSFWorkbook(inputStream);
         }
     }
+
     public <T> List<T> map() throws Throwable {
         return map(0);
     }
@@ -116,7 +120,7 @@ public class ExOM {
             inputStream = new FileInputStream(excelFile);
             Workbook workbook = createWorkbook(inputStream);
             int numberOfSheets = workbook.getNumberOfSheets();
-            
+
             for (int index = 0; index < numberOfSheets; index++) {
                 Sheet sheet = workbook.getSheetAt(index);
                 rowIterator = sheet.iterator();
@@ -126,7 +130,7 @@ public class ExOM {
                     Row row = rowIterator.next();
                     if (row.getRowNum() == posHeader) {
                         readExcelHeader(row, nameIndexMap);
-                    }else if(row.getRowNum() >= posHeader){
+                    } else if (row.getRowNum() >= posHeader) {
                         items.add((T) readExcelContent(row, nameIndexMap));
                     }
                 }
@@ -163,7 +167,13 @@ public class ExOM {
                 value += String.valueOf(cell.getBooleanCellValue());
                 break;
             case Cell.CELL_TYPE_NUMERIC:
-                value += new BigDecimal(cell.getNumericCellValue()).toString();
+                if (!HSSFDateUtil.isCellDateFormatted(cell)) {
+                    value += new BigDecimal(cell.getNumericCellValue()).toString();
+                    ;
+                } else {
+                    Date date = cell.getDateCellValue();
+                    value += new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+                }
                 break;
             case Cell.CELL_TYPE_STRING:
                 value += cell.getStringCellValue();

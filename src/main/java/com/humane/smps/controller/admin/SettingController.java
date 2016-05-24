@@ -6,9 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humane.smps.dto.UploadExamineeDto;
 import com.humane.smps.dto.UploadHallDto;
 import com.humane.smps.dto.UploadItemDto;
+import com.humane.smps.model.Admission;
 import com.humane.smps.model.Exam;
+import com.humane.smps.repository.AdmissionRepository;
+import com.humane.smps.repository.ExamRepository;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +29,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "setting")
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SettingController {
+    private final ExamRepository examRepository;
+    private final AdmissionRepository admissionRepository;
 
     @RequestMapping(value = "uploadItem", method = RequestMethod.POST)
     public void uploadItem(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -37,9 +45,12 @@ public class SettingController {
         try {
             List<UploadItemDto> itemList = ExOM.mapFromExcel(tempFile).to(UploadItemDto.class).map(1);
             itemList.forEach(uploadItemDto -> {
-                log.debug("{}", uploadItemDto);
-                Exam a = mapper.convertValue(uploadItemDto, Exam.class);
-                log.debug("{}", a);
+                Admission admission = mapper.convertValue(uploadItemDto, Admission.class);
+                admission = admissionRepository.save(admission);
+
+                Exam exam = mapper.convertValue(uploadItemDto, Exam.class);
+                exam.setAdmission(admission);
+                exam = examRepository.save(exam);
             });
 
         } catch (Throwable throwable) {

@@ -5,9 +5,6 @@ import lombok.Data;
 
 @Data
 public class UploadHallDto {
-    @Column(name = "학교명") private String univNm;
-    @Column(name = "학교코드") private String univCd;
-
     @Column(name = "시험코드") private String examCd;
     @Column(name = "시험일자") private String examDate;
     @Column(name = "시험시간") private String examTime;

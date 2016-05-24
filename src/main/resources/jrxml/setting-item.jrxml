@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-05-24T11:44:05 -->
+<!-- 2016-05-24T14:46:23 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="평가항목 양식" pageWidth="2600" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="2600" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Key" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
+	<field name="admissionCd" class="java.lang.String"/>
 	<field name="admissionNm" class="java.lang.String"/>
 	<field name="deptNm" class="java.lang.String"/>
 	<field name="majorNm" class="java.lang.String"/>
@@ -38,120 +39,129 @@
 		<band height="15">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="15" uuid="ed93cff2-c7d6-4499-a25d-8d2c931c9a6a"/>
-				<text><![CDATA[전형]]></text>
+				<reportElement x="100" y="0" width="100" height="15" uuid="ed93cff2-c7d6-4499-a25d-8d2c931c9a6a"/>
+				<text><![CDATA[전형명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="100" height="15" uuid="bec2e9c5-bca5-421c-9345-a025d6a58945"/>
+				<reportElement x="200" y="0" width="100" height="15" uuid="bec2e9c5-bca5-421c-9345-a025d6a58945"/>
 				<text><![CDATA[모집단위]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="100" height="15" uuid="5f48818f-cf11-4678-84e9-a3cee040fcc2"/>
+				<reportElement x="300" y="0" width="100" height="15" uuid="5f48818f-cf11-4678-84e9-a3cee040fcc2"/>
 				<text><![CDATA[전공]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="15" uuid="d603a4ef-a904-4aa1-bd40-1055a2742e9d"/>
+				<reportElement x="400" y="0" width="100" height="15" uuid="d603a4ef-a904-4aa1-bd40-1055a2742e9d"/>
 				<text><![CDATA[시험코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="100" height="15" uuid="f82e9216-d623-4b47-8ffe-2398cfb6e11a"/>
+				<reportElement x="500" y="0" width="100" height="15" uuid="f82e9216-d623-4b47-8ffe-2398cfb6e11a"/>
 				<text><![CDATA[시험명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="0" width="100" height="15" uuid="313de723-e194-4cf3-b4b4-74443c8eb00e"/>
+				<reportElement x="600" y="0" width="100" height="15" uuid="313de723-e194-4cf3-b4b4-74443c8eb00e"/>
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="600" y="0" width="100" height="15" uuid="8dc597c3-28e8-4901-8819-a7a955d06b2f"/>
+				<reportElement x="700" y="0" width="100" height="15" uuid="8dc597c3-28e8-4901-8819-a7a955d06b2f"/>
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="700" y="0" width="100" height="15" uuid="a437d45b-463a-42e1-a1f6-53b5f392f915"/>
+				<reportElement x="800" y="0" width="100" height="15" uuid="a437d45b-463a-42e1-a1f6-53b5f392f915"/>
 				<text><![CDATA[항목수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="800" y="0" width="100" height="15" uuid="85be6811-620a-4218-b37e-c55c2f2d4152"/>
+				<reportElement x="900" y="0" width="100" height="15" uuid="85be6811-620a-4218-b37e-c55c2f2d4152"/>
 				<text><![CDATA[총점]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="900" y="0" width="100" height="15" uuid="c4b88937-4997-4eaa-8d42-1275d8b60dfb"/>
+				<reportElement x="1000" y="0" width="100" height="15" uuid="c4b88937-4997-4eaa-8d42-1275d8b60dfb"/>
 				<text><![CDATA[평가위원수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1000" y="0" width="100" height="15" uuid="bc67fa63-8cea-40fe-965f-b1d776d0e520"/>
+				<reportElement x="1100" y="0" width="100" height="15" uuid="bc67fa63-8cea-40fe-965f-b1d776d0e520"/>
 				<text><![CDATA[키패드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1100" y="0" width="100" height="15" uuid="5ea37615-fe1d-4d02-8ec2-182f8b5f2d3a"/>
+				<reportElement x="1200" y="0" width="100" height="15" uuid="5ea37615-fe1d-4d02-8ec2-182f8b5f2d3a"/>
 				<text><![CDATA[가번호시작]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1200" y="0" width="100" height="15" uuid="31ab2774-e151-41d2-90ab-0a580f9be1a5"/>
+				<reportElement x="1300" y="0" width="100" height="15" uuid="31ab2774-e151-41d2-90ab-0a580f9be1a5"/>
 				<text><![CDATA[가번호종료]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1300" y="0" width="100" height="15" uuid="c1d7259d-ae84-4996-b469-a0dec90cecaf"/>
+				<reportElement x="1400" y="0" width="100" height="15" uuid="c1d7259d-ae84-4996-b469-a0dec90cecaf"/>
 				<text><![CDATA[가번호헤더]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="15" uuid="9efd59f7-5031-4ac8-b0f1-56a6d10b4632"/>
+				<text><![CDATA[전형코드]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="100" height="15" uuid="bfbb00dd-8537-4768-bc93-703a74ee7ed0"/>
+				<reportElement x="100" y="0" width="100" height="15" uuid="bfbb00dd-8537-4768-bc93-703a74ee7ed0"/>
 				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="100" y="0" width="100" height="15" uuid="214642b6-1da0-4c2a-87fa-96ac55a211da"/>
+				<reportElement x="200" y="0" width="100" height="15" uuid="214642b6-1da0-4c2a-87fa-96ac55a211da"/>
 				<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="200" y="0" width="100" height="15" uuid="2d7daa17-6794-4f63-9743-251853d6b8d1"/>
+				<reportElement x="300" y="0" width="100" height="15" uuid="2d7daa17-6794-4f63-9743-251853d6b8d1"/>
 				<textFieldExpression><![CDATA[$F{majorNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="300" y="0" width="100" height="15" uuid="c7671ee4-d757-4cc8-a4d2-20a0b6fafe9b"/>
+				<reportElement x="400" y="0" width="100" height="15" uuid="c7671ee4-d757-4cc8-a4d2-20a0b6fafe9b"/>
 				<textFieldExpression><![CDATA[$F{examCd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="0" width="100" height="15" uuid="a5291baf-1c4e-42dd-b3ba-9475828b5a75"/>
+				<reportElement x="500" y="0" width="100" height="15" uuid="a5291baf-1c4e-42dd-b3ba-9475828b5a75"/>
 				<textFieldExpression><![CDATA[$F{examNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="500" y="0" width="100" height="15" uuid="534f984e-aca5-4b7b-9801-186c1b600fee"/>
+				<reportElement x="600" y="0" width="100" height="15" uuid="534f984e-aca5-4b7b-9801-186c1b600fee"/>
 				<textFieldExpression><![CDATA[$F{examDate}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="600" y="0" width="100" height="15" uuid="adb0bcd6-5f00-43a1-8818-9f57066b2151"/>
+				<reportElement x="700" y="0" width="100" height="15" uuid="adb0bcd6-5f00-43a1-8818-9f57066b2151"/>
 				<textFieldExpression><![CDATA[$F{examTime}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="700" y="0" width="100" height="15" uuid="677db4ee-1f44-4f72-a08c-1de21c2837bc"/>
+				<reportElement x="800" y="0" width="100" height="15" uuid="677db4ee-1f44-4f72-a08c-1de21c2837bc"/>
 				<textFieldExpression><![CDATA[$F{itemCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="800" y="0" width="100" height="15" uuid="96e92f7b-1dd5-4236-bf3f-c309865b7cc6"/>
+				<reportElement x="900" y="0" width="100" height="15" uuid="96e92f7b-1dd5-4236-bf3f-c309865b7cc6"/>
 				<textFieldExpression><![CDATA[$F{totalScore}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="900" y="0" width="100" height="15" uuid="f348426d-0d21-4dab-9b2b-d85a6e3d920c"/>
+				<reportElement x="1000" y="0" width="100" height="15" uuid="f348426d-0d21-4dab-9b2b-d85a6e3d920c"/>
 				<textFieldExpression><![CDATA[$F{scorerCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1000" y="0" width="100" height="15" uuid="9ea99835-562d-488d-8870-c9d98c474f5e"/>
+				<reportElement x="1100" y="0" width="100" height="15" uuid="9ea99835-562d-488d-8870-c9d98c474f5e"/>
 				<textFieldExpression><![CDATA[$F{keypadType}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1100" y="0" width="100" height="15" uuid="9100497d-6b77-4fe4-81b4-62c712096287"/>
+				<reportElement x="1200" y="0" width="100" height="15" uuid="9100497d-6b77-4fe4-81b4-62c712096287"/>
 				<textFieldExpression><![CDATA[$F{virtNoStart}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1200" y="0" width="100" height="15" uuid="a17a08ec-0b31-4390-8a6e-1909119a8d5b"/>
+				<reportElement x="1300" y="0" width="100" height="15" uuid="a17a08ec-0b31-4390-8a6e-1909119a8d5b"/>
 				<textFieldExpression><![CDATA[$F{virtNoEnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1300" y="0" width="100" height="15" uuid="c8ea5950-b7d0-4049-8344-bd7da2b2f50b"/>
+				<reportElement x="1400" y="0" width="100" height="15" uuid="c8ea5950-b7d0-4049-8344-bd7da2b2f50b"/>
 				<textFieldExpression><![CDATA[$F{virtHeader}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="15" uuid="441377ae-bc17-4e51-b75c-69c61dc11d01"/>
+				<textFieldExpression><![CDATA[$F{admissionCd}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
