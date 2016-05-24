@@ -198,8 +198,8 @@
             </activation>
             <properties>
                 <springboot-profile>local</springboot-profile>
-                <tomcat-url>http://localhost:8000/manager/text</tomcat-url>
-                <tomcat-username>etmsApi</tomcat-username>
+                <tomcat-url>http://localhost:9000/manager/text</tomcat-url>
+                <tomcat-username>smps</tomcat-username>
                 <tomcat-password>humane12!</tomcat-password>
             </properties>
         </profile>
@@ -207,8 +207,8 @@
             <id>dev</id>
             <properties>
                 <springboot-profile>dev</springboot-profile>
-                <tomcat-url>http://humane.ipdisk.co.kr:8000/manager/text</tomcat-url>
-                <tomcat-username>etmsApi</tomcat-username>
+                <tomcat-url>http://humane.ipdisk.co.kr:9000/manager/text</tomcat-url>
+                <tomcat-username>smps</tomcat-username>
                 <tomcat-password>humane12!</tomcat-password>
             </properties>
         </profile>
@@ -258,9 +258,10 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/generated-sources/java</outputDirectory>
-                            <processor>
-                                lombok.launch.AnnotationProcessorHider$AnnotationProcessor,com.mysema.query.apt.jpa.JPAAnnotationProcessor
-                            </processor>
+                            <processors>
+                                <processor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</processor>
+                                <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+                            </processors>
                         </configuration>
                     </execution>
                 </executions>
