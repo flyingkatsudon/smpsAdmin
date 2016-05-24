@@ -17,11 +17,11 @@ public class Exam {
 
     @ManyToOne @JoinColumn(name = "admissionCd", nullable = false) private Admission admission; // 전형
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
     private Date examDate; // 시험일자
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Temporal(TemporalType.TIME)
     private Date examTime; // 시험시간
 

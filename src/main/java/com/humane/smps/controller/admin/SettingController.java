@@ -43,9 +43,14 @@ public class SettingController {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
+            // 1. excel 변환
             List<UploadItemDto> itemList = ExOM.mapFromExcel(tempFile).to(UploadItemDto.class).map(1);
             itemList.forEach(uploadItemDto -> {
+
+                // 2. object 변환
                 Admission admission = mapper.convertValue(uploadItemDto, Admission.class);
+
+                // 3. object 저장
                 admission = admissionRepository.save(admission);
 
                 Exam exam = mapper.convertValue(uploadItemDto, Exam.class);

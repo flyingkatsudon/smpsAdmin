@@ -169,7 +169,6 @@ public class ExOM {
             case Cell.CELL_TYPE_NUMERIC:
                 if (!HSSFDateUtil.isCellDateFormatted(cell)) {
                     value += new BigDecimal(cell.getNumericCellValue()).toString();
-                    ;
                 } else {
                     Date date = cell.getDateCellValue();
                     value += new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
