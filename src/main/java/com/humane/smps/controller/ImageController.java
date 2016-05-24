@@ -1,4 +1,4 @@
-package com.humane.smps.controller.api;
+package com.humane.smps.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 @RestController
-@RequestMapping(value = "api/image", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@RequestMapping(value = "image", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class ImageController {
 
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;

@@ -8,8 +8,12 @@ import com.humane.smps.dto.UploadHallDto;
 import com.humane.smps.dto.UploadItemDto;
 import com.humane.smps.model.Admission;
 import com.humane.smps.model.Exam;
+import com.humane.smps.model.ExamHall;
+import com.humane.smps.model.Hall;
 import com.humane.smps.repository.AdmissionRepository;
+import com.humane.smps.repository.ExamHallRepository;
 import com.humane.smps.repository.ExamRepository;
+import com.humane.smps.repository.HallRepository;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +37,8 @@ import java.util.List;
 public class SettingController {
     private final ExamRepository examRepository;
     private final AdmissionRepository admissionRepository;
+    private final HallRepository hallRepository;
+    private final ExamHallRepository examHallRepository;
 
     @RequestMapping(value = "uploadItem", method = RequestMethod.POST)
     public void uploadItem(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -70,11 +76,34 @@ public class SettingController {
         File tempFile = File.createTempFile("test", ".tmp");
         multipartFile.transferTo(tempFile);
 
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         try {
             List<UploadHallDto> hallList = ExOM.mapFromExcel(tempFile).to(UploadHallDto.class).map(1);
-            hallList.forEach(uploadHallDto -> log.debug("{}", uploadHallDto));
+            hallList.forEach(uploadHallDto -> {
+                /**
+                 * 제약조건 : 시험정보는 반드시 업로드 되어 있어야 한다.
+                 */
+
+                // 1. 시험정보 생성
+                Exam exam = mapper.convertValue(uploadHallDto, Exam.class);
+                exam = examRepository.findOne(exam.getExamCd());
+
+                // 2. 고사실정보 생성
+                Hall hall = mapper.convertValue(uploadHallDto, Hall.class);
+                hall = hallRepository.save(hall);
+
+                // 3. 응시고사실 생성
+                ExamHall examHall = new ExamHall();
+                examHall.setExam(exam);
+                examHall.setHall(hall);
+
+                // 4. 응시고사실 저장
+                examHallRepository.save(examHall);
+            });
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            log.error("{}", throwable.getMessage());
         } finally {
             tempFile.delete();
         }
