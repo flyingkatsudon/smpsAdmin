@@ -13,7 +13,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"examCd", "virtNo", "scorerNm"}))
 public class Score implements Serializable {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
     @Column(nullable = false) private long scoreSeq;
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;

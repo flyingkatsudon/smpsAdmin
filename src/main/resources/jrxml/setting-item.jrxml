@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-05-24T15:45:13 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="평가항목 양식" pageWidth="1500" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Key" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
+<!-- 2016-05-25T14:16:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="평가항목 양식" pageWidth="1700" pageHeight="555" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1700" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Key" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -23,16 +15,18 @@
 	<field name="examDate" class="java.util.Date"/>
 	<field name="examTime" class="java.util.Date"/>
 	<field name="itemCnt" class="java.lang.Long"/>
-	<field name="totalScore" class="java.lang.Long"/>
 	<field name="scorerCnt" class="java.lang.Long"/>
 	<field name="keypadType" class="java.lang.String"/>
 	<field name="virtNoStart" class="java.lang.Long"/>
 	<field name="virtNoEnd" class="java.lang.Long"/>
 	<field name="virtHeader" class="java.lang.String"/>
+	<field name="itemCd1" class="java.lang.String"/>
+	<field name="itemNm1" class="java.lang.String"/>
+	<field name="deviCd1" class="java.lang.String"/>
 	<title>
 		<band height="50" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="1500" height="50" uuid="f1d8a4f9-15d4-4929-a7a7-d9e06f85b15d"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="1700" height="50" uuid="f1d8a4f9-15d4-4929-a7a7-d9e06f85b15d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -45,6 +39,7 @@
 	</pageHeader>
 	<columnHeader>
 		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="100" y="0" width="100" height="15" uuid="ed93cff2-c7d6-4499-a25d-8d2c931c9a6a"/>
@@ -124,7 +119,9 @@
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="800" y="0" width="100" height="15" uuid="a437d45b-463a-42e1-a1f6-53b5f392f915"/>
+				<reportElement x="1300" y="0" width="100" height="15" uuid="a437d45b-463a-42e1-a1f6-53b5f392f915">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -135,18 +132,7 @@
 				<text><![CDATA[항목수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="900" y="0" width="100" height="15" uuid="85be6811-620a-4218-b37e-c55c2f2d4152"/>
-				<box>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[총점]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1000" y="0" width="100" height="15" uuid="c4b88937-4997-4eaa-8d42-1275d8b60dfb"/>
+				<reportElement x="800" y="0" width="100" height="15" uuid="c4b88937-4997-4eaa-8d42-1275d8b60dfb"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -157,7 +143,7 @@
 				<text><![CDATA[평가위원수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1100" y="0" width="100" height="15" uuid="bc67fa63-8cea-40fe-965f-b1d776d0e520"/>
+				<reportElement x="900" y="0" width="100" height="15" uuid="bc67fa63-8cea-40fe-965f-b1d776d0e520"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -168,7 +154,7 @@
 				<text><![CDATA[키패드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1200" y="0" width="100" height="15" uuid="5ea37615-fe1d-4d02-8ec2-182f8b5f2d3a"/>
+				<reportElement x="1000" y="0" width="100" height="15" uuid="5ea37615-fe1d-4d02-8ec2-182f8b5f2d3a"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -179,7 +165,7 @@
 				<text><![CDATA[가번호시작]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1300" y="0" width="100" height="15" uuid="31ab2774-e151-41d2-90ab-0a580f9be1a5"/>
+				<reportElement x="1100" y="0" width="100" height="15" uuid="31ab2774-e151-41d2-90ab-0a580f9be1a5"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -190,7 +176,7 @@
 				<text><![CDATA[가번호종료]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1400" y="0" width="100" height="15" uuid="c1d7259d-ae84-4996-b469-a0dec90cecaf"/>
+				<reportElement x="1200" y="0" width="100" height="15" uuid="c1d7259d-ae84-4996-b469-a0dec90cecaf"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -211,11 +197,37 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[전형코드]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="1400" y="0" width="100" height="15" uuid="3853296d-4cbc-4e55-816e-5d52ed37387e">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[항목1 코드]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1500" y="0" width="100" height="15" uuid="19d6e941-821d-4108-9f5f-3ea8792eaa4f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[항목1 명]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1600" y="0" width="100" height="15" uuid="e6040880-1ae2-4d2a-bafa-4764a9c1826d">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[항목1 편차코드]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField isBlankWhenNull="true">
 				<reportElement x="100" y="0" width="100" height="15" uuid="bfbb00dd-8537-4768-bc93-703a74ee7ed0"/>
 				<box>
@@ -294,7 +306,7 @@
 				<textFieldExpression><![CDATA[$F{examTime}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="800" y="0" width="100" height="15" uuid="677db4ee-1f44-4f72-a08c-1de21c2837bc"/>
+				<reportElement x="1300" y="0" width="100" height="15" uuid="677db4ee-1f44-4f72-a08c-1de21c2837bc"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -305,18 +317,7 @@
 				<textFieldExpression><![CDATA[$F{itemCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="900" y="0" width="100" height="15" uuid="96e92f7b-1dd5-4236-bf3f-c309865b7cc6"/>
-				<box>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{totalScore}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="1000" y="0" width="100" height="15" uuid="f348426d-0d21-4dab-9b2b-d85a6e3d920c"/>
+				<reportElement x="800" y="0" width="100" height="15" uuid="f348426d-0d21-4dab-9b2b-d85a6e3d920c"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -327,7 +328,7 @@
 				<textFieldExpression><![CDATA[$F{scorerCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1100" y="0" width="100" height="15" uuid="9ea99835-562d-488d-8870-c9d98c474f5e"/>
+				<reportElement x="900" y="0" width="100" height="15" uuid="9ea99835-562d-488d-8870-c9d98c474f5e"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -338,7 +339,7 @@
 				<textFieldExpression><![CDATA[$F{keypadType}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1200" y="0" width="100" height="15" uuid="9100497d-6b77-4fe4-81b4-62c712096287"/>
+				<reportElement x="1000" y="0" width="100" height="15" uuid="9100497d-6b77-4fe4-81b4-62c712096287"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -349,7 +350,7 @@
 				<textFieldExpression><![CDATA[$F{virtNoStart}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1300" y="0" width="100" height="15" uuid="a17a08ec-0b31-4390-8a6e-1909119a8d5b"/>
+				<reportElement x="1100" y="0" width="100" height="15" uuid="a17a08ec-0b31-4390-8a6e-1909119a8d5b"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -360,7 +361,7 @@
 				<textFieldExpression><![CDATA[$F{virtNoEnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1400" y="0" width="100" height="15" uuid="c8ea5950-b7d0-4049-8344-bd7da2b2f50b"/>
+				<reportElement x="1200" y="0" width="100" height="15" uuid="c8ea5950-b7d0-4049-8344-bd7da2b2f50b"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -380,6 +381,23 @@
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{admissionCd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1400" y="0" width="100" height="15" uuid="3d946d56-089f-4128-990b-435d4f50361f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{itemCd1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1500" y="0" width="100" height="15" uuid="1524c60b-0c6e-4183-843c-634078d09b35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{itemNm1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1600" y="0" width="100" height="15" uuid="112d9a92-a4ad-4c8d-a80c-bb3904391046"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{deviCd1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

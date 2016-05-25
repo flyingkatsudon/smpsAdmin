@@ -12,14 +12,14 @@ import java.io.Serializable;
 @Cacheable
 @Table(uniqueConstraints = @UniqueConstraint(name = "UK__ITEM__01", columnNames = {"examCd", "itemNo"}))
 public class Item implements Serializable {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
-    private String itemNo;
+    @Column(nullable = false) private String itemNo;
     private String itemNm;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "deviCd", nullable = false) private Devi devi;
 
-    @Column(columnDefinition = "int default 0") private int orderby;
+    @Column(columnDefinition = "int default 0") private long orderby;
 
 }

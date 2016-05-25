@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"examCd", "hallCd"})})
 @Data
 public class ExamHall {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;

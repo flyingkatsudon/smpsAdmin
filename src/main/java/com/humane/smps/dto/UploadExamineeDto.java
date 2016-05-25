@@ -5,10 +5,6 @@ import lombok.Data;
 
 @Data
 public class UploadExamineeDto {
-    @Column(name = "학교명") private String univNm;
-    @Column(name = "학교코드") private String univCd;
-    @Column(name = "전형2") private String examCd;
-
     @Column(name = "수험번호") private String examineeCd;
     @Column(name = "일련번호") private String unknown1;
     @Column(name = "수험생명") private String examineeNm;
@@ -26,5 +22,4 @@ public class UploadExamineeDto {
 
     @Column(name = "출신고교코드") private String unknown2;
     @Column(name = "출신고교명") private String unknown3;
-    @Column(name = "세부전공") private String unknown4;
 }

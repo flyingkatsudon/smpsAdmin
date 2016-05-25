@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"examineeCd", "examCd"}))
 @Data
 public class ExamMap {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "examineeCd", nullable = false) private Examinee examinee;

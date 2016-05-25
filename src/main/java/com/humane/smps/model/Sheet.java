@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"examCd", "scorerNm", "sheetNo"}))
 public class Sheet {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @Column(nullable = false) private String scorerNm;
