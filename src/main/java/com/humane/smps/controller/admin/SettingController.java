@@ -68,7 +68,7 @@ public class SettingController {
 
                 // 4. item 변환, 저장, 갯수비교
                 if (Long.parseLong(dto.getItemCnt()) != settingService.saveItems(dto)) {
-                    throw new Throwable("항목 갯수가 일치하지 않습니다!");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("항목 갯수가 일치하지 않습니다!.");
                 }
             }
             return ResponseEntity.ok("데이터 정상 처리 완료");
