@@ -1,10 +1,10 @@
-package com.humane.smps.dto;
+package com.humane.smps.form;
 
 import com.blogspot.na5cent.exom.annotation.Column;
 import lombok.Data;
 
 @Data
-public class UploadHallDto {
+public class FormHallVo {
     @Column(name = "시험코드") private String examCd;
     @Column(name = "시험일자") private String examDate;
     @Column(name = "시험시간") private String examTime;

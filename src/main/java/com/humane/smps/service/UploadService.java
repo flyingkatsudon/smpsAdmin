@@ -1,6 +1,6 @@
 package com.humane.smps.service;
 
-import com.humane.smps.dto.UploadItemDto;
+import com.humane.smps.form.FormItemVo;
 import com.humane.smps.model.Devi;
 import com.humane.smps.model.Exam;
 import com.humane.smps.model.Item;
@@ -17,10 +17,10 @@ import java.lang.reflect.InvocationTargetException;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class SettingService {
+public class UploadService {
     private final ItemRepository itemRepository;
 
-    public long saveItems(UploadItemDto dto) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    public long saveItems(FormItemVo dto) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         QItem qItem = QItem.item;
         // exam
         Exam exam = new Exam();
@@ -28,9 +28,9 @@ public class SettingService {
         long itemCnt = Long.parseLong(dto.getItemCnt());
 
         for (long i = 1; i <= itemCnt; i++) {
-            String itemNo = (String) new PropertyDescriptor("itemNo" + i, UploadItemDto.class).getReadMethod().invoke(dto);
-            String itemNm = (String) new PropertyDescriptor("itemNm" + i, UploadItemDto.class).getReadMethod().invoke(dto);
-            String deviCd = (String) new PropertyDescriptor("deviCd" + i, UploadItemDto.class).getReadMethod().invoke(dto);
+            String itemNo = (String) new PropertyDescriptor("itemNo" + i, FormItemVo.class).getReadMethod().invoke(dto);
+            String itemNm = (String) new PropertyDescriptor("itemNm" + i, FormItemVo.class).getReadMethod().invoke(dto);
+            String deviCd = (String) new PropertyDescriptor("deviCd" + i, FormItemVo.class).getReadMethod().invoke(dto);
 
             Devi devi = new Devi();
             devi.setDeviCd(deviCd);
