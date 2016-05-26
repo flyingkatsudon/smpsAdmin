@@ -14,6 +14,7 @@ import java.util.Date;
 public class Exam {
     @Id private String examCd; // 시험코드
     private String examNm; // 시험명
+    private String typeNm;
 
     @ManyToOne @JoinColumn(name = "admissionCd", nullable = false) private Admission admission; // 전형
 

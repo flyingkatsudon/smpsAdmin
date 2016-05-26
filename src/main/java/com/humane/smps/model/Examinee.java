@@ -12,7 +12,6 @@ import javax.persistence.Id;
 public class Examinee {
     @Id private String examineeCd;
     private String examineeNm;
-    private String typeNm;
     private String deptNm;
     private String majorNm;
     private String birth;
