@@ -143,8 +143,6 @@ public class UploadController {
                         .and(hall.bldgNm.eq(vo.getBldgNm()))
                         .and(hall.hallNm.eq(vo.getHallNm()));
 
-                log.debug("{}", builder.toString());
-
                 ExamHall examHall = examHallRepository.findOne(builder);
                 log.debug("{}", examHall);
 

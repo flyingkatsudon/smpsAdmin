@@ -1,10 +1,10 @@
 package com.humane.smps.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humane.smps.form.FormItemVo;
-import com.humane.smps.model.Devi;
-import com.humane.smps.model.Exam;
-import com.humane.smps.model.Item;
-import com.humane.smps.model.QItem;
+import com.humane.smps.model.*;
+import com.humane.smps.repository.ExamRepository;
 import com.humane.smps.repository.ItemRepository;
 import com.mysema.query.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +19,20 @@ import java.lang.reflect.InvocationTargetException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UploadService {
     private final ItemRepository itemRepository;
+    private final ExamRepository examRepository;
 
     public long saveItems(FormItemVo dto) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         QItem qItem = QItem.item;
         // exam
-        Exam exam = new Exam();
-        exam.setExamCd(dto.getExamCd());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        Exam exam = mapper.convertValue(dto, Exam.class);
+        exam = examRepository.findOne(new BooleanBuilder()
+                .and(QExam.exam.examNm.eq(exam.getExamNm()))
+                .and(QExam.exam.examDate.eq(exam.getExamDate()))
+                .and(QExam.exam.examTime.eq(exam.getExamTime()))
+        );
         long itemCnt = Long.parseLong(dto.getItemCnt());
 
         for (long i = 1; i <= itemCnt; i++) {
