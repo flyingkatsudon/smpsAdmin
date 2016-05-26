@@ -93,7 +93,11 @@ public class UploadController {
 
                 // 1. 시험정보 생성
                 Exam exam = mapper.convertValue(uploadHallDto, Exam.class);
-                exam = examRepository.findOne(exam.getExamCd());
+                exam = examRepository.findOne(new BooleanBuilder()
+                        .and(QExam.exam.examNm.eq(exam.getExamNm()))
+                        .and(QExam.exam.examDate.eq(exam.getExamDate()))
+                        .and(QExam.exam.examTime.eq(exam.getExamTime()))
+                );
 
                 // 2. 고사실정보 생성
                 Hall hall = mapper.convertValue(uploadHallDto, Hall.class);
@@ -167,12 +171,12 @@ public class UploadController {
     }
 
     @RequestMapping(value = "scorer", method = RequestMethod.POST)
-    public void scorer(@RequestPart("file") MultipartFile file){
+    public void scorer(@RequestPart("file") MultipartFile file) {
         log.debug("{}", file);
     }
 
     @RequestMapping(value = "manager", method = RequestMethod.POST)
-    public void manager(@RequestPart("file") MultipartFile file){
+    public void manager(@RequestPart("file") MultipartFile file) {
         log.debug("{}", file);
     }
 }

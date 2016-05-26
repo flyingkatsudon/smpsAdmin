@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class FormHallVo {
-    @Column(name = "시험코드") private String examCd;
+    @Column(name = "시험명") private String examNm;
     @Column(name = "시험일자") private String examDate;
     @Column(name = "시험시간") private String examTime;
 
