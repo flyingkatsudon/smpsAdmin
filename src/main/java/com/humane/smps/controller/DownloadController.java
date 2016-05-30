@@ -18,7 +18,7 @@ public class DownloadController {
     @RequestMapping(value = "item", method = RequestMethod.GET)
     public ResponseEntity item(HttpServletResponse response) {
         return JasperReportsExportHelper.toResponseEntity(response,
-                "jrxml/setting-item.jrxml",
+                "jrxml/upload-item.jrxml",
                 "xlsx",
                 null
         );
@@ -27,7 +27,7 @@ public class DownloadController {
     @RequestMapping(value = "hall", method = RequestMethod.GET)
     public ResponseEntity hall(HttpServletResponse response) {
         return JasperReportsExportHelper.toResponseEntity(response,
-                "jrxml/setting-hall.jrxml",
+                "jrxml/upload-hall.jrxml",
                 "xlsx",
                 null
         );
@@ -36,7 +36,16 @@ public class DownloadController {
     @RequestMapping(value = "examinee", method = RequestMethod.GET)
     public ResponseEntity examinee(HttpServletResponse response) {
         return JasperReportsExportHelper.toResponseEntity(response,
-                "jrxml/setting-examinee.jrxml",
+                "jrxml/upload-examinee.jrxml",
+                "xlsx",
+                null
+        );
+    }
+
+    @RequestMapping(value = "devi", method = RequestMethod.GET)
+    public ResponseEntity devi(HttpServletResponse response){
+        return JasperReportsExportHelper.toResponseEntity(response,
+                "jrxml/upload-devi.jrxml",
                 "xlsx",
                 null
         );

@@ -36,6 +36,7 @@ public class Exam {
     @Column(columnDefinition = "int default 100") private int virtNoEnd; // 가번호 종료점.
     @Column(columnDefinition = "int default 4") private int virtNoLen; // 가번호+ 헤더 or 가번호
     private String virtNoAssignType; // 가번호 할당 방식.
+    @Column(columnDefinition = "bit default 1") private boolean isAbsence; // 결시버튼 사용여부
     @Column(columnDefinition = "bit default 1") private boolean isHorizontal; // 채점방식. 가로, 세로
     @Column(columnDefinition = "bit default 0") private boolean isMove; // 지정이동? 순차이동? => uplus 기준 문제별 채점, 학생별 채점
     @Column(columnDefinition = "bit default 0") private boolean isClosedView;  // 타 사용자가 이전 채점자의 마감데이터를 볼지 여부 결정.

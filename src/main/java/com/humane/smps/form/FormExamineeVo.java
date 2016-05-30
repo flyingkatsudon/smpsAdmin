@@ -12,7 +12,7 @@ public class FormExamineeVo {
     @Column(name = "전형코드") private String admissionCd;
     @Column(name = "단과대학") private String collegeNm;
     @Column(name = "계열") private String typeNm;
-    @Column(name = "모집단위") private String deptNm;
+    @Column(name = "모집단위(학과)") private String deptNm;
     @Column(name = "전공") private String majorNm;
     @Column(name = "시험일자") private String examDate;
     @Column(name = "시험시간") private String examTime;

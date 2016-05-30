@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 
 public class PercentSerializer extends JsonSerializer<BigDecimal> {
     @Override
-    public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        gen.writeString(value.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+    public void serialize(BigDecimal value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        if (value == null) jsonGenerator.writeNull();
+        else jsonGenerator.writeString(value.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
     }
 }

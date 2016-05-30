@@ -3,6 +3,7 @@ package com.humane.smps.controller;
 import com.blogspot.na5cent.exom.ExOM;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.humane.smps.form.FormDeviVo;
 import com.humane.smps.form.FormExamineeVo;
 import com.humane.smps.form.FormHallVo;
 import com.humane.smps.form.FormItemVo;
@@ -31,11 +32,47 @@ import java.util.List;
 public class UploadController {
     private final UploadService uploadService;
     private final AdmissionRepository admissionRepository;
+    private final DeviRepository deviRepository;
     private final ExamRepository examRepository;
     private final HallRepository hallRepository;
     private final ExamHallRepository examHallRepository;
     private final ExamineeRepository examineeRepository;
     private final ExamMapRepository examMapRepository;
+
+    @RequestMapping(value = "devi", method = RequestMethod.POST)
+    public void devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
+        File tempFile = File.createTempFile("test", ".tmp");
+        multipartFile.transferTo(tempFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            // 1 엑셀 파징
+            List<FormDeviVo> deviList = ExOM.mapFromExcel(tempFile).to(FormDeviVo.class).map(1);
+            //log.debug("{}", deviList);
+
+            // 2. 편차 생성
+            deviList.forEach(vo -> {
+                        log.debug("{}", vo);
+
+                        // 2.1 편차 변환
+                        Devi devi = mapper.convertValue(vo, Devi.class);
+
+                        // 2.2 fk 설정
+                        Devi fkDevi = deviRepository.findOne(vo.getFkDeviCd());
+                        if (fkDevi != null) devi.setDevi(fkDevi);
+
+                        // 2.3 편차 저장
+                        devi = deviRepository.save(devi);
+                    }
+            );
+        } catch (Throwable throwable) {
+            log.debug("{}", throwable.getMessage());
+        } finally {
+            tempFile.delete();
+        }
+    }
 
     @RequestMapping(value = "item", method = RequestMethod.POST)
     public ResponseEntity item(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -53,6 +90,7 @@ public class UploadController {
             List<FormItemVo> itemList = ExOM.mapFromExcel(tempFile).to(FormItemVo.class).map(1);
             for (FormItemVo dto : itemList) {
                 // 2. admission 변환, 저장
+                log.debug("{}", dto);
                 Admission admission = mapper.convertValue(dto, Admission.class);
                 admission = admissionRepository.save(admission);
 
