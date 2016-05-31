@@ -1,4 +1,4 @@
-package com.humane.etms.config;
+package com.humane.smps.config;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.bind.WebDataBinder;
