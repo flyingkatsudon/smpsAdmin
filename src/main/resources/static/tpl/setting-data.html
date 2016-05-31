@@ -150,12 +150,10 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="upload/scoreEndData" method="get">
+                    <form action="upload/scoreEndData" method="post" enctype="multipart/form-data">
                         <span>평가위원 데이터</span>
-                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px"
-                               value="등록"/>
-                        <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px"
-                               value="다운로드"/>
+                        <input type="submit" class="btn btn-primary pull-right" value="등록"/>
+                        <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>
                 </div>
             </div>

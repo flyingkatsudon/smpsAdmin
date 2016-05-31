@@ -25,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/hall/list',
+                    url: 'status/hall.json',
                     colModel: colModel
                 }
             }, options);
@@ -34,7 +34,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('status/hall/xlsx');
+            this.addExcel('status/hall.xlsx');
             return this;
         }
     });

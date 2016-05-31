@@ -27,7 +27,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'score/fix/list',
+                    url: 'score/fix.json',
                     colModel: colModel
                 }
             }, options);
@@ -36,7 +36,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('score/scoreFix/xlsx');
+            this.addExcel('score/scoreFix.xlsx');
             return this;
         }
     });

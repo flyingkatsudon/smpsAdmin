@@ -21,9 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @RestController
 @RequestMapping(value = "upload")
@@ -207,8 +208,55 @@ public class UploadController {
     }
 
     @RequestMapping(value = "scoreEndData", method = RequestMethod.POST)
-    public void scorer(@RequestPart("file") MultipartFile file) {
-        log.debug("{}", file);
+    public ResponseEntity scoreEndData(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
+        File tempFile = File.createTempFile("test", ".tmp");
+        multipartFile.transferTo(tempFile);
+
+        // 1. zip 파일 읽기
+        InputStream inputStream = new FileInputStream(tempFile);
+        ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+        ZipEntry zipEntry = zipInputStream.getNextEntry();
+
+        // 2. 압축해제
+        while (zipEntry != null) {
+            String entryName = zipEntry.getName();
+
+            // 2.1 파일경로 생성
+            File file = new File("D:/" + entryName);
+            FileOutputStream fos = new FileOutputStream(file);
+
+            // 2.2 파일 저장
+            int count = 0;
+            byte[] buffer = new byte[zipInputStream.available()];
+            while ((count = zipInputStream.read(buffer)) != -1) {
+                fos.write(buffer, 0, count);
+            }
+            fos.close();
+
+            // 2.3 파일 읽기
+            FileInputStream fis = new FileInputStream(file);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
+
+                // 2.3.1 JSON으로 변환
+                // 2.3.2 JSON 반환
+
+
+
+
+            log.debug("{}", br.readLine());
+
+            // 2.4 다음 파일 읽기
+            zipInputStream.closeEntry();
+            zipEntry = zipInputStream.getNextEntry();
+        }
+
+        // 3. zip 파일 닫기
+        zipInputStream.close();
+        inputStream.close();
+
+        tempFile.delete();
+
+        return null;
     }
 
     @RequestMapping(value = "manager", method = RequestMethod.POST)

@@ -1,7 +1,6 @@
 define(function (require) {
     "use strict";
 
-    require('jquery.emptyFilter');
     require('jqgrid');
 
     var DlgDownload = require('./dlg-download.js');
@@ -128,7 +127,7 @@ define(function (require) {
             }
         }, search: function (o) {
             var postData = this.$grid[0].p.postData;
-            this.$grid[0].p.postData = $.emptyFilter($.extend(postData, o));
+            this.$grid[0].p.postData = $.extend(postData, o);
 
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         }, close: function () {

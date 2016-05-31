@@ -30,7 +30,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/examinee/list',
+                    url: 'data/examinee.json',
                     colModel: colModel
                 }
             }, options);
@@ -39,7 +39,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/examinee/xlsx');
+            this.addExcel('data/examinee.xlsx');
             return this;
         }
     });

@@ -14,58 +14,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping(value = "score", method = RequestMethod.GET)
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AdminScoreController {
     private static final String CHART = "chart";
-    private static final String LIST = "list";
+    private static final String JSON = "json";
     private final AdminScoreMapper mapper;
 
-    @RequestMapping(value = "print/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity print(@PathVariable String format, SheetDto param, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "print.{format:json|chart|pdf|xls|xlsx}")
+    public ResponseEntity print(@PathVariable String format, SheetDto param, Pageable pageable) {
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.sheet(param, pageable));
             case CHART:
                 return ResponseEntity.ok(mapper.sheet(param, pageable).getContent());
             default:
-                return JasperReportsExportHelper.toResponseEntity(response
-                        , "jrxml/score-print.jrxml"
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/score-print.jrxml"
                         , format
                         , mapper.sheet(param, pageable).getContent());
         }
     }
 
-    @RequestMapping(value = "cancel/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity cancel(@PathVariable String format, SheetDto param, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "cancel.{format:json|chart|pdf|xls|xlsx}")
+    public ResponseEntity cancel(@PathVariable String format, SheetDto param, Pageable pageable) {
         param.setIsCancel(true);
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.sheet(param, pageable));
             case CHART:
                 return ResponseEntity.ok(mapper.sheet(param, pageable).getContent());
             default:
-                return JasperReportsExportHelper.toResponseEntity(response
-                        , "jrxml/score-cancel.jrxml"
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/score-cancel.jrxml"
                         , format
                         , mapper.sheet(param, pageable).getContent());
         }
     }
 
-    @RequestMapping(value = "fix/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity fix(@PathVariable String format, ScoreFixDto param, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "fix.{format:json|chart|pdf|xls|xlsx}")
+    public ResponseEntity fix(@PathVariable String format, ScoreFixDto param, Pageable pageable) {
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.fix(param, pageable));
             case CHART:
                 return ResponseEntity.ok(mapper.fix(param, pageable).getContent());
             default:
-                return JasperReportsExportHelper.toResponseEntity(response
-                        , "jrxml/score-fix.jrxml"
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/score-fix.jrxml"
                         , format
                         , mapper.fix(param, pageable).getContent());
         }

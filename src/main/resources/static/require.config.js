@@ -21,8 +21,7 @@ require.config({
         'morris': 'bower_components/morris.js/morris.min',
         'jquery-bootstrap': 'dist/js/jquery.bootstrap.min',
         'jquery-file-download': 'bower_components/jquery-file-download/src/Scripts/jquery.fileDownload',
-        'bootstrap-dialog': 'bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min',
-        'jquery.emptyFilter' : 'js/dist/jquery.emptyFilter'
+        'bootstrap-dialog': 'bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min'
     },
     map: {
         '*': {'css': 'bower_components/require-css/css.min'}

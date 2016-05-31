@@ -20,6 +20,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,16 +49,16 @@ public class JasperReportsExportHelper {
         instance = new JasperReportsExportHelper();
     }
 
-    public static ResponseEntity<byte[]> toResponseEntity(HttpServletResponse response, String viewName, String format, List<?> content) {
+    public static ResponseEntity<byte[]> toResponseEntity(String viewName, String format, List<?> content) {
         JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
         try {
             switch (format) {
                 case EXT_PDF:
-                    return instance.toPdf(response, viewName, dataSource);
+                    return instance.toPdf(viewName, dataSource);
                 case EXT_XLS:
-                    return instance.toXls(response, viewName, dataSource);
+                    return instance.toXls(viewName, dataSource);
                 case EXT_XLSX:
-                    return instance.toXlsx(response, viewName, dataSource);
+                    return instance.toXlsx(viewName, dataSource);
                 default:
                     return null;
             }
@@ -59,11 +68,11 @@ public class JasperReportsExportHelper {
         }
     }
 
-    private ResponseEntity<byte[]> toXlsx(HttpServletResponse response, String viewName, JRRewindableDataSource dataSource) throws JRException {
-        return toXlsx(response, viewName, new LinkedHashMap<>(), dataSource);
+    private ResponseEntity<byte[]> toXlsx(String viewName, JRRewindableDataSource dataSource) throws JRException {
+        return toXlsx(viewName, new LinkedHashMap<>(), dataSource);
     }
 
-    private ResponseEntity<byte[]> toXlsx(HttpServletResponse response, String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
+    private ResponseEntity<byte[]> toXlsx(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
         JasperReport jasperReport = loadReport(viewName);
         if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 
@@ -81,15 +90,19 @@ public class JasperReportsExportHelper {
 
         byte[] ba = baos.toByteArray();
 
-        setResponseHeaders(response, XLSX, jasperPrint.getName(), EXT_XLSX);
-        return ResponseEntity.ok(ba);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Set-Cookie", "fileDownload=true; path=/");
+        headers.setContentLength(ba.length);
+        headers.setContentType(MediaType.parseMediaType(XLSX));
+        headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
+        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
-    private ResponseEntity<byte[]> toXls(HttpServletResponse response, String viewName, JRRewindableDataSource dataSource) throws JRException {
-        return toXls(response, viewName, new LinkedHashMap<>(), dataSource);
+    private ResponseEntity<byte[]> toXls(String viewName, JRRewindableDataSource dataSource) throws JRException {
+        return toXls(viewName, new LinkedHashMap<>(), dataSource);
     }
 
-    private ResponseEntity<byte[]> toXls(HttpServletResponse response, String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
+    private ResponseEntity<byte[]> toXls(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
         JasperReport jasperReport = loadReport(viewName);
         if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 
@@ -109,26 +122,32 @@ public class JasperReportsExportHelper {
 
         byte[] ba = baos.toByteArray();
 
-        setResponseHeaders(response, XLS, jasperPrint.getName(), EXT_XLS);
-        return ResponseEntity.ok(ba);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Set-Cookie", "fileDownload=true; path=/");
+        headers.setContentLength(ba.length);
+        headers.setContentType(MediaType.parseMediaType(XLS));
+        headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
+        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
-    private ResponseEntity<byte[]> toPdf(HttpServletResponse response, String viewName, JRRewindableDataSource dataSource) throws JRException {
-        return toPdf(response, viewName, new LinkedHashMap<>(), dataSource);
+    private ResponseEntity<byte[]> toPdf(String viewName, JRRewindableDataSource dataSource) throws JRException {
+        return toPdf(viewName, new LinkedHashMap<>(), dataSource);
     }
 
-    private ResponseEntity<byte[]> toPdf(HttpServletResponse response, String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
+    private ResponseEntity<byte[]> toPdf(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
         JasperReport jasperReport = loadReport(viewName);
         if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
-        byte[] ba = baos.toByteArray();
+        byte[] ba = JasperExportManager.exportReportToPdf(jasperPrint);
 
-        HttpHeaders header = httpHeaders(PDF, jasperPrint.getName(), EXT_PDF);
-        return new ResponseEntity<>(ba, header, HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Set-Cookie", "fileDownload=true; path=/");
+        headers.setContentLength(ba.length);
+        headers.setContentType(MediaType.parseMediaType(PDF));
+        headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
+        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
     private JasperReport loadReport(String viewName) {
@@ -160,5 +179,45 @@ public class JasperReportsExportHelper {
         String enc = FileNameEncoder.encode(fileName);
         headers.set("Content-Disposition", contentType.equals(PDF) ? enc.replace("attachment", "inline") : enc + "." + extension);
         return headers;
+    }
+
+    public String encode(String type, String filename) {
+        StringBuilder contentDisposition = new StringBuilder(type);
+        CharsetEncoder enc = StandardCharsets.US_ASCII.newEncoder();
+        boolean canEncode = enc.canEncode(filename);
+        if (canEncode) {
+            contentDisposition.append("; filename=").append('"').append(filename).append('"');
+        } else {
+            enc.onMalformedInput(CodingErrorAction.IGNORE);
+            enc.onUnmappableCharacter(CodingErrorAction.IGNORE);
+
+            String normalizedFilename = Normalizer.normalize(filename, Normalizer.Form.NFKD);
+            CharBuffer cbuf = CharBuffer.wrap(normalizedFilename);
+
+            ByteBuffer bbuf;
+            try {
+                bbuf = enc.encode(cbuf);
+            } catch (CharacterCodingException e) {
+                bbuf = ByteBuffer.allocate(0);
+            }
+
+            String encodedFilename = new String(bbuf.array(), bbuf.position(), bbuf.limit(), StandardCharsets.US_ASCII).trim();
+
+            if (!encodedFilename.equals("")) {
+                contentDisposition.append("; filename=").append('"').append(encodedFilename).append('"');
+            }
+
+            URI uri;
+            try {
+                uri = new URI(null, null, filename, null);
+            } catch (URISyntaxException e) {
+                uri = null;
+            }
+
+            if (uri != null) {
+                contentDisposition.append("; filename*=UTF-8''").append(uri.toASCIIString());
+            }
+        }
+        return contentDisposition.toString();
     }
 }

@@ -7,8 +7,6 @@ define(function (require) {
 
     var DlgPdf = require('../dist/dlg-pdf.js');
 
-    require('jquery.emptyFilter');
-
     return Toolbar.extend({
         initialize: function (o) {
             this.el = o.el;
@@ -126,7 +124,7 @@ define(function (require) {
             if (param.examineeCd || param.examineeNm) this.openPrintWindow(param);
 
         }, openPrintWindow: function (param) {
-            this.dlgView.setUrl('data/examineeId/pdf?' + $.param($.emptyFilter(param))).render();
+            this.dlgView.setUrl('data/examineeId.pdf?' + $.param(param)).render();
         }
     });
 });

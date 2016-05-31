@@ -27,7 +27,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/scorer/list',
+                    url: 'data/scorer.json',
                     colModel: colModel
                 }
             }, options);
@@ -36,7 +36,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/scorer/xlsx');
+            this.addExcel('data/scorer.xlsx');
             return this;
         }
     });

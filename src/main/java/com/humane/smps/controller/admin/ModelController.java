@@ -23,7 +23,7 @@ public class ModelController {
     /**
      * 툴바 데이터를 전송
      */
-    @RequestMapping(value = "toolbar")
+    @RequestMapping(value = "toolbar.json")
     public ResponseEntity toolbar(StatusDto statusDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

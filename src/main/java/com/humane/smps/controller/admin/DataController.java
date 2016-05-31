@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,45 +30,45 @@ import java.util.List;
 public class DataController {
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
     private static final String CHART = "chart";
-    private static final String LIST = "list";
+    private static final String JSON = "json";
     private final DataMapper mapper;
 
-    @RequestMapping(value = "examinee/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity examinee(@PathVariable String format, ExamineeDto param, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "examinee.{format:json|chart|pdf|xls|xlsx}")
+    public ResponseEntity examinee(@PathVariable String format, ExamineeDto param, Pageable pageable) {
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.examinee(param, pageable));
             case CHART:
                 return ResponseEntity.ok(mapper.examinee(param, pageable).getContent());
             default:
-                return JasperReportsExportHelper.toResponseEntity(response
-                        , "jrxml/data-examinee.jrxml"
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/data-examinee.jrxml"
                         , format
                         , mapper.examinee(param, pageable).getContent());
         }
     }
 
-    @RequestMapping(value = "scorer/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity scorer(@PathVariable String format, ScoreDto param, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "scorer.{format:json|chart|pdf|xls|xlsx}")
+    public ResponseEntity scorer(@PathVariable String format, ScoreDto param, Pageable pageable) {
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.score(param, pageable));
             case CHART:
                 return ResponseEntity.ok(mapper.score(param, pageable).getContent());
             default:
-                return JasperReportsExportHelper.toResponseEntity(response
-                        , "jrxml/data-scorer.jrxml"
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/data-scorer.jrxml"
                         , format
                         , mapper.score(param, pageable).getContent());
         }
     }
 
     @RequestMapping(value = "examineeId/{format:pdf}")
-    public ResponseEntity examineeId(@PathVariable String format, ExamineeDto param, Pageable pageable, HttpServletResponse response) {
+    public ResponseEntity examineeId(@PathVariable String format, ExamineeDto param, Pageable pageable) {
         List<ExamineeDto> list = mapper.examinee(param, pageable).getContent();
         list.forEach(item -> {
             File file = new File(pathImageExaminee + "/" + item.getExamineeCd() + ".jpg");
-            try (InputStream is = new FileInputStream(file)){
+            try (InputStream is = new FileInputStream(file)) {
                 BufferedImage image = ImageIO.read(is);
                 item.setExamineeImage(image);
             } catch (IOException e) {
@@ -78,8 +77,8 @@ public class DataController {
         });
         switch (format) {
             default:
-                return JasperReportsExportHelper.toResponseEntity(response
-                        , "jrxml/examinee-id-card.jrxml"
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/examinee-id-card.jrxml"
                         , format
                         , list);
         }
