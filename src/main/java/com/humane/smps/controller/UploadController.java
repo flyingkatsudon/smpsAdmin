@@ -206,7 +206,7 @@ public class UploadController {
         }
     }
 
-    @RequestMapping(value = "scorer", method = RequestMethod.POST)
+    @RequestMapping(value = "scoreEndData", method = RequestMethod.POST)
     public void scorer(@RequestPart("file") MultipartFile file) {
         log.debug("{}", file);
     }
