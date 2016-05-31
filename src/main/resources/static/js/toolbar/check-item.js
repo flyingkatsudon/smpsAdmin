@@ -14,6 +14,8 @@ define(function (require) {
         },
         render: function () {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm()));
@@ -50,7 +52,31 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+        },
+        examDateChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                examDate: e.currentTarget.value
+            };
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+        },
+        examTimeChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: e.currentTarget.value
+            };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
@@ -59,6 +85,8 @@ define(function (require) {
         deptNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
@@ -69,6 +97,8 @@ define(function (require) {
         majorNm: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: e.currentTarget.value
             };
@@ -79,6 +109,8 @@ define(function (require) {
         headNm: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
                 headNm: e.currentTarget.value
@@ -89,6 +121,8 @@ define(function (require) {
         bldgNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
                 headNm: this.$('#headNm').val(),

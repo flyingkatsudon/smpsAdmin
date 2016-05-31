@@ -16,6 +16,7 @@ public class FormExamineeVo {
     @Column(name = "전공") private String majorNm;
     @Column(name = "시험일자") private String examDate;
     @Column(name = "시험시간") private String examTime;
+    @Column(name = "조") private String groupNm;
 
     @Column(name = "고사본부") private String headNm;
     @Column(name = "고사건물") private String bldgNm;

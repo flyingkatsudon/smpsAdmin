@@ -98,6 +98,8 @@
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>

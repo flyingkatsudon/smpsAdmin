@@ -29,7 +29,7 @@ public class StatusGroupDto {
     private String headNm;
     private String bldgNm;
     private String hallNm;
-    //private String groupNm;
+    private String groupNm;
 
     private Long examineeCnt;
     private Long attendCnt;

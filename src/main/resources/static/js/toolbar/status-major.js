@@ -16,12 +16,17 @@ define(function (require) {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime()));
             return this;
         },
         events: {
             'click #search': 'searchClicked',
             'change #admissionNm': 'admissionNmChanged',
-            'change #deptNm': 'deptNmChanged'
+            'change #examDate': 'examDateChanged',
+            'change #examTime': 'examTimeChanged',
+            'change #deptNm': 'deptNmChanged',
+            'change #majorNm': 'majorNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -30,6 +35,8 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
+                    examDate: _this.$('#examDate').val(),
+                    examTime: _this.$('#examTime').val(),
                     deptNm : _this.$('#deptNm').val(),
                     majorNm : _this.$('#majorNm').val()
                 });
@@ -39,13 +46,34 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
         },
-
+        examDateChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                examDate: e.currentTarget.value
+            };
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+        },
+        examTimeChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: e.currentTarget.value
+            };
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+        },
         deptNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
