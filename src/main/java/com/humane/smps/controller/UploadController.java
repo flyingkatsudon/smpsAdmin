@@ -3,6 +3,7 @@ package com.humane.smps.controller;
 import com.blogspot.na5cent.exom.ExOM;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.reflect.TypeToken;
 import com.humane.smps.form.FormDeviVo;
 import com.humane.smps.form.FormExamineeVo;
 import com.humane.smps.form.FormHallVo;
@@ -10,9 +11,14 @@ import com.humane.smps.form.FormItemVo;
 import com.humane.smps.model.*;
 import com.humane.smps.repository.*;
 import com.humane.smps.service.UploadService;
+import com.humane.util.zip4j.ZipUtils;
 import com.mysema.query.BooleanBuilder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.FileHeader;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +27,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 @RestController
 @RequestMapping(value = "upload")
@@ -39,6 +44,8 @@ public class UploadController {
     private final ExamHallRepository examHallRepository;
     private final ExamineeRepository examineeRepository;
     private final ExamMapRepository examMapRepository;
+    private final SheetRepository sheetRepository;
+    private final ScoreRepository scoreRepository;
 
     @RequestMapping(value = "devi", method = RequestMethod.POST)
     public void devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
@@ -54,6 +61,7 @@ public class UploadController {
             //log.debug("{}", deviList);
 
             // 2. 편차 생성
+
             deviList.forEach(vo -> {
                         log.debug("{}", vo);
 
@@ -208,59 +216,67 @@ public class UploadController {
     }
 
     @RequestMapping(value = "scoreEndData", method = RequestMethod.POST)
-    public ResponseEntity scoreEndData(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
+    public void scoreEndData(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
+
+        // 파일 저장
         File tempFile = File.createTempFile("test", ".tmp");
         multipartFile.transferTo(tempFile);
 
-        // 1. zip 파일 읽기
-        InputStream inputStream = new FileInputStream(tempFile);
-        ZipInputStream zipInputStream = new ZipInputStream(inputStream);
-        ZipEntry zipEntry = zipInputStream.getNextEntry();
+        // zip4j 읽기
+        ZipFile zipFile = new ZipFile(tempFile);
+        zipFile.setFileNameCharset(ZipUtils.getCharset(tempFile));
 
-        // 2. 압축해제
-        while (zipEntry != null) {
-            String entryName = zipEntry.getName();
+        List<FileHeader> fileHeaders = zipFile.getFileHeaders();
+        for (FileHeader fileHeader : fileHeaders) {
+            String fileName = fileHeader.getFileName();
+            if (fileName.endsWith("_sheet.txt")) {
 
-            // 2.1 파일경로 생성
-            File file = new File("D:/" + entryName);
-            FileOutputStream fos = new FileOutputStream(file);
+                // file read
+                FileWrapper<Sheet> wrapper = ZipUtils.parseObject(new TypeToken<FileWrapper<Sheet>>() {
+                }, zipFile, fileHeader);
 
-            // 2.2 파일 저장
-            int count = 0;
-            byte[] buffer = new byte[zipInputStream.available()];
-            while ((count = zipInputStream.read(buffer)) != -1) {
-                fos.write(buffer, 0, count);
+                log.debug("{}", wrapper.getContent());
+
+
+            } else if (fileName.endsWith("_score.txt")) {
+                FileWrapper<Score> wrapper = ZipUtils.parseObject(new TypeToken<FileWrapper<Score>>() {
+                }, zipFile, fileHeader);
+
+                log.debug("{}", wrapper.getContent());
+
+                QScore qScore = QScore.score;
+
+                wrapper.getContent().forEach(score -> {
+
+                    Score tmp = scoreRepository.findOne(
+                            new BooleanBuilder()
+                                    .and(qScore.exam.examCd.eq(score.getExam().getExamCd()))
+                                    .and(qScore.virtNo.eq(score.getVirtNo()))
+                                    .and(qScore.scorerNm.eq(score.getScorerNm()))
+                    );
+
+                    if (tmp != null) score.set_id(tmp.get_id());
+
+                    scoreRepository.save(score);
+                });
+            } else if (fileName.endsWith(".pdf")) {
+                zipFile.extractFile(fileHeader, "D:/pdf");
+            } else if (fileName.endsWith(".jpg")) {
+                zipFile.extractFile(fileHeader, "D:/jpg");
             }
-            fos.close();
-
-            // 2.3 파일 읽기
-            FileInputStream fis = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
-
-                // 2.3.1 JSON으로 변환
-                // 2.3.2 JSON 반환
-
-
-
-
-            log.debug("{}", br.readLine());
-
-            // 2.4 다음 파일 읽기
-            zipInputStream.closeEntry();
-            zipEntry = zipInputStream.getNextEntry();
         }
-
-        // 3. zip 파일 닫기
-        zipInputStream.close();
-        inputStream.close();
-
         tempFile.delete();
-
-        return null;
     }
 
     @RequestMapping(value = "manager", method = RequestMethod.POST)
     public void manager(@RequestPart("file") MultipartFile file) {
         log.debug("{}", file);
+    }
+
+    @Data
+    private class FileWrapper<T> {
+        private String hallCd;
+        private List<T> content;
+        private Long totalCount;
     }
 }
