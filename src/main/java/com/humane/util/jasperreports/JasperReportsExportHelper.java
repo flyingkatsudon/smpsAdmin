@@ -17,9 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -67,6 +65,53 @@ public class JasperReportsExportHelper {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+    public static File toFile(String viewName, String format, List<?> content) throws FileNotFoundException {
+        JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
+        try {
+            switch (format) {
+                //case EXT_PDF:
+                //    return instance.toPdfFile(viewName, dataSource);
+                //case EXT_XLS:
+                //    return instance.toXlsFile(viewName, dataSource);
+                case EXT_XLSX:
+                    return instance.toXlsxFile(viewName, dataSource);
+                default:
+                    return null;
+            }
+        } catch (JRException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private File toXlsxFile(String viewName, JRRewindableDataSource dataSource) throws JRException, IOException {
+        return toXlsxFile(viewName, new LinkedHashMap<>(), dataSource);
+    }
+
+    private File toXlsxFile(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException, IOException {
+        JasperReport jasperReport = loadReport(viewName);
+        if (jasperReport == null) return null;
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+        File file = new File(jasperPrint.getName() + "." + EXT_XLSX);
+        log.debug("{}", file.getAbsolutePath());
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(fos));
+
+            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+            exporter.setConfiguration(configuration);
+
+            exporter.exportReport();
+            return file;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
 
     private ResponseEntity<byte[]> toXlsx(String viewName, JRRewindableDataSource dataSource) throws JRException {
         return toXlsx(viewName, new LinkedHashMap<>(), dataSource);

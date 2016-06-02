@@ -17,13 +17,17 @@ import java.util.Date;
 import java.util.List;
 
 public class ZipUtils {
-    public static <T> T parseObject(TypeToken<T> typeToken, ZipFile zipFile, FileHeader fileHeader) throws ZipException, IOException {
-        ZipInputStream zis = zipFile.getInputStream(fileHeader);
-        byte[] ba = IOUtils.toByteArray(zis);
-        String charset = CharsetUtil.getCharset(ba);
-        String str = charset != null ? new String(ba, charset) : new String(ba);
-        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateDeserializer()).create();
-        return (T) gson.fromJson(str, typeToken.getType());
+    public static <T> T parseObject(TypeToken<T> typeToken, ZipFile zipFile, FileHeader fileHeader) {
+        try (ZipInputStream zis = zipFile.getInputStream(fileHeader)) {
+            byte[] ba = IOUtils.toByteArray(zis);
+            String charset = CharsetUtil.getCharset(ba);
+            String str = charset != null ? new String(ba, charset) : new String(ba);
+            Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateDeserializer()).create();
+            return (T) gson.fromJson(str, typeToken.getType());
+        } catch (IOException | ZipException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static String getCharset(File file) throws ZipException {

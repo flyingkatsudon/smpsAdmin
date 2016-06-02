@@ -11,6 +11,7 @@ import com.humane.smps.form.FormItemVo;
 import com.humane.smps.model.*;
 import com.humane.smps.repository.*;
 import com.humane.smps.service.UploadService;
+import com.humane.util.file.FileUtils;
 import com.humane.util.zip4j.ZipUtils;
 import com.mysema.query.BooleanBuilder;
 import lombok.Data;
@@ -22,6 +23,7 @@ import net.lingala.zip4j.model.FileHeader;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,21 +49,20 @@ public class UploadController {
     private final SheetRepository sheetRepository;
     private final ScoreRepository scoreRepository;
 
+    @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+
     @RequestMapping(value = "devi", method = RequestMethod.POST)
     public void devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
-        File tempFile = File.createTempFile("test", ".tmp");
-        multipartFile.transferTo(tempFile);
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
             // 1 엑셀 파징
-            List<FormDeviVo> deviList = ExOM.mapFromExcel(tempFile).to(FormDeviVo.class).map(1);
-            //log.debug("{}", deviList);
+            List<FormDeviVo> deviList = ExOM.mapFromExcel(file).to(FormDeviVo.class).map(1);
 
             // 2. 편차 생성
-
             deviList.forEach(vo -> {
                         log.debug("{}", vo);
 
@@ -78,8 +79,6 @@ public class UploadController {
             );
         } catch (Throwable throwable) {
             log.debug("{}", throwable.getMessage());
-        } finally {
-            tempFile.delete();
         }
     }
 
@@ -88,15 +87,14 @@ public class UploadController {
         // 파일이 없울경우 에러 리턴.
         if (multipartFile.isEmpty()) return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
 
-        File tempFile = File.createTempFile("test", ".tmp");
-        multipartFile.transferTo(tempFile);
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
             // 1. excel 변환
-            List<FormItemVo> itemList = ExOM.mapFromExcel(tempFile).to(FormItemVo.class).map(1);
+            List<FormItemVo> itemList = ExOM.mapFromExcel(file).to(FormItemVo.class).map(1);
             for (FormItemVo dto : itemList) {
                 // 2. admission 변환, 저장
                 log.debug("{}", dto);
@@ -119,20 +117,19 @@ public class UploadController {
             log.error("{}", t.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터에러. 서버 로그 확인 바람.");
         } finally {
-            tempFile.delete();
+            file.delete();
         }
     }
 
     @RequestMapping(value = "hall", method = RequestMethod.POST)
     public void hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        File tempFile = File.createTempFile("test", ".tmp");
-        multipartFile.transferTo(tempFile);
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
-            List<FormHallVo> hallList = ExOM.mapFromExcel(tempFile).to(FormHallVo.class).map(1);
+            List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
             hallList.forEach(uploadHallDto -> {
                 /**
                  * 제약조건 : 시험정보는 반드시 업로드 되어 있어야 한다.
@@ -161,21 +158,20 @@ public class UploadController {
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
         } finally {
-            tempFile.delete();
+            file.delete();
         }
     }
 
     @RequestMapping(value = "examinee", method = RequestMethod.POST)
     public void examinee(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        File tempFile = File.createTempFile("test", ".tmp");
-        multipartFile.transferTo(tempFile);
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
         try {
-            List<FormExamineeVo> examineeList = ExOM.mapFromExcel(tempFile).to(FormExamineeVo.class).map(1);
+            List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
             examineeList.forEach(vo -> {
                 log.debug("{}", vo);
 
@@ -211,20 +207,17 @@ public class UploadController {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
         } finally {
-            tempFile.delete();
+            file.delete();
         }
     }
 
     @RequestMapping(value = "scoreEndData", method = RequestMethod.POST)
     public void scoreEndData(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
-
-        // 파일 저장
-        File tempFile = File.createTempFile("test", ".tmp");
-        multipartFile.transferTo(tempFile);
+        File file = FileUtils.saveFile(new File(pathRoot, "data"), multipartFile);
 
         // zip4j 읽기
-        ZipFile zipFile = new ZipFile(tempFile);
-        zipFile.setFileNameCharset(ZipUtils.getCharset(tempFile));
+        ZipFile zipFile = new ZipFile(file);
+        zipFile.setFileNameCharset(ZipUtils.getCharset(file));
 
         List<FileHeader> fileHeaders = zipFile.getFileHeaders();
         for (FileHeader fileHeader : fileHeaders) {
@@ -265,7 +258,6 @@ public class UploadController {
                 zipFile.extractFile(fileHeader, "D:/jpg");
             }
         }
-        tempFile.delete();
     }
 
     @RequestMapping(value = "manager", method = RequestMethod.POST)
