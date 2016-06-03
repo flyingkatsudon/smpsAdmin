@@ -12,12 +12,11 @@ import com.humane.smps.model.*;
 import com.humane.smps.repository.*;
 import com.humane.smps.service.UploadService;
 import com.humane.util.file.FileUtils;
-import com.humane.util.zip4j.ZipUtils;
+import com.humane.util.zip4j.ZipFile;
 import com.mysema.query.BooleanBuilder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
 import org.joda.time.format.DateTimeFormat;
@@ -200,8 +199,6 @@ public class UploadController {
 
                 // 3.1 수험생정보 저장
                 examMapRepository.save(examMap);
-
-
             });
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
@@ -217,7 +214,7 @@ public class UploadController {
 
         // zip4j 읽기
         ZipFile zipFile = new ZipFile(file);
-        zipFile.setFileNameCharset(ZipUtils.getCharset(file));
+        zipFile.setFileNameCharset(zipFile.getCharset());
 
         List<FileHeader> fileHeaders = zipFile.getFileHeaders();
         for (FileHeader fileHeader : fileHeaders) {
@@ -225,15 +222,13 @@ public class UploadController {
             if (fileName.endsWith("_sheet.txt")) {
 
                 // file read
-                FileWrapper<Sheet> wrapper = ZipUtils.parseObject(new TypeToken<FileWrapper<Sheet>>() {
-                }, zipFile, fileHeader);
-
+                FileWrapper<Sheet> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Sheet>>() {
+                });
                 log.debug("{}", wrapper.getContent());
 
-
             } else if (fileName.endsWith("_score.txt")) {
-                FileWrapper<Score> wrapper = ZipUtils.parseObject(new TypeToken<FileWrapper<Score>>() {
-                }, zipFile, fileHeader);
+                FileWrapper<Score> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Score>>() {
+                });
 
                 log.debug("{}", wrapper.getContent());
 
@@ -261,8 +256,14 @@ public class UploadController {
     }
 
     @RequestMapping(value = "manager", method = RequestMethod.POST)
-    public void manager(@RequestPart("file") MultipartFile file) {
-        log.debug("{}", file);
+    public void manager(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
+        File file = FileUtils.saveFile(new File(pathRoot, "data"), multipartFile);
+
+        // zip4j 읽기
+        ZipFile zipFile = new ZipFile(file);
+        zipFile.setFileNameCharset(zipFile.getCharset());
+
+        List<FileHeader> fileHeaders = zipFile.getFileHeaders();
     }
 
     @Data

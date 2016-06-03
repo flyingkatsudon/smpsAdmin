@@ -8,12 +8,10 @@ import com.humane.smps.mapper.StatusMapper;
 import com.humane.util.file.FileNameEncoder;
 import com.humane.util.file.FileUtils;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
+import com.humane.util.zip4j.ZipFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.ZipParameters;
-import net.lingala.zip4j.util.Zip4jConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -87,22 +85,17 @@ public class DownloadController {
         File file = new File(currentTime + "_allData.zip");
         ZipFile zipFile = new ZipFile(file);
 
-        // 압축파일 파라미터 설정
-        ZipParameters parameters = new ZipParameters();
-        parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
-        parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
-
         // entry 생성
         File fileDept = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-dept.jrxml"
                 , statusMapper.dept(new StatusDeptDto(), pageable).getContent());
-        zipFile.addFile(fileDept, parameters);
+        zipFile.addFile(fileDept);
         fileDept.delete();
 
         File fileMajor = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-major.jrxml"
                 , statusMapper.major(new StatusMajorDto(), pageable).getContent());
-        zipFile.addFile(fileMajor, parameters);
+        zipFile.addFile(fileMajor);
         fileMajor.delete();
 
         //1. xlsx 파일 생성
@@ -110,7 +103,7 @@ public class DownloadController {
                 "jrxml/status-hall.jrxml"
                 , statusMapper.hall(new StatusHallDto(), pageable).getContent());
         //2. zip파일에 추가시키기
-        zipFile.addFile(fileHall, parameters);
+        zipFile.addFile(fileHall);
         //3. 추가시킨 후 xlsx파일 삭제
         fileHall.delete();
 
@@ -119,47 +112,47 @@ public class DownloadController {
                 "jrxml/status-group.jrxml"
                 , statusMapper.group(new StatusGroupDto(), pageable).getContent()
         );
-        zipFile.addFile(fileGroup, parameters);
+        zipFile.addFile(fileGroup);
         fileGroup.delete();
 
         File dataExaminee = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-examinee.jrxml"
                 , dataMapper.examinee(new ExamineeDto(), pageable).getContent()
         );
-        zipFile.addFile(dataExaminee, parameters);
+        zipFile.addFile(dataExaminee);
         dataExaminee.delete();
 
         File dataScore = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-scorer.jrxml"
                 , dataMapper.score(new ScoreDto(), pageable).getContent()
         );
-        zipFile.addFile(dataScore, parameters);
+        zipFile.addFile(dataScore);
         dataScore.delete();
 
         // 나머지 가져오기
         // 0. 폴더위치 지정
         String jpgPath = "D:/jpg";
-        String pdfPath = "D:/pdf";
         // 1. 사진 폴더 생성
         File jpgFolder = new File(jpgPath);
         // 1.1 사진 가져옴
         File[] jpgList = jpgFolder.listFiles();
-        parameters.setRootFolderInZip("jpg");
-        //zipFile.addFolder(jpgFolder, parameters);
+        // 1.2 사진 저장
         for (File f : jpgList) {
-            if (f.isFile()) {
-                log.debug("{}", f.getName());
-
-                zipFile.addFile(f, parameters);
-            }
+            if (f.isFile())
+                zipFile.addFile("jpg", f);
         }
 
 
-        // 1.2 사진 저장
-
+        String pdfPath = "D:/pdf";
         // 2. pdf 폴더 생성
+        File pdfFolder = new File(pdfPath);
         // 2.1 pdf 가져옴
+        File[] pdfList = pdfFolder.listFiles();
         // 2.2 pdf 저장
+        for (File f : pdfList) {
+            if (f.isFile())
+                zipFile.addFile("pdf", f);
+        }
 
         //
         byte[] ba = FileUtils.getByteArray(zipFile.getFile());
@@ -167,7 +160,73 @@ public class DownloadController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.setContentType(MediaType.parseMediaType("application/zip"));
-        headers.add("Content-Disposition", FileNameEncoder.encode("최종산출물.zip"));
+        headers.setContentLength(ba.length);
+        headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물.zip"));
+        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
+    }
+
+    // 중간관리자 데이터
+    @RequestMapping(value = "manager.zip", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> manager() throws ZipException {
+        File file = new File("manager.zip");
+
+        ZipFile zipFile = new ZipFile(file);
+
+        String path = "D:/manager";
+
+        File managerFolder = new File(path);
+        File[] virtList = managerFolder.listFiles();
+
+        for(File f : virtList){
+            if(f.isFile())
+                zipFile.addFile(f);
+        }
+
+        byte[] ba = FileUtils.getByteArray(zipFile.getFile());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Set-Cookie", "fileDownload=true; path=/");
+        headers.setContentType(MediaType.parseMediaType("application/zip"));
+        headers.setContentLength(ba.length);
+        headers.add("Content-Disposition", FileNameEncoder.encode("중간관리자 데이터.zip"));
+
+        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "scorer.zip", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> scorer() throws ZipException {
+        File file = new File("scorer.zip");
+
+        ZipFile zipFile = new ZipFile(file);
+
+        String jpgPath = "D:/jpg";
+        String pdfPath = "D:/pdf";
+
+        File jpgFolder = new File(jpgPath);
+        File[] jpgList = jpgFolder.listFiles();
+
+        for (File f : jpgList) {
+            if(f.isFile())
+                zipFile.addFile("jpg", f);
+        }
+
+        File pdfFolder = new File(pdfPath);
+        File[] pdfList = pdfFolder.listFiles();
+
+        for(File f : pdfList){
+            if(f.isFile())
+                zipFile.addFile("pdf", f);
+        }
+
+        //
+        byte[] ba = FileUtils.getByteArray(zipFile.getFile());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Set-Cookie", "fileDownload=true; path=/");
+        headers.setContentType(MediaType.parseMediaType("application/zip"));
+        headers.setContentLength(ba.length);
+        headers.add("Content-Disposition", FileNameEncoder.encode("평가위원 데이터.zip"));
+
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 }
