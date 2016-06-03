@@ -85,25 +85,34 @@ public class JasperReportsExportHelper {
         return toFile((File) null, viewName, format, content);
     }
 
-    public static File toFile(String file, String viewName, String format, List<?> content) {
-        return toFile(new File(file), viewName, format, content);
+    public static File toFile(String path, String viewName, String format, List<?> content) {
+        return toFile(new File(path), viewName, format, content);
     }
 
-    public static File toFile(File file, String viewName, String format, List<?> content) {
+    public static File toFile(File path, String viewName, String format, List<?> content) {
         JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
-        FileOutputStream fos = null;
 
+        FileOutputStream fos = null;
+        File file = null;
         try {
             JasperPrint jasperPrint = instance.getJasperPrint(viewName, dataSource);
             if (jasperPrint == null) return null;
 
-            if (file == null) file = new File(jasperPrint.getName() + "." + format);
-
-            if (!file.exists()) file.mkdirs();
+            if (path != null) {
+                path.mkdirs();
+                file = new File(path, jasperPrint.getName() + "." + format);
+            } else {
+                file = new File(jasperPrint.getName() + "." + format);
+            }
 
             fos = new FileOutputStream(file);
-            instance.exportReportToPdf(jasperPrint, fos);
-
+            if (format.equals(EXT_PDF)) {
+                instance.exportReportToPdf(jasperPrint, fos);
+            } else if (format.equals(EXT_XLS)) {
+                instance.exportReportToXls(jasperPrint, fos);
+            } else if (format.equals(EXT_XLSX)) {
+                instance.exportReportToXlsx(jasperPrint, fos);
+            }
         } catch (JRException | FileNotFoundException e) {
             e.printStackTrace();
         } finally {
