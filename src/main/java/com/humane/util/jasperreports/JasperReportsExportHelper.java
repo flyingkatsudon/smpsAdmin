@@ -81,6 +81,18 @@ public class JasperReportsExportHelper {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
+    public static File toXlsxFile(String viewName, List<?> content) {
+        return toFile((File) null, viewName, EXT_XLSX, content);
+    }
+
+    public static File toXlsFile(String viewName, List<?> content) {
+        return toFile((File) null, viewName, EXT_XLS, content);
+    }
+
+    public static File toPdfFile(String viewName, List<?> content) {
+        return toFile((File) null, viewName, EXT_PDF, content);
+    }
+
     public static File toFile(String viewName, String format, List<?> content) {
         return toFile((File) null, viewName, format, content);
     }
@@ -106,6 +118,7 @@ public class JasperReportsExportHelper {
             }
 
             fos = new FileOutputStream(file);
+
             if (format.equals(EXT_PDF)) {
                 instance.exportReportToPdf(jasperPrint, fos);
             } else if (format.equals(EXT_XLS)) {
