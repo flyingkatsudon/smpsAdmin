@@ -25,7 +25,7 @@ define(function (require) {
                 {name: 'totalScore', label: '총점'},
                 {name: 'memo', label: '메모'},
                 {name: 'isPhoto', label: '사진', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
-                {name: 'regDttm', label: '등록시간'}
+                {name: 'scoreDttm', label: '등록시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
