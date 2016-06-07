@@ -226,6 +226,22 @@ public class UploadController {
                 });
                 log.debug("{}", wrapper.getContent());
 
+                QSheet qSheet = QSheet.sheet;
+
+                wrapper.getContent().forEach(sheet -> {
+                    Sheet tmp = sheetRepository.findOne(
+                            new BooleanBuilder()
+                                    .and(qSheet.scorerNm.eq(sheet.getScorerNm()))
+                                    .and(qSheet.sheetNo.eq(sheet.getSheetNo()))
+                                    .and(qSheet.exam.examCd.eq(sheet.getExam().getExamCd()))
+                    );
+
+                    if (tmp != null) sheet.set_id(tmp.get_id());
+
+                    sheetRepository.save(sheet);
+
+                });
+
             } else if (fileName.endsWith("_score.txt")) {
                 FileWrapper<Score> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Score>>() {
                 });

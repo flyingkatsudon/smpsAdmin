@@ -15,7 +15,8 @@ define(function (require) {
                 {name: 'hallNm', label: '고사실'},
                 {name: 'scorerNm', label: '평가위원'},
                 {name: 'sheetNo', label: '채점마감번호'},
-                {name: 'regDttm', label: '채점마감시간'}
+                {name: 'regDttm', label: '채점마감시간'},
+                {name: 'cancelDttm', label: '취소시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

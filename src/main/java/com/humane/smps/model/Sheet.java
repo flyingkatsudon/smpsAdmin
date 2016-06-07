@@ -15,6 +15,7 @@ public class Sheet {
     @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
+    @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
     @Column(nullable = false) private String scorerNm;
     @Column(nullable = false) private Long sheetNo;
 
