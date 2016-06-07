@@ -151,7 +151,15 @@ public class UploadController {
                 examHall.setExam(exam);
                 examHall.setHall(hall);
 
-                // 4. 응시고사실 저장
+                // 4. 응시고사실 확인
+                ExamHall tmp = examHallRepository.findOne(new BooleanBuilder()
+                        .and(QExamHall.examHall.hall.hallCd.eq(examHall.getHall().getHallCd()))
+                        .and(QExamHall.examHall.exam.examCd.eq(examHall.getExam().getExamCd()))
+                );
+
+                if (tmp != null) examHall.set_id(tmp.get_id());
+
+                // 5. 응시고사실 저장
                 examHallRepository.save(examHall);
             });
         } catch (Throwable throwable) {
@@ -172,21 +180,18 @@ public class UploadController {
         try {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
             examineeList.forEach(vo -> {
-                log.debug("{}", vo);
 
                 // 1. ExamHall 에서 고사실 및 시험정보를 가져온다.
                 QExam exam = QExamHall.examHall.exam;
                 QHall hall = QExamHall.examHall.hall;
 
-                BooleanBuilder builder = new BooleanBuilder()
+                ExamHall examHall = examHallRepository.findOne(new BooleanBuilder()
                         .and(exam.examDate.eq(dtf.parseLocalDateTime(vo.getExamDate()).toDate()))
                         .and(exam.examTime.eq(dtf.parseLocalDateTime(vo.getExamTime()).toDate()))
                         .and(hall.headNm.eq(vo.getHeadNm()))
                         .and(hall.bldgNm.eq(vo.getBldgNm()))
-                        .and(hall.hallNm.eq(vo.getHallNm()));
-
-                ExamHall examHall = examHallRepository.findOne(builder);
-                log.debug("{}", examHall);
+                        .and(hall.hallNm.eq(vo.getHallNm()))
+                );
 
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
@@ -196,6 +201,13 @@ public class UploadController {
                 examMap.setExam(examHall.getExam());
                 examMap.setHall(examHall.getHall());
                 examMap.setExaminee(examinee);
+
+                ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()
+                        .and(QExamMap.examMap.exam.examCd.eq(examMap.getExam().getExamCd()))
+                        .and(QExamMap.examMap.examinee.examineeCd.eq(examMap.getExaminee().getExamineeCd()))
+                );
+
+                if (tmp != null) examMap.set_id(tmp.get_id());
 
                 // 3.1 수험생정보 저장
                 examMapRepository.save(examMap);

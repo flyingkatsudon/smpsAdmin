@@ -39,6 +39,12 @@ public class QueryDslJpaExtendRepositoryImpl<T, ID extends Serializable> extends
     }
 
     @Override
+    public T findOne(Predicate predicate, JoinDescriptor... joinDescriptors) {
+        JPQLQuery query = createFetchQuery(predicate, joinDescriptors);
+        return query.uniqueResult(path);
+    }
+
+    @Override
     public Page<T> findAll(EntityPath<T> entityPath, Predicate predicate, Pageable pageable) {
         JPQLQuery countQuery = createQuery(predicate);
         JPQLQuery query = querydsl.applyPagination(pageable, createQuery(predicate));
