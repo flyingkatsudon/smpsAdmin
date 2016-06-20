@@ -78,6 +78,8 @@ public class UploadController {
             );
         } catch (Throwable throwable) {
             log.debug("{}", throwable.getMessage());
+        } finally {
+            file.delete();
         }
     }
 
@@ -195,6 +197,7 @@ public class UploadController {
 
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
+                log.debug("{}", examinee);
                 examineeRepository.save(examinee);
 
                 ExamMap examMap = new ExamMap();

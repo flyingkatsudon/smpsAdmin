@@ -31,6 +31,7 @@ public class StatusHallDto {
     private Long examineeCnt;
     private Long attendCnt;
     private Long absentCnt;
+    private Long otherHallCnt;
 
     @JsonSerialize(using = PercentSerializer.class)
     private BigDecimal attendPer;

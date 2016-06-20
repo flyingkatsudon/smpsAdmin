@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var DlgPdf = require('../dist/dlg-pdf.js');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -26,7 +27,11 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'score/print.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    onSelectRow : function(rowid, status, e){
+                        var param = $(this).jqGrid('getRowData', rowid);
+                        new DlgPdf().setUrl('score/detail.pdf?' + $.param(param)).render();
+                    }
                 }
             }, options);
 

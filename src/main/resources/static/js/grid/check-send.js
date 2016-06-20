@@ -16,9 +16,9 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'isSend', label: '전송여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
+                {name: 'isSend', label: '전송여부', formatter: 'select', editoptions: {value: {true: '전송', false: '미전송'}}},
                 {name: 'uuid', label: 'UUID'},
-                {name: 'sendDttm', label: '전송시간'}
+                {name: 'regDttm', label: '전송시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -28,7 +28,17 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'check/send.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    loadComplete: function (data) {
+                        var ids = $(this).getDataIDs(data);
+
+                        for (var i = 0; i < ids.length; i++) {
+                            var rowData = $(this).getRowData(ids[i]);
+                            if (rowData.regDttm)
+                                $(this).setRowData(ids[i], false, {background: "#d9edf7"});
+
+                        }
+                    }
                 }
             }, options);
 

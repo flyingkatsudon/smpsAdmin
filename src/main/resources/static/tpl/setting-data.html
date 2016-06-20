@@ -8,52 +8,52 @@
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="panel panel-heading">기초 데이터 업로드</h4>
+                    <h4 class="panel panel-heading"><label>기초 데이터 업로드</label></h4>
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-heading">
                     <label>편차코드</label>
-                    <form action="download/devi" method="get">
-                        <input type="submit" class="btn btn-primary pull-left" value="양식 다운로드">
-                    </form>
-                    <form action="upload/devi" method="post" enctype="multipart/form-data">
+                </div>
+                <div class="panel-body">
+                    <a href="download/devi.xlsx" class="btn btn-primary pull-left">양식 다운로드</a>
+                    <form id="frmUploadDevi" action="upload/devi" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-heading">
                     <label>평가항목</label>
-                    <form action="download/item" method="get">
-                        <input type="submit" class="btn btn-primary pull-left" value="양식 다운로드"/>
-                    </form>
-                    <form action="upload/item" method="post" enctype="multipart/form-data">
+                </div>
+                <div class="panel-body">
+                    <a href="download/item.xlsx" class="btn btn-primary pull-left">양식 다운로드</a>
+                    <form id="frmUploadItem"  action="upload/item" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-heading">
                     <label>응시고사실</label>
-                    <form action="download/hall" method="get">
-                        <input type="submit" class="btn btn-primary pull-left" value="양식 다운로드"/>
-                    </form>
-                    <form action="upload/hall" method="post" enctype="multipart/form-data">
+                </div>
+                <div class="panel-body">
+                    <a href="download/hall.xlsx" class="btn btn-primary pull-left">양식 다운로드</a>
+                    <form id="frmUploadHall"  action="upload/hall" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-heading">
                     <label>수험생 정보</label>
-                    <form action="download/examinee" method="get">
-                        <input type="submit" class="btn btn-primary pull-left" value="양식 다운로드"/>
-                    </form>
-                    <form action="upload/examinee" method="post" enctype="multipart/form-data">
+                </div>
+                <div class="panel-body">
+                    <a href="download/examinee.xlsx" class="btn btn-primary pull-left">양식 다운로드</a>
+                    <form id="frmUploadExaminee" action="upload/examinee" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>
@@ -63,13 +63,13 @@
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="panel panel-heading">서버 데이터 관리</h4>
+                    <h4 class="panel panel-heading"><label>서버 데이터 관리</label></h4>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="system/naver" method="get">
-                        <label>서버에서 데이터를 다운로드 합니다.</label>
+                        <span>서버에서 데이터를 다운로드 합니다.</span>
                         <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
                     </form>
                 </div>
@@ -77,7 +77,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="system/reset" method="get">
-                        <label>서버의 데이터를 삭제합니다.</label>
+                        <span>서버의 데이터를 삭제합니다.</span>
                         <input type="submit" class="btn btn-primary pull-right" value="삭제"/>
                     </form>
                 </div>
@@ -85,7 +85,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="system/init" method="get">
-                        <label>서버의 데이터를 초기화 합니다.</label>
+                        <span>서버의 데이터를 초기화 합니다.</span>
                         <input type="submit" class="btn btn-primary pull-right" value="초기화"/>
                     </form>
                 </div>
@@ -99,22 +99,26 @@
         </div>
         <div class="col-lg-6">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>서버 전송</label>
+                </div>
                 <div class="panel-body">
                     <form action="system/sendAll" method="get">
-                        <label>서버 전송</label>
                         <input type="text" value="서버 URL 입력"/>
-                        <input type="submit" class="btn btn-primary pull-right" value="삭제"/>
+                        <input type="submit" class="btn btn-primary pull-right" value="전송"/>
                     </form>
                 </div>
             </div>
         </div>
         <div class="col-lg-6">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>채점 점수 전송</label>
+                </div>
                 <div class="panel-body">
                     <form action="system/sendScore" method="get">
-                        <label>채점 점수 전송</label>
                         <input type="text" value="서버 URL 입력"/>
-                        <input type="submit" class="btn btn-primary pull-right" value="삭제"/>
+                        <input type="submit" class="btn btn-primary pull-right" value="전송"/>
                     </form>
                 </div>
             </div>
@@ -128,7 +132,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="system/fillScore" method="get">
-                        <span>가번호 / 점수 (미술전용)</span>
+                        <label>가번호 / 점수 (미술전용)</label>
                         <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
                     </form>
                 </div>
@@ -136,22 +140,24 @@
         </div>
         <div class="col-lg-6">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>중간관리자 데이터</label>
+                </div>
                 <div class="panel-body">
                     <form action="upload/manager" method="get">
-                        <span>중간관리자 데이터</span>
-                        <input type="submit" class="btn btn-primary pull-right" style="height:35px; margin-left:10px"
-                               value="등록"/>
-                        <input type="file" class="btn btn-primary pull-right" style="height:35px; margin-left:20px"
-                               value="다운로드"/>
+                        <input type="submit" class="btn btn-primary pull-right" value="등록"/>
+                        <input type="file" class="btn btn-primary pull-right" value="다운로드"/>
                     </form>
                 </div>
             </div>
         </div>
         <div class="col-lg-6">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>평가위원 데이터</label>
+                </div>
                 <div class="panel-body">
                     <form action="upload/scoreEndData" method="post" enctype="multipart/form-data">
-                        <span>평가위원 데이터</span>
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>

@@ -1,5 +1,6 @@
 package com.humane.smps.controller.admin;
 
+import com.humane.smps.dto.ScoreDto;
 import com.humane.smps.dto.ScoreFixDto;
 import com.humane.smps.dto.SheetDto;
 import com.humane.smps.mapper.AdminScoreMapper;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminScoreController {
     private static final String CHART = "chart";
     private static final String JSON = "json";
+    private static final String PDF = "pdf";
     private final AdminScoreMapper mapper;
 
     @RequestMapping(value = "print.{format:json|chart|pdf|xls|xlsx}")
@@ -33,7 +35,7 @@ public class AdminScoreController {
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-print.jrxml"
-                        , format
+                        , JasperReportsExportHelper.EXT_PDF
                         , mapper.sheet(param, pageable).getContent());
         }
     }
@@ -66,6 +68,22 @@ public class AdminScoreController {
                         "jrxml/score-fix.jrxml"
                         , format
                         , mapper.fix(param, pageable).getContent());
+        }
+    }
+
+    @RequestMapping(value = "detail.{format:json|pdf}")
+    public ResponseEntity detail(@PathVariable String format, ScoreDto param, Pageable pageable){
+        switch(format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.detail(param, pageable));
+            case PDF:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/score-detail.jrxml"
+                        , format
+                        , mapper.detail(param, pageable).getContent()
+                );
+            default:
+                return null;
         }
     }
 }

@@ -27,6 +27,7 @@ public class ScoreDto {
     private String majorNm;
 
     private String virtNo;
+    private String sheetNo;
     private String scorerNm;
 
     private String score01;
@@ -40,9 +41,13 @@ public class ScoreDto {
     private String score09;
     private String score10;
 
+    private String avgScore;
     private String totalScore;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date scoreDttm;
+
+    private String memo;
+    private Boolean isPhoto;
 }

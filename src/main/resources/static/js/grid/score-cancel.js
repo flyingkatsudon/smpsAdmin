@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var BootstrapDialog = require('bootstrap-dialog');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -27,7 +28,22 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'score/cancel.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    onSelectRow : function(rowid, status, e){
+                        var rowdata = $(this).jqGrid('getRowData', rowid);
+                        BootstrapDialog.show({
+                            title : rowdata.scorerNm + '::' + rowdata.examNm + "::" + rowdata.examDate + " " + rowdata.examTime,
+                            message: '채점마감 취소사유',
+                            size: 'size-wide',
+                            closable: true,
+                            buttons: [{
+                                label: '닫기',
+                                action: function (dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                    }
                 }
             }, options);
 

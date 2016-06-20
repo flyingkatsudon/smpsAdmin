@@ -29,7 +29,20 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'check/item.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    loadComplete: function(data){
+                        var ids = $(this).getDataIDs(data);
+
+                        for(var i=0; i<ids.length; i++) {
+                            var rowData = $(this).getRowData(ids[i]);
+                            if (rowData.scoredCnt) {
+                                if(rowData.itemCnt != rowData.scoredCnt)
+                                    $(this).setRowData(ids[i], false, { background:"#f5a7a4" });
+                                else
+                                    $(this).setRowData(ids[i], false, { background:"#d9edf7" });
+                            }
+                        }
+                    }
                 }
             }, options);
 

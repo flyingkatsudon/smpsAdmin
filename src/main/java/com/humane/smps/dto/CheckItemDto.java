@@ -57,6 +57,7 @@ public class CheckItemDto {
     private String virtNo;
 
     private String scorerNm;
+    private Long itemCnt;
     private Long scorerCnt;
     private Long scoredCnt;
 }
