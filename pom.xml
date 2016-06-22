@@ -251,7 +251,7 @@
                 <springboot-profile>local</springboot-profile>
                 <tomcat-url>http://localhost:9000/manager/text</tomcat-url>
                 <tomcat-username>smps</tomcat-username>
-                <tomcat-password>humane12!</tomcat-password>
+                <tomcat-password>smps!@</tomcat-password>
             </properties>
         </profile>
         <profile>
@@ -260,7 +260,7 @@
                 <springboot-profile>dev</springboot-profile>
                 <tomcat-url>http://humane.ipdisk.co.kr:9000/manager/text</tomcat-url>
                 <tomcat-username>smps</tomcat-username>
-                <tomcat-password>humane12!</tomcat-password>
+                <tomcat-password>smps!@</tomcat-password>
             </properties>
         </profile>
         <profile>
