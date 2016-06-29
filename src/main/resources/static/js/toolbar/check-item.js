@@ -42,12 +42,14 @@ define(function (require) {
                     majorNm: _this.$('#majorNm').val(),
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
-                    hallNm : _this.$('#hallNm').val(),
-                    virtNo : _this.$('#virtNo').val(),
-                    scorerNm : _this.$('#scorerNm').val()
+                    hallNm: _this.$('#hallNm').val(),
+                    virtNo: _this.$('#virtNo').val(),
+                    scorerNm: _this.$('#scorerNm').val(),
+                    isVirtNo: _this.$('#isVirtNo').val()
                 });
             }
         },
+
         admissionNmChanged: function (e) {
             var param = {
                 admissionNm: e.currentTarget.value
@@ -105,7 +107,8 @@ define(function (require) {
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-        },
+        }
+        ,
         headNm: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
@@ -117,7 +120,8 @@ define(function (require) {
             };
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-        },
+        }
+        ,
         bldgNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
@@ -131,4 +135,5 @@ define(function (require) {
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         }
     });
-});
+})
+;

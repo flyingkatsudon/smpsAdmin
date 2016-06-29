@@ -32,10 +32,42 @@ define(function (require) {
                 colModel[i].label = colModel[i].label === undefined ? colModel[i].name : colModel[i].label;
             }
 
+            var cnt = 0;
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/scorer.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    gridComplete: function (e) {
+                        var _this = this;
+                        var data = $(this).jqGrid('getRowData');
+                        var colModel = $(this).jqGrid('getGridParam', 'colModel');
+
+                        var showCol = {};
+
+                        // score 로 시작하는 칼럼 필터링
+                        Object.keys(colModel).forEach(function (key, index) {
+                            var name = colModel[key].name;
+                            if(name == 'scoreDttm') showCol[name] = true; // 시간은 보여주어야 한다.
+                            else if (name.startsWith('score')) showCol[name] = false;
+                        });
+
+                        // 데이터가 없으면 칼럼 감춤.
+                        Object.keys(showCol).forEach(function (key, index) {
+                            for (var i = 0; i < data.length; i++) {
+                                if (showCol[key] == false) {
+                                    if (data[i][key] != '') {
+                                        showCol[key] = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (showCol[key] == true)  $(_this).jqGrid('showCol', key);
+                            else $(_this).jqGrid('hideCol', key);
+                        });
+
+                        $(window).trigger('resize');
+                    }
                 }
             }, options);
 

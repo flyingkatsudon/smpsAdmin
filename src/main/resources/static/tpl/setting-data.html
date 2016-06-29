@@ -29,7 +29,7 @@
                 </div>
                 <div class="panel-body">
                     <a href="download/item.xlsx" class="btn btn-primary pull-left">양식 다운로드</a>
-                    <form id="frmUploadItem"  action="upload/item" method="post" enctype="multipart/form-data">
+                    <form id="frmUploadItem" action="upload/item" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="panel-body">
                     <a href="download/hall.xlsx" class="btn btn-primary pull-left">양식 다운로드</a>
-                    <form id="frmUploadHall"  action="upload/hall" method="post" enctype="multipart/form-data">
+                    <form id="frmUploadHall" action="upload/hall" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>
@@ -68,26 +68,20 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="system/naver" method="get">
-                        <span>서버에서 데이터를 다운로드 합니다.</span>
-                        <input type="submit" class="btn btn-primary pull-right" value="다운로드"/>
-                    </form>
+                    <span>서버에서 데이터를 다운로드 합니다.</span>
+                    <input type="button" id="download" class="btn btn-primary pull-right" value="다운로드"/>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="system/reset" method="get">
-                        <span>서버의 데이터를 삭제합니다.</span>
-                        <input type="submit" class="btn btn-primary pull-right" value="삭제"/>
-                    </form>
+                    <span>서버의 데이터를 삭제합니다.</span>
+                    <input type="button" id="reset" class="btn btn-primary pull-right" value="삭제"/>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="system/init" method="get">
-                        <span>서버의 데이터를 초기화 합니다.</span>
-                        <input type="submit" class="btn btn-primary pull-right" value="초기화"/>
-                    </form>
+                    <span>서버의 데이터를 초기화 합니다.</span>
+                    <input type="button" id="init" class="btn btn-primary pull-right" value="초기화"/>
                 </div>
             </div>
         </div>
@@ -157,7 +151,7 @@
                     <label>평가위원 데이터</label>
                 </div>
                 <div class="panel-body">
-                    <form action="upload/scoreEndData" method="post" enctype="multipart/form-data">
+                    <form id="frmUploadScore" action="upload/scoreEndData" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
                         <input type="file" name="file" class="btn btn-primary pull-right"/>
                     </form>

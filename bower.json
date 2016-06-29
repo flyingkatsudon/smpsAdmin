@@ -30,6 +30,7 @@
     "morris.js": "morrisjs#^0.5.1",
     "jquery-file-download": "^1.4.4",
     "lil-uuid": "^0.1.1",
-    "bootstrap3-dialog": "^1.35.1"
+    "bootstrap3-dialog": "^1.35.1",
+    "jquery-form": "jquery.ajaxForm#^3.46.0"
   }
 }

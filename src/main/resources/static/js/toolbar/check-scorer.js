@@ -6,6 +6,7 @@ define(function (require) {
 
     var Toolbar = require('../dist/toolbar.js');
     var ToolbarModel = require('../model/model-status-toolbar.js');
+    var cnt=0;
 
     return Toolbar.extend({
         initialize: function (o) {
@@ -34,6 +35,7 @@ define(function (require) {
             'change #bldgNm': 'bldgNmChanged',
             'change #hallNm': 'hallNmChanged'
         },
+
         searchClicked: function (e) {
             e.preventDefault();
 
@@ -48,7 +50,8 @@ define(function (require) {
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
-                    virtNo : _this.$('#virtNo').val()
+                    virtNo : _this.$('#virtNo').val(),
+                    isVirtNo: _this.$('#isVirtNo').val()
                 });
             }
         },

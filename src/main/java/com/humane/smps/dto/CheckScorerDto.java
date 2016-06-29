@@ -35,4 +35,6 @@ public class CheckScorerDto {
     private String scorerNm;
     private Long scorerCnt;
     private Long scoredCnt;
+
+    private Boolean isVirtNo;
 }

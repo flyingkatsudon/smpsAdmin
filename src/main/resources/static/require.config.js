@@ -6,7 +6,8 @@ require.config({
         'backbone': {deps: ['jquery', 'underscore']},
         'jqgrid': {deps: ['jquery', 'css!bower_components/jqGrid/css/ui.jqgrid-bootstrap', 'bower_components/jqGrid/js/minified/i18n/grid.locale-kr']},
         'morris': {deps: ['css!bower_components/morris.js/morris']},
-        'bootstrap-select': {deps: ['bootstrap', 'css!bower_components/bootstrap-select/dist/css/bootstrap-select.min']}
+        'bootstrap-select': {deps: ['bootstrap', 'css!bower_components/bootstrap-select/dist/css/bootstrap-select.min']},
+        'jquery.ajaxForm':{deps:['jquery']}
     },
     paths: {
         'jquery': 'bower_components/jquery/dist/jquery.min',
@@ -21,7 +22,8 @@ require.config({
         'morris': 'bower_components/morris.js/morris.min',
         'jquery-bootstrap': 'dist/js/jquery.bootstrap.min',
         'jquery-file-download': 'bower_components/jquery-file-download/src/Scripts/jquery.fileDownload',
-        'bootstrap-dialog': 'bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min'
+        'bootstrap-dialog': 'bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min',
+        'jquery.ajaxForm': 'bower_components/jquery-form/jquery.form'
     },
     map: {
         '*': {'css': 'bower_components/require-css/css.min'}

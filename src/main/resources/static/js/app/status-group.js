@@ -13,12 +13,13 @@ define(function (require) {
         render: function () {
             this.$el.html(Template);
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
-            this.list = new List({el: '.hm-ui-grid'}).render();
             this.chart1 = new Chart1({el: '#hm-ui-chart'}).render();
+            this.list = new List({el: '.hm-ui-grid', parent: this}).render();
             this.chart2 = new Chart2({el: '#hm-ui-chart-all-1'}).render();
             this.chart3 = new Chart3({el: '#hm-ui-chart-all-2'}).render();
         }, search: function (o) {
             this.list.search(o);
+        }, renderChart: function(o){
             this.chart1.search(o);
         }
     });

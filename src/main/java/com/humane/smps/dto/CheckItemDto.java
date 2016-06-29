@@ -60,4 +60,6 @@ public class CheckItemDto {
     private Long itemCnt;
     private Long scorerCnt;
     private Long scoredCnt;
+
+    private Boolean isVirtNo;
 }

@@ -5,6 +5,8 @@ define(function (require) {
 
     return GridBase.extend({
         initialize: function (options) {
+            this.parent = options.parent;
+            var _this = this;
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'examDate', label: '시험일자'},
@@ -25,7 +27,11 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'status/major.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    gridComplete: function(){
+                        var data = $(this).jqGrid('getRowData');
+                        _this.parent.renderChart(data);
+                    }
                 }
             }, options);
 

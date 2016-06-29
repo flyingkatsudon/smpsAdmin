@@ -51,7 +51,7 @@ public class UploadController {
     @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
 
     @RequestMapping(value = "devi", method = RequestMethod.POST)
-    public void devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
+    public ResponseEntity<String> devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
         File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -76,15 +76,17 @@ public class UploadController {
                         devi = deviRepository.save(devi);
                     }
             );
+            return ResponseEntity.ok("데이터 정상 처리됨");
         } catch (Throwable throwable) {
             log.debug("{}", throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
         } finally {
             file.delete();
         }
     }
 
     @RequestMapping(value = "item", method = RequestMethod.POST)
-    public ResponseEntity item(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<String> item(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         // 파일이 없울경우 에러 리턴.
         if (multipartFile.isEmpty()) return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
 
@@ -116,14 +118,14 @@ public class UploadController {
         } catch (Throwable t) {
             t.printStackTrace();
             log.error("{}", t.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터에러. 서버 로그 확인 바람.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
         } finally {
             file.delete();
         }
     }
 
     @RequestMapping(value = "hall", method = RequestMethod.POST)
-    public void hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<String> hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -164,15 +166,17 @@ public class UploadController {
                 // 5. 응시고사실 저장
                 examHallRepository.save(examHall);
             });
+            return ResponseEntity.ok("데이터 정상 처리됨");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
         } finally {
             file.delete();
         }
     }
 
     @RequestMapping(value = "examinee", method = RequestMethod.POST)
-    public void examinee(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<String> examinee(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -215,74 +219,86 @@ public class UploadController {
                 // 3.1 수험생정보 저장
                 examMapRepository.save(examMap);
             });
+            return ResponseEntity.ok("데이터 정상 처리됨");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
         } finally {
             file.delete();
         }
     }
 
     @RequestMapping(value = "scoreEndData", method = RequestMethod.POST)
-    public void scoreEndData(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
+    public ResponseEntity<String> scoreEndData(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
         File file = FileUtils.saveFile(new File(pathRoot, "data"), multipartFile);
 
         // zip4j 읽기
         ZipFile zipFile = new ZipFile(file);
         zipFile.setFileNameCharset(zipFile.getCharset());
 
-        List<FileHeader> fileHeaders = zipFile.getFileHeaders();
-        for (FileHeader fileHeader : fileHeaders) {
-            String fileName = fileHeader.getFileName();
-            if (fileName.endsWith("_sheet.txt")) {
+        try {
+            List<FileHeader> fileHeaders = zipFile.getFileHeaders();
+            for (FileHeader fileHeader : fileHeaders) {
+                String fileName = fileHeader.getFileName();
+                if (fileName.endsWith("_sheet.txt")) {
 
-                // file read
-                FileWrapper<Sheet> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Sheet>>() {
-                });
-                log.debug("{}", wrapper.getContent());
+                    // file read
+                    FileWrapper<Sheet> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Sheet>>() {
+                    });
+                    log.debug("{}", wrapper.getContent());
 
-                QSheet qSheet = QSheet.sheet;
+                    QSheet qSheet = QSheet.sheet;
 
-                wrapper.getContent().forEach(sheet -> {
-                    Sheet tmp = sheetRepository.findOne(
-                            new BooleanBuilder()
-                                    .and(qSheet.scorerNm.eq(sheet.getScorerNm()))
-                                    .and(qSheet.sheetNo.eq(sheet.getSheetNo()))
-                                    .and(qSheet.exam.examCd.eq(sheet.getExam().getExamCd()))
-                    );
+                    wrapper.getContent().forEach(sheet -> {
+                        Sheet tmp = sheetRepository.findOne(
+                                new BooleanBuilder()
+                                        .and(qSheet.scorerNm.eq(sheet.getScorerNm()))
+                                        .and(qSheet.sheetNo.eq(sheet.getSheetNo()))
+                                        .and(qSheet.exam.examCd.eq(sheet.getExam().getExamCd()))
+                        );
 
-                    if (tmp != null) sheet.set_id(tmp.get_id());
+                        if (tmp != null) sheet.set_id(tmp.get_id());
 
-                    sheetRepository.save(sheet);
+                        sheetRepository.save(sheet);
 
-                });
+                    });
 
-            } else if (fileName.endsWith("_score.txt")) {
-                FileWrapper<Score> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Score>>() {
-                });
+                } else if (fileName.endsWith("_score.txt")) {
+                    FileWrapper<Score> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Score>>() {
+                    });
 
-                log.debug("{}", wrapper.getContent());
+                    log.debug("{}", wrapper.getContent());
 
-                QScore qScore = QScore.score;
+                    QScore qScore = QScore.score;
 
-                wrapper.getContent().forEach(score -> {
+                    wrapper.getContent().forEach(score -> {
 
-                    Score tmp = scoreRepository.findOne(
-                            new BooleanBuilder()
-                                    .and(qScore.exam.examCd.eq(score.getExam().getExamCd()))
-                                    .and(qScore.virtNo.eq(score.getVirtNo()))
-                                    .and(qScore.scorerNm.eq(score.getScorerNm()))
-                    );
+                        Score tmp = scoreRepository.findOne(
+                                new BooleanBuilder()
+                                        .and(qScore.exam.examCd.eq(score.getExam().getExamCd()))
+                                        .and(qScore.virtNo.eq(score.getVirtNo()))
+                                        .and(qScore.scorerNm.eq(score.getScorerNm()))
+                        );
 
-                    if (tmp != null) score.set_id(tmp.get_id());
+                        if (tmp != null) score.set_id(tmp.get_id());
 
-                    scoreRepository.save(score);
-                });
-            } else if (fileName.endsWith(".pdf")) {
-                zipFile.extractFile(fileHeader, "D:/pdf");
-            } else if (fileName.endsWith(".jpg")) {
-                zipFile.extractFile(fileHeader, "D:/jpg");
+                        scoreRepository.save(score);
+                    });
+                } else if (fileName.endsWith(".pdf")) {
+                    zipFile.extractFile(fileHeader, "D:/pdf");
+                } else if (fileName.endsWith(".jpg")) {
+                    zipFile.extractFile(fileHeader, "D:/jpg");
+                }
             }
+            return ResponseEntity.ok("데이터 정상 처리됨");
+        } catch (Throwable throwable) {
+            log.error("{}", throwable.getMessage());
+            throwable.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
+        }
+        finally{
+            file.delete();
         }
     }
 

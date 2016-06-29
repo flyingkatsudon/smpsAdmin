@@ -25,14 +25,9 @@ define(function (require) {
             });
         }, close: function () {
             $(window).unbind('resizeEnd.Morris' + this.cid);
-        }, search: function (o) {
-            var _this = this;
-
-            $.ajax({
-                url: 'status/hall.chart',
-                data: o
-            }).done(function (response) {
-                var data = [];
+        }, search: function (response) {
+            var data = [];
+            if (response) {
                 for (var i = 0; i < response.length; i++) {
                     data.push({
                         name: response[i].bldgNm + "\n" + response[i].hallNm,
@@ -40,8 +35,8 @@ define(function (require) {
                         absentCnt: response[i].absentCnt
                     })
                 }
-                _this.chart.setData(data);
-            })
+                this.chart.setData(data);
+            }
         }
     });
 });
