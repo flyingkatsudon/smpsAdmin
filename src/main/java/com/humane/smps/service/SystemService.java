@@ -10,7 +10,6 @@ import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ScrollMode;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemService {
     private final DeviRepository deviRepository;
@@ -110,8 +108,6 @@ public class SystemService {
                 .setNull(examMap.memo)
                 .setNull(examMap.evalCd)
                 .execute();
-
-        log.debug("{}, {}, {}", c, b, a);
     }
 
     public void saveExamMap(ApiService apiService, DownloadWrapper wrapper) {
@@ -211,9 +207,6 @@ public class SystemService {
                                     .and(QItem.item.exam.eq(item.getExam()))
                                     .and(QItem.item.itemNo.eq(item.getItemNo()))
                             );
-
-                            log.debug("{}", item);
-                            log.debug("{}", findItem);
 
                             if (findItem != null) item.set_id(findItem.get_id());
 
