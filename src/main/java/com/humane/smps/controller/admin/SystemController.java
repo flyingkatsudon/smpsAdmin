@@ -13,9 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "system", method = RequestMethod.GET)
@@ -66,15 +64,10 @@ public class SystemController {
         ApiService apiService = ServiceBuilder.INSTANCE.createService(wrapper.getUrl(), ApiService.class);
 
         // 3. getData(iterator)
+        systemService.saveExamMap(apiService, wrapper);
+        systemService.saveItem(apiService, wrapper);
 
-        systemService.saveExamHall(apiService, wrapper);
-
-        Set<String> examCdSet = new HashSet<>();
-        wrapper.getList().forEach(examHallWrapper -> examCdSet.add(examHallWrapper.getExamCd()));
-
-        systemService.saveItem(apiService, examCdSet);
-        systemService.saveDevi(apiService);
-        return null;
+        return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
     }
 
     @RequestMapping(value = "reset")

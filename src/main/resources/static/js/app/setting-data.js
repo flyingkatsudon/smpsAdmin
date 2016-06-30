@@ -62,59 +62,86 @@ define(function (require) {
             BootstrapDialog.show({
                 title: '서버 데이터 관리',
                 size: 'size-wide',
+                closable: false,
                 onshown: function (dialogRef) {
                     var body = dialogRef.$modalBody;
                     dialogRef.list = new List({el: body}).render();
                 },
-                buttons: [{
-                    label: '확인',
-                    action: function (dialogRef) {
+                buttons: [
+                    {
+                        label: '다운로드',
+                        action: function (dialogRef) {
 
-                        // 화면상에 선택된 줄 가져오기
-                        var $grid = dialogRef.list.$grid;
-                        var rows = $grid.getGridParam('selarrrow');
-                        var param = {
-                            url: 'http://humane.ipdisk.co.kr:9000',
-                            list: []
-                        };
-                        for (var i = 0; i < rows.length; i++) {
-                            var rowdata = $grid.jqGrid('getRowData', rows[i]);
-                            console.log(rowdata);
-                            param.list.push({
-                                examCd: rowdata['exam.examCd'],
-                                hallCd: rowdata['hall.hallCd']
-                            });
+                            // 화면상에 선택된 줄 가져오기
+                            var $grid = dialogRef.list.$grid;
+                            var rows = $grid.getGridParam('selarrrow');
+                            var param = {
+                                url: 'http://humane.ipdisk.co.kr:9000',
+                                list: []
+                            };
+
+                            for (var i = 0; i < rows.length; i++) {
+                                var rowdata = $grid.jqGrid('getRowData', rows[i]);
+
+                                param.list.push({
+                                    examCd: rowdata['exam.examCd'],
+                                    hallCd: rowdata['hall.hallCd']
+                                });
+                            }
+
+                            // 데이터 전송
+                            if (param && param.list.length > 0) {
+                                BootstrapDialog.show({
+                                    title: '서버 데이터 관리',
+                                    message: '진행 중입니다. 잠시만 기다려주세요.',
+                                    closable: false
+                                });
+                                $.ajax({
+                                    url: 'system/download',
+                                    type: 'POST',
+                                    data: JSON.stringify(param),
+                                    contentType: 'application/json',
+                                    success: function (response) {
+                                        BootstrapDialog.closeAll();
+                                        BootstrapDialog.show({
+                                            title: '서버 데이터 관리',
+                                            message: response,
+                                            closable: true,
+                                            buttons: [
+                                                {
+                                                    label: '확인',
+                                                    action: function (dialog) {
+                                                        dialog.close();
+                                                    }
+                                                }
+                                            ]
+                                        });
+                                    },
+                                    error: function (response, status, error) {
+                                        BootstrapDialog.closeAll();
+                                        BootstrapDialog.show({
+                                            title: '서버 데이터 관리',
+                                            message: response.responseText,
+                                            closable: true
+                                        });
+                                    }
+                                });
+                            } else {
+                                BootstrapDialog.show({
+                                    title: '서버 데이터 관리',
+                                    message: '데이터를 선택해주세요!',
+                                    closable: true
+                                });
+                            }
                         }
-
-                        // 데이터 전송
-                        if (param && param.list.length > 0) {
-                            $.ajax({
-                                url: 'system/download',
-                                type: 'POST',
-                                data: JSON.stringify(param),
-                                contentType: 'application/json',
-                                success: function () {
-                                    console.log('11111111111');
-                                },
-                                error: function (response, status, error) {
-                                    BootstrapDialog.show({
-                                        title: '서버 데이터 관리',
-                                        message: response.responseText,
-                                        closable: true
-                                    });
-                                }
-                            });
-                        } else {
-                            BootstrapDialog.show({
-                                title: '서버 데이터 관리',
-                                message: '데이터를 선택해주세요!',
-                                closable: true
-                            });
+                    },
+                    {
+                        label: '닫기',
+                        action: function (dialog) {
+                            dialog.close();
                         }
-
-                        //dialogRef.close();
                     }
-                }]
+                ]
             });
         }, resetClicked: function (e) {
             BootstrapDialog.show({

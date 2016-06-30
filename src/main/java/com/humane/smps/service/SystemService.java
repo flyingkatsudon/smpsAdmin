@@ -8,8 +8,10 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
+import com.mysema.query.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -20,9 +22,8 @@ import rx.Observable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -73,7 +74,22 @@ public class SystemService {
                 .execute();
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QDevi.devi1).execute();
 
+
+        /**
+         * SELECT DISTINCT ADMISSION_CD
+         *   FROM ADMISSION
+         *  INNER JOIN EXAM ON ADMISSION.ADMISSION_CD = EXAM.ADMISSION_CD
+         */
+
+        List<String> admissions = new JPAQuery(entityManager)
+                .from(QExam.exam)
+                .distinct()
+                .list(QExam.exam.admission.admissionCd);
+
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QExam.exam).execute();
+        new HibernateDeleteClause(entityManager.unwrap(Session.class), QAdmission.admission)
+                .where(QAdmission.admission.admissionCd.in(admissions))
+                .execute();
     }
 
     public void initData() {
@@ -92,15 +108,7 @@ public class SystemService {
         log.debug("{}, {}, {}", c, b, a);
     }
 
-    public void saveDevi(ApiService apiService) {
-        Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(page -> apiService.devi(new HashMap<>(), page, Integer.MAX_VALUE, null))
-                .takeUntil(page -> page.last)
-                .map(page -> deviRepository.save(page.content))
-                .toBlocking().first();
-    }
-
-    public void saveExamHall(ApiService apiService, DownloadWrapper wrapper) {
+    public void saveExamMap(ApiService apiService, DownloadWrapper wrapper) {
         for (DownloadWrapper.ExamHallWrapper examHallWrapper : wrapper.getList()) {
             String newExamCd = examHallWrapper.getExamCd();
             String newHallCd = examHallWrapper.getHallCd();
@@ -108,24 +116,32 @@ public class SystemService {
                     .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).add("hall.hallCd", newHallCd).getMap(), page, Integer.MAX_VALUE, null))
                     .takeUntil(page -> page.last)
                     .map(page -> {
+                        String examCd = null;
+                        String hallCd = null;
                         for (ExamMap examMap : page.content) {
-                            log.debug("{}", examMap);
-
                             admissionRepository.save(examMap.getExam().getAdmission());
                             examRepository.save(examMap.getExam());
                             hallRepository.save(examMap.getHall());
 
-                            ExamHall examHall = examHallRepository.findOne(new BooleanBuilder()
-                                    .and(QExamHall.examHall.exam.eq(examMap.getExam()))
-                                    .and(QExamHall.examHall.hall.eq(examMap.getHall()))
-                            );
+                            // examHall이 없으면 생성
+                            if(!StringUtils.equals(examCd, examMap.getExam().getExamCd())
+                                    || !StringUtils.equals(hallCd, examMap.getHall().getHallCd())) {
+                                examCd = examMap.getExam().getExamCd();
+                                hallCd = examMap.getHall().getHallCd();
 
-                            if (examHall == null) {
-                                examHall = new ExamHall();
+                                ExamHall examHall = new ExamHall();
                                 examHall.setExam(examMap.getExam());
                                 examHall.setHall(examMap.getHall());
+
+                                ExamHall findExamHall = examHallRepository.findOne(new BooleanBuilder()
+                                        .and(QExamHall.examHall.exam.eq(examMap.getExam()))
+                                        .and(QExamHall.examHall.hall.eq(examMap.getHall()))
+                                );
+
+                                if (findExamHall != null) examHall.set_id(findExamHall.get_id());
+                                examHallRepository.save(examHall);
                             }
-                            examHallRepository.save(examHall);
+
                             examineeRepository.save(examMap.getExaminee());
 
                             ExamMap findExamMap = examMapRepository.findOne(new BooleanBuilder()
@@ -137,28 +153,57 @@ public class SystemService {
 
                             examMapRepository.save(examMap);
                         }
-                        return true;
+                        return null;
                     })
                     .toBlocking().first();
         }
-
     }
 
-    public void saveItem(ApiService apiService, Set<String> examCdSet) {
-        examCdSet.forEach(s -> {
+    public void saveItem(ApiService apiService, DownloadWrapper wrapper) {
+        List<String> examCds = new ArrayList<>();
+        wrapper.getList().forEach(examHallWrapper -> {
+            if (!examCds.contains(examHallWrapper.getExamCd()))
+                examCds.add(examHallWrapper.getExamCd());
+        });
+
+        List<String> deviList = new ArrayList<>();
+
+        examCds.forEach(examCd -> {
             Observable.range(0, Integer.MAX_VALUE)
-                    .concatMap(page -> apiService.item(new HashMap<>(), page, Integer.MAX_VALUE, null))
+                    .concatMap(page -> apiService.item(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE, null))
                     .takeUntil(page -> page.last)
                     .map(page -> {
-                        Set<String> devis = new HashSet<>();
-
                         page.content.forEach(item -> {
-                            itemRepository.save(item);
                             deviRepository.save(item.getDevi());
+                            examRepository.save(item.getExam());
 
-                            devis.add(item.getDevi().getDeviCd());
+                            Item findItem = itemRepository.findOne(new BooleanBuilder()
+                                    .and(QItem.item.exam.eq(item.getExam()))
+                                    .and(QItem.item.itemNo.eq(item.getItemNo()))
+                            );
+
+                            log.debug("{}", item);
+                            log.debug("{}", findItem);
+
+                            if (findItem != null) item.set_id(findItem.get_id());
+
+                            itemRepository.save(item);
+
+                            if (!deviList.contains(item.getDevi().getDeviCd()))
+                                deviList.add(item.getDevi().getDeviCd());
                         });
-                        return devis;
+                        return null;
+                    })
+                    .toBlocking().first();
+        });
+
+        deviList.forEach(deviCd -> {
+            Observable.range(0, Integer.MAX_VALUE)
+                    .concatMap(page -> apiService.devi(new QueryBuilder().add("devi.deviCd", deviCd).getMap(), page, Integer.MAX_VALUE, null))
+                    .takeUntil(page -> page.last)
+                    .map(page -> {
+                        deviRepository.save(page.content);
+                        return null;
                     })
                     .toBlocking().first();
         });
