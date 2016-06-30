@@ -11,17 +11,22 @@ import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rx.Observable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +44,7 @@ public class SystemService {
     private final ItemRepository itemRepository;
 
     @PersistenceContext private EntityManager entityManager;
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
 
     @Transactional
     public void resetData() {
@@ -115,7 +121,7 @@ public class SystemService {
             Observable.range(0, Integer.MAX_VALUE)
                     .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).add("hall.hallCd", newHallCd).getMap(), page, Integer.MAX_VALUE, null))
                     .takeUntil(page -> page.last)
-                    .map(page -> {
+                    .flatMap(page -> {
                         String examCd = null;
                         String hallCd = null;
                         for (ExamMap examMap : page.content) {
@@ -153,9 +159,33 @@ public class SystemService {
 
                             examMapRepository.save(examMap);
                         }
-                        return null;
+                        return Observable.from(page.content);
                     })
+                    .flatMap(examMap -> Observable.just(examMap.getExaminee().getExamineeCd() + ".jpg"))
+                    .flatMap(fileName -> imageExaminee(apiService, fileName))
+                    .reduce(new ArrayList<>(), (list, file) -> list)
                     .toBlocking().first();
+        }
+    }
+
+    private Observable<File> imageExaminee(ApiService apiService, String fileName) {
+        File path = new File(pathImageExaminee);
+
+        if (!path.exists()) path.mkdirs();
+        File file = new File(path, fileName);
+
+        if (file.exists()) {
+            return Observable.just(file);
+        } else {
+            return apiService.imageExaminee(fileName)
+                    .flatMap(responseBody -> {
+                        try (FileOutputStream fos = new FileOutputStream(file)) {
+                            IOUtils.write(responseBody.bytes(), fos);
+                            return Observable.just(file);
+                        } catch (IOException e) {
+                            return Observable.error(e);
+                        }
+                    });
         }
     }
 

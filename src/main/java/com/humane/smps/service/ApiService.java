@@ -6,7 +6,9 @@ import com.humane.smps.model.ExamHall;
 import com.humane.smps.model.ExamMap;
 import com.humane.smps.model.Item;
 import com.humane.util.spring.Page;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
@@ -29,4 +31,7 @@ public interface ApiService {
 
     @GET("api/examMap")
     Observable<Page<ExamMap>> examMap(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size, @Query("sort") String sort);
+
+    @GET("image/examinee/{fileName}")
+    Observable<ResponseBody> imageExaminee(@Path("fileName") String fileName);
 }
