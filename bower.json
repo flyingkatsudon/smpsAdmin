@@ -16,7 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^2.2.3",
+    "jquery": "^2.2.4",
     "bootstrap": "^3.3.6",
     "metisMenu": "^2.5.0",
     "font-awesome": "^4.6.1",
@@ -25,12 +25,12 @@
     "underscore": "^1.8.3",
     "text": "^2.0.15",
     "require-css": "^0.1.8",
-    "raphael": "^2.2.0",
+    "raphael": "^2.2.1",
     "jqGrid": "jqgrid#^5.1.0",
     "morris.js": "morrisjs#^0.5.1",
     "jquery-file-download": "^1.4.4",
     "lil-uuid": "^0.1.1",
-    "bootstrap3-dialog": "^1.35.1",
+    "bootstrap3-dialog": "^1.35.2",
     "jquery-form": "jquery.ajaxForm#^3.46.0"
   }
 }

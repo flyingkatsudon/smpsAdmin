@@ -1,0 +1,9 @@
+<div>
+    <label for="univ">학교 선택</label>
+    <select id="univ">
+        <option value="">학교 선택</option>
+        <% _.each(list, function(row){ %>
+            <option value="<%=row.url%>"><%=row.name%></option>
+        <% }); %>
+    </select>
+</div>

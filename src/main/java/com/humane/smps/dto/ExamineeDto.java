@@ -17,6 +17,7 @@ public class ExamineeDto {
     private String examNm;
     private String deptNm;
     private String majorNm;
+    private String groupNm;
     private String headNm;
     private String bldgNm;
     private String hallNm;

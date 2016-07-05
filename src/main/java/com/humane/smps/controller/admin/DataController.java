@@ -74,8 +74,7 @@ public class DataController {
         });
 
         return JasperReportsExportHelper.toResponseEntity(
-                // "jrxml/examinee-id-card.jrxml"
-                "jrxml/idCard.jrxml"
+                 "jrxml/examinee-id-card.jrxml"
                 , JasperReportsExportHelper.EXT_PDF
                 , list);
     }

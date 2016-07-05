@@ -7,7 +7,7 @@
         SELECT
             admission.admission_nm,
             exam.exam_date, exam.exam_time,
-            examinee.dept_nm, examinee.major_nm,
+            examinee.dept_nm, examinee.major_nm, examinee.group_nm,
             exam.exam_nm,
             hall.head_nm, hall.bldg_nm, hall.hall_nm,
             examinee.examinee_cd, examinee.examinee_nm,
@@ -53,7 +53,11 @@
                 </if>
                 <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
                 <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
-                <if test="param.fromExamineeCd != null and param.toExamineeCd">AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}</if>
+                <if test="param.fromExamineeCd != null and param.toExamineeCd == null">AND examinee.examinee_cd = #{param.fromExamineeCd}</if>
+                <if test="param.fromExamineeCd == null and param.toExamineeCd != null">AND examinee.examinee_cd = #{param.toExamineeCd}</if>
+                <if test="param.fromExamineeCd != null and param.toExamineeCd != null">
+                    AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}
+                </if>
             </if>
         </where>
         GROUP BY
@@ -66,9 +70,9 @@
                 , hall.head_nm
                 , hall.bldg_nm
                 , hall.hall_nm
+                , examinee.group_nm
                 , examinee.examinee_cd
                 , examinee.examinee_nm
-                , exam_map.virt_no
     </select>
 
     <select id="score" resultType="com.humane.smps.dto.ScoreDto">

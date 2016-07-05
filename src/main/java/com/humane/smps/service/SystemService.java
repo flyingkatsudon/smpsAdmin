@@ -10,6 +10,7 @@ import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ScrollMode;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemService {
     private final DeviRepository deviRepository;
@@ -45,7 +47,7 @@ public class SystemService {
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
 
     @Transactional
-    public void resetData() {
+    public void resetData(String choice) {
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QSheet.sheet).execute();
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QScore.score).execute();
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QExamHall.examHall).execute();
@@ -64,6 +66,15 @@ public class SystemService {
                 new HibernateDeleteClause(entityManager.unwrap(Session.class), QExaminee.examinee)
                         .where(QExaminee.examinee.eq(examMap.getExaminee()))
                         .execute();
+
+                // delete photo
+                if (choice.equals("photo")) {
+                    String examineeCd = examMap.getExaminee().getExamineeCd();
+
+                    ImageService imageService = new ImageService();
+                    imageService.deleteImageExaminee(examineeCd);
+                }
+
             } catch (Exception ignored) {
             }
         }
@@ -126,7 +137,7 @@ public class SystemService {
                             hallRepository.save(examMap.getHall());
 
                             // examHall이 없으면 생성
-                            if(!StringUtils.equals(examCd, examMap.getExam().getExamCd())
+                            if (!StringUtils.equals(examCd, examMap.getExam().getExamCd())
                                     || !StringUtils.equals(hallCd, examMap.getHall().getHallCd())) {
                                 examCd = examMap.getExam().getExamCd();
                                 hallCd = examMap.getHall().getHallCd();

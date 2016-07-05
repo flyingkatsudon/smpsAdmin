@@ -1,8 +1,8 @@
 require.config({
     shim: {
-        'bootstrap': {deps: ['jquery', 'css!bower_components/bootstrap/dist/css/bootstrap.min']},
-        'metisMenu': {deps: ['jquery', 'css!bower_components/metisMenu/dist/metisMenu.min', 'css!bower_components/font-awesome/css/font-awesome.min']},
-        'sb-admin-2': {deps: ['metisMenu', 'css!dist/css/sb-admin-2']},
+        'bootstrap': {deps: ['jquery']},
+        'metisMenu': {deps: ['jquery', 'css!bower_components/metisMenu/dist/metisMenu.min']},
+        'sb-admin-2': {deps: ['metisMenu']},
         'backbone': {deps: ['jquery', 'underscore']},
         'jqgrid': {deps: ['jquery', 'css!bower_components/jqGrid/css/ui.jqgrid-bootstrap', 'bower_components/jqGrid/js/minified/i18n/grid.locale-kr']},
         'morris': {deps: ['css!bower_components/morris.js/morris']},

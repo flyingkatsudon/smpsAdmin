@@ -1,5 +1,6 @@
 package com.humane.smps.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Service
+@Slf4j
 public class ImageService {
 
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
@@ -25,5 +27,10 @@ public class ImageService {
 
         }
         return null;
+    }
+
+    public void deleteImageExaminee(String fileName) throws IOException {
+        File file = new File("C:/api/image/examinee/" + fileName + ".jpg");
+        file.delete();
     }
 }

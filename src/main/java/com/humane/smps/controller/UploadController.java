@@ -76,12 +76,10 @@ public class UploadController {
                         devi = deviRepository.save(devi);
                     }
             );
-            return ResponseEntity.ok("데이터 정상 처리됨");
+            return ResponseEntity.ok("업로드가 완료되었습니다.");
         } catch (Throwable throwable) {
             log.debug("{}", throwable.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
-        } finally {
-            file.delete();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
         }
     }
 
@@ -111,16 +109,14 @@ public class UploadController {
 
                 // 4. item 변환, 저장, 갯수비교
                 if (Long.parseLong(dto.getItemCnt()) != uploadService.saveItems(dto)) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("항목 갯수가 일치하지 않습니다!.");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("항목 개수가 일치하지 않습니다!.");
                 }
             }
-            return ResponseEntity.ok("데이터 정상 처리 완료");
+            return ResponseEntity.ok("업로드가 완료되었습니다.");
         } catch (Throwable t) {
             t.printStackTrace();
             log.error("{}", t.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
-        } finally {
-            file.delete();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
         }
     }
 
@@ -166,12 +162,10 @@ public class UploadController {
                 // 5. 응시고사실 저장
                 examHallRepository.save(examHall);
             });
-            return ResponseEntity.ok("데이터 정상 처리됨");
+            return ResponseEntity.ok("업로드가 완료되었습니다.");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
-        } finally {
-            file.delete();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
         }
     }
 
@@ -219,13 +213,11 @@ public class UploadController {
                 // 3.1 수험생정보 저장
                 examMapRepository.save(examMap);
             });
-            return ResponseEntity.ok("데이터 정상 처리됨");
+            return ResponseEntity.ok("업로드가 완료되었습니다.");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
-        } finally {
-            file.delete();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
         }
     }
 
@@ -286,19 +278,16 @@ public class UploadController {
                         scoreRepository.save(score);
                     });
                 } else if (fileName.endsWith(".pdf")) {
-                    zipFile.extractFile(fileHeader, "D:/pdf");
+                    zipFile.extractFile(fileHeader, pathRoot + "/pdf");
                 } else if (fileName.endsWith(".jpg")) {
-                    zipFile.extractFile(fileHeader, "D:/jpg");
+                    zipFile.extractFile(fileHeader, pathRoot + "/jpg");
                 }
             }
-            return ResponseEntity.ok("데이터 정상 처리됨");
+            return ResponseEntity.ok("업로드가 완료되었습니다.");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 불가! 관리자에게 문의하세요.");
-        }
-        finally{
-            file.delete();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
         }
     }
 

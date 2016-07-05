@@ -4,6 +4,7 @@ import com.humane.smps.dto.DownloadWrapper;
 import com.humane.smps.service.ApiService;
 import com.humane.smps.service.SystemService;
 import com.humane.util.retrofit.ServiceBuilder;
+import com.humane.util.spring.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping(value = "system", method = RequestMethod.GET)
@@ -35,10 +36,17 @@ public class SystemController {
 
     @RequestMapping(value = "examHall.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listExamHall(
-            @RequestParam(required = false, defaultValue = "http://humane.ipdisk.co.kr:9000") String url,
+            @RequestParam(required = false, defaultValue = "") String url,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "") String sort) {
+
+        if(StringUtils.isEmpty(url) || url.trim().length() == 0){ // 선택된 서버가 없다면 empty
+            return ResponseEntity.ok(new Page());
+        }
+
+        System.out.println(url);
+        log.debug("{}", url);
         ApiService apiService = ServiceBuilder.INSTANCE.createService(url, ApiService.class);
         try {
             return ResponseEntity.ok(apiService.examHall(new HashMap<>(), page, size, sort).toBlocking().first());
@@ -70,9 +78,16 @@ public class SystemController {
         return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
     }
 
-    @RequestMapping(value = "reset")
-    public void reset() {
-        systemService.resetData();
+    private static final String PHOTO = "photo";
+
+    @RequestMapping(value = "reset.{format:photo|none}")
+    public void reset(@PathVariable String format) {
+        switch(format){
+            case PHOTO:
+                systemService.resetData(format);
+            default:
+                systemService.resetData(null);
+        }
     }
 
     @RequestMapping(value = "init")
