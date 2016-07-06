@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-06-17T12:33:41 -->
+<!-- 2016-07-05T12:02:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="idCard" pageWidth="595" pageHeight="842" columnWidth="395" leftMargin="100" rightMargin="100" topMargin="20" bottomMargin="20" uuid="05a283fb-7943-4970-8d0e-609553d82501">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
@@ -17,6 +17,9 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
+	<title>
+		<band height="50"/>
+	</title>
 	<pageHeader>
 		<band height="50">
 			<staticText>

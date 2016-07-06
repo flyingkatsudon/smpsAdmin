@@ -51,7 +51,6 @@ define(function (require) {
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
-                    isAttend : _this.$('#isAttend').val(),
                     examineeCd: _this.$('#examineeCd').val(),
                     examineeNm: _this.$('#examineeNm').val()
                 });

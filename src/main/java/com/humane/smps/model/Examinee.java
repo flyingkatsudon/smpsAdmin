@@ -16,7 +16,6 @@ public class Examinee {
     private String typeNm;
     private String deptNm;
     private String majorNm;
-    private String groupNm;
     private String birth;
     private String neisCd;
     private String neisNm;

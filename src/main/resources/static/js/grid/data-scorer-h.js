@@ -7,25 +7,19 @@ define(function (require) {
             var colModel = [];
 
             $.ajax({
-                url : 'data/scorer.colmodel',
-                async : false,
-                success : function(data){
+                url: 'data/scorerH.colmodel',
+                async: false,
+                success: function (data) {
                     colModel = data;
                 }
             });
 
-            for (var i = 0; i < colModel.length; i++) {
-                if(colModel[i].name == 'isPhoto'){
-                    colModel[i]['formatter'] = 'select';
-                    colModel[i]['editoptions'] =  {value: {true: 'Y', false: 'N'}};
-                }
-            }
-
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/scorer.json',
+                    url: 'data/scorerH.json',
                     colModel: colModel
-                }
+                },
+                scrollable: false
             }, options);
 
             this.constructor.__super__.initialize.call(this, opt);

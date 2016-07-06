@@ -132,7 +132,7 @@
                         SELECT
                         admission.admission_nm
                         , exam.exam_date, exam.exam_time
-                        , examinee.major_nm, examinee.group_nm
+                        , examinee.major_nm, exam_map.group_nm
                         , hall.head_nm, hall.bldg_nm, hall.hall_nm
                         , COUNT(examinee.examinee_cd) AS examinee_cnt
                         , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
@@ -150,7 +150,7 @@
                                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                                 <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
                                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
-                                <if test="param.groupNm != null">AND examinee.group_nm LIKE '%' #{param.groupNm} '%'</if>
+                                <if test="param.groupNm != null">AND exam_map.group_nm LIKE '%' #{param.groupNm} '%'</if>
                                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
@@ -158,7 +158,7 @@
                         </where>
                         GROUP BY admission.admission_nm
                         , exam.exam_date, exam.exam_time
-                        , examinee.major_nm, examinee.group_nm
+                        , examinee.major_nm, exam_map.group_nm
                         , hall.head_nm, hall.bldg_nm, hall.hall_nm
                         ) AS result
     </select>

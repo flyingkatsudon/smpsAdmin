@@ -124,7 +124,7 @@ public class DownloadController {
 
         File dataScore = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-scorer.jrxml"
-                , dataMapper.score(new ScoreDto(), pageable).getContent()
+                , dataMapper.scorer(new ScoreDto(), pageable).getContent()
         );
         zipFile.addFile(dataScore);
         dataScore.delete();

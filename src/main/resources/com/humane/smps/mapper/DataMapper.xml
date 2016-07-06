@@ -7,7 +7,7 @@
         SELECT
             admission.admission_nm,
             exam.exam_date, exam.exam_time,
-            examinee.dept_nm, examinee.major_nm, examinee.group_nm,
+            examinee.dept_nm, examinee.major_nm, exam_map.group_nm,
             exam.exam_nm,
             hall.head_nm, hall.bldg_nm, hall.hall_nm,
             examinee.examinee_cd, examinee.examinee_nm,
@@ -70,12 +70,12 @@
                 , hall.head_nm
                 , hall.bldg_nm
                 , hall.hall_nm
-                , examinee.group_nm
+                , exam_map.group_nm
                 , examinee.examinee_cd
                 , examinee.examinee_nm
     </select>
 
-    <select id="score" resultType="com.humane.smps.dto.ScoreDto">
+    <select id="scorer" resultType="com.humane.smps.dto.ScoreDto">
         SELECT
             admission.admission_nm,
             exam.exam_date,
@@ -113,5 +113,66 @@
                 <if test="param.scorerNm != null">score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
             </if>
         </where>
+    </select>
+
+    <select id="getScorerCnt" resultType="java.lang.Long">
+        SELECT max(scorer_cnt)
+        FROM exam
+    </select>
+
+    <select id="getItemCnt" resultType="java.lang.Long">
+        SELECT max(cnt)
+        FROM (
+                 SELECT count(*) AS cnt
+                 FROM item
+                 GROUP BY exam_cd
+             ) a
+    </select>
+    <select id="examMap" resultType="java.util.Map">
+        select admission.admission_nm as admissionNm
+            , exam.exam_date as examDate
+            , exam.exam_time as examTime
+            , examinee.dept_nm as deptNm
+            , examinee.major_nm as majorNm
+            , examinee.examinee_nm as examineeNm
+            , exam_map.exam_cd as examCd
+            , exam_map.virt_no as virtNo
+            , exam_map.examinee_cd as examineeCd
+            , exam_map.group_nm as groupNm
+            , hall.head_nm as headNm
+            , hall.bldg_nm as bldgNm
+            , hall.hall_nm as hallNm
+        from exam_map
+            inner join exam on exam_map.exam_cd = exam.exam_cd
+            inner join admission on exam.admission_cd = admission.admission_cd
+            inner join examinee on exam_map.examinee_cd = examinee.examinee_cd
+            inner join hall on exam_map.hall_cd = hall.hall_cd
+        <if test="param != null">
+            <where>
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
+                <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
+                <if test="param.examineeCd != null">AND exam_map.examinee_cd = #{param.examineeCd}</if>
+                <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+            </where>
+        </if>
+    </select>
+
+    <select id="scorerH" resultType="java.util.Map">
+        select scorer_nm as scorerNm
+              , score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
+              ,date_format(score_dttm,'%Y-%m-%d %H:%m:%s') as scoreDttm
+           from score
+          where exam_cd = #{param.examCd}
+            and virt_no = #{param.virtNo}
+          order by scorerNm
     </select>
 </mapper>

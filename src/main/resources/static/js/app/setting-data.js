@@ -8,7 +8,7 @@ define(function (require) {
     var Template = require('text!tpl/setting-data.html');
     var BootstrapDialog = require('bootstrap-dialog');
     var List = require('../grid/system-download.js');
-    var comboBox = require('text!tpl/dlg-univ.html');
+    var dlgUniv = require('text!tpl/dlg-univ.html');
 
     return Backbone.View.extend({
         initialize: function (o) {
@@ -71,7 +71,7 @@ define(function (require) {
                         url: 'system/server.json',
                         async: false,
                         success: function (res) {
-                            var tmp = _.template(comboBox);
+                            var tmp = _.template(dlgUniv);
                             header.append(tmp({list: res}));
                         }
                     });

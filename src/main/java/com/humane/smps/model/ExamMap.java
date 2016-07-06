@@ -25,4 +25,5 @@ public class ExamMap {
     private String memo;
     private String photoNm;
     private String evalCd;
+    private String groupNm;
 }
