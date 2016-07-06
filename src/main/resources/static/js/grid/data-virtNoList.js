@@ -26,7 +26,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/examinee.json',
+                    url: 'data/virtNo.json',
                     colModel: colModel
                 }
             }, options);
@@ -35,7 +35,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/examinee.xlsx');
+            this.addExcel('data/virtNo.xlsx');
             return this;
         }
     });

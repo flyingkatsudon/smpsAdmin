@@ -27,7 +27,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DataController {
-    private static final String CHART = "chart";
     private static final String JSON = "json";
     private static final String COLMODEL = "colmodel";
     private final DataService dataService;
@@ -95,6 +94,21 @@ public class DataController {
                         "jrxml/data-scorerH.jrxml"
                         , format
                         , dataService.getScorerH(param, pageable).getContent());
+        }
+    }
+
+    @RequestMapping(value = "virtNo.{format:colmodel|json|xls|xlsx}")
+    public ResponseEntity virtNo(@PathVariable String format, ScoreDto param, Pageable pageable) {
+        switch (format) {
+            case COLMODEL:
+                return ResponseEntity.ok(mapper.examMap(param, pageable));
+            case JSON:
+                return ResponseEntity.ok(mapper.examMap(param, pageable));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/data-virtNo.jrxml"
+                        , format
+                        ,mapper.examMap(param, pageable).getContent());
         }
     }
 }

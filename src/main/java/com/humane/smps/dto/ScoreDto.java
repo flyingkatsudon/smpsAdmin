@@ -14,6 +14,13 @@ import java.util.Date;
 public class ScoreDto {
     private String admissionNm;
     private String examNm;
+    private String examineeCd;
+    private String examineeNm;
+    private String examCd;
+    private String groupNm;
+    private String headNm;
+    private String bldgNm;
+    private String hallNm;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
