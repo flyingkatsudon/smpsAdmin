@@ -124,10 +124,10 @@ public class DataService {
         long itemCnt = mapper.getItemCnt(); // 항목수
 
         for (int i = 1; i <= scorerCnt; i++) {
-            colModels.add(new ColModel("scorerNm" + i, "평가위원", false));
+            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
             for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "S" + j, "항목" + j, false));
 
-            colModels.add(new ColModel("scoreDttm" + i, "채점시간", false));
+            colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));
         }
         return colModels;
     }
