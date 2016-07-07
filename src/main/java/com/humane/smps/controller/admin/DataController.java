@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
@@ -82,7 +83,8 @@ public class DataController {
                         .setIgnorePageWidth(true)
                         .setIgnorePagination(true);
 
-                for (int i = 1; i <= mapper.getItemCnt(); i++)
+                long itemCnt = mapper.getItemCnt();
+                for (int i = 1; i <= itemCnt; i++)
                     report.addColumn(col.column("항목" + i, "score" + (i < 10 ? "0" + i : i), type.stringType()));
 
                 report.addColumn(col.column("총점", "totalScore", type.stringType()));
@@ -124,6 +126,9 @@ public class DataController {
             case JSON:
                 return ResponseEntity.ok(dataService.getScorerH(param, pageable));
             default:
+
+                List<Map<String, Object>> list = dataService.getScorerH(param, pageable).getContent();
+
                 JasperReportBuilder report = report()
                         .title(cmp.text("채점자별 상세(가로)"))
                         .columns(
@@ -137,14 +142,17 @@ public class DataController {
                                 col.column("가번호", "virtNo", type.stringType()),
                                 col.column("조", "groupNm", type.stringType())
                         )
-                        .setDataSource(dataService.getScorerH(param, pageable).getContent())
+                        .setDataSource(list)
                         .setPageMargin(DynamicReports.margin(0))
                         .setIgnorePageWidth(true)
                         .setIgnorePagination(true);
 
-                for (int i = 1; i <= mapper.getScorerCnt(); i++) {
+                long scorerCnt = mapper.getScorerCnt();
+                long itemCnt = mapper.getItemCnt();
+
+                for (int i = 1; i <= scorerCnt; i++) {
                     report.addColumn(col.column("평가위원", "scorerNm" + i, type.stringType()));
-                    for (int j = 1; j <= mapper.getItemCnt(); j++)
+                    for (int j = 1; j <= itemCnt; j++)
                         report.addColumn(col.column("항목" + j, "score" + i + "S" + j, type.stringType()));
                     report.addColumn(col.column("채점시간", "scoreDttm", type.stringType()));
                 }

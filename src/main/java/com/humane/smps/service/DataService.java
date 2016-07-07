@@ -31,8 +31,10 @@ public class DataService {
         colModels.add(new ColModel("hallNm", "고사실"));
         colModels.add(new ColModel("virtNo", "가번호"));
 
-        for (int i = 1; i <= mapper.getItemCnt(); i++)
+        long itemCnt = mapper.getItemCnt();
+        for (int i = 1; i <= itemCnt; i++)
             colModels.add(new ColModel("avgScore" + i, "항목" + i + "평균"));
+
 
         colModels.add(new ColModel("scorerCnt", "평가위원수"));
         colModels.add(new ColModel("isAttend", "응시여부"));
@@ -50,7 +52,9 @@ public class DataService {
         colModels.add(new ColModel("virtNo", "가번호"));
         colModels.add(new ColModel("scorerNm", "평가위원"));
 
-        for (int i = 1; i <= mapper.getItemCnt(); i++)
+        long itemCnt = mapper.getItemCnt();
+
+        for (int i = 1; i <= itemCnt; i++)
             colModels.add(new ColModel("score0" + i, "항목" + i));
 
         colModels.add(new ColModel("totalScore", "총점"));
