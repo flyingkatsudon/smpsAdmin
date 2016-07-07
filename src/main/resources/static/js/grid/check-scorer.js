@@ -29,16 +29,17 @@ define(function (require) {
                 defaults: {
                     url: 'check/scorer.json',
                     colModel: colModel,
-                    loadComplete: function(data){
+                    loadComplete: function (data) {
                         var ids = $(this).getDataIDs(data);
 
-                        for(var i=0; i<ids.length; i++) {
+                        for (var i = 0; i < ids.length; i++) {
                             var rowData = $(this).getRowData(ids[i]);
+                            console.log(rowData.virtNo);
                             if (rowData.scoredCnt) {
-                                if(rowData.scoredCnt != rowData.scorerCnt)
-                                    $(this).setRowData(ids[i], false, { background:"#f5a7a4" });
+                                if (rowData.scoredCnt != rowData.scorerCnt)
+                                    $(this).setRowData(ids[i], false, {background: "#f5a7a4"});
                                 else
-                                    $(this).setRowData(ids[i], false, { background:"#d9edf7" });
+                                    $(this).setRowData(ids[i], false, {background: "#d9edf7"});
                             }
                         }
                     }

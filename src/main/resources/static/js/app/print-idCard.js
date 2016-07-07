@@ -24,12 +24,12 @@ define(function (require) {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm()));
         }, events: {
             'change #headNm': 'headNmChanged',
             'change #bldgNm': 'bldgNmChanged',
             'change #hallNm': 'hallNmChanged',
             'change #examDate': 'examDateChanged',
-            'change #examTime': 'examTimeChanged',
 
             'change #admissionNm': 'admissionNmChanged',
             'change #deptNm': 'deptNmChanged',
@@ -77,12 +77,21 @@ define(function (require) {
             };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         }, deptNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
+        }, majorNmChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: e.currentTarget.value
+            };
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         }, printHallClicked: function (e) {
             e.preventDefault();
 
@@ -100,7 +109,8 @@ define(function (require) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),
-                majorNm: this.$('#majorNm').val()
+                majorNm: this.$('#majorNm').val(),
+                groupNm: this.$('#groupNm').val()
             };
             this.openPrintWindow(param);
         }, printExamineeListClicked: function (e) {

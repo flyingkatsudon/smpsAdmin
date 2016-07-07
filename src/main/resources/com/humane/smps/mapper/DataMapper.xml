@@ -43,6 +43,7 @@
                 <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
@@ -80,6 +81,8 @@
             admission.admission_nm,
             exam.exam_date,
             exam.exam_time,
+            examinee.examinee_cd,
+            examinee.examinee_nm,
             examinee.dept_nm,
             examinee.major_nm,
             exam_map.virt_no,

@@ -26,7 +26,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/scorer.xlsx');
+            this.addExcel('data/scorerH.xlsx');
             return this;
         }
     });

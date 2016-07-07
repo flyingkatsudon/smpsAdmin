@@ -9,6 +9,7 @@
                 , exam.exam_time
                 , examinee.dept_nm
                 , examinee.major_nm
+                , exam_map.group_nm
                 , hall.head_nm
                 , hall.bldg_nm
                 , hall.hall_nm

@@ -40,45 +40,56 @@ public class JasperReportsExportHelper {
     public static final String EXT_XLS = "xls";
     public static final String EXT_XLSX = "xlsx";
 
-
     private static JasperReportsExportHelper instance;
 
     static {
         instance = new JasperReportsExportHelper();
     }
 
-    public static ResponseEntity toResponseEntity(String viewName, String format, List<?> content) {
-        JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
+    public static ResponseEntity toResponseEntity(JasperPrint jasperPrint, String format) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            JasperPrint jasperPrint = instance.getJasperPrint(viewName, dataSource);
-
-            if (format.equals(EXT_PDF)) {
-                instance.exportReportToPdf(jasperPrint, baos);
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Set-Cookie", "fileDownload=true; path=/");
-                headers.setContentType(MediaType.parseMediaType(PDF));
-                headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
-                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-            } else if (format.equals(EXT_XLS)) {
-                instance.exportReportToXls(jasperPrint, baos);
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Set-Cookie", "fileDownload=true; path=/");
-                headers.setContentType(MediaType.parseMediaType(XLS));
-                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
-                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-            } else if (format.equals(EXT_XLSX)) {
-                instance.exportReportToXlsx(jasperPrint, baos);
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Set-Cookie", "fileDownload=true; path=/");
-                headers.setContentType(MediaType.parseMediaType(XLSX));
-                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
-                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-            }
+            return out(jasperPrint, baos, format);
         } catch (JRException | IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+    private static ResponseEntity out(JasperPrint jasperPrint, ByteArrayOutputStream baos, String format) throws JRException {
+        if (format.equals(EXT_PDF)) {
+            instance.exportReportToPdf(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(PDF));
+            headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        } else if (format.equals(EXT_XLS)) {
+            instance.exportReportToXls(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(XLS));
+            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        } else if (format.equals(EXT_XLSX)) {
+            instance.exportReportToXlsx(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(XLSX));
+            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        }
+        return null;
+    }
+
+    public static ResponseEntity toResponseEntity(String viewName, String format, List<?> content) {
+        JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            JasperPrint jasperPrint = instance.getJasperPrint(viewName, dataSource);
+            return out(jasperPrint, baos, format);
+        } catch (JRException | IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        }
     }
 
     public static File toXlsxFile(String viewName, List<?> content) {
