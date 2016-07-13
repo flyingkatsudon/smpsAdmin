@@ -1,10 +1,9 @@
 package com.humane.smps.controller;
 
 import com.humane.smps.dto.*;
-import com.humane.smps.mapper.AdminScoreMapper;
-import com.humane.smps.mapper.CheckMapper;
 import com.humane.smps.mapper.DataMapper;
 import com.humane.smps.mapper.StatusMapper;
+import com.humane.smps.service.DataService;
 import com.humane.util.file.FileNameEncoder;
 import com.humane.util.file.FileUtils;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
@@ -12,6 +11,7 @@ import com.humane.util.zip4j.ZipFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.exception.ZipException;
+import net.sf.dynamicreports.report.exception.DRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -37,8 +37,7 @@ public class DownloadController {
     @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
     private final StatusMapper statusMapper;
     private final DataMapper dataMapper;
-    private final CheckMapper checkMapper;
-    private final AdminScoreMapper adminScoreMapper;
+    private final DataService dataService;
 
     @RequestMapping(value = "item.xlsx", method = RequestMethod.GET)
     public ResponseEntity item() {
@@ -77,7 +76,7 @@ public class DownloadController {
     }
 
     @RequestMapping(value = "allData.zip", method = RequestMethod.GET)
-    public ResponseEntity allData() throws IOException, ZipException {
+    public ResponseEntity allData() throws IOException, ZipException, DRException {
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
 
         // 압축파일 생성
@@ -86,48 +85,35 @@ public class DownloadController {
         ZipFile zipFile = new ZipFile(file);
 
         // entry 생성
-        File fileDept = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/status-dept.jrxml"
-                , statusMapper.dept(new StatusDeptDto(), pageable).getContent());
+        File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(new StatusDeptDto(), pageable).getContent());
         zipFile.addFile(fileDept);
         fileDept.delete();
 
-        File fileMajor = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/status-major.jrxml"
-                , statusMapper.major(new StatusMajorDto(), pageable).getContent());
+        File fileMajor = JasperReportsExportHelper.toXlsxFile("jrxml/status-major.jrxml", statusMapper.major(new StatusMajorDto(), pageable).getContent());
         zipFile.addFile(fileMajor);
         fileMajor.delete();
 
         //1. xlsx 파일 생성
-        File fileHall = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/status-hall.jrxml"
-                , statusMapper.hall(new StatusHallDto(), pageable).getContent());
-        //2. zip파일에 추가시키기
+        File fileHall = JasperReportsExportHelper.toXlsxFile("jrxml/status-hall.jrxml", statusMapper.hall(new StatusHallDto(), pageable).getContent());
         zipFile.addFile(fileHall);
-        //3. 추가시킨 후 xlsx파일 삭제
         fileHall.delete();
 
         // 1. xlsx 파일 생성
-        File fileGroup = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/status-group.jrxml"
-                , statusMapper.group(new StatusGroupDto(), pageable).getContent()
-        );
+        File fileGroup = JasperReportsExportHelper.toXlsxFile("jrxml/status-group.jrxml", statusMapper.group(new StatusGroupDto(), pageable).getContent());
         zipFile.addFile(fileGroup);
         fileGroup.delete();
 
-        File dataExaminee = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/data-examinee.jrxml"
-                , dataMapper.examinee(new ExamineeDto(), pageable).getContent()
-        );
-        zipFile.addFile(dataExaminee);
-        dataExaminee.delete();
+        File fileExamineeReport = JasperReportsExportHelper.toXlsxFile("수험생 별 종합", dataService.getExamineeReport(), dataMapper.examinee(new ExamineeDto(), pageable).getContent());
+        zipFile.addFile(fileExamineeReport);
+        fileExamineeReport.delete();
 
-        File dataScore = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/data-scorer.jrxml"
-                , dataMapper.scorer(new ScoreDto(), pageable).getContent()
-        );
-        zipFile.addFile(dataScore);
-        dataScore.delete();
+        File fileScorerHReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(가로)", dataService.getScorerHReport(), dataMapper.scorerH(null));
+        zipFile.addFile(fileScorerHReport);
+        fileScorerHReport.delete();
+
+        File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(null, pageable).getContent());
+        zipFile.addFile(fileScorerReport);
+        fileScorerReport.delete();
 
         // 나머지 가져오기
         // 0. 폴더위치 지정
@@ -177,8 +163,8 @@ public class DownloadController {
         File managerFolder = new File(path);
         File[] virtList = managerFolder.listFiles();
 
-        for(File f : virtList){
-            if(f.isFile())
+        for (File f : virtList) {
+            if (f.isFile())
                 zipFile.addFile(f);
         }
 
@@ -206,15 +192,15 @@ public class DownloadController {
         File[] jpgList = jpgFolder.listFiles();
 
         for (File f : jpgList) {
-            if(f.isFile())
+            if (f.isFile())
                 zipFile.addFile("jpg", f);
         }
 
         File pdfFolder = new File(pdfPath);
         File[] pdfList = pdfFolder.listFiles();
 
-        for(File f : pdfList){
-            if(f.isFile())
+        for (File f : pdfList) {
+            if (f.isFile())
                 zipFile.addFile("pdf", f);
         }
 

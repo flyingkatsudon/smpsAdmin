@@ -77,29 +77,30 @@
     </select>
 
     <select id="scorer" resultType="com.humane.smps.dto.ScoreDto">
-        SELECT
-            admission.admission_nm,
-            exam.exam_date,
-            exam.exam_time,
-            examinee.examinee_cd,
-            examinee.examinee_nm,
-            examinee.dept_nm,
-            examinee.major_nm,
-            exam_map.virt_no,
-            score.scorer_nm,
-            score.score01,
-            score.score02,
-            score.score03,
-            score.score04,
-            score.score05,
-            score.score06,
-            score.score07,
-            score.score08,
-            score.score09,
-            score.score10,
-            score.total_score,
-            score.score_dttm
-        FROM exam_map
+            SELECT
+                admission.admission_nm,
+                exam.exam_date,
+                exam.exam_time,
+                examinee.examinee_cd,
+                examinee.examinee_nm,
+                examinee.dept_nm,
+                examinee.major_nm,
+                exam_map.virt_no,
+                exam_map.group_nm,
+                score.scorer_nm,
+                score.score01,
+                score.score02,
+                score.score03,
+                score.score04,
+                score.score05,
+                score.score06,
+                score.score07,
+                score.score08,
+                score.score09,
+                score.score10,
+                score.total_score,
+                score.score_dttm
+            FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
             INNER JOIN admission ON exam.admission_cd = admission.admission_cd
             INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
@@ -132,24 +133,25 @@
              ) a
     </select>
     <select id="examMap" resultType="java.util.Map">
-        select admission.admission_nm as admissionNm
-            , exam.exam_date as examDate
-            , exam.exam_time as examTime
-            , examinee.dept_nm as deptNm
-            , examinee.major_nm as majorNm
-            , examinee.examinee_nm as examineeNm
-            , exam_map.exam_cd as examCd
-            , exam_map.virt_no as virtNo
-            , exam_map.examinee_cd as examineeCd
-            , exam_map.group_nm as groupNm
-            , hall.head_nm as headNm
-            , hall.bldg_nm as bldgNm
-            , hall.hall_nm as hallNm
-        from exam_map
-            inner join exam on exam_map.exam_cd = exam.exam_cd
-            inner join admission on exam.admission_cd = admission.admission_cd
-            inner join examinee on exam_map.examinee_cd = examinee.examinee_cd
-            inner join hall on exam_map.hall_cd = hall.hall_cd
+        FROM(
+            select admission.admission_nm as admissionNm
+                , exam.exam_date as examDate
+                , exam.exam_time as examTime
+                , examinee.dept_nm as deptNm
+                , examinee.major_nm as majorNm
+                , examinee.examinee_nm as examineeNm
+                , exam_map.exam_cd as examCd
+                , exam_map.virt_no as virtNo
+                , exam_map.examinee_cd as examineeCd
+                , exam_map.group_nm as groupNm
+                , hall.head_nm as headNm
+                , hall.bldg_nm as bldgNm
+                , hall.hall_nm as hallNm
+            from exam_map
+                inner join exam on exam_map.exam_cd = exam.exam_cd
+                inner join admission on exam.admission_cd = admission.admission_cd
+                inner join examinee on exam_map.examinee_cd = examinee.examinee_cd
+                inner join hall on exam_map.hall_cd = hall.hall_cd
         <if test="param != null">
             <where>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
@@ -177,5 +179,10 @@
           where exam_cd = #{param.examCd}
             and virt_no = #{param.virtNo}
           order by scorerNm
+        <where>
+            <if test="param != null">
+                <if test="param.scorerNm">AND score.score_nm = #{param.scorer_nm}</if>
+            </if>
+        </where>
     </select>
 </mapper>

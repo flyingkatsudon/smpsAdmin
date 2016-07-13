@@ -1,6 +1,8 @@
 package com.humane.util.jasperreports;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -119,6 +121,64 @@ public class JasperReportsExportHelper {
         File file = null;
         try {
             JasperPrint jasperPrint = instance.getJasperPrint(viewName, dataSource);
+            if (jasperPrint == null) return null;
+
+            if (path != null) {
+                path.mkdirs();
+                file = new File(path, jasperPrint.getName() + "." + format);
+            } else {
+                file = new File(jasperPrint.getName() + "." + format);
+            }
+
+            fos = new FileOutputStream(file);
+
+            if (format.equals(EXT_PDF)) {
+                instance.exportReportToPdf(jasperPrint, fos);
+            } else if (format.equals(EXT_XLS)) {
+                instance.exportReportToXls(jasperPrint, fos);
+            } else if (format.equals(EXT_XLSX)) {
+                instance.exportReportToXlsx(jasperPrint, fos);
+            }
+        } catch (JRException | FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(fos);
+        }
+        return file;
+    }
+
+    public static File toXlsxFile(JasperPrint jasperPrint) {
+        return toFile((File) null, jasperPrint, EXT_XLSX);
+    }
+
+    public static File toXlsFile(JasperPrint jasperPrint) {
+        return toFile((File) null, jasperPrint, EXT_XLS);
+    }
+
+    public static File toPdfFile(JasperPrint jasperPrint) {
+        return toFile((File) null, jasperPrint, EXT_PDF);
+    }
+
+    public static File toFile(String path, JasperPrint jasperPrint, String format) {
+        return toFile(new File(path), jasperPrint, format);
+    }
+
+    public static File toXlsxFile(String name, JasperReportBuilder jasperReportBuilder, List<?> content) throws DRException {
+        return toFile(name, jasperReportBuilder, EXT_XLSX, content);
+    }
+
+    public static File toFile(String name, JasperReportBuilder jasperReportBuilder, String format, List<?> content) throws DRException {
+        JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
+        jasperReportBuilder.setDataSource(dataSource);
+        JasperPrint jasperPrint = jasperReportBuilder.toJasperPrint();
+        jasperPrint.setName(name);
+        return toFile((File) null, jasperPrint, format);
+    }
+
+    public static File toFile(File path, JasperPrint jasperPrint, String format) {
+        FileOutputStream fos = null;
+        File file = null;
+        try {
             if (jasperPrint == null) return null;
 
             if (path != null) {

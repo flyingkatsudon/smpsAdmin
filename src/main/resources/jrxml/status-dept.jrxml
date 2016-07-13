@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-06-08T14:39:51 -->
+<!-- 2016-07-07T16:38:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="모집단위 별 통계표" pageWidth="1000" pageHeight="555" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1000" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" isIgnorePagination="true" uuid="1d8d5473-da75-420c-b65d-d70368d197b8">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -48,7 +48,7 @@
 		<band height="15">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="15" uuid="af96b6cc-6c3b-4e5a-aee0-204543c1ee5a">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="af96b6cc-6c3b-4e5a-aee0-204543c1ee5a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -63,7 +63,7 @@
 				<text><![CDATA[번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="100" height="15" uuid="0b6d4cbe-cf2c-4616-b70a-f73706d2415e"/>
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="0b6d4cbe-cf2c-4616-b70a-f73706d2415e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -76,7 +76,7 @@
 				<text><![CDATA[전형]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="100" height="15" uuid="5e56fc09-20cf-4986-828a-c22bceface5e"/>
+				<reportElement stretchType="RelativeToBandHeight" x="200" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="5e56fc09-20cf-4986-828a-c22bceface5e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -89,7 +89,7 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="15" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
+				<reportElement stretchType="RelativeToBandHeight" x="300" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -102,7 +102,7 @@
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="100" height="15" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
+				<reportElement stretchType="RelativeToBandHeight" x="400" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -115,7 +115,7 @@
 				<text><![CDATA[모집단위]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="0" width="100" height="15" uuid="c91e6210-c77f-4c36-8d9b-66783d3406c4"/>
+				<reportElement stretchType="RelativeToBandHeight" x="500" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="c91e6210-c77f-4c36-8d9b-66783d3406c4"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -128,7 +128,7 @@
 				<text><![CDATA[지원자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="600" y="0" width="100" height="15" uuid="5675c9f0-e73e-4aa5-b024-944df84ef68d"/>
+				<reportElement stretchType="RelativeToBandHeight" x="600" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="5675c9f0-e73e-4aa5-b024-944df84ef68d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -141,7 +141,7 @@
 				<text><![CDATA[응시자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="700" y="0" width="100" height="15" uuid="54424786-7c4d-42d2-8e79-317e0b303520"/>
+				<reportElement stretchType="RelativeToBandHeight" x="700" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="54424786-7c4d-42d2-8e79-317e0b303520"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -154,7 +154,7 @@
 				<text><![CDATA[응시율]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="800" y="0" width="100" height="15" uuid="0c2f3b8e-2e08-40cc-a13a-75dadc77d2c0"/>
+				<reportElement stretchType="RelativeToBandHeight" x="800" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="0c2f3b8e-2e08-40cc-a13a-75dadc77d2c0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -167,7 +167,7 @@
 				<text><![CDATA[결시자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="900" y="0" width="100" height="15" uuid="9dc407b2-a687-4660-b3be-aec3db829f52"/>
+				<reportElement stretchType="RelativeToBandHeight" x="900" y="0" width="100" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="9dc407b2-a687-4660-b3be-aec3db829f52"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>

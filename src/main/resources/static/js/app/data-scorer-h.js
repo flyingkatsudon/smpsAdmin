@@ -3,8 +3,8 @@ define(function (require) {
     var Backbone = require('backbone');
 
     var List = require('../grid/data-scorer-h.js');
-    var Toolbar = require('../toolbar/data-scorer.js');
-    var Template = require('text!/tpl/data-scorer.html');
+    var Toolbar = require('../toolbar/data-scorer-h.js');
+    var Template = require('text!/tpl/data-scorer-h.html');
 
     return Backbone.View.extend({
         render: function () {

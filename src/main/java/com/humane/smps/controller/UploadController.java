@@ -30,6 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.util.List;
 
 @RestController
@@ -142,6 +145,7 @@ public class UploadController {
                         .and(QExam.exam.examTime.eq(exam.getExamTime()))
                 );
 
+                log.debug("{}", exam);
                 // 2. 고사실정보 생성
                 Hall hall = mapper.convertValue(uploadHallDto, Hall.class);
                 hall = hallRepository.save(hall);
@@ -193,12 +197,15 @@ public class UploadController {
                         .and(hall.hallNm.eq(vo.getHallNm()))
                 );
 
+                log.debug("{}", examHall);
+
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
                 log.debug("{}", examinee);
                 examineeRepository.save(examinee);
 
-                ExamMap examMap = new ExamMap();
+                //ExamMap examMap = new ExamMap();
+                ExamMap examMap = mapper.convertValue(vo, ExamMap.class);
                 examMap.setExam(examHall.getExam());
                 examMap.setHall(examHall.getHall());
                 examMap.setExaminee(examinee);
@@ -262,6 +269,10 @@ public class UploadController {
 
                     log.debug("{}", wrapper.getContent());
 
+                    for(int i=0; i<wrapper.getContent().size(); i++){
+                        String str = wrapper.getContent().get(i).getScorerNm();
+                        log.debug("{}", str);
+                    }
                     QScore qScore = QScore.score;
 
                     wrapper.getContent().forEach(score -> {

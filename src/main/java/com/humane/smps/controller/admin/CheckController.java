@@ -20,17 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CheckController {
-    private static final String CHART = "chart";
     private static final String JSON = "json";
     private final CheckMapper mapper;
 
-    @RequestMapping(value = "send.{format:json|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "send.{format:json|pdf|xls|xlsx}")
     public ResponseEntity send(@PathVariable String format, SendDto param, Pageable pageable) {
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.send(param, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.send(param, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-send.jrxml"
@@ -39,13 +36,11 @@ public class CheckController {
         }
     }
 
-    @RequestMapping(value = "item.{format:json|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "item.{format:json|pdf|xls|xlsx}")
     public ResponseEntity item(@PathVariable String format, CheckItemDto param, Pageable pageable) {
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.item(param, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.item(param, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-item.jrxml"
@@ -54,13 +49,11 @@ public class CheckController {
         }
     }
 
-    @RequestMapping(value = "scorer.{format:json|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "scorer.{format:json|pdf|xls|xlsx}")
     public ResponseEntity scorer(@PathVariable String format, CheckScorerDto param, Pageable pageable) {
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.scorer(param, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.scorer(param, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-scorer.jrxml"

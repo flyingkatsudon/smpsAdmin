@@ -5,12 +5,14 @@
 <mapper namespace="com.humane.smps.mapper.AdminScoreMapper">
     <select id="sheet" resultType="com.humane.smps.dto.SheetDto">
         SELECT admission.admission_nm
+                , exam.exam_cd
                 , exam.exam_nm
                 , exam.exam_date
                 , exam.exam_time
                 , hall.head_nm
                 , hall.bldg_nm
                 , hall.hall_nm
+                , hall.hall_cd
                 , sheet.scorer_nm
                 , sheet.sheet_no
                 , sheet.reg_dttm
@@ -80,27 +82,5 @@
             , exam_map.virt_no
             , score.scorer_nm
         HAVING COUNT(*) > 1
-    </select>
-
-    <select id="detail" resultType="com.humane.smps.dto.ScoreDto">
-        SELECT distinct score.virt_no, sheet.scorer_nm,
-            score.score01,
-            score.score02,
-            score.score03,
-            score.score04,
-            score.score05,
-            score.score06,
-            score.score07,
-            score.score08,
-            score.score09,
-            score.score10
-        FROM score
-        INNER JOIN sheet ON sheet.scorer_nm = score.scorer_nm
-        <where>
-            <if test="param != null">
-                <if test="param.scorerNm">AND sheet.scorer_nm = #{param.scorerNm}</if>
-                <if test="param.sheetNo">AND sheet.sheet_no = #{param.sheetNo}</if>
-            </if>
-        </where>
     </select>
 </mapper>

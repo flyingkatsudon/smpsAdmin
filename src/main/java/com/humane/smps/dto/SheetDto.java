@@ -13,6 +13,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SheetDto {
     private String admissionNm;
+    private String examCd;
     private String examNm;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -25,6 +26,7 @@ public class SheetDto {
 
     private String headNm;
     private String bldgNm;
+    private String hallCd;
     private String hallNm;
     private String scorerNm;
     private Long sheetNo;

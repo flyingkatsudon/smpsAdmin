@@ -27,7 +27,7 @@
         <mybatis-starter.version>1.1.1</mybatis-starter.version>
         <springfox-swagger.version>2.5.0</springfox-swagger.version>
         <retrofit2.version>2.1.0</retrofit2.version>
-        <okhttp3.version>3.3.1</okhttp3.version>
+        <okhttp3.version>3.4.1</okhttp3.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-compress.version>1.11</commons-compress.version>
@@ -38,16 +38,6 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>jasperreports-repository</id>
-            <name>JasperReports Library for Maven</name>
-            <url>http://jasperreports.sourceforge.net/maven2/</url>
-        </repository>
-        <repository>
-            <id>jasperreports-third-party-repository</id>
-            <name>JasperReports Third Party Library for Maven</name>
-            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/</url>
-        </repository>
         <repository>
             <id>humane-repository</id>
             <name>Humane System Library for Maven</name>
