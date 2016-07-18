@@ -3,8 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.smps.mapper.CheckMapper">
-    <select id="send" resultType="com.humane.smps.dto.SendDto">
+    <select id="send" resultType="com.humane.smps.dto.CheckSendDto">
         SELECT admission.admission_nm,
+        exam.type_nm,
         exam.exam_date,
         exam.exam_time,
         examinee.dept_nm,
@@ -27,6 +28,7 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
@@ -56,6 +58,7 @@
 
     <select id="item" resultType="com.humane.smps.dto.CheckItemDto">
         SELECT admission.admission_nm
+        , exam.type_nm
         , exam.exam_date
         , exam.exam_time
         , examinee.dept_nm
@@ -87,6 +90,7 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
@@ -104,6 +108,7 @@
         </where>
         GROUP BY
         admission.admission_nm
+        , exam.type_nm
         , exam.exam_date
         , exam.exam_time
         , examinee.dept_nm
@@ -119,6 +124,7 @@
 
     <select id="scorer" resultType="com.humane.smps.dto.CheckScorerDto">
         SELECT admission.admission_nm
+        , exam.type_nm
         , exam.exam_date
         , exam.exam_time
         , examinee.examinee_cd
@@ -140,6 +146,7 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
@@ -156,6 +163,7 @@
         </where>
         GROUP BY
         admission.admission_nm
+        , exam.type_nm
         , exam.exam_date
         , exam.exam_time
         , examinee.dept_nm

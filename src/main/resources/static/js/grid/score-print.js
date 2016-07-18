@@ -8,6 +8,7 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
+                {name: 'typeNm', label: '계열'},
                 {name: 'examCd', label: '시험코드', hidden:true},
                 {name: 'examNm', label: '시험명'},
                 {name: 'examDate', label: '시험일자'},

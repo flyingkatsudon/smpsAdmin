@@ -14,6 +14,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ExamineeDto {
     private String admissionNm;
+    private String typeNm;
     private String examNm;
     private String deptNm;
     private String majorNm;

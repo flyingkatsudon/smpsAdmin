@@ -107,17 +107,21 @@ public class DownloadController {
         zipFile.addFile(fileExamineeReport);
         fileExamineeReport.delete();
 
-        File fileScorerHReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(가로)", dataService.getScorerHReport(), dataMapper.scorerH(null));
+        File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examMap(new ScoreDto(), pageable).getContent());
+        zipFile.addFile(fileVirtNoReport);
+        fileVirtNoReport.delete();
+
+        File fileScorerHReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(가로)", dataService.getScorerHReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileScorerHReport);
         fileScorerHReport.delete();
 
-        File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(null, pageable).getContent());
+        File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileScorerReport);
         fileScorerReport.delete();
 
         // 나머지 가져오기
         // 0. 폴더위치 지정
-        String jpgPath = "D:/jpg";
+        String jpgPath = pathRoot + "/jpg";
         // 1. 사진 폴더 생성
         File jpgFolder = new File(jpgPath);
         // 1.1 사진 가져옴
@@ -129,7 +133,7 @@ public class DownloadController {
         }
 
 
-        String pdfPath = "D:/pdf";
+        String pdfPath = pathRoot + "/pdf";
         // 2. pdf 폴더 생성
         File pdfFolder = new File(pdfPath);
         // 2.1 pdf 가져옴
@@ -147,7 +151,7 @@ public class DownloadController {
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.setContentType(MediaType.parseMediaType("application/zip"));
         headers.setContentLength(ba.length);
-        headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물.zip"));
+        headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물_SMPS.zip"));
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
@@ -185,8 +189,8 @@ public class DownloadController {
 
         ZipFile zipFile = new ZipFile(file);
 
-        String jpgPath = "D:/jpg";
-        String pdfPath = "D:/pdf";
+        String jpgPath = pathRoot + "/jpg";
+        String pdfPath = pathRoot + "/pdf";
 
         File jpgFolder = new File(jpgPath);
         File[] jpgList = jpgFolder.listFiles();

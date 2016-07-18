@@ -5,6 +5,7 @@
 <mapper namespace="com.humane.smps.mapper.ModelMapper">
     <select id="toolbar" resultType="com.humane.smps.dto.StatusDto">
         SELECT DISTINCT admission.admission_nm
+                , exam.type_nm
                 , exam.exam_date
                 , exam.exam_time
                 , examinee.dept_nm

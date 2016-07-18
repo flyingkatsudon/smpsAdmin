@@ -6,6 +6,7 @@
     <select id="examinee" resultType="com.humane.smps.dto.ExamineeDto">
         SELECT
             admission.admission_nm,
+            exam.type_nm,
             exam.exam_date, exam.exam_time,
             examinee.dept_nm, examinee.major_nm, exam_map.group_nm,
             exam.exam_nm,
@@ -39,6 +40,7 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
@@ -79,6 +81,7 @@
     <select id="scorer" resultType="com.humane.smps.dto.ScoreDto">
             SELECT
                 admission.admission_nm,
+                exam.type_nm,
                 exam.exam_date,
                 exam.exam_time,
                 examinee.examinee_cd,
@@ -104,10 +107,11 @@
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
             INNER JOIN admission ON exam.admission_cd = admission.admission_cd
             INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
-            INNER JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
+            LEFT JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
@@ -133,28 +137,29 @@
              ) a
     </select>
     <select id="examMap" resultType="java.util.Map">
-        FROM(
-            select admission.admission_nm as admissionNm
-                , exam.exam_date as examDate
-                , exam.exam_time as examTime
-                , examinee.dept_nm as deptNm
-                , examinee.major_nm as majorNm
-                , examinee.examinee_nm as examineeNm
-                , exam_map.exam_cd as examCd
-                , exam_map.virt_no as virtNo
-                , exam_map.examinee_cd as examineeCd
-                , exam_map.group_nm as groupNm
-                , hall.head_nm as headNm
-                , hall.bldg_nm as bldgNm
-                , hall.hall_nm as hallNm
-            from exam_map
-                inner join exam on exam_map.exam_cd = exam.exam_cd
-                inner join admission on exam.admission_cd = admission.admission_cd
-                inner join examinee on exam_map.examinee_cd = examinee.examinee_cd
-                inner join hall on exam_map.hall_cd = hall.hall_cd
+        SELECT admission.admission_nm AS admissionNm
+            , exam.type_nm AS typeNm
+            , exam.exam_date AS examDate
+            , exam.exam_time AS examTime
+            , examinee.dept_nm AS deptNm
+            , examinee.major_nm AS majorNm
+            , examinee.examinee_nm AS examineeNm
+            , exam_map.exam_cd AS examCd
+            , exam_map.virt_no AS virtNo
+            , exam_map.examinee_cd AS examineeCd
+            , exam_map.group_nm AS groupNm
+            , hall.head_nm AS headNm
+            , hall.bldg_nm AS bldgNm
+            , hall.hall_nm AS hallNm
+        FROM exam_map
+            INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+            INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+            INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+            INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
         <if test="param != null">
             <where>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>

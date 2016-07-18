@@ -30,9 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.util.List;
 
 @RestController
@@ -64,10 +61,9 @@ public class UploadController {
             // 1 엑셀 파징
             List<FormDeviVo> deviList = ExOM.mapFromExcel(file).to(FormDeviVo.class).map(1);
 
+            log.debug("{}", deviList);
             // 2. 편차 생성
             deviList.forEach(vo -> {
-                        log.debug("{}", vo);
-
                         // 2.1 편차 변환
                         Devi devi = mapper.convertValue(vo, Devi.class);
 
@@ -99,9 +95,10 @@ public class UploadController {
         try {
             // 1. excel 변환
             List<FormItemVo> itemList = ExOM.mapFromExcel(file).to(FormItemVo.class).map(1);
+            log.debug("{}", itemList);
             for (FormItemVo dto : itemList) {
                 // 2. admission 변환, 저장
-                log.debug("{}", dto);
+
                 Admission admission = mapper.convertValue(dto, Admission.class);
                 admission = admissionRepository.save(admission);
 
@@ -132,6 +129,7 @@ public class UploadController {
 
         try {
             List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
+            log.debug("{}", hallList);
             hallList.forEach(uploadHallDto -> {
                 /**
                  * 제약조건 : 시험정보는 반드시 업로드 되어 있어야 한다.
@@ -183,6 +181,7 @@ public class UploadController {
 
         try {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
+            log.debug("{}", examineeList);
             examineeList.forEach(vo -> {
 
                 // 1. ExamHall 에서 고사실 및 시험정보를 가져온다.
@@ -234,23 +233,24 @@ public class UploadController {
 
         // zip4j 읽기
         ZipFile zipFile = new ZipFile(file);
-        zipFile.setFileNameCharset(zipFile.getCharset());
+        String charset = zipFile.getCharset();
+        log.debug("Detected charset : {}", charset);
+        zipFile.setFileNameCharset(charset);
 
         try {
             List<FileHeader> fileHeaders = zipFile.getFileHeaders();
             for (FileHeader fileHeader : fileHeaders) {
                 String fileName = fileHeader.getFileName();
                 if (fileName.endsWith("_sheet.txt")) {
-
                     // file read
                     FileWrapper<Sheet> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Sheet>>() {
-                    });
-                    log.debug("{}", wrapper.getContent());
+                    }, charset);
 
                     QSheet qSheet = QSheet.sheet;
 
                     wrapper.getContent().forEach(sheet -> {
-                        Sheet tmp = sheetRepository.findOne(
+                        Sheet tmp = null;
+                        tmp = sheetRepository.findOne(
                                 new BooleanBuilder()
                                         .and(qSheet.scorerNm.eq(sheet.getScorerNm()))
                                         .and(qSheet.sheetNo.eq(sheet.getSheetNo()))
@@ -265,14 +265,8 @@ public class UploadController {
 
                 } else if (fileName.endsWith("_score.txt")) {
                     FileWrapper<Score> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Score>>() {
-                    });
+                    }, charset);
 
-                    log.debug("{}", wrapper.getContent());
-
-                    for(int i=0; i<wrapper.getContent().size(); i++){
-                        String str = wrapper.getContent().get(i).getScorerNm();
-                        log.debug("{}", str);
-                    }
                     QScore qScore = QScore.score;
 
                     wrapper.getContent().forEach(score -> {

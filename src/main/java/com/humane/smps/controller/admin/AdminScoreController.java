@@ -37,7 +37,7 @@ public class AdminScoreController {
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-print.jrxml"
-                        , JasperReportsExportHelper.EXT_PDF
+                        , format
                         , mapper.sheet(param, pageable).getContent());
         }
     }

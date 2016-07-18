@@ -12,6 +12,7 @@ public class FormItemVo {
     @Column(name = "모집") private String recruitNm;
     @Column(name = "전형코드") private String admissionCd;
     @Column(name = "전형명") private String admissionNm;
+    @Column(name = "계열") private String typeNm;
     @Column(name = "시험코드") private String examCd;
     @Column(name = "시험명") private String examNm;
     @Column(name = "시험일자") private String examDate;

@@ -13,6 +13,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CheckSendDto {
     private String admissionNm;
+    private String typeNm;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -33,10 +34,9 @@ public class CheckSendDto {
     private String hallNm;
 
     private Boolean isSend;
-    private String uuid;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date send_dttm;
+    private Date regDttm;
 
 }

@@ -15,6 +15,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StatusDeptDto {
     private String admissionNm;
+    private String typeNm;
     private String examNm;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

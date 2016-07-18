@@ -14,6 +14,7 @@ define(function (require) {
         },
         render: function () {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
             this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
@@ -26,6 +27,7 @@ define(function (require) {
         events: {
             'click #search': 'searchClicked',
             'change #admissionNm': 'admissionNmChanged',
+            'change #typeNm': 'typeNmChanged',
             'change #examDate': 'examDateChanged',
             'change #examTime': 'examTimeChanged',
             'change #deptNm': 'deptNmChanged',
@@ -40,6 +42,7 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
+                    typeNm: _this.$('#typeNm').val(),
                     examDate: _this.$('#examDate').val(),
                     examTime: _this.$('#examTime').val(),
                     deptNm: _this.$('#deptNm').val(),
@@ -56,6 +59,20 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+        },
+        typeNmChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                typeNm: e.currentTarget.value
+            };
             this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
@@ -67,6 +84,7 @@ define(function (require) {
         examDateChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 examDate: e.currentTarget.value
             };
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
@@ -78,6 +96,7 @@ define(function (require) {
         examTimeChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 examDate: this.$('#examDate').val(),
                 examTime: e.currentTarget.value
             };
@@ -89,6 +108,7 @@ define(function (require) {
         deptNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 examDate: this.$('#examDate').val(),
                 examTime: this.$('#examTime').val(),
                 deptNm: e.currentTarget.value
@@ -101,6 +121,7 @@ define(function (require) {
         majorNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 examDate: this.$('#examDate').val(),
                 examTime: this.$('#examTime').val(),
                 deptNm: this.$('#deptNm').val(),
@@ -113,6 +134,7 @@ define(function (require) {
         headNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 examDate: this.$('#examDate').val(),
                 examTime: this.$('#examTime').val(),
                 deptNm: this.$('#deptNm').val(),
@@ -125,6 +147,7 @@ define(function (require) {
         bldgNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 examDate: this.$('#examDate').val(),
                 examTime: this.$('#examTime').val(),
                 deptNm: this.$('#deptNm').val(),

@@ -5,6 +5,7 @@
 <mapper namespace="com.humane.smps.mapper.AdminScoreMapper">
     <select id="sheet" resultType="com.humane.smps.dto.SheetDto">
         SELECT admission.admission_nm
+                , exam.type_nm
                 , exam.exam_cd
                 , exam.exam_nm
                 , exam.exam_date
@@ -25,6 +26,7 @@
             <if test="param != null">
                 <if test="param.isCancel == true">AND sheet.cancel_dttm IS NOT NULL</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
@@ -39,6 +41,7 @@
     <select id="fix" resultType="com.humane.smps.dto.ScoreFixDto">
         SELECT
             admission.admission_nm
+            , exam.type_nm
             , exam.exam_date
             , exam.exam_time
             , examinee.dept_nm
@@ -59,6 +62,8 @@
             INNER JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
         <where>
             <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
                 <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
                 <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
@@ -72,6 +77,7 @@
             </if>
         </where>
         GROUP BY exam.exam_nm
+            , exam.type_nm
             , exam.exam_date
             , exam.exam_time
             , examinee.dept_nm

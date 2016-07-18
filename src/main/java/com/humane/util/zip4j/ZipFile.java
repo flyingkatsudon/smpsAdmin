@@ -3,7 +3,6 @@ package com.humane.util.zip4j;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.humane.util.charset.CharsetUtil;
 import com.humane.util.gson.GsonDateDeserializer;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.io.ZipInputStream;
@@ -58,10 +57,10 @@ public class ZipFile extends net.lingala.zip4j.core.ZipFile {
         return parameters;
     }
 
-    public <T> T parseObject(FileHeader fileHeader, TypeToken<T> typeToken) {
+    public <T> T parseObject(FileHeader fileHeader, TypeToken<T> typeToken, String charset) {
+
         try (ZipInputStream zis = this.getInputStream(fileHeader)) {
             byte[] ba = IOUtils.toByteArray(zis);
-            String charset = CharsetUtil.getCharset(ba);
             String str = charset != null ? new String(ba, charset) : new String(ba);
             Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateDeserializer()).create();
             return (T) gson.fromJson(str, typeToken.getType());
@@ -69,6 +68,10 @@ public class ZipFile extends net.lingala.zip4j.core.ZipFile {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public <T> T parseObject(FileHeader fileHeader, TypeToken<T> typeToken) {
+        return parseObject(fileHeader, typeToken, null);
     }
 
     public String getCharset() throws ZipException {

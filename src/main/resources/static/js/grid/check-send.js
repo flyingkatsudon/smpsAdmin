@@ -7,6 +7,7 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
+                {name: 'typeNm', label: '계열'},
                 {name: 'examDate', label: '시험일자'},
                 {name: 'examTime', label: '시험시간'},
                 {name: 'deptNm', label: '모집단위'},
@@ -17,7 +18,6 @@ define(function (require) {
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'isSend', label: '전송여부', formatter: 'select', editoptions: {value: {true: '전송', false: '미전송'}}},
-                {name: 'uuid', label: 'UUID'},
                 {name: 'regDttm', label: '전송시간'}
             ];
 

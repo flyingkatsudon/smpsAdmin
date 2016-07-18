@@ -2,7 +2,7 @@ package com.humane.smps.controller.admin;
 
 import com.humane.smps.dto.CheckItemDto;
 import com.humane.smps.dto.CheckScorerDto;
-import com.humane.smps.dto.SendDto;
+import com.humane.smps.dto.CheckSendDto;
 import com.humane.smps.mapper.CheckMapper;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class CheckController {
     private final CheckMapper mapper;
 
     @RequestMapping(value = "send.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity send(@PathVariable String format, SendDto param, Pageable pageable) {
+    public ResponseEntity send(@PathVariable String format, CheckSendDto param, Pageable pageable) {
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.send(param, pageable));

@@ -13,6 +13,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SheetDto {
     private String admissionNm;
+    private String typeNm;
     private String examCd;
     private String examNm;
 
