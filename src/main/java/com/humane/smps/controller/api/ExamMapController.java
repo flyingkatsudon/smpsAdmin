@@ -1,7 +1,9 @@
 package com.humane.smps.controller.api;
 
 import com.humane.smps.model.ExamMap;
+import com.humane.smps.model.QExamMap;
 import com.humane.smps.repository.ExamMapRepository;
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,20 @@ public class ExamMapController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ExamMap> merge(@RequestBody ExamMap examMap) {
+        // 기존에 있을 경우 update , 없을 경우 insert
+
+        // 찾기 examinee, exam, hall
+        QExamMap qExamMap = QExamMap.examMap;
+
+        ExamMap findMap = repository.findOne(new BooleanBuilder()
+                .and(qExamMap.examinee.eq(examMap.getExaminee()))
+                .and(qExamMap.exam.eq(examMap.getExam()))
+                .and(qExamMap.hall.eq(examMap.getHall()))
+        );
+
+        // pk 지정. pk가 있을 경우는 update된다.
+        if(findMap != null) examMap.set_id(findMap.get_id());
+
         ExamMap rtn = repository.save(examMap);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
