@@ -26,7 +26,7 @@
     "text": "^2.0.15",
     "require-css": "^0.1.8",
     "raphael": "^2.2.1",
-    "jqGrid": "jqgrid#^5.1.0",
+    "jqGrid": "jqgrid#5.1.0",
     "morris.js": "morrisjs#^0.5.1",
     "jquery-file-download": "^1.4.4",
     "lil-uuid": "^0.1.1",

@@ -29,8 +29,13 @@ public class ImageService {
         return null;
     }
 
-    public void deleteImageExaminee(String fileName) throws IOException {
-        File file = new File("C:/api/image/examinee/" + fileName + ".jpg");
-        file.delete();
+    public void deleteImage(String... path) throws IOException {
+        for (String p : path) {
+            File examineePath = new File(p);
+            File[] a = examineePath.listFiles();
+            for (File file : a) {
+                file.delete();
+            }
+        }
     }
 }

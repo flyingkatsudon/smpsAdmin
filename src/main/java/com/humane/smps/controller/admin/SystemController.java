@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
@@ -41,7 +42,7 @@ public class SystemController {
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "") String sort) {
 
-        if(StringUtils.isEmpty(url) || url.trim().length() == 0){ // 선택된 서버가 없다면 empty
+        if (StringUtils.isEmpty(url) || url.trim().length() == 0) { // 선택된 서버가 없다면 empty
             return ResponseEntity.ok(new Page());
         }
 
@@ -78,16 +79,9 @@ public class SystemController {
         return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
     }
 
-    private static final String PHOTO = "photo";
-
-    @RequestMapping(value = "reset.{format:photo|none}")
-    public void reset(@PathVariable String format) {
-        switch(format){
-            case PHOTO:
-                systemService.resetData(format);
-            default:
-                systemService.resetData(null);
-        }
+    @RequestMapping(value = "reset")
+    public void reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
+        systemService.resetData(photo);
     }
 
     @RequestMapping(value = "init")

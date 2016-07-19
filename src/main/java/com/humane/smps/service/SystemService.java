@@ -46,8 +46,10 @@ public class SystemService {
     @PersistenceContext private EntityManager entityManager;
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
 
+    ImageService imageService = new ImageService();
+
     @Transactional
-    public void resetData(String choice) {
+    public void resetData(boolean photo) throws IOException {
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QSheet.sheet).execute();
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QScore.score).execute();
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QExamHall.examHall).execute();
@@ -66,15 +68,6 @@ public class SystemService {
                 new HibernateDeleteClause(entityManager.unwrap(Session.class), QExaminee.examinee)
                         .where(QExaminee.examinee.eq(examMap.getExaminee()))
                         .execute();
-
-                // delete photo
-                if (choice.equals("photo")) {
-                    String examineeCd = examMap.getExaminee().getExamineeCd();
-
-                    ImageService imageService = new ImageService();
-                    imageService.deleteImageExaminee(examineeCd);
-                }
-
             } catch (Exception ignored) {
             }
         }
@@ -105,6 +98,12 @@ public class SystemService {
         new HibernateDeleteClause(entityManager.unwrap(Session.class), QAdmission.admission)
                 .where(QAdmission.admission.admissionCd.in(admissions))
                 .execute();
+
+        // delete photo
+        if (photo) {
+            imageService.deleteImage(pathImageExaminee);
+        }
+
     }
 
     public void initData() {
