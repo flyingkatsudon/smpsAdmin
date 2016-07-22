@@ -35,7 +35,6 @@ define(function (require) {
 
                         for (var i = 0; i < ids.length; i++) {
                             var rowData = $(this).getRowData(ids[i]);
-                            console.log(rowData.virtNo);
                             if (rowData.scoredCnt) {
                                 if (rowData.scoredCnt != rowData.scorerCnt)
                                     $(this).setRowData(ids[i], false, {background: "#f5a7a4"});

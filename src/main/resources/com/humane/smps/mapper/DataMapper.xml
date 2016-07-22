@@ -8,6 +8,7 @@
             admission.admission_nm,
             exam.type_nm,
             exam.exam_date, exam.exam_time,
+            examinee.college_nm,
             examinee.dept_nm, examinee.major_nm, exam_map.group_nm,
             exam.exam_nm,
             hall.head_nm, hall.bldg_nm, hall.hall_nm,
@@ -30,7 +31,8 @@
                   WHEN COUNT(score.scorer_nm) = 0 THEN FALSE
                   WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN FALSE
                   ELSE TRUE
-            END                                                                AS is_attend
+            END                                                                AS is_attend,
+            now() AS print_dttm
         FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
             INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
@@ -146,6 +148,7 @@
             , examinee.examinee_nm AS examineeNm
             , exam_map.exam_cd AS examCd
             , exam_map.virt_no AS virtNo
+            , date_format(scan_dttm,'%Y-%m-%d %H:%m:%s') as scanDttm
             , exam_map.examinee_cd AS examineeCd
             , exam_map.group_nm AS groupNm
             , hall.head_nm AS headNm
@@ -179,7 +182,8 @@
     <select id="scorerH" resultType="java.util.Map">
         select scorer_nm as scorerNm
               , score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
-              ,date_format(score_dttm,'%Y-%m-%d %H:%m:%s') as scoreDttm
+              , date_format(score_dttm,'%Y-%m-%d %H:%m:%s') as scoreDttm
+              , total_score
            from score
           where exam_cd = #{param.examCd}
             and virt_no = #{param.virtNo}

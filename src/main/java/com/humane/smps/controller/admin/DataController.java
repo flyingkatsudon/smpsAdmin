@@ -43,11 +43,18 @@ public class DataController {
     public ResponseEntity examineeId(ExamineeDto param, Pageable pageable) {
         List<ExamineeDto> list = mapper.examinee(param, pageable).getContent();
         list.forEach(item -> {
-            try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
+            try (InputStream is = imageService.getExaminee(item.getExamineeCd() + ".jpg")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setExamineeImage(image);
             } catch (IOException e) {
                 log.error("{}", e.getMessage());
+            }
+
+            try (InputStream is = imageService.getUnivLogo("symbol_03.jpg")) {
+                BufferedImage image = ImageIO.read(is);
+                item.setUnivLogo(image);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 

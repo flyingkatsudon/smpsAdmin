@@ -8,6 +8,7 @@ define(function (require) {
             var colModel = [
                 {name: 'virtNo', label: '가번호'},
                 {name: 'groupNm', label: '조'},
+                {name: 'scanDttm', label: '등록시간'},
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'admissionNm', label: '전형'},

@@ -297,14 +297,48 @@ public class UploadController {
     }
 
     @RequestMapping(value = "manager", method = RequestMethod.POST)
-    public void manager(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
-        File file = FileUtils.saveFile(new File(pathRoot, "data"), multipartFile);
+    public ResponseEntity<String> manager(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
+        File file = FileUtils.saveFile(new File(pathRoot, "smpsMgr"), multipartFile);
 
         // zip4j 읽기
         ZipFile zipFile = new ZipFile(file);
-        zipFile.setFileNameCharset(zipFile.getCharset());
+        String charset = zipFile.getCharset();
+        log.debug("Detected charset : {}", charset);
+        zipFile.setFileNameCharset(charset);
 
-        List<FileHeader> fileHeaders = zipFile.getFileHeaders();
+        try {
+            List<FileHeader> fileHeaders = zipFile.getFileHeaders();
+            for (FileHeader fileHeader : fileHeaders) {
+                String fileName = fileHeader.getFileName();
+                if (fileName.endsWith("_ExamMap.txt")) {
+                    // file read
+                    FileWrapper<ExamMap> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<ExamMap>>() {
+                    }, charset);
+
+                    QExamMap qExamMap = QExamMap.examMap;
+
+                    wrapper.getContent().forEach(examMap -> {
+                        ExamMap tmp = null;
+                        tmp = examMapRepository.findOne(
+                                new BooleanBuilder()
+                                        .and(qExamMap.examinee.examineeCd.eq(examMap.getExaminee().getExamineeCd()))
+                                        .and(qExamMap.hall.hallCd.eq(examMap.getHall().getHallCd()))
+                                        .and(qExamMap.exam.examCd.eq(examMap.getExam().getExamCd()))
+                        );
+
+                        if (tmp != null) examMap.set_id(tmp.get_id());
+                        examMapRepository.save(examMap);
+                    });
+                } else if (fileName.endsWith(".jpg")) {
+                    zipFile.extractFile(fileHeader, pathRoot + "/smpsMgr/jpg");
+                }
+            }
+            return ResponseEntity.ok("업로드가 완료되었습니다.");
+        } catch (Throwable throwable) {
+            log.error("{}", throwable.getMessage());
+            throwable.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
+        }
     }
 
     @Data

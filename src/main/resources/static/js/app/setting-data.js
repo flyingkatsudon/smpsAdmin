@@ -21,6 +21,7 @@ define(function (require) {
             this.uploadForm('#frmUploadItem');
             this.uploadForm('#frmUploadHall');
             this.uploadForm('#frmUploadExaminee');
+            this.uploadForm('#frmUploadVirtNo');
             this.uploadForm('#frmUploadScore');
         }, uploadForm: function (id) {
             this.$(id).ajaxForm({

@@ -56,8 +56,7 @@ public class DataService {
 
         long itemCnt = mapper.getItemCnt();
         for (int i = 1; i <= itemCnt; i++)
-            colModels.add(new ColModel("avgScore" + i, "항목" + i + "평균"));
-
+            colModels.add(new ColModel("avgScore" + (i < 10 ? "0" + i : i), "항목" + i + "평균"));
 
         colModels.add(new ColModel("scorerCnt", "평가위원수"));
         colModels.add(new ColModel("isAttend", "응시여부"));
@@ -82,7 +81,7 @@ public class DataService {
         long itemCnt = mapper.getItemCnt();
 
         for (int i = 1; i <= itemCnt; i++)
-            colModels.add(new ColModel("score0" + i, "항목" + i));
+            colModels.add(new ColModel("score" + (i < 10 ? "0" + i : i), "항목" + i));
 
         colModels.add(new ColModel("totalScore", "총점"));
         colModels.add(new ColModel("memo", "메모"));
@@ -175,6 +174,7 @@ public class DataService {
             report.addColumn(col.column("평가위원", "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             for (int j = 1; j <= itemCnt; j++)
                 report.addColumn(col.column("항목" + j, "score" + i + "S" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("총점" + i, "totalScore" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             report.addColumn(col.column("채점시간", "scoreDttm" + i, type.stringType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
         }
         return report;
@@ -253,6 +253,7 @@ public class DataService {
                         map.put("score" + i + "S8", score.get("score08"));
                         map.put("score" + i + "S9", score.get("score09"));
                         map.put("score" + i + "S10", score.get("score10"));
+                        map.put("totalScore" + i, score.get("total_score"));
                         map.put("scoreDttm" + i, score.get("scoreDttm"));
                     }
                 }
@@ -283,6 +284,7 @@ public class DataService {
             colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
             for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "S" + j, "항목" + j, false));
 
+            colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
             colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));
         }
         return colModels;

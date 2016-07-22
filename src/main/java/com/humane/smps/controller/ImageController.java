@@ -23,7 +23,7 @@ public class ImageController {
 
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> examinee(@PathVariable("fileName") String fileName) {
-        InputStream inputStream = imageService.getImageExaminee(fileName);
+        InputStream inputStream = imageService.getExaminee(fileName);
         return ResponseEntity.ok(new InputStreamResource(inputStream));
     }
 }

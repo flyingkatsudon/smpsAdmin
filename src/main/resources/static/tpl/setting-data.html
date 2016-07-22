@@ -138,9 +138,9 @@
                     <label>중간관리자 데이터</label>
                 </div>
                 <div class="panel-body">
-                    <form action="upload/manager" method="get">
+                    <form id="frmUploadVirtNo" action="upload/manager" method="post" enctype="multipart/form-data">
                         <input type="submit" class="btn btn-primary pull-right" value="등록"/>
-                        <input type="file" class="btn btn-primary pull-right" value="다운로드"/>
+                        <input type="file" name="file"  class="btn btn-primary pull-right"/>
                     </form>
                 </div>
             </div>

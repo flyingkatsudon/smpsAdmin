@@ -23,8 +23,8 @@
         INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
         INNER JOIN exam_hall ON exam_hall.hall_cd = exam_map.hall_cd
         INNER JOIN hall ON hall.hall_cd = exam_hall.hall_cd
-        LEFT JOIN score ON score.exam_cd = exam.exam_cd
-        LEFT JOIN sheet ON sheet.scorer_nm = score.scorer_nm
+        LEFT JOIN score ON score.exam_cd = exam.exam_cd AND score.hall_cd = exam_map.hall_cd
+        LEFT JOIN sheet ON sheet.scorer_nm = score.scorer_nm AND sheet.hall_cd = exam_map.hall_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
@@ -50,10 +50,10 @@
         examinee.dept_nm,
         examinee.major_nm,
         exam.exam_nm,
-        score.scorer_nm,
         hall.head_nm,
         hall.bldg_nm,
-        hall.hall_nm
+        hall.hall_nm,
+        score.scorer_nm
     </select>
 
     <select id="item" resultType="com.humane.smps.dto.CheckItemDto">

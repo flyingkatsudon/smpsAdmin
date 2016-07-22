@@ -12,7 +12,8 @@ define(function (require) {
                 data: [{name: '', attendCnt: 0, absentCnt: 0}],
                 xkey: 'name',
                 ykeys: ['attendCnt', 'absentCnt'],
-                labels: ['응시자수', '결시자수']
+                labels: ['응시자수', '결시자수'],
+                stacked: true
             });
             this.search();
             this.resize();
@@ -29,7 +30,7 @@ define(function (require) {
             if (response) {
                 for (var i = 0; i < response.length; i++) {
                     data.push({
-                        name: response[i].deptNm + "\n" + response[i].majorNm,
+                        name: response[i].deptNm,
                         attendCnt: response[i].attendCnt,
                         absentCnt: response[i].absentCnt
                     })

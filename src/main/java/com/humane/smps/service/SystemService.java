@@ -44,7 +44,7 @@ public class SystemService {
     private final ItemRepository itemRepository;
 
     @PersistenceContext private EntityManager entityManager;
-    @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
 
     ImageService imageService = new ImageService();
 
@@ -101,7 +101,7 @@ public class SystemService {
 
         // delete photo
         if (photo) {
-            imageService.deleteImage(pathImageExaminee);
+            imageService.deleteImage(pathExaminee);
         }
 
     }
@@ -175,7 +175,7 @@ public class SystemService {
     }
 
     private Observable<File> imageExaminee(ApiService apiService, String fileName) {
-        File path = new File(pathImageExaminee);
+        File path = new File(pathExaminee);
 
         if (!path.exists()) path.mkdirs();
         File file = new File(path, fileName);
