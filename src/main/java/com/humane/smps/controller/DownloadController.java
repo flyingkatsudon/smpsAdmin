@@ -162,12 +162,12 @@ public class DownloadController {
 
         ZipFile zipFile = new ZipFile(file);
 
-        String path = "D:/manager";
+        String path = pathRoot + "/smpsMgr";
 
         File managerFolder = new File(path);
-        File[] virtList = managerFolder.listFiles();
+        File[] virtNoList = managerFolder.listFiles();
 
-        for (File f : virtList) {
+        for (File f : virtNoList) {
             if (f.isFile())
                 zipFile.addFile(f);
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-16T20:39:22 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="모집단위 별 응시율" pageWidth="880" pageHeight="60" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="880" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" isIgnorePagination="true" uuid="1d8d5473-da75-420c-b65d-d70368d197b8">
+<!-- 2016-07-24T21:19:36 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="모집단위별 응시율" pageWidth="880" pageHeight="60" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="880" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" isIgnorePagination="true" uuid="1d8d5473-da75-420c-b65d-d70368d197b8">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
@@ -33,7 +33,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[모집단위 별 응시율]]></text>
+				<text><![CDATA[모집단위별 응시율]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -292,7 +292,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[($F{attendCnt} != null) ? $F{attendCnt} : 0]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="640" y="0" width="80" height="15" uuid="7362579b-bb7b-4756-b169-70ca178cbbe8"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -318,7 +318,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[($F{absentCnt} != null) ? $F{absentCnt} : 0]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="800" y="0" width="80" height="15" uuid="4bec3dff-6dd8-4f1e-9c80-21d462c74e2d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -440,7 +440,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumAttendCnt}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="640" y="0" width="80" height="15" uuid="556140bc-cb8e-4b30-9866-b3215ea976ad"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -466,7 +466,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumAbsentCnt}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="800" y="0" width="80" height="15" uuid="10c6aebe-11a4-4bb8-b460-1e738e58fafa"/>
 				<box>
 					<topPen lineWidth="0.5"/>

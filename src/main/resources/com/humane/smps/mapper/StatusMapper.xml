@@ -5,11 +5,12 @@
 <mapper namespace="com.humane.smps.mapper.StatusMapper">
     <select id="findAll" resultType="com.humane.smps.dto.StatusDto">
         SELECT
-        100 AS examinee_cnt,
-        1 AS attend_cnt,
-        99 AS absent_cnt,
-        1 * 100 / 100 AS attend_per,
-        99 * 100 / 100 AS absent_per
+            COUNT(*)                                                AS examinee_cnt,
+            COUNT(exam_map.scan_dttm)                               AS attend_cnt,
+            COUNT(*) - COUNT(exam_map.scan_dttm)                    AS absent_cnt,
+            COUNT(exam_map.scan_dttm) * 100 / COUNT(*)              AS attend_per,
+            (COUNT(*) - COUNT(exam_map.scan_dttm)) * 100 / COUNT(*) AS absent_per
+        FROM exam_map
     </select>
 
     <select id="dept" resultType="com.humane.smps.dto.StatusDeptDto">
@@ -96,6 +97,7 @@
             (examinee_cnt - attend_cnt) * 100 / examinee_cnt AS absent_per
             FROM (
                 SELECT admission.admission_nm,
+                exam.type_nm,
                 exam.exam_date,
                 exam.exam_time,
                 hall.head_nm,

@@ -57,7 +57,6 @@ public class DataController {
                 e.printStackTrace();
             }
         });
-
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/examinee-id-card.jrxml"
                 , JasperReportsExportHelper.EXT_PDF
