@@ -129,9 +129,8 @@ public class DownloadController {
         // 1.2 사진 저장
         for (File f : jpgList) {
             if (f.isFile())
-                zipFile.addFile("jpg", f);
+                zipFile.addFile("평가위원 서명", f);
         }
-
 
         String pdfPath = pathRoot + "/pdf";
         // 2. pdf 폴더 생성
@@ -141,17 +140,16 @@ public class DownloadController {
         // 2.2 pdf 저장
         for (File f : pdfList) {
             if (f.isFile())
-                zipFile.addFile("pdf", f);
+                zipFile.addFile("평가위원 평가표", f);
         }
 
-        //
         byte[] ba = FileUtils.getByteArray(zipFile.getFile());
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.setContentType(MediaType.parseMediaType("application/zip"));
         headers.setContentLength(ba.length);
-        headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물_SMPS.zip"));
+        headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물_평가.zip"));
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
