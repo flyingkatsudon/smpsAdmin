@@ -47,6 +47,7 @@ public class UploadController {
     private final ExamMapRepository examMapRepository;
     private final SheetRepository sheetRepository;
     private final ScoreRepository scoreRepository;
+    private final ScoreLogRepository scoreLogRepository;
 
     @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
 
@@ -281,6 +282,28 @@ public class UploadController {
                         if (tmp != null) score.set_id(tmp.get_id());
 
                         scoreRepository.save(score);
+                    });
+                } else if (fileName.endsWith("_scoreLog.txt")) {
+                    FileWrapper<ScoreLog> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<ScoreLog>>() {
+                    }, charset);
+                    QScoreLog qScoreLog = QScoreLog.scoreLog;
+
+                    wrapper.getContent().forEach(scoreLog -> {
+                        try {
+                            ScoreLog tmp = scoreLogRepository.findOne(
+                                    new BooleanBuilder()
+                                            .and(qScoreLog.exam.examCd.eq(scoreLog.getExam().getExamCd()))
+                                            .and(qScoreLog.hall.hallCd.eq(scoreLog.getHall().getHallCd()))
+                                            .and(qScoreLog.scorerNm.eq(scoreLog.getScorerNm()))
+                                            .and(qScoreLog.logDttm.eq(scoreLog.getLogDttm()))
+                            );
+
+                            if (tmp == null) {
+                                scoreLogRepository.save(scoreLog);
+                            }
+                        } catch (Exception e) {
+                            log.error("{}", e.getMessage());
+                        }
                     });
                 } else if (fileName.endsWith(".pdf")) {
                     zipFile.extractFile(fileHeader, pathRoot + "/pdf");

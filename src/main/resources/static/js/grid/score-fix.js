@@ -13,7 +13,6 @@ define(function (require) {
                 {name: 'examTime', label: '시험시간'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'examNm', label: '시험명'},
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
@@ -30,8 +29,8 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'score/fix.json',
-                    colModel: colModel,
-                    onSelectRow : function(rowid, status, e){
+                    colModel: colModel
+                    /*onSelectRow : function(rowid, status, e){
                         var rowdata = $(this).jqGrid('getRowData', rowid);
                         BootstrapDialog.show({
                             title : rowdata.scorerNm + '::' + rowdata.examNm + "::" + rowdata.examDate + " " + rowdata.examTime,
@@ -45,7 +44,7 @@ define(function (require) {
                                 }
                             }]
                         });
-                    }
+                    }*/
                 }
             }, options);
 
