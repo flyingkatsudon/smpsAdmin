@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <lombok.version>1.16.8</lombok.version>
+        <lombok.version>1.16.10</lombok.version>
         <querydsl.version>3.7.4</querydsl.version>
         <mybatis-starter.version>1.1.1</mybatis-starter.version>
         <springfox-swagger.version>2.5.0</springfox-swagger.version>
@@ -32,7 +32,7 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-compress.version>1.11</commons-compress.version>
         <humane-util-common.version>0.0.14</humane-util-common.version>
-        <rxjava.version>1.1.6</rxjava.version>
+        <rxjava.version>1.1.8</rxjava.version>
         <jasperreports.version>6.3.0</jasperreports.version>
         <poi.version>3.14</poi.version>
     </properties>
@@ -166,7 +166,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>logging-interceptor</artifactId>
-            <version>3.2.0</version>
+            <version>${okhttp3.version}</version>
         </dependency>
 
         <dependency>
@@ -255,6 +255,15 @@
             <properties>
                 <springboot-profile>dev</springboot-profile>
                 <tomcat-url>http://humane.ipdisk.co.kr:9000/manager/text</tomcat-url>
+                <tomcat-username>smps</tomcat-username>
+                <tomcat-password>smps!@</tomcat-password>
+            </properties>
+        </profile>
+        <profile>
+            <id>product</id>
+            <properties>
+                <springboot-profile>product</springboot-profile>
+                <tomcat-url>http://smps.humanesystem.com:9000/manager/text</tomcat-url>
                 <tomcat-username>smps</tomcat-username>
                 <tomcat-password>smps!@</tomcat-password>
             </properties>
