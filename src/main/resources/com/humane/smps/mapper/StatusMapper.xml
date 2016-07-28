@@ -27,7 +27,7 @@
                  , COUNT(examinee.examinee_cd) AS examinee_cnt
                  , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no) = 0 THEN 1
-                       WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1
+                       WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1 ELSE 0
                        END) AS absent_cnt
                FROM exam_map
                  INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
@@ -64,7 +64,7 @@
                         , COUNT(examinee.examinee_cd) AS examinee_cnt
                         , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
                         WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no) = 0 THEN 1
-                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1
+                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1 ELSE 0
                         END) AS absent_cnt
                         FROM exam_map
                         INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
@@ -147,7 +147,7 @@
                         , COUNT(examinee.examinee_cd) AS examinee_cnt
                         , SUM(CASE WHEN exam_map.virt_no IS NULL THEN 1
                         WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no) = 0 THEN 1
-                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1
+                        WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN 1 ELSE 0
                         END) AS absent_cnt
                         FROM exam_map
                         INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd

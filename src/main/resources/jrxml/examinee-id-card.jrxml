@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-20T10:58:38 -->
+<!-- 2016-07-28T14:17:51 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="examinee-id-card" pageWidth="595" pageHeight="841" columnWidth="369" leftMargin="113" rightMargin="113" topMargin="56" bottomMargin="42" uuid="3c7d4f36-0838-46cc-ab8d-49673d9f8876">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -27,6 +27,7 @@
 	<field name="typeNm" class="java.lang.String"/>
 	<field name="examineeImage" class="java.lang.Object"/>
 	<field name="printDttm" class="java.util.Date"/>
+	<field name="univLogo" class="java.lang.Object"/>
 	<detail>
 		<band height="587" splitType="Stretch">
 			<frame>
@@ -234,7 +235,7 @@
 					</image>
 					<image>
 						<reportElement x="227" y="119" width="69" height="69" uuid="26b1a990-cbd4-40ee-bfe5-c48ff0641ea4"/>
-						<imageExpression><![CDATA["C:/Users/Jeremy371/Downloads/symbol_03.jpg"]]></imageExpression>
+						<imageExpression><![CDATA[$F{univLogo}]]></imageExpression>
 					</image>
 					<staticText>
 						<reportElement x="0" y="206" width="100" height="30" uuid="1e4e38c1-c80c-436f-acb2-b854680e2d34"/>

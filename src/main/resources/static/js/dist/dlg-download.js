@@ -14,8 +14,8 @@ define(function (require) {
             options = options ? options : this.options;
 
             $.fileDownload(options.url, {
-                preparingMessageHtml: "We are preparing your report, please wait...",
-                failMessageHtml: "There was a problem generating your report, please try again."
+                preparingMessageHtml: "파일을 다운로드 중입니다. 잠시만 기다려주세요.",
+                failMessageHtml: "관리자에게 문의하세요."
             });
 
 

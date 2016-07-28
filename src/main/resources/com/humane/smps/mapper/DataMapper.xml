@@ -182,7 +182,7 @@
     <select id="scorerH" resultType="java.util.Map">
         select scorer_nm as scorerNm
               , score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
-              , date_format(score_dttm,'%Y-%m-%d %H:%m:%s') as scoreDttm
+              , date_format(score_dttm,'%Y-%m-%d %H:%i:%s') as scoreDttm
               , total_score
            from score
           where exam_cd = #{param.examCd}

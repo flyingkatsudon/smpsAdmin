@@ -75,7 +75,7 @@ public class DataController {
                 report.setDataSource(mapper.examinee(param, pageable).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
-                jasperPrint.setName("수험생 별 종합");
+                jasperPrint.setName("수험생별 종합");
 
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }

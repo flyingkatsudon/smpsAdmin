@@ -16,6 +16,7 @@ define(function (require) {
         render: function () {
             var height = $(window).height() * 0.7;
             BootstrapDialog.show({
+                title: '',
                 message: '<object type="application/pdf" data="' + this.url + '" width="100%" height="' + height + '">No Support</object>',
                 size: 'size-wide',
                 closable: false,
