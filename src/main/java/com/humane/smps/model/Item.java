@@ -16,6 +16,8 @@ public class Item implements Serializable {
 
     @Column(nullable = false) private String itemNo;
     private String itemNm;
+    private Long minScore;
+    private Long maxScore;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "deviCd", nullable = false) private Devi devi;

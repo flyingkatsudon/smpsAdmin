@@ -14,4 +14,7 @@ public class ExamHall {
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
+
+    private String virtNoStart;
+    private String virtNoEnd;
 }

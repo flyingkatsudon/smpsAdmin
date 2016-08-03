@@ -4,11 +4,8 @@ import com.humane.smps.dto.DownloadWrapper;
 import com.humane.smps.model.*;
 import com.humane.smps.repository.*;
 import com.humane.util.retrofit.QueryBuilder;
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
-import com.mysema.query.jpa.hibernate.HibernateQuery;
-import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -30,6 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.humane.smps.model.QExamMap.examMap;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -43,61 +42,66 @@ public class SystemService {
     private final ExamMapRepository examMapRepository;
     private final ItemRepository itemRepository;
 
-    @PersistenceContext private EntityManager entityManager;
-    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    ImageService imageService = new ImageService();
+    @Value("${path.image.examinee:C:/api/image/examinee}")
+    String pathExaminee;
+
+    private final ImageService imageService;
 
     @Transactional
     public void resetData(boolean photo) throws IOException {
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QSheet.sheet).execute();
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QScore.score).execute();
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QExamHall.examHall).execute();
+        HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        ScrollableResults scrollableResults = new HibernateQuery(entityManager.unwrap(Session.class))
-                .from(QExamMap.examMap)
+        queryFactory.delete(QSheet.sheet).execute();
+        queryFactory.delete(QScore.score).execute();
+        queryFactory.delete(QScoreLog.scoreLog).execute();
+        queryFactory.delete(QExamHall.examHall).execute();
+
+        QExaminee examinee = QExaminee.examinee;
+
+        ScrollableResults scrollableResults = queryFactory.select(examMap.examinee.examineeCd)
+                .distinct()
+                .from(examMap)
                 .setFetchSize(Integer.MIN_VALUE)
                 .scroll(ScrollMode.FORWARD_ONLY);
 
         while (scrollableResults.next()) {
-            ExamMap examMap = (ExamMap) scrollableResults.get(0);
+            String examineeCd = scrollableResults.getString(0);
+            queryFactory.delete(examMap).where(examMap.examinee.examineeCd.eq(examineeCd)).execute();
             try {
-                new HibernateDeleteClause(entityManager.unwrap(Session.class), QExamMap.examMap)
-                        .where(QExamMap.examMap.examinee.eq(examMap.getExaminee()))
-                        .execute();
-                new HibernateDeleteClause(entityManager.unwrap(Session.class), QExaminee.examinee)
-                        .where(QExaminee.examinee.eq(examMap.getExaminee()))
-                        .execute();
+                queryFactory.delete(examinee).where(examinee.examineeCd.eq(examineeCd)).execute();
             } catch (Exception ignored) {
             }
         }
         scrollableResults.close();
 
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QHall.hall).execute();
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QItem.item).execute();
-
-        // 편차의 경우 재귀구조이기 때문에 하위 데이터를 먼저 삭제 후 상위 데이터를 제거해야한다.
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QDevi.devi1)
-                .where(QDevi.devi1.devi.isNotNull())
-                .execute();
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QDevi.devi1).execute();
+        queryFactory.delete(QHall.hall).execute();
+        queryFactory.delete(QItem.item).execute();
+        queryFactory.delete(QDevi.devi1).where(QDevi.devi1.devi.isNotNull()).execute();
+        queryFactory.delete(QDevi.devi1).execute();
 
 
-        /**
-         * SELECT DISTINCT ADMISSION_CD
-         *   FROM ADMISSION
-         *  INNER JOIN EXAM ON ADMISSION.ADMISSION_CD = EXAM.ADMISSION_CD
-         */
+        QExam exam = QExam.exam;
 
-        List<String> admissions = new JPAQuery(entityManager)
-                .from(QExam.exam)
+        scrollableResults = queryFactory.select(exam.admission.admissionCd)
                 .distinct()
-                .list(QExam.exam.admission.admissionCd);
+                .from(exam)
+                .setFetchSize(Integer.MIN_VALUE)
+                .scroll(ScrollMode.FORWARD_ONLY);
 
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QExam.exam).execute();
-        new HibernateDeleteClause(entityManager.unwrap(Session.class), QAdmission.admission)
-                .where(QAdmission.admission.admissionCd.in(admissions))
-                .execute();
+        while (scrollableResults.next()) {
+            String admissionCd = scrollableResults.getString(0);
+            queryFactory.delete(exam).where(exam.admission.admissionCd.eq(admissionCd));
+
+            try {
+                queryFactory.delete(QAdmission.admission).where(QAdmission.admission.admissionCd.eq(admissionCd)).execute();
+            } catch (Exception ignored) {
+            }
+        }
+
+        scrollableResults.close();
 
         // delete photo
         if (photo) {
@@ -106,12 +110,17 @@ public class SystemService {
 
     }
 
+    @Transactional
     public void initData() {
-        long c = new HibernateDeleteClause(entityManager.unwrap(Session.class), QSheet.sheet).execute();
-        long b = new HibernateDeleteClause(entityManager.unwrap(Session.class), QScore.score).execute();
+        HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
+
+        queryFactory.delete(QSheet.sheet).execute();
+        queryFactory.delete(QScoreLog.scoreLog).execute();
+        queryFactory.delete(QScore.score).execute();
 
         QExamMap examMap = QExamMap.examMap;
-        long a = new HibernateUpdateClause(entityManager.unwrap(Session.class), examMap)
+
+        queryFactory.update(examMap)
                 .setNull(examMap.virtNo)
                 .setNull(examMap.scanDttm)
                 .setNull(examMap.photoNm)
@@ -124,6 +133,7 @@ public class SystemService {
         for (DownloadWrapper.ExamHallWrapper examHallWrapper : wrapper.getList()) {
             String newExamCd = examHallWrapper.getExamCd();
             String newHallCd = examHallWrapper.getHallCd();
+
             Observable.range(0, Integer.MAX_VALUE)
                     .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).add("hall.hallCd", newHallCd).getMap(), page, Integer.MAX_VALUE, null))
                     .takeUntil(page -> page.last)

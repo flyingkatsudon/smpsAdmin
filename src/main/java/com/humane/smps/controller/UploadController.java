@@ -13,7 +13,7 @@ import com.humane.smps.repository.*;
 import com.humane.smps.service.UploadService;
 import com.humane.util.file.FileUtils;
 import com.humane.util.zip4j.ZipFile;
-import com.mysema.query.BooleanBuilder;
+import com.querydsl.core.BooleanBuilder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

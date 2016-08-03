@@ -1,7 +1,7 @@
 package com.humane.smps.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.humane.smps.filter.LoggingFilter;
 import com.humane.util.filter.MultiReadableHttpServletRequestFilter;
 import com.humane.util.spring.ApplicationContextProvider;
@@ -70,7 +70,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
         ObjectMapper mapper = new ObjectMapper();
         //Registering Hibernate4Module to support lazy objects
-        mapper.registerModule(new Hibernate4Module());
+        mapper.registerModule(new Hibernate5Module());
 
         messageConverter.setObjectMapper(mapper);
         return messageConverter;
@@ -86,7 +86,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SPRING_WEB)
-                .groupName("smpsApi")
+                .groupName("smpsAdmin")
                 .apiInfo(new ApiInfoBuilder().build())
                 .select()
                 .build();

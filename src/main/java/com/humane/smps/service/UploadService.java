@@ -6,7 +6,7 @@ import com.humane.smps.form.FormItemVo;
 import com.humane.smps.model.*;
 import com.humane.smps.repository.ExamRepository;
 import com.humane.smps.repository.ItemRepository;
-import com.mysema.query.BooleanBuilder;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

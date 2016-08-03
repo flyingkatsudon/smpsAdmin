@@ -2,7 +2,7 @@ package com.humane.smps.controller.api;
 
 import com.humane.smps.model.Score;
 import com.humane.smps.repository.ScoreRepository;
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
