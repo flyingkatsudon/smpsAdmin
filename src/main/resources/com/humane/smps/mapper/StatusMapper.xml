@@ -103,7 +103,7 @@
                 hall.head_nm,
                 hall.bldg_nm,
                 hall.hall_nm,
-                count(exam_map.examinee_cd) AS examinee_cnt,
+                (SELECT COUNT(*) FROM exam_map WHERE exam_map.exam_cd = exam.exam_cd AND exam_map.hall_cd = hall.hall_cd) AS examinee_cnt,
                 (SELECT COUNT(DISTINCT virt_no) FROM score WHERE score.score01 IS NOT NULL AND score.hall_cd = exam_map.hall_cd AND score.total_score != '결시') AS attend_cnt
                 FROM exam_hall
                 INNER JOIN exam ON exam.exam_cd = exam_hall.exam_cd

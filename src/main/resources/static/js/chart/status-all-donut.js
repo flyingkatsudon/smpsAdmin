@@ -31,8 +31,8 @@ define(function (require) {
                 data: o
             }).done(function (response) {
                 _this.chart.setData([
-                    {label: '응시율', value: response.attendPer},
-                    {label: '결시율', value: response.absentPer}
+                    {label: '응시율', color: '#0B62A4', value: response.attendPer},
+                    {label: '결시율', color: '#7A92A3', value: response.absentPer}
                 ]);
             });
         }

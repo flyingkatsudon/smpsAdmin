@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-06-17T17:36:06 -->
+<!-- 2016-08-10T17:26:40 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="채점자 별 리스트" pageWidth="2200" pageHeight="80" orientation="Landscape" columnWidth="2200" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Key" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -381,7 +381,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{examDate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+			<textField pattern="HH:mm" isBlankWhenNull="true">
 				<reportElement x="300" y="0" width="100" height="15" uuid="fae047ac-a8a0-4340-8160-d36da74b4e0e"/>
 				<box>
 					<topPen lineWidth="0.5"/>

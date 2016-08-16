@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-24T21:19:13 -->
+<!-- 2016-08-10T17:25:46 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="고사실별 응시율" pageWidth="1040" pageHeight="60" orientation="Landscape" columnWidth="1040" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="cc2bfb46-5ff5-4c3f-97f9-6a81bb71a4cc">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
@@ -272,7 +272,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{examDate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+			<textField pattern="HH:mm" isBlankWhenNull="true">
 				<reportElement x="320" y="0" width="80" height="15" uuid="29ac1071-a839-4391-ae0d-3db64a7adeac"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>

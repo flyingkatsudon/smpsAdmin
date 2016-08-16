@@ -13,6 +13,7 @@ define(function (require) {
                 xkey: 'name',
                 ykeys: ['attendCnt', 'absentCnt'],
                 labels: ['응시자수', '결시자수'],
+                barColors: ['#0B62A4','#7A92A3'],
                 stacked: true
             });
             this.search();

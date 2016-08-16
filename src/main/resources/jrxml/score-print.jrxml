@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-16T20:44:19 -->
+<!-- 2016-08-10T17:26:10 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="평가위원 점수출력" pageWidth="960" pageHeight="60" orientation="Landscape" columnWidth="960" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="c9801846-1bee-422c-ad53-c22d00a0e728">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#C3C5C7">
@@ -279,7 +279,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{examDate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+			<textField pattern="HH:mm" isBlankWhenNull="true">
 				<reportElement x="400" y="0" width="80" height="15" uuid="07bb8889-0eb1-4825-8617-96b7e5cf6ffa"/>
 				<box>
 					<topPen lineWidth="0.5"/>

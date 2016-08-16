@@ -4,6 +4,7 @@ import com.humane.smps.dto.ScoreDto;
 import com.humane.smps.mapper.DataMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
@@ -22,6 +23,7 @@ import static java.awt.Color.LIGHT_GRAY;
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DataService {
     private StyleBuilder boldStyle = DynamicReports.stl.style().bold();
@@ -55,9 +57,10 @@ public class DataService {
         colModels.add(new ColModel("virtNo", "가번호"));
 
         long itemCnt = mapper.getItemCnt();
-        for (int i = 1; i <= itemCnt; i++)
+        for (int i = 1; i <= itemCnt; i++) {
             colModels.add(new ColModel("avgScore" + (i < 10 ? "0" + i : i), "항목" + i + "평균"));
-
+            colModels.add(new ColModel("totScore" + (i < 10 ? "0" + i : i), "항목" + i + "합계"));
+        }
         colModels.add(new ColModel("scorerCnt", "평가위원수"));
         colModels.add(new ColModel("isAttend", "응시여부"));
         return colModels;
@@ -72,6 +75,9 @@ public class DataService {
         colModels.add(new ColModel("examTime", "시험시간"));
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
+        colModels.add(new ColModel("headNm", "고사본부"));
+        colModels.add(new ColModel("bldgNm", "고사건물"));
+        colModels.add(new ColModel("hallNm", "고사실"));
         colModels.add(new ColModel("examineeCd", "수험번호"));
         colModels.add(new ColModel("examineeNm", "수험생명"));
         colModels.add(new ColModel("virtNo", "가번호"));
@@ -113,8 +119,10 @@ public class DataService {
 
         long itemCnt = mapper.getItemCnt();
 
-        for (int i = 1; i <= itemCnt; i++)
+        for (int i = 1; i <= itemCnt; i++) {
+            report.addColumn(col.column("항목" + i + "합계", "totScore" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             report.addColumn(col.column("항목" + i + "평균", "avgScore" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        }
         report.addColumn(col.column("평가위원수", "scorerCnt", type.longType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         report.addColumn(col.column("응시여부", "isAttend", type.booleanType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
 
@@ -158,6 +166,9 @@ public class DataService {
                         col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -191,6 +202,9 @@ public class DataService {
                         col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -240,7 +254,7 @@ public class DataService {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);
-
+                    log.debug("score: {}", score);
                     if (score != null) {
                         map.put("scorerNm" + i, score.get("scorerNm"));
                         map.put("score" + i + "S1", score.get("score01"));
@@ -253,9 +267,10 @@ public class DataService {
                         map.put("score" + i + "S8", score.get("score08"));
                         map.put("score" + i + "S9", score.get("score09"));
                         map.put("score" + i + "S10", score.get("score10"));
-                        map.put("totalScore" + i, score.get("total_score"));
+                        map.put("totalScore" + i, score.get("totalScore"));
                         map.put("scoreDttm" + i, score.get("scoreDttm"));
                     }
+                    log.debug("map:{}", map);
                 }
             }
         });
@@ -272,6 +287,9 @@ public class DataService {
         colModels.add(new ColModel("examTime", "시험시간"));
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
+        colModels.add(new ColModel("headNm", "고사본부"));
+        colModels.add(new ColModel("bldgNm", "고사건물"));
+        colModels.add(new ColModel("hallNm", "고사실"));
         colModels.add(new ColModel("examineeCd", "수험번호"));
         colModels.add(new ColModel("examineeNm", "수험생명"));
         colModels.add(new ColModel("virtNo", "가번호"));
@@ -281,11 +299,11 @@ public class DataService {
         long itemCnt = mapper.getItemCnt(); // 항목수
 
         for (int i = 1; i <= scorerCnt; i++) {
-            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
-            for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "S" + j, "항목" + j, false));
+            colModels.add(new ColModel("scorernm" + i, "평가위원" + i, false));
+            for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "s" + j, "항목" + j, false));
 
-            colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
-            colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));
+            colModels.add(new ColModel("totalscore" + i, "총점" + i, false));
+            colModels.add(new ColModel("scoredttm" + i, "채점시간" + i, false));
         }
         return colModels;
     }

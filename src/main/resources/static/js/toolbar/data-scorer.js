@@ -19,6 +19,9 @@ define(function (require) {
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm()));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
             return this;
         },
         events: {
@@ -27,7 +30,10 @@ define(function (require) {
             'change #typeNm': 'typeNmChanged',
             'change #examDate': 'examDateChanged',
             'change #examTime': 'examTimeChanged',
-            'change #deptNm': 'deptNmChanged'
+            'change #deptNm': 'deptNmChanged',
+            'change #majorNm': 'majorNmChanged',
+            'change #headNm': 'headNmChanged',
+            'change #bldgNm': 'bldgNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -42,7 +48,9 @@ define(function (require) {
                     deptNm: _this.$('#deptNm').val(),
                     majorNm : _this.$('#majorNm').val(),
                     virtNo : _this.$('#virtNo').val(),
-                    scorerNm : _this.$('#scorerNm').val()
+                    scorerNm : _this.$('#scorerNm').val(),
+                    headNm : _this.$('#headNm').val(),
+                    bldgNm : _this.$('#bldgNm').val()
                 });
             }
         },
@@ -55,6 +63,9 @@ define(function (require) {
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
         typeNmChanged: function (e){
             var param = {
@@ -65,6 +76,9 @@ define(function (require) {
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
         examDateChanged: function (e){
             var param = {
@@ -75,6 +89,9 @@ define(function (require) {
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
         examTimeChanged: function (e){
             var param = {
@@ -85,6 +102,9 @@ define(function (require) {
             };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
         deptNmChanged: function (e){
             var param = {
@@ -95,6 +115,48 @@ define(function (require) {
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+        },
+        majorNmChanged: function (e){
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: e.currentTarget.value
+            };
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+        },
+        headNmChanged: function (e){
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: this.$('#majorNm').val(),
+                headNm: e.currentTarget.value
+            };
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+        },
+        bldgNmChanged: function (e){
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
+                examDate: this.$('#examDate').val(),
+                examTime: this.$('#examTime').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: this.$('#majorNm').val(),
+                headNm: this.$('#headNm').val(),
+                bldgNm: e.currentTarget.value
+            };
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         }
     });
 });

@@ -2,8 +2,6 @@ package com.humane.smps.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.humane.util.jackson.TimeSerializer;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -51,6 +49,17 @@ public class ExamineeDto {
     private String avgScore09;
     private String avgScore10;
 
+    private String totScore01;
+    private String totScore02;
+    private String totScore03;
+    private String totScore04;
+    private String totScore05;
+    private String totScore06;
+    private String totScore07;
+    private String totScore08;
+    private String totScore09;
+    private String totScore10;
+
     private String totalScore;
     private Boolean isAttend;
     private Boolean isCancel;
@@ -62,8 +71,8 @@ public class ExamineeDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date examDate;
 
-    @DateTimeFormat(pattern = "HH:mm:ss")
-    @JsonSerialize(using = TimeSerializer.class)
+    @DateTimeFormat(pattern = "HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     private Date examTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

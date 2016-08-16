@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeSerializer extends JsonSerializer<Date> {
-    public static final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss");
+    public static final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm");
 
     @Override
     public void serialize(Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
