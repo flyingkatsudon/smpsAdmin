@@ -6,7 +6,7 @@ import org.apache.commons.collections.map.ListOrderedMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CamelMap extends ListOrderedMap {
+public class CamelMap<K, V> extends ListOrderedMap {
 
     private static final long serialVersionUID = 1L;
 

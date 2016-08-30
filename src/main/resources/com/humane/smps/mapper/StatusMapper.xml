@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.smps.mapper.StatusMapper">
-    <select id="findAll" resultType="com.humane.smps.dto.StatusDto">
+    <select id="all" resultType="com.humane.smps.dto.StatusDto">
         SELECT
             COUNT(*)                                                AS examinee_cnt,
             COUNT(exam_map.scan_dttm)                               AS attend_cnt,
@@ -123,6 +123,7 @@
                 </where>
                 GROUP BY
                     admission.admission_nm,
+                    exam.type_nm,
                     exam.exam_date,
                     exam.exam_time,
                     hall.head_nm,

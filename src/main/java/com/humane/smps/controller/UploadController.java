@@ -296,6 +296,7 @@ public class UploadController {
                                             .and(qScoreLog.hall.hallCd.eq(scoreLog.getHall().getHallCd()))
                                             .and(qScoreLog.scorerNm.eq(scoreLog.getScorerNm()))
                                             .and(qScoreLog.logDttm.eq(scoreLog.getLogDttm()))
+                                            .and(qScoreLog.virtNo.eq(scoreLog.getVirtNo()))
                             );
 
                             if (tmp == null) {

@@ -21,9 +21,9 @@ public class StatusController {
     private static final String JSON = "json";
     private final StatusMapper mapper;
 
-    @RequestMapping(value = "all.json")
-    public StatusDto all(StatusDto param) {
-        return mapper.findAll(param);
+    @RequestMapping(value = "all")
+    public ResponseEntity all(StatusDto statusDto) {
+        return ResponseEntity.ok(mapper.all(statusDto));
     }
 
     @RequestMapping(value = "dept.{format:json|pdf|xls|xlsx}")

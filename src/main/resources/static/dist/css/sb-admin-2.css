@@ -299,6 +299,47 @@ table.dataTable thead .sorting:after {
     font-size: 40px;
 }
 
+.huge h4 {
+    font-size: 35px
+}
+
+.mid {
+    font-size: 30px;
+}
+
+.panel-size {
+    width: 20%;
+    float: left;
+    padding: 0 10px 0 10px;
+}
+
+h4 {
+    font-weight: bold;
+}
+
+.main-font {
+    font-size: 40px;
+}
+
+.main-row {
+    margin-top: 100px;
+}
+
+.main-large {
+    height: 320px;
+    padding-right:30px;
+}
+
+.main-small {
+    height: 150px;
+    padding-right: 30px;
+}
+.panel-custom .panel-heading{
+    border-color: #969696;
+    color: #fff;
+    background-color: #969696;
+}
+
 .panel-green {
     border-color: #5cb85c;
 }
@@ -318,13 +359,13 @@ table.dataTable thead .sorting:after {
 }
 
 .panel-red {
-    border-color: #d9534f;
+    border-color: #f7918d;
 }
 
 .panel-red .panel-heading {
-    border-color: #d9534f;
+    border-color: #f7918d;
     color: #fff;
-    background-color: #d9534f;
+    background-color: #f7918d;
 }
 
 .panel-red a {
