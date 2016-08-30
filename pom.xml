@@ -32,7 +32,7 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-compress.version>1.11</commons-compress.version>
         <humane-util-common.version>0.0.14</humane-util-common.version>
-        <rxjava.version>1.1.8</rxjava.version>
+        <rxjava.version>1.1.9</rxjava.version>
         <jasperreports.version>6.3.0</jasperreports.version>
         <poi.version>3.14</poi.version>
     </properties>
@@ -260,10 +260,10 @@
             </properties>
         </profile>
         <profile>
-            <id>product</id>
+            <id>demo</id>
             <properties>
-                <springboot-profile>product</springboot-profile>
-                <tomcat-url>http://smps.humanesystem.com:9000/manager/text</tomcat-url>
+                <springboot-profile>demo</springboot-profile>
+                <tomcat-url>http://humane.ipdisk.co.kr:9001/manager/text</tomcat-url>
                 <tomcat-username>smps</tomcat-username>
                 <tomcat-password>smps!@</tomcat-password>
             </properties>
