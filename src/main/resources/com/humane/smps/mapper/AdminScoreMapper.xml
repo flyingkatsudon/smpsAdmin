@@ -53,13 +53,25 @@
             , examinee.examinee_cd
             , exam_map.virt_no
             , score_log.scorer_nm
-            , COUNT(*) AS update_cnt
+            /*, COUNT(*) AS update_cnt*/
+            , result.update_cnt
         FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
             INNER JOIN admission ON exam.admission_cd = admission.admission_cd
             INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
             INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
             INNER JOIN score_log ON exam_map.exam_cd = score_log.exam_cd AND exam_map.virt_no = score_log.virt_no
+            INNER JOIN
+            (
+                SELECT virt_no, scorer_nm, COUNT(*)-1 AS update_cnt
+                FROM (
+                        SELECT DISTINCT score_dttm, virt_no, scorer_nm
+                        FROM score_log
+                        WHERE sheet_no IS NOT NULL
+                     ) AS get_update_cnt
+                GROUP BY virt_no, scorer_nm
+            ) AS result
+            ON result.virt_no = exam_map.virt_no AND result.scorer_nm = score_log.scorer_nm
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
@@ -86,6 +98,29 @@
             , hall.hall_nm
             , exam_map.virt_no
             , score_log.scorer_nm
-        HAVING COUNT(*) > 1
+        HAVING result.update_cnt > 0
+    </select>
+
+    <select id="fixList" resultType="com.humane.smps.dto.ScoreDto">
+        SELECT DISTINCT virt_no, score01, score02, score03, score04, score05
+              , score06, score07, score08, score09, score10, scorer_nm
+              , date_format(score_dttm,'%Y-%m-%d %H:%i:%s') AS rescore_dttm
+        FROM score_log
+        <where>
+            AND score_log.sheet_no IS NOT NULL
+            <if test="param != null">
+                <if test="param.virtNo != null">AND score_log.virt_no = #{param.virtNo}</if>
+                <if test="param.scorerNm != null">AND score_log.scorer_nm = #{param.scorerNm}</if>
+            </if>
+        </where>
+    </select>
+
+    <select id="getItemCnt" resultType="java.lang.Long">
+        SELECT max(cnt)
+        FROM (
+        SELECT count(*) AS cnt
+        FROM item
+        GROUP BY exam_cd
+        ) a
     </select>
 </mapper>

@@ -256,19 +256,19 @@ public class DataService {
                     Map<String, Object> score = scoreList.get(i - 1);
                     log.debug("score: {}", score);
                     if (score != null) {
-                        map.put("scorerNm" + i, score.get("scorerNm"));
-                        map.put("score" + i + "S1", score.get("score01"));
-                        map.put("score" + i + "S2", score.get("score02"));
-                        map.put("score" + i + "S3", score.get("score03"));
-                        map.put("score" + i + "S4", score.get("score04"));
-                        map.put("score" + i + "S5", score.get("score05"));
-                        map.put("score" + i + "S6", score.get("score06"));
-                        map.put("score" + i + "S7", score.get("score07"));
-                        map.put("score" + i + "S8", score.get("score08"));
-                        map.put("score" + i + "S9", score.get("score09"));
-                        map.put("score" + i + "S10", score.get("score10"));
-                        map.put("totalScore" + i, score.get("totalScore"));
-                        map.put("scoreDttm" + i, score.get("scoreDttm"));
+                        map.put("SCORER_NM" + i, score.get("scorerNm"));
+                        map.put("SCORE" + i + "_S1", score.get("score01"));
+                        map.put("SCORE" + i + "_S2", score.get("score02"));
+                        map.put("SCORE" + i + "_S3", score.get("score03"));
+                        map.put("SCORE" + i + "_S4", score.get("score04"));
+                        map.put("SCORE" + i + "_S5", score.get("score05"));
+                        map.put("SCORE" + i + "_S6", score.get("score06"));
+                        map.put("SCORE" + i + "_S7", score.get("score07"));
+                        map.put("SCORE" + i + "_S8", score.get("score08"));
+                        map.put("SCORE" + i + "_S9", score.get("score09"));
+                        map.put("SCORE" + i + "_S10", score.get("score10"));
+                        map.put("TOTAL_SCORE" + i, score.get("totalScore"));
+                        map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
                     }
                     log.debug("map:{}", map);
                 }

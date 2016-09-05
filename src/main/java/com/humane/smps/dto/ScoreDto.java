@@ -56,6 +56,8 @@ public class ScoreDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date scoreDttm;
 
+    private String rescoreDttm;
+
     private String memo;
     private Boolean isPhoto;
 }

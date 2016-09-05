@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-28T14:17:51 -->
+<!-- 2016-09-02T17:33:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="examinee-id-card" pageWidth="595" pageHeight="841" columnWidth="369" leftMargin="113" rightMargin="113" topMargin="56" bottomMargin="42" uuid="3c7d4f36-0838-46cc-ab8d-49673d9f8876">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -19,271 +19,381 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="examineeCd" class="java.lang.String"/>
 	<field name="admissionNm" class="java.lang.String"/>
+	<field name="examineeCd" class="java.lang.String"/>
 	<field name="examineeNm" class="java.lang.String"/>
-	<field name="collegeNm" class="java.lang.String"/>
-	<field name="deptNm" class="java.lang.String"/>
 	<field name="typeNm" class="java.lang.String"/>
+	<field name="deptNm" class="java.lang.String"/>
+	<field name="collegeNm" class="java.lang.String"/>
+	<field name="bldgNm" class="java.lang.String"/>
+	<field name="hallNm" class="java.lang.String"/>
 	<field name="examineeImage" class="java.lang.Object"/>
-	<field name="printDttm" class="java.util.Date"/>
 	<field name="univLogo" class="java.lang.Object"/>
+	<field name="printDttm" class="java.util.Date"/>
 	<detail>
-		<band height="587" splitType="Stretch">
+		<band height="742" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<frame>
-				<reportElement x="0" y="0" width="369" height="586" uuid="c4a8fb96-ca78-4e7e-91fb-946547d3fddd"/>
+				<reportElement x="0" y="61" width="369" height="586" uuid="c4a8fb96-ca78-4e7e-91fb-946547d3fddd"/>
 				<box>
-					<topPen lineWidth="0.5" lineStyle="Dashed"/>
-					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
-					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 				</box>
 				<frame>
-					<reportElement positionType="FixRelativeToBottom" x="30" y="60" width="310" height="270" uuid="9fd2424a-4788-4e9b-8a0b-9d701f32b958"/>
+					<reportElement positionType="FixRelativeToBottom" x="30" y="60" width="310" height="267" uuid="9fd2424a-4788-4e9b-8a0b-9d701f32b958"/>
 					<box>
-						<topPen lineWidth="0.5" lineStyle="Solid"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid"/>
-						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid"/>
+						<topPen lineWidth="0.3" lineStyle="Solid"/>
+						<leftPen lineWidth="0.3" lineStyle="Solid"/>
+						<bottomPen lineWidth="0.3" lineStyle="Solid"/>
+						<rightPen lineWidth="0.3" lineStyle="Solid"/>
 					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="310" height="30" uuid="f37fada5-8980-4ea4-8d71-154544c41f7b"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[2017학년도 3월 입학]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="30" width="90" height="30" uuid="88e2779a-999e-4d70-a21c-7a2a70cedb07">
+					<frame>
+						<reportElement x="0" y="0" width="108" height="267" uuid="346691a0-fc17-471b-be8a-6a9c0ede4e1a"/>
+						<staticText>
+							<reportElement x="0" y="0" width="108" height="40" uuid="88e2779a-999e-4d70-a21c-7a2a70cedb07">
+								<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+							</reportElement>
+							<box leftPadding="15" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[전형명]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="0" y="40" width="108" height="45" uuid="a0a95494-9f7f-44ea-86a2-a072e0da41ab"/>
+							<box leftPadding="15" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[수험번호]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="0" y="85" width="108" height="34" uuid="5907ab20-a1b9-4704-a592-3ea3611212d9"/>
+							<box leftPadding="15" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[성명]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="0" y="119" width="15" height="148" uuid="bc85457d-01a5-4def-8555-48803155d4bc">
+								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[지원사항]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="15" y="119" width="93" height="29" uuid="7d4246f9-5c47-4f7a-8c68-d56071d95244"/>
+							<box leftPadding="0" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[계열]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="15" y="148" width="93" height="30" uuid="b529d318-bc3a-4c0a-8f9a-2b58ab36ab00"/>
+							<box leftPadding="0" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[모집단위]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="15" y="178" width="93" height="30" uuid="b4cb4d05-218c-4c1a-848b-90fd9b5d1cf4"/>
+							<box leftPadding="0" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[캠퍼스]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="15" y="208" width="93" height="30" uuid="5b342fa0-2f07-401f-8f0f-2f3e2837b83b"/>
+							<box leftPadding="0" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[고사건물]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="15" y="238" width="93" height="29" uuid="9063d465-08bb-4fa4-a4b3-023674cf645e"/>
+							<box leftPadding="0" rightPadding="15">
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[고사실]]></text>
+						</staticText>
+						<frame>
+							<reportElement x="15" y="0" width="78" height="267" uuid="3deb21aa-2987-40be-aa74-29ade0bc7104">
+								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.0" lineColor="#FC0905"/>
+								<leftPen lineWidth="0.0" lineColor="#FC0905"/>
+								<bottomPen lineWidth="0.0" lineColor="#FC0905"/>
+								<rightPen lineWidth="0.0" lineColor="#FC0905"/>
+							</box>
+						</frame>
+					</frame>
+					<frame>
+						<reportElement x="108" y="1" width="202" height="266" uuid="42273da2-38ef-41da-a739-2e37b004a11f"/>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="-1" width="202" height="40" uuid="a350166b-48ec-49b3-b539-654440489c15"/>
+							<box>
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="16" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="39" width="202" height="45" uuid="b27cfabb-e06f-47c9-b203-49403aa8de54"/>
+							<box>
+								<topPen lineWidth="0.3" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="22" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<paragraph spacingBefore="0" spacingAfter="0"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{examineeCd}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="84" width="202" height="34" uuid="e91a691b-5b6b-479e-85ff-06c4e8e15a59"/>
+							<box>
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="16" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="118" width="202" height="29" uuid="b8d2e10a-6dfb-4e5e-90a7-4fa70a63f64b"/>
+							<box>
+								<topPen lineWidth="0.3" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="147" width="202" height="30" uuid="d71121bf-81f7-41eb-9871-6d34799e014b"/>
+							<box>
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="0" y="177" width="202" height="30" uuid="be7ab5a8-1c00-45b3-be1e-031c82850100"/>
+							<box>
+								<topPen lineWidth="0.3" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[ERICA 캠퍼스]]></text>
+						</staticText>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="207" width="202" height="30" uuid="03b31866-80cd-4d5b-ad10-0ab070beebe0"/>
+							<box>
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{bldgNm}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="237" width="202" height="29" uuid="650a4bfd-23c0-4a5e-b08a-a05d641ee1bd"/>
+							<box>
+								<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{hallNm}]]></textFieldExpression>
+						</textField>
+					</frame>
+				</frame>
+				<frame>
+					<reportElement x="30" y="327" width="310" height="232" uuid="a26fb593-8f6d-47a6-82bf-b2012e0d8c3e"/>
+					<box>
+						<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<frame>
+						<reportElement x="0" y="0" width="310" height="77" uuid="9947ca23-f6ea-450e-8f62-8b80ef80816d">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						</reportElement>
+						<box topPadding="5" bottomPadding="0">
+							<topPen lineWidth="0.0" lineColor="#050000"/>
+							<leftPen lineWidth="0.0" lineColor="#050000"/>
+							<bottomPen lineWidth="0.0" lineColor="#050000"/>
+							<rightPen lineWidth="0.0" lineColor="#050000"/>
+						</box>
+						<componentElement>
+							<reportElement x="55" y="8" width="200" height="61" uuid="6630043a-9560-40f4-9705-60b76e996eac">
+								<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.barHeight" value="pixel"/>
+							</reportElement>
+							<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="70">
+								<jr:codeExpression><![CDATA[$F{examineeCd}]]></jr:codeExpression>
+							</jr:barbecue>
+						</componentElement>
+					</frame>
+					<frame>
+						<reportElement x="0" y="77" width="310" height="155" uuid="82deaf3d-7cbd-412f-a54f-4cdc78802ee5">
+							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						</reportElement>
+						<box topPadding="0" leftPadding="5" bottomPadding="5" rightPadding="5">
+							<topPen lineWidth="0.0" lineColor="#050000"/>
+							<leftPen lineWidth="0.0" lineColor="#050000"/>
+							<bottomPen lineWidth="0.0" lineColor="#050000"/>
+							<rightPen lineWidth="0.0" lineColor="#050000"/>
+						</box>
+						<image>
+							<reportElement x="103" y="15" width="103" height="125" uuid="bf0f314c-90ba-40cc-ac4a-3e4387cf088d">
+								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+							</reportElement>
+							<box leftPadding="0" rightPadding="0"/>
+							<imageExpression><![CDATA[$F{examineeImage}]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="223" y="45" width="65" height="65" uuid="26b1a990-cbd4-40ee-bfe5-c48ff0641ea4">
+								<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+							</reportElement>
+							<imageExpression><![CDATA[$F{univLogo}]]></imageExpression>
+						</image>
+					</frame>
+					<frame>
+						<reportElement x="0" y="156" width="310" height="77" uuid="e5cd8d55-baa5-444c-8303-b17953b83abd">
+							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						</reportElement>
 						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
+							<topPen lineWidth="0.0" lineColor="#FC0C08"/>
+							<leftPen lineWidth="0.0" lineColor="#FC0C08"/>
+							<bottomPen lineWidth="0.0" lineColor="#FC0C08"/>
+							<rightPen lineWidth="0.0" lineColor="#FC0C08"/>
 						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[수험번호]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="60" width="90" height="30" uuid="a0a95494-9f7f-44ea-86a2-a072e0da41ab"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[모집구분]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="90" width="90" height="30" uuid="d0c0cb46-0a0f-47ab-ae6b-7c53eac4fe99"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[전형유형]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="120" width="90" height="30" uuid="5907ab20-a1b9-4704-a592-3ea3611212d9"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[성       명]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="150" width="90" height="120" uuid="bc85457d-01a5-4def-8555-48803155d4bc"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[지원사항]]></text>
-					</staticText>
-					<textField isBlankWhenNull="true">
-						<reportElement x="90" y="30" width="220" height="30" uuid="a350166b-48ec-49b3-b539-654440489c15"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{examineeCd}]]></textFieldExpression>
-					</textField>
-					<textField isBlankWhenNull="true">
-						<reportElement x="90" y="90" width="220" height="30" uuid="0b5a197b-62c4-40e1-9a21-59900d878d3e"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
-					</textField>
-					<textField isBlankWhenNull="true">
-						<reportElement x="90" y="120" width="220" height="30" uuid="e91a691b-5b6b-479e-85ff-06c4e8e15a59"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
-					</textField>
-					<textField isBlankWhenNull="true">
-						<reportElement x="90" y="180" width="220" height="30" uuid="d71121bf-81f7-41eb-9871-6d34799e014b"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{collegeNm}]]></textFieldExpression>
-					</textField>
-					<textField isBlankWhenNull="true">
-						<reportElement x="90" y="210" width="220" height="30" uuid="36e94288-16d5-4e42-ad01-02077cd6f711"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
-					</textField>
-					<textField isBlankWhenNull="true">
-						<reportElement x="90" y="240" width="220" height="30" uuid="03b31866-80cd-4d5b-ad10-0ab070beebe0"/>
-						<box>
-							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#BDBDBD"/>
-						</box>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
-					</textField>
-					<staticText>
-						<reportElement x="90" y="60" width="220" height="30" uuid="81d9b0f2-a3f7-4dc1-821d-112264fa6344"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[재외국민과 외국인]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="90" y="150" width="220" height="30" uuid="2cc4609a-6142-4662-b8e7-81874462476c"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[서울캠퍼스]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement x="30" y="330" width="310" height="240" uuid="a26fb593-8f6d-47a6-82bf-b2012e0d8c3e"/>
-					<box>
-						<topPen lineWidth="0.5" lineStyle="Solid"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid"/>
-						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid"/>
-					</box>
-					<componentElement>
-						<reportElement x="80" y="10" width="160" height="40" uuid="099ba9f7-1bdb-43ec-8e73-40694325495b">
-							<property name="com.jaspersoft.studio.unit.barHeight" value="pixel"/>
-						</reportElement>
-						<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
-							<jr:codeExpression><![CDATA[$F{examineeCd}]]></jr:codeExpression>
-						</jr:barbecue>
-					</componentElement>
-					<image>
-						<reportElement x="108" y="53" width="105" height="137" uuid="bf0f314c-90ba-40cc-ac4a-3e4387cf088d"/>
-						<imageExpression><![CDATA[$F{examineeImage}]]></imageExpression>
-					</image>
-					<image>
-						<reportElement x="227" y="119" width="69" height="69" uuid="26b1a990-cbd4-40ee-bfe5-c48ff0641ea4"/>
-						<imageExpression><![CDATA[$F{univLogo}]]></imageExpression>
-					</image>
-					<staticText>
-						<reportElement x="0" y="206" width="100" height="30" uuid="1e4e38c1-c80c-436f-acb2-b854680e2d34"/>
-						<textElement textAlignment="Left" verticalAlignment="Bottom">
-							<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<text><![CDATA[재출력 일시:]]></text>
-					</staticText>
-					<textField pattern="yyyy년 MM월 dd일 HH시 mm분 ss초 " isBlankWhenNull="true">
-						<reportElement x="100" y="206" width="210" height="30" uuid="7b72c4f2-596d-4845-8dd1-027fdc6330a3"/>
-						<textElement textAlignment="Center" verticalAlignment="Bottom">
-							<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{printDttm}]]></textFieldExpression>
-					</textField>
+					</frame>
 				</frame>
 				<staticText>
 					<reportElement x="30" y="0" width="310" height="49" uuid="cd6025fb-15b7-48ab-91ef-6718fcb8fd16"/>
 					<textElement textAlignment="Center" verticalAlignment="Bottom">
-						<font size="19" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+						<font size="22" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[수  험  표]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="31" y="560" width="100" height="27" uuid="1e4e38c1-c80c-436f-acb2-b854680e2d34">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[재출력 일시:]]></text>
+				</staticText>
+				<textField pattern="yyyy년 MM월 dd일 HH시 mm분 ss초 " isBlankWhenNull="true">
+					<reportElement x="138" y="559" width="202" height="27" uuid="7b72c4f2-596d-4845-8dd1-027fdc6330a3"/>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#FF0400"/>
+						<leftPen lineWidth="0.0" lineColor="#FF0400"/>
+						<bottomPen lineWidth="0.0" lineColor="#FF0400"/>
+						<rightPen lineWidth="0.0" lineColor="#FF0400"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{printDttm}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="153">
-			<staticText>
-				<reportElement x="0" y="-4" width="369" height="156" uuid="bf6c0029-c3e0-43d0-894b-8747818bce1f"/>
-				<box>
-					<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-					<paragraph leftIndent="28" rightIndent="28"/>
-				</textElement>
-				<text><![CDATA[1. 필답고사는 별도의 예비소집이 없으므로 2016.7.26.(화)이후 입학처 홈페이지에 기세된 고사장 및 고사시간을 반드시 확인하여야 합니다.
-
-2. 수험표는 출력하여 필답고사 당일에 신분증[주민등록증, 외국인등록증, 국내거소신고증, 여권, 운전면허증, 사진이 부착된 주민등록증발급신청확인서]과 함께 반드시 지참하여야 하며 미지참시 고사 응시에 제한을 받을 수 있습니다. 
-
-3. 답안 마킹용 컴퓨터사인펜은 고사실에서 제공합니다.
-
-4. 고사장에 입장하면 고사가 끝날 때까지 퇴장할 수 없습니다.]]></text>
-			</staticText>
-		</band>
-	</columnFooter>
 </jasperReport>

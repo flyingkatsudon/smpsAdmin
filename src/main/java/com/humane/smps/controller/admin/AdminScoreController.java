@@ -1,8 +1,10 @@
 package com.humane.smps.controller.admin;
 
+import com.humane.smps.dto.ScoreDto;
 import com.humane.smps.dto.ScoreFixDto;
 import com.humane.smps.dto.SheetDto;
 import com.humane.smps.mapper.AdminScoreMapper;
+import com.humane.smps.service.AdminScoreService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +27,11 @@ import java.io.FileNotFoundException;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AdminScoreController {
+    private static final String COLMODEL = "colmodel";
     private static final String JSON = "json";
     private static final String PDF = "pdf";
     private final AdminScoreMapper mapper;
+    private final AdminScoreService adminScoreService;
 
     @RequestMapping(value = "print.{format:json|pdf|xls|xlsx}")
     public ResponseEntity print(@PathVariable String format, SheetDto param, Pageable pageable) {
@@ -76,5 +80,17 @@ public class AdminScoreController {
         String fileName = param.getExamCd() + "_" + param.getHallCd() + "_" + param.getScorerNm() + ".pdf";
         File file = new File(pathRoot, fileName);
         return ResponseEntity.ok(new InputStreamResource(new FileInputStream(file)));
+    }
+
+    @RequestMapping(value = "fixList.{format:colmodel|json}")
+    public ResponseEntity fixList(@PathVariable String format, ScoreDto param, Pageable pageable){
+        switch (format) {
+            case COLMODEL:
+                return ResponseEntity.ok(adminScoreService.getFixListModel());
+            case JSON:
+                return ResponseEntity.ok(mapper.fixList(param, pageable));
+            default:
+                return null;
+        }
     }
 }

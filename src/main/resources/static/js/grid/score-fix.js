@@ -1,8 +1,12 @@
 define(function (require) {
     "use strict";
 
+    require('jquery.ajaxForm');
+
     var GridBase = require('../dist/jqgrid.js');
+    var _ = require('underscore');
     var BootstrapDialog = require('bootstrap-dialog');
+    var List = require('./score-fixList.js');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -29,25 +33,30 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'score/fix.json',
-                    colModel: colModel
-                    /*onSelectRow : function(rowid, status, e){
+                    colModel: colModel,
+                    onSelectRow: function (rowid, index, contents, event) {
                         var rowdata = $(this).jqGrid('getRowData', rowid);
+
                         BootstrapDialog.show({
-                            title : rowdata.scorerNm + '::' + rowdata.examNm + "::" + rowdata.examDate + " " + rowdata.examTime,
-                            message: '평가수정 이력',
+                            title: '평가수정이력',
                             size: 'size-wide',
                             closable: true,
-                            buttons: [{
-                                label: '닫기',
-                                action: function (dialog) {
-                                    dialog.close();
+                            onshown: function (dialog) {
+                                dialog.list = new List({el: dialog.$modalBody, virtNo: rowdata.virtNo, scorerNm: rowdata.scorerNm}).render();
+                            },
+                            buttons: [
+                                {
+                                    label: '닫기',
+                                    action: function(dialog){
+                                        dialog.close();
+                                    }
                                 }
-                            }]
+                            ]
+
                         });
-                    }*/
+                    }
                 }
             }, options);
-
             this.constructor.__super__.initialize.call(this, opt);
         },
         render: function () {
