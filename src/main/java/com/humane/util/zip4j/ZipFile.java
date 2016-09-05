@@ -46,6 +46,13 @@ public class ZipFile extends net.lingala.zip4j.core.ZipFile {
         super.addFile(sourceFile, parameters);
     }
 
+    public void addFile(String path, File sourceFile, String fileNameInZip) throws ZipException {
+        parameters.setFileNameInZip(path + "/" + fileNameInZip);
+        parameters.setSourceExternalStream(true);
+        parameters.setRootFolderInZip(path);
+        super.addFile(sourceFile, parameters);
+    }
+
     public void setParameters(ZipParameters parameters) {
         this.parameters = parameters;
     }
