@@ -85,7 +85,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "init")
-    public void init() {
+    public void init() throws IOException {
         systemService.initData();
     }
 }

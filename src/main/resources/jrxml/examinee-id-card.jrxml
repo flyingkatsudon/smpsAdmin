@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-09-02T17:33:03 -->
+<!-- 2016-09-13T17:53:15 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="examinee-id-card" pageWidth="595" pageHeight="841" columnWidth="369" leftMargin="113" rightMargin="113" topMargin="56" bottomMargin="42" uuid="3c7d4f36-0838-46cc-ab8d-49673d9f8876">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -263,7 +263,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 							</textElement>
-							<text><![CDATA[ERICA 캠퍼스]]></text>
+							<text><![CDATA[서울캠퍼스]]></text>
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement x="0" y="207" width="202" height="30" uuid="03b31866-80cd-4d5b-ad10-0ab070beebe0"/>

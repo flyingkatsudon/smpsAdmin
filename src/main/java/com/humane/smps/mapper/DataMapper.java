@@ -1,5 +1,7 @@
 package com.humane.smps.mapper;
 
+import com.humane.smps.dto.EvalDto;
+import com.humane.smps.dto.ExamDto;
 import com.humane.smps.dto.ExamineeDto;
 import com.humane.smps.dto.ScoreDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,4 +27,19 @@ public interface DataMapper {
 
     List<Map<String, Object>> scorerH(@Param("param") Map map);
 
+    List<EvalDto> paperToSmps(@Param("param") EvalDto param);
+
+    void fillEvalCd(@Param("param") EvalDto param);
+
+    List<EvalDto> fillList(@Param("param") EvalDto param);
+
+    void fillScore(@Param("param") EvalDto param);
+
+    List<ScoreDto> scorerList(@Param("param") ScoreDto param);
+
+    List<ExamDto> examInfo();
+
+    ExamDto examDetail(@Param("examCd") String examCd);
+
+    void fillVirtNo(@Param("param") ExamDto param);
 }

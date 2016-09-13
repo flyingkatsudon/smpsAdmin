@@ -27,11 +27,11 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'status/dept.json',
-                    colModel: colModel,
-                    gridComplete: function () {
+                    colModel: colModel
+                    /*, gridComplete: function () {
                         var data = $(this).jqGrid('getRowData');
                         _this.parent.renderChart(data);
-                    }
+                    }*/
                 }
             }, options);
 

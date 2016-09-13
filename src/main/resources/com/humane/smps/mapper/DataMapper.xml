@@ -214,4 +214,73 @@
             </where>
         </if>
     </select>
+
+    <select id="examInfo" resultType="com.humane.smps.dto.ExamDto">
+        SELECT exam.exam_cd, exam.exam_nm
+        FROM exam
+    </select>
+
+    <select id="examDetail" resultType="com.humane.smps.dto.ExamDto">
+        SELECT exam.exam_cd, exam.exam_nm,
+		  MAX(exam_map.virt_no) AS last_virt_no
+        , COUNT(exam_map.virt_no) AS virt_no_cnt, COUNT(exam_map.examinee_cd) AS examinee_cnt
+        , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_dttm IS NOT NULL AND attend_map.attend_cd = exam_map.exam_cd) AS attend_cnt
+        FROM exam_map
+        INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
+        WHERE exam.exam_cd = #{examCd}
+        GROUP BY exam.exam_cd, exam.exam_nm
+    </select>
+
+    <update id="fillVirtNo">
+        <if test="param.examCd != null">
+            UPDATE exam_map
+            SET virt_no = #{param.lastVirtNo}, scan_dttm = NOW()
+            WHERE exam_cd = #{param.examCd} AND virt_no IS NULL LIMIT 1
+        </if>
+    </update>
+
+    <select id="paperToSmps" resultType="com.humane.smps.dto.EvalDto">
+        SELECT DISTINCT attend_map.examinee_cd,
+        (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd
+        AND attend_paper.examinee_cd = attend_map.examinee_cd AND attend_paper.paper_no = 1
+        ORDER BY reg_dttm DESC LIMIT 1
+        ) AS eval_cd,
+        (SELECT exam_cd FROM exam_map WHERE attend_paper.examinee_cd = exam_map.examinee_cd) AS exam_cd
+        FROM attend_map
+        INNER JOIN attend_paper ON attend_paper.attend_cd = attend_map.attend_cd
+        AND attend_paper.examinee_cd = attend_map.examinee_cd AND attend_paper.paper_no = 1
+        <where>
+            <if test="param.examCd != null">AND attend_map.attend_cd = #{param.examCd}</if>
+        </where>
+    </select>
+
+    <update id="fillEvalCd">
+        <if test="param.examCd != null">
+            UPDATE exam_map
+            SET eval_cd = #{param.evalCd}
+            WHERE examinee_cd = #{param.examineeCd} AND exam_cd = #{param.examCd}
+        </if>
+    </update>
+
+    <select id="fillList" resultType="com.humane.smps.dto.EvalDto">
+        SELECT exam_map.examinee_cd, score.scorer_nm, exam_map.virt_no, exam_map.exam_cd, exam_map.eval_cd, score.score01,exam_map.hall_cd
+        FROM attend_map
+        INNER JOIN exam_map ON exam_map.examinee_cd = attend_map.examinee_cd
+        INNER JOIN attend_paper ON attend_paper.paper_cd = exam_map.eval_cd
+        LEFT JOIN score ON score.virt_no = exam_map.virt_no
+        <where>
+            AND score.scorer_nm IS NULL
+            <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
+        </where>
+    </select>
+
+    <select id="scorerList" resultType="com.humane.smps.dto.ScoreDto">
+        SELECT DISTINCT score.scorer_nm
+        FROM score
+    </select>
+
+    <insert id="fillScore" parameterType="com.humane.smps.dto.EvalDto">
+        INSERT INTO score(score01, score_dttm, score_seq, scorer_nm, sheet_no, total_score, virt_no, exam_cd, hall_cd)
+        VALUES (#{param.score01}, NOW(), '1', #{param.scorerNm}, '1', #{param.score01}, #{param.virtNo}, #{param.examCd}, #{param.hallCd})
+    </insert>
 </mapper>

@@ -1,5 +1,7 @@
 package com.humane.smps.controller.admin;
 
+import com.humane.smps.dto.EvalDto;
+import com.humane.smps.dto.ExamDto;
 import com.humane.smps.dto.ExamineeDto;
 import com.humane.smps.dto.ScoreDto;
 import com.humane.smps.mapper.DataMapper;
@@ -14,6 +16,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +41,6 @@ public class DataController {
     private final DataMapper mapper;
     private final ImageService imageService;
 
-
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto param, Pageable pageable) {
         List<ExamineeDto> list = mapper.examinee(param, pageable).getContent();
@@ -50,7 +52,7 @@ public class DataController {
                 log.error("{}", e.getMessage());
             }
 
-            try (InputStream is = imageService.getUnivLogo("symbol_03.jpg")) {
+            try (InputStream is = imageService.getUnivLogo("hanyang.jpg")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setUnivLogo(image);
             } catch (IOException e) {
@@ -130,6 +132,92 @@ public class DataController {
                 jasperPrint.setName("채점자별 상세(세로)");
 
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        }
+    }
+
+    // 초기에 시험이름, 시험코드를 불러옴
+    @RequestMapping(value = "examInfo.json")
+    public ResponseEntity examInfo() {
+        try {
+            List<ExamDto> examInfo = mapper.examInfo();
+            log.debug("examInfo: {}", examInfo);
+
+            return ResponseEntity.ok(mapper.examInfo());
+        } catch (Exception e) {
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    // 선택한 시험의 정보로 진행
+    @RequestMapping(value = "fillVirtNo.json")
+    public ResponseEntity fillVirtNo(String examCd) {
+        try {
+            // 1. 현재 마지막 가번호, 입력된 가번호 수, 선택한 시험의 학생 수 가져옴
+            ExamDto examDto = mapper.examDetail(examCd);
+            log.debug("examDetail: {}", examDto);
+
+            if (examDto.getAttendCnt() - examDto.getVirtNoCnt() == 0) {
+                return ResponseEntity.ok("가번호가 모두 배정되어 있습니다.");
+            } else {
+                // 2. 남은 수험생 수 만큼 가번호 입력 (수험생 수 - 가번호 수)
+                long cnt = examDto.getAttendCnt() - examDto.getVirtNoCnt();
+                for (int i = 0; i < cnt; i++) {
+                    examDto.setLastVirtNo(String.valueOf(Integer.parseInt(examDto.getLastVirtNo()) + 1));
+                    mapper.fillVirtNo(examDto);
+                }
+                return ResponseEntity.ok("가번호가 입력되었습니다.");
+            }
+        } catch (Exception e) {
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "fillEvalCd.json")
+    public ResponseEntity fillEvalCd(String examCd) {
+        try {
+            // 1. paper_cd 정보 가져옴(수험번호, 답안지번호, 시험코드)
+            EvalDto evalDto = new EvalDto();
+            evalDto.setExamCd(examCd);
+            List<EvalDto> evalList = mapper.paperToSmps(evalDto);
+
+            // 2. eval_cd에 입력
+            for (int i = 0; i < evalList.size(); i++)
+                mapper.fillEvalCd(evalList.get(i));
+
+            return ResponseEntity.ok("답안지 번호가 입력되었습니다.");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "fillScore.json")
+    public ResponseEntity fillScore(String examCd, String score) {
+        try {
+            // 1. 점수 채울 답안지 리스트 가져오기
+            EvalDto evalDto = new EvalDto();
+            evalDto.setExamCd(examCd);
+            List<EvalDto> fillList = mapper.fillList(evalDto);
+
+            // 2. 채점자 리스트 가져오기
+            ScoreDto scoreDto = new ScoreDto();
+            List<ScoreDto> scorerList = mapper.scorerList(scoreDto);
+
+            // 3. 답안지 1개 당 X 채점자 수 만큼 점수 입력
+            for (int i = 0; i < scorerList.size(); i++) {
+                for (int j = 0; j < fillList.size(); j++) {
+                    // 3-1. 팝업에서 입력한 점수를 저장, 이미 저장되어 있으면 패스
+                    fillList.get(j).setScore01(score);
+                    fillList.get(j).setScorerNm(scorerList.get(i).getScorerNm());
+                    mapper.fillScore(fillList.get(j));
+                }
+            }
+            return ResponseEntity.ok("점수가 입력되었습니다.");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

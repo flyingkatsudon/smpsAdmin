@@ -59,7 +59,8 @@ define(function (require) {
         }, events: {
             'click #download': 'downloadClicked',
             'click #reset': 'resetClicked',
-            'click #init': 'initClicked'
+            'click #init': 'initClicked',
+            'click #fill': 'fillClicked'
         }, downloadClicked: function (e) {
             BootstrapDialog.show({
                 title: '',
@@ -88,7 +89,7 @@ define(function (require) {
                         }).trigger('reloadGrid');
                     });
                 },
-                onhidden : function(dialogRef){
+                onhidden: function (dialogRef) {
                     dialogRef.list.close();
                 },
                 buttons: [
@@ -100,7 +101,7 @@ define(function (require) {
                             var $grid = dialogRef.list.$grid;
 
                             var param = {
-                                url : $grid.getGridParam('postData').url,
+                                url: $grid.getGridParam('postData').url,
                                 list: []
                             };
 
@@ -207,11 +208,11 @@ define(function (require) {
                     }
                 ]
             });
-        }, reset : function(o){
+        }, reset: function (o) {
             $.ajax({
                 url: 'system/reset',
-                data : {
-                    photo : o
+                data: {
+                    photo: o
                 },
                 success: function (data) {
                     BootstrapDialog.closeAll();
@@ -260,6 +261,152 @@ define(function (require) {
                                         }]
                                     });
                                 }
+                            });
+                        }
+                    },
+                    {
+                        label: '닫기',
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
+        }, fillClicked: function (e) {
+            var text = '<select id="examCd"><option value="">선택하세요</option>';
+
+            $.ajax({
+                url: 'data/examInfo.json',
+                async: false,
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>'
+                    }
+                    text += '</select>';
+                }
+            });
+
+            BootstrapDialog.show({
+                title: '가번호 / 답안지 번호 / 점수',
+                message: '입력할 시험을 선택하세요 ' + text,
+                closable: true,
+                buttons: [
+                    {
+                        label: '가번호',
+                        cssClass: 'btn-primary',
+                        action: function () {
+                            var examCd = $('#examCd').val();
+
+                            if (examCd == '') {
+                                alert('시험을 선택하세요');
+                                return false;
+                            }
+
+                            BootstrapDialog.closeAll();
+                            BootstrapDialog.show({
+                                title: '가번호 채우기',
+                                message: '진행 중입니다. 잠시만 기다려주세요.',
+                                closable: false,
+                                onshown: function (e) {
+                                    $.ajax({
+                                        url: 'data/fillVirtNo.json?examCd=' + examCd,
+                                        success: function (response) {
+                                            console.log(response);
+                                            BootstrapDialog.closeAll();
+                                            BootstrapDialog.show({
+                                                title: '가번호 채우기',
+                                                message: response,
+                                                closable: true
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        label: '답안지 번호',
+                        cssClass: 'btn-primary',
+                        action: function () {
+                            var examCd = $('#examCd').val();
+
+                            if (examCd == '') {
+                                alert('시험을 선택하세요');
+                                return false;
+                            }
+
+                            BootstrapDialog.closeAll();
+                            BootstrapDialog.show({
+                                title: '답안지 번호 채우기',
+                                message: '진행 중입니다. 잠시만 기다려주세요.',
+                                closable: false,
+                                onshown: function (e) {
+                                    $.ajax({
+                                        url: 'data/fillEvalCd.json?examCd=' + examCd,
+                                        success: function (response) {
+                                            BootstrapDialog.closeAll();
+                                            BootstrapDialog.show({
+                                                title: '답안지 번호 채우기',
+                                                message: response,
+                                                closable: true
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        label: '점수',
+                        cssClass: 'btn-success',
+                        action: function () {
+                            var examCd = $('#examCd').val();
+
+                            if (examCd == '') {
+                                alert('시험을 선택하세요');
+                                return false;
+                            }
+
+                            BootstrapDialog.closeAll();
+                            BootstrapDialog.show({
+                                title: '점수 채우기',
+                                message: '점수를 입력하세요 ' + '<input type="text" id="score"/>',
+                                closable: true,
+                                buttons: [{
+                                    label: '입력',
+                                    cssClass: 'btn-success',
+                                    action: function (dialog) {
+                                        var score = $('#score').val();
+                                        if (score > 100 || score < 0) {
+                                            alert('0이상 100이하의 점수를 입력하세요');
+                                            $('#score').focus();
+                                            return false;
+                                        }
+                                        $.ajax({
+                                            url: 'data/fillScore.json?examCd=' + examCd + '&score=' + score,
+                                            success: function (response) {
+                                                BootstrapDialog.closeAll();
+                                                BootstrapDialog.show({
+                                                    title: '점수 채우기',
+                                                    message: response,
+                                                    closable: true,
+                                                    buttons: [{
+                                                        label: '확인',
+                                                        action: function (dialog) {
+                                                            dialog.close();
+                                                        }
+                                                    }]
+                                                });
+                                            }
+                                        });
+                                    }
+                                },
+                                    {
+                                        label: '닫기',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
                             });
                         }
                     },

@@ -8,6 +8,11 @@ body {
     background-color: #f8f8f8;
 }
 
+.background {
+    width:100%;
+    height: auto;
+}
+
 #wrapper {
     width: 100%;
 }
@@ -211,7 +216,35 @@ body {
 }
 
 .login-panel {
-    margin-top: 25%;
+    margin-top: 50%;
+    text-align: center;
+    background: #e8e8e8;
+    border-radius: 5%;
+}
+
+.login-heading {
+}
+
+.login-body {
+    padding: 10%;
+}
+
+.logo-margin {
+    margin: 10%;
+}
+
+.login-title {
+    font-size: 20px;
+    font-weight:bold;
+}
+
+.login-btn {
+    margin-top: 20%;
+}
+
+.login-footer {
+    padding-top: 1%;
+    text-align:center;
 }
 
 .flot-chart {
@@ -304,17 +337,92 @@ table.dataTable thead .sorting:after {
 }
 
 .mid {
-    font-size: 30px;
+    font-size: 25px;
+}
+
+.chosen {
+    width: 400px;
+    padding: 1%;
+    margin-right: 25px;
+    background-color: #aeb1b3;
+    border: 1px solid #aeb1b3;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-setting {
+    width: 78px;
+}
+
+.btn-regist {
+    width: 79px;
+    background-color: #CCA63D;
+    border: 1px solid #CCA63D;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-delete {
+    width: 79px;
+    background-color: #CC3D3D;
+    border: 1px solid #CC3D3D;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-init {
+    width: 79px;
+    background-color: #673AB7;
+    border: 1px solid #673AB7;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-download {
+    width: 79px;
+    background-color: #476600;
+    border: 1px solid #476600;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-others {
+    width: 79px;
+    background-color: #ab6a65;
+    border: 1px solid #ab6a65;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.textbox {
+    width: 400px;
+}
+
+.panel-height {
+    height:90px;
+    padding: 5% 0 0 3%;
+}
+
+.align-right {
+    text-align: right;
 }
 
 .panel-size {
     width: 20%;
+    height: 80px;
     float: left;
     padding: 0 10px 0 10px;
 }
 
 h4 {
+    padding-left: 10px;
     font-weight: bold;
+}
+
+.img-page {
+    width: 30px;
+    padding: 4% 5% 0 0;
+    float: left;
 }
 
 .main-font {
@@ -326,28 +434,60 @@ h4 {
 }
 
 .main-large {
-    height: 320px;
-    padding-right:30px;
+    height: 285px;
+    padding: 90px 30px;
 }
 
 .main-small {
-    height: 150px;
-    padding-right: 30px;
-}
-.panel-custom .panel-heading{
-    border-color: #969696;
-    color: #fff;
-    background-color: #969696;
+    height: 130px;
+    padding: 10px 30px;
 }
 
-.panel-green {
-    border-color: #5cb85c;
+.ui-th-column{
+    text-align:center;
+}
+
+.panel-blue .panel-custom {
+    border-color: #62a7e2!important;
+    background-color: #62a7e2!important;
+}
+.panel-green .panel-custom {
+    border-color: #79d079!important;
+    background-color: #79d079!important;
+}
+.panel-yellow .panel-custom {
+    border-color: #e8b873!important;
+    background-color: #e8b873!important;
+}
+.panel-red .panel-custom {
+    border-color: #ec9592!important;
+    background-color: #ec9592!important;
+}
+.panel-light-gray .panel-custom {
+    border-color: #c3bcbc!important;
+    background-color: #c3bcbc!important;
+}
+
+.panel-custom {
+    height: 55px;
+}
+
+.panel-blue .panel-heading{
+    border-radius: 5px;
+    color: #fff;
+    background-color: #266296;
+}
+
+.panel-light-gray .panel-heading{
+    border-radius: 5px;
+    color: #fff;
+    background-color: #696868;
 }
 
 .panel-green .panel-heading {
-    border-color: #5cb85c;
+    border-radius: 5px;
     color: #fff;
-    background-color: #5cb85c;
+    background-color: #189018;
 }
 
 .panel-green a {
@@ -358,14 +498,10 @@ h4 {
     color: #3d8b3d;
 }
 
-.panel-red {
-    border-color: #f7918d;
-}
-
 .panel-red .panel-heading {
-    border-color: #f7918d;
+    border-radius: 5px;
     color: #fff;
-    background-color: #f7918d;
+    background-color: #f9625c;
 }
 
 .panel-red a {
@@ -376,14 +512,10 @@ h4 {
     color: #b52b27;
 }
 
-.panel-yellow {
-    border-color: #f0ad4e;
-}
-
 .panel-yellow .panel-heading {
-    border-color: #f0ad4e;
+    border-radius: 5px;
     color: #fff;
-    background-color: #f0ad4e;
+    background-color: #e8a039;
 }
 
 .panel-yellow a {

@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-08-10T17:25:54 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="조별 응시율" pageWidth="1200" pageHeight="60" orientation="Landscape" columnWidth="1200" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="cc2bfb46-5ff5-4c3f-97f9-6a81bb71a4cc">
+<!-- 2016-09-06T10:01:11 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="조별 응시율" pageWidth="1240" pageHeight="60" orientation="Landscape" columnWidth="1240" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="cc2bfb46-5ff5-4c3f-97f9-6a81bb71a4cc">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -34,7 +42,7 @@
 	<title>
 		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="1200" height="30" uuid="8f02373a-6470-4b97-b509-3adecfc3f9f5"/>
+				<reportElement x="0" y="0" width="1240" height="30" uuid="8f02373a-6470-4b97-b509-3adecfc3f9f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -44,7 +52,7 @@
 	</title>
 	<columnHeader>
 		<band height="15">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="0b4d4f1c-9dd2-4394-83fd-d8f774691d1f"/>
 				<box>
@@ -59,7 +67,9 @@
 				<text><![CDATA[번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="80" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="d8a8a4e7-90c9-449b-9f5f-202a04bde3bb"/>
+				<reportElement mode="Opaque" x="80" y="0" width="120" height="15" backcolor="#D3D3D3" uuid="d8a8a4e7-90c9-449b-9f5f-202a04bde3bb">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -70,7 +80,7 @@
 				<text><![CDATA[전형]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="160" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="debb93e9-c0f0-4635-a9f4-546c25c70b0b"/>
+				<reportElement mode="Opaque" x="200" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="debb93e9-c0f0-4635-a9f4-546c25c70b0b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -81,7 +91,7 @@
 				<text><![CDATA[계열]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="240" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="4826e68d-86d8-488e-a46f-f6b0b2a138e4"/>
+				<reportElement mode="Opaque" x="280" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="4826e68d-86d8-488e-a46f-f6b0b2a138e4"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -92,7 +102,7 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="320" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="5a45dbc5-246d-4c0a-a7c8-f18a79687b5d"/>
+				<reportElement mode="Opaque" x="360" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="5a45dbc5-246d-4c0a-a7c8-f18a79687b5d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -103,7 +113,7 @@
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="400" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="653c968b-7bcf-424a-8ebd-4844a0f29be0"/>
+				<reportElement mode="Opaque" x="440" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="653c968b-7bcf-424a-8ebd-4844a0f29be0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -114,7 +124,7 @@
 				<text><![CDATA[전공]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="480" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="f2c5976b-326a-4157-9cec-1f322836429d"/>
+				<reportElement mode="Opaque" x="520" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="f2c5976b-326a-4157-9cec-1f322836429d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -125,7 +135,7 @@
 				<text><![CDATA[조]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="560" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="3af50951-2602-48d3-9ea9-371521ad5033"/>
+				<reportElement mode="Opaque" x="600" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="3af50951-2602-48d3-9ea9-371521ad5033"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -136,7 +146,7 @@
 				<text><![CDATA[고사본부]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="640" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="f28b9846-561a-4bd6-a3b4-dbb1594eb65d"/>
+				<reportElement mode="Opaque" x="680" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="f28b9846-561a-4bd6-a3b4-dbb1594eb65d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -147,7 +157,7 @@
 				<text><![CDATA[고사건물]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="720" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="22e2f8e0-f5b9-429a-86f0-3de11da0ae22"/>
+				<reportElement mode="Opaque" x="760" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="22e2f8e0-f5b9-429a-86f0-3de11da0ae22"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -158,7 +168,7 @@
 				<text><![CDATA[고사실]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="800" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="5e62d393-4f55-4c5e-9f5a-09fe04247155"/>
+				<reportElement mode="Opaque" x="840" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="5e62d393-4f55-4c5e-9f5a-09fe04247155"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -169,7 +179,7 @@
 				<text><![CDATA[지원자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="880" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="e29b3601-d473-470b-8626-d338e9b97679"/>
+				<reportElement mode="Opaque" x="920" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="e29b3601-d473-470b-8626-d338e9b97679"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -180,7 +190,7 @@
 				<text><![CDATA[응시자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="960" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="df1bcad6-eea7-427f-9f08-6d4a66ef7769"/>
+				<reportElement mode="Opaque" x="1000" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="df1bcad6-eea7-427f-9f08-6d4a66ef7769"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -191,7 +201,7 @@
 				<text><![CDATA[응시율]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1040" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="76bab557-20c8-4ae0-86f9-573709c81f8d"/>
+				<reportElement mode="Opaque" x="1080" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="76bab557-20c8-4ae0-86f9-573709c81f8d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -202,7 +212,7 @@
 				<text><![CDATA[결시자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1120" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="4f7f5ef7-43c5-491c-964d-593f8ab639e3"/>
+				<reportElement mode="Opaque" x="1160" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="4f7f5ef7-43c5-491c-964d-593f8ab639e3"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -216,7 +226,7 @@
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="80" height="15" uuid="55989771-784c-466c-b9ea-32e7a0317d0d"/>
 				<box>
@@ -230,8 +240,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="80" y="0" width="80" height="15" uuid="d7745f2f-e060-4b89-a386-bee7b2fb6ab8"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="120" height="15" uuid="d7745f2f-e060-4b89-a386-bee7b2fb6ab8"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -242,7 +252,7 @@
 				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="0" width="80" height="15" uuid="8e41c65d-c3e1-44bc-9612-376c1c2ebb23"/>
+				<reportElement x="200" y="0" width="80" height="15" uuid="8e41c65d-c3e1-44bc-9612-376c1c2ebb23"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -253,7 +263,7 @@
 				<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="240" y="0" width="80" height="15" uuid="9b294711-3e42-457f-b67b-05141a447aea"/>
+				<reportElement x="280" y="0" width="80" height="15" uuid="9b294711-3e42-457f-b67b-05141a447aea"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -264,7 +274,7 @@
 				<textFieldExpression><![CDATA[$F{examDate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm" isBlankWhenNull="true">
-				<reportElement x="320" y="0" width="80" height="15" uuid="f047a55a-4bf9-49bf-97e7-1765ff03e35d"/>
+				<reportElement x="360" y="0" width="80" height="15" uuid="f047a55a-4bf9-49bf-97e7-1765ff03e35d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -275,7 +285,7 @@
 				<textFieldExpression><![CDATA[$F{examTime}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="0" width="80" height="15" uuid="d4e06a4a-4cf5-4b3c-9059-51ee76c0ffdf"/>
+				<reportElement x="440" y="0" width="80" height="15" uuid="d4e06a4a-4cf5-4b3c-9059-51ee76c0ffdf"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -286,7 +296,7 @@
 				<textFieldExpression><![CDATA[$F{majorNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="480" y="0" width="80" height="15" uuid="fb5b727f-35ea-4844-9ecd-ec8ab7cae36e"/>
+				<reportElement x="520" y="0" width="80" height="15" uuid="fb5b727f-35ea-4844-9ecd-ec8ab7cae36e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -297,7 +307,7 @@
 				<textFieldExpression><![CDATA[$F{groupNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="560" y="0" width="80" height="15" uuid="3efe09c7-2208-4cf9-a198-4c722f0af3a5"/>
+				<reportElement x="600" y="0" width="80" height="15" uuid="3efe09c7-2208-4cf9-a198-4c722f0af3a5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -308,7 +318,7 @@
 				<textFieldExpression><![CDATA[$F{headNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="640" y="0" width="80" height="15" uuid="91b6fe67-3a0f-4208-b5f5-ec0b8c10631a"/>
+				<reportElement x="680" y="0" width="80" height="15" uuid="91b6fe67-3a0f-4208-b5f5-ec0b8c10631a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -319,7 +329,7 @@
 				<textFieldExpression><![CDATA[$F{bldgNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="720" y="0" width="80" height="15" uuid="48b6b639-7e48-4c37-8a85-a1ab3c4f6059"/>
+				<reportElement x="760" y="0" width="80" height="15" uuid="48b6b639-7e48-4c37-8a85-a1ab3c4f6059"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -330,7 +340,7 @@
 				<textFieldExpression><![CDATA[$F{hallNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="800" y="0" width="80" height="15" uuid="b43b2685-f37c-4b1b-8ecf-8c8a107bf0ab"/>
+				<reportElement x="840" y="0" width="80" height="15" uuid="b43b2685-f37c-4b1b-8ecf-8c8a107bf0ab"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -341,7 +351,7 @@
 				<textFieldExpression><![CDATA[$F{examineeCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="880" y="0" width="80" height="15" uuid="387b4a6e-05f8-412c-9758-ce4f3340b145"/>
+				<reportElement x="920" y="0" width="80" height="15" uuid="387b4a6e-05f8-412c-9758-ce4f3340b145"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -352,7 +362,7 @@
 				<textFieldExpression><![CDATA[$F{attendCnt}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
-				<reportElement x="960" y="0" width="80" height="15" uuid="bc99f81e-7f50-4881-9519-2ab8bbb9040c"/>
+				<reportElement x="1000" y="0" width="80" height="15" uuid="bc99f81e-7f50-4881-9519-2ab8bbb9040c"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -363,7 +373,7 @@
 				<textFieldExpression><![CDATA[$F{attendPer}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1040" y="0" width="80" height="15" uuid="e0c804a7-25bc-45f0-a890-7254831d317c"/>
+				<reportElement x="1080" y="0" width="80" height="15" uuid="e0c804a7-25bc-45f0-a890-7254831d317c"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -374,7 +384,7 @@
 				<textFieldExpression><![CDATA[$F{absentCnt}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
-				<reportElement x="1120" y="0" width="80" height="15" uuid="82d02056-a25e-43d9-a552-b7273d47804d"/>
+				<reportElement x="1160" y="0" width="80" height="15" uuid="82d02056-a25e-43d9-a552-b7273d47804d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -388,7 +398,7 @@
 	</detail>
 	<summary>
 		<band height="15" splitType="Stretch">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<staticText>
 				<reportElement x="0" y="0" width="80" height="15" uuid="268c115a-4c80-4153-ac81-2cb9517bf0f4"/>
 				<box>
@@ -403,7 +413,7 @@
 				<text><![CDATA[합계]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="0" width="80" height="15" uuid="0d25fac0-5ebd-41e8-be0c-56014a98421c"/>
+				<reportElement x="80" y="0" width="120" height="15" uuid="0d25fac0-5ebd-41e8-be0c-56014a98421c"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -416,7 +426,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="0" width="80" height="15" uuid="92783ea9-a9b1-404c-b436-49661b389dc5"/>
+				<reportElement x="200" y="0" width="80" height="15" uuid="92783ea9-a9b1-404c-b436-49661b389dc5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -429,7 +439,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="0" width="80" height="15" uuid="b5fb5d60-5a1b-44da-bde5-41fb8811f08f"/>
+				<reportElement x="280" y="0" width="80" height="15" uuid="b5fb5d60-5a1b-44da-bde5-41fb8811f08f"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -442,7 +452,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="0" width="80" height="15" uuid="7176b78b-61cd-463d-8dfe-ae82181098f1"/>
+				<reportElement x="360" y="0" width="80" height="15" uuid="7176b78b-61cd-463d-8dfe-ae82181098f1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -455,7 +465,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="80" height="15" uuid="58394bc1-72af-4740-af8a-fbdec67a09e5"/>
+				<reportElement x="440" y="0" width="80" height="15" uuid="58394bc1-72af-4740-af8a-fbdec67a09e5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -468,7 +478,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="480" y="0" width="80" height="15" uuid="0ab28616-bda3-458f-9333-30529a5ff72f"/>
+				<reportElement x="520" y="0" width="80" height="15" uuid="0ab28616-bda3-458f-9333-30529a5ff72f"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -481,7 +491,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="560" y="0" width="80" height="15" uuid="ac4e11d0-ff2f-445b-81eb-c966c75a4004"/>
+				<reportElement x="600" y="0" width="80" height="15" uuid="ac4e11d0-ff2f-445b-81eb-c966c75a4004"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -494,7 +504,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="640" y="0" width="80" height="15" uuid="b416728e-69c4-4d4b-8e29-7eac7660e275"/>
+				<reportElement x="680" y="0" width="80" height="15" uuid="b416728e-69c4-4d4b-8e29-7eac7660e275"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -507,7 +517,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="720" y="0" width="80" height="15" uuid="567a4b0c-2d44-46fe-b6a5-82b711beb0f8"/>
+				<reportElement x="760" y="0" width="80" height="15" uuid="567a4b0c-2d44-46fe-b6a5-82b711beb0f8"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -520,7 +530,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="800" y="0" width="80" height="15" uuid="236a151a-7504-49f2-8b15-a8f6b3d88d51"/>
+				<reportElement x="840" y="0" width="80" height="15" uuid="236a151a-7504-49f2-8b15-a8f6b3d88d51"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -533,7 +543,7 @@
 				<textFieldExpression><![CDATA[$V{sumExamineeCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="880" y="0" width="80" height="15" uuid="83cb70d3-8bdc-457d-b8d2-71e44ef45d72"/>
+				<reportElement x="920" y="0" width="80" height="15" uuid="83cb70d3-8bdc-457d-b8d2-71e44ef45d72"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -546,7 +556,7 @@
 				<textFieldExpression><![CDATA[$V{sumAttendCnt}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
-				<reportElement x="960" y="0" width="80" height="15" uuid="98e81ee0-7167-4200-bef7-768de8487725"/>
+				<reportElement x="1000" y="0" width="80" height="15" uuid="98e81ee0-7167-4200-bef7-768de8487725"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -559,7 +569,7 @@
 				<textFieldExpression><![CDATA[$V{sumAttendCnt}.floatValue()*100/$V{sumExamineeCnt}.floatValue()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1040" y="0" width="80" height="15" uuid="90ce2271-6978-4594-baa1-3ef66257d6cb"/>
+				<reportElement x="1080" y="0" width="80" height="15" uuid="90ce2271-6978-4594-baa1-3ef66257d6cb"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -572,7 +582,7 @@
 				<textFieldExpression><![CDATA[$V{sumAbsentCnt}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
-				<reportElement x="1120" y="0" width="80" height="15" uuid="518467b2-ba09-4350-b972-3d4c3fc0cdad"/>
+				<reportElement x="1160" y="0" width="80" height="15" uuid="518467b2-ba09-4350-b972-3d4c3fc0cdad"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>

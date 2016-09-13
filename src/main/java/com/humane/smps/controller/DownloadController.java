@@ -103,7 +103,7 @@ public class DownloadController {
         zipFile.addFile(fileGroup);
         fileGroup.delete();
 
-        File fileExamineeReport = JasperReportsExportHelper.toXlsxFile("수험생 별 종합", dataService.getExamineeReport(), dataMapper.examinee(new ExamineeDto(), pageable).getContent());
+        File fileExamineeReport = JasperReportsExportHelper.toXlsxFile("수험생별 종합", dataService.getExamineeReport(), dataMapper.examinee(new ExamineeDto(), pageable).getContent());
         zipFile.addFile(fileExamineeReport);
         fileExamineeReport.delete();
 
@@ -119,7 +119,7 @@ public class DownloadController {
         zipFile.addFile(fileScorerReport);
         fileScorerReport.delete();
 
-        // 나머지 가져오기
+/*        // 나머지 가져오기
         // 0. 폴더위치 지정
         String jpgPath = pathRoot + "/jpg";
         // 1. 사진 폴더 생성
@@ -141,7 +141,7 @@ public class DownloadController {
         for (File f : pdfList) {
             if (f.isFile())
                 zipFile.addFile("평가위원 평가표", f);
-        }
+        }*/
 
         byte[] ba = FileUtils.getByteArray(zipFile.getFile());
 

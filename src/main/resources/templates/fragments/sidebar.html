@@ -10,7 +10,10 @@
                 <li><a href="#status-hall"><img src="images/menu/M01_4.png"/> 고사실별</a></li>
                 <li><a href="#status-group"><img src="images/menu/M01_5.png"/> 조별</a></li>
             </ul>
-
+        </ul>
+    </div>
+    <div sec:authorize="hasRole('ADMIN')" class="sidebar-nav navbar-collapse">
+        <ul class="nav">
             <li>
                 <a href="#"><img src="images/menu/M02.png"/> 평가 관리<span class="fa arrow"></span></a>
             </li>
@@ -19,26 +22,31 @@
                 <li><a href="#score-cancel"><img src="images/menu/M02_2.png"/> 채점마감 취소이력</a></li>
                 <li><a href="#score-fix"><img src="images/menu/M02_3.png"/> 평가수정 이력</a></li>
             </ul>
-
+        </ul>
+    </div>
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav">
             <li>
                 <a href="#"><img src="images/menu/M03.png"/> 데이터 &amp; 산출물<span class="fa arrow"></span></a>
             </li>
             <ul class="nav nav-second-level">
-                <li><a href="#data-examinee"><img src="images/menu/M03_1.png"/> 수험생별 종합</a></li>
-                <li><a href="#data-virtNoList"><img src="images/menu/M03_2.png"/> 가번호 배정 현황</a></li>
-                <li><a href="#data-scorer-h"><img src="images/menu/M03_3.png"/> 채점자별 상세(가로)</a></li>
-                <li><a href="#data-scorer"><img src="images/menu/M03_4.png"/> 채점자별 상세(세로)</a></li>
-                <li><a href="#data-report"><img src="images/menu/M03_5.png"/> 산출물 다운로드</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a href="#data-examinee"><img src="images/menu/M03_1.png"/> 수험생별 종합</a></li>
+                <li><a href="#data-virtNoList"><img src="images/menu/M03_2.png"/> 실기번호 배정 현황</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a href="#data-scorer-h"><img src="images/menu/M03_3.png"/> 채점자별 상세(가로)</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a href="#data-scorer"><img src="images/menu/M03_4.png"/> 채점자별 상세(세로)</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a href="#data-report"><img src="images/menu/M03_5.png"/> 산출물 다운로드</a></li>
             </ul>
-
             <li>
                 <a href="#"><img src="images/menu/M04.png"/> 시스템 설정<span class="fa arrow"></span></a>
             </li>
             <ul class="nav nav-second-level">
-                <li><a href="#setting-data"><img src="images/menu/M04_1.png"/> 데이터 관리</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a href="#setting-data"><img src="images/menu/M04_1.png"/> 데이터 관리</a></li>
                 <li><a href="#print-idCard"><img src="images/menu/M04_2.png"/> 수험표 출력</a></li>
             </ul>
-
+        </ul>
+    </div>
+    <div sec:authorize="hasRole('ADMIN')" class="sidebar-nav navbar-collapse">
+        <ul class="nav">
             <li>
                 <a href="#"><img src="images/menu/M05.png"/> 데이터 검증<span class="fa arrow"></span></a>
             </li>

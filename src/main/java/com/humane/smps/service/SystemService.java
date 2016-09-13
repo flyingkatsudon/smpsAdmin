@@ -47,6 +47,10 @@ public class SystemService {
 
     @Value("${path.image.examinee:C:/api/image/examinee}")
     String pathExaminee;
+    @Value("${path.smps.jpg:C:/api/smps/jpg}")
+    String pathJpg;
+    @Value("${path.smps.pdf:C:/api/smps/pdf}")
+    String pathPdf;
 
     private final ImageService imageService;
 
@@ -77,7 +81,10 @@ public class SystemService {
         }
         scrollableResults.close();
 
-        queryFactory.delete(QHall.hall).execute();
+        try {
+            queryFactory.delete(QHall.hall).execute();
+        } catch (Exception ignored) {
+        }
         queryFactory.delete(QItem.item).execute();
         queryFactory.delete(QDevi.devi1).where(QDevi.devi1.devi.isNotNull()).execute();
         queryFactory.delete(QDevi.devi1).execute();
@@ -93,7 +100,7 @@ public class SystemService {
 
         while (scrollableResults.next()) {
             String admissionCd = scrollableResults.getString(0);
-            queryFactory.delete(exam).where(exam.admission.admissionCd.eq(admissionCd));
+            queryFactory.delete(exam).where(exam.admission.admissionCd.eq(admissionCd)).execute();
 
             try {
                 queryFactory.delete(QAdmission.admission).where(QAdmission.admission.admissionCd.eq(admissionCd)).execute();
@@ -108,10 +115,12 @@ public class SystemService {
             imageService.deleteImage(pathExaminee);
         }
 
+        deleteFiles(pathJpg, pathPdf);
+
     }
 
     @Transactional
-    public void initData() {
+    public void initData() throws IOException {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
         queryFactory.delete(QSheet.sheet).execute();
@@ -127,6 +136,18 @@ public class SystemService {
                 .setNull(examMap.memo)
                 .setNull(examMap.evalCd)
                 .execute();
+
+        deleteFiles(pathJpg, pathPdf);
+    }
+
+    public void deleteFiles(String... path) throws IOException {
+        for (String p : path) {
+            File folder = new File(p);
+            File[] files = folder.listFiles();
+            for (File file : files) {
+                file.delete();
+            }
+        }
     }
 
     public void saveExamMap(ApiService apiService, DownloadWrapper wrapper) {

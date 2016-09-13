@@ -31,11 +31,7 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'status/group.json',
-                    colModel: colModel,
-                    gridComplete: function(){
-                        var data = $(this).jqGrid('getRowData');
-                        _this.parent.renderChart(data);
-                    }
+                    colModel: colModel
                 }
             }, options);
 
