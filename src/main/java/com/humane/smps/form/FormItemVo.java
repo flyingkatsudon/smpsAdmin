@@ -34,7 +34,9 @@ public class FormItemVo {
     @Column(name = "가번호 종료") private String virtNoEnd;
     @Column(name = "가번호 헤더") private String virtNoHead;
     @Column(name = "가번호 자릿수") private String virtNoLen;
-    @Column(name = "가번호 할당 방식") private String virtNoAssignType;
+    @Column(name = "가번호 할당 방식") private String virtNoType;
+    @Column(name = "총점") private String totScore;
+    @Column(name = "답안지 자릿수") private String paperLen;
 
     @Column(name = "항목수") private String itemCnt;
     @Column(name = "항목1 코드") private String itemNo1;   @Column(name = "항목1 명") private String itemNm1;   @Column(name = "항목1 편차코드") private String deviCd1;

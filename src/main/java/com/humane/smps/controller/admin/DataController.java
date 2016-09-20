@@ -52,7 +52,7 @@ public class DataController {
                 log.error("{}", e.getMessage());
             }
 
-            try (InputStream is = imageService.getUnivLogo("hanyang.jpg")) {
+            try (InputStream is = imageService.getUnivLogo("univLogo.png")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setUnivLogo(image);
             } catch (IOException e) {
@@ -112,6 +112,25 @@ public class DataController {
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("채점자별 상세(가로)");
+
+                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        }
+    }
+
+    // test
+    @RequestMapping(value = "draw.{format:colmodel|json|xls|xlsx}")
+    public ResponseEntity draw(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+        switch (format) {
+            case COLMODEL:
+                return ResponseEntity.ok(dataService.getDrawModel());
+            case JSON:
+                return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
+            default:
+                JasperReportBuilder report = dataService.getDrawReport();
+                report.setDataSource(dataService.getScorerHData(param, pageable).getContent());
+
+                JasperPrint jasperPrint = report.toJasperPrint();
+                jasperPrint.setName("동점자 현황");
 
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }

@@ -68,8 +68,8 @@
                     <if test="param.isAttend == true">AND exam_map.virt_no IS NOT NULL AND score.score01 IS NOT NULL</if>
                     <if test="param.isAttend == false">AND exam_map.virt_no IS NULL AND score.score01 IS NULL</if>
                 </if>
-                <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
-                <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
+                <if test="param.examineeCd != null">AND examinee.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
+                <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
                 <if test="param.fromExamineeCd != null and param.toExamineeCd == null">AND examinee.examinee_cd = #{param.fromExamineeCd}</if>
                 <if test="param.fromExamineeCd == null and param.toExamineeCd != null">AND examinee.examinee_cd = #{param.toExamineeCd}</if>
                 <if test="param.fromExamineeCd != null and param.toExamineeCd != null">
@@ -174,6 +174,7 @@
             , hall.head_nm
             , hall.bldg_nm
             , hall.hall_nm
+            , (SELECT SUM(score01) FROM score WHERE score.virt_no = exam_map.virt_no) AS total
         FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
             INNER JOIN admission ON exam.admission_cd = admission.admission_cd
@@ -187,10 +188,10 @@
                 <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
-                <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
+                <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
                 <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
-                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
-                <if test="param.examineeCd != null">AND exam_map.examinee_cd = #{param.examineeCd}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%'</if>
+                <if test="param.examineeCd != null">AND exam_map.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
                 <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
@@ -210,7 +211,7 @@
           order by scorer_nm
         <if test="param != null">
             <where>
-              <if test="param.scorerNm">AND score.scorer_nm = #{param.scorerNm}</if>
+              <if test="param.scorerNm">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
             </where>
         </if>
     </select>

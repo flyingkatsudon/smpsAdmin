@@ -26,4 +26,10 @@ public class ImageController {
         InputStream inputStream = imageService.getExaminee(fileName);
         return ResponseEntity.ok(new InputStreamResource(inputStream));
     }
+
+    @RequestMapping(value = "univLogo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> univLogo() {
+        InputStream inputStream = imageService.getUnivLogo("univLogo.png");
+        return ResponseEntity.ok(new InputStreamResource(inputStream));
+    }
 }

@@ -155,6 +155,40 @@ public class DataService {
         return report;
     }
 
+    public JasperReportBuilder getDrawReport() {
+        JasperReportBuilder report = report()
+                .title(cmp.text("동점자 현황").setStyle(columnTitleStyle))
+                .columns(
+                        col.reportRowNumberColumn("번호").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
+                )
+                .setPageMargin(DynamicReports.margin(0))
+                .setIgnorePageWidth(true)
+                .setIgnorePagination(true);
+
+        long scorerCnt = mapper.getScorerCnt();
+        long itemCnt = mapper.getItemCnt();
+
+        for (int i = 1; i <= scorerCnt; i++) {
+            report.addColumn(col.column("평가위원", "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            for (int j = 1; j <= itemCnt; j++)
+                report.addColumn(col.column("항목" + j, "score" + i + "S" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("총점" + i, "totalScore" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        }
+
+        report.addColumn(col.column("전체 총점", "total", type.doubleType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+
+        return report;
+    }
+
     public JasperReportBuilder getScorerHReport() {
         JasperReportBuilder report = report()
                 .title(cmp.text("채점자별 상세(가로)").setStyle(columnTitleStyle))
@@ -305,6 +339,35 @@ public class DataService {
             colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
             colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));
         }
+        return colModels;
+    }
+
+    public List<ColModel> getDrawModel() {
+        // 기본 생성
+        List<ColModel> colModels = new ArrayList<>();
+        colModels.add(new ColModel("admissionNm", "전형"));
+        colModels.add(new ColModel("typeNm", "계열"));
+        colModels.add(new ColModel("examDate", "시험일자"));
+        colModels.add(new ColModel("examTime", "시험시간"));
+        colModels.add(new ColModel("deptNm", "모집단위"));
+        colModels.add(new ColModel("majorNm", "전공"));
+        colModels.add(new ColModel("examineeCd", "수험번호"));
+        colModels.add(new ColModel("examineeNm", "수험생명"));
+        colModels.add(new ColModel("virtNo", "가번호"));
+
+        long scorerCnt = mapper.getScorerCnt(); // 채점자수
+        long itemCnt = mapper.getItemCnt(); // 항목수
+
+        for (int i = 1; i <= scorerCnt; i++) {
+            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
+            for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "S" + j, "항목" + j, false));
+
+            colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
+        }
+
+        colModels.add(new ColModel("total", "전체 총점"));
+
+
         return colModels;
     }
 }

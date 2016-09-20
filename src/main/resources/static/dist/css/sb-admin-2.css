@@ -231,6 +231,8 @@ body {
 
 .logo-margin {
     margin: 10%;
+    width : 128px;
+    height: 128px;
 }
 
 .login-title {
