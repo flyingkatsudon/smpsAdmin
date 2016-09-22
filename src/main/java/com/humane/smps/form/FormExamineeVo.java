@@ -22,6 +22,8 @@ public class FormExamineeVo {
     @Column(name = "고사건물") private String bldgNm;
     @Column(name = "고사실") private String hallNm;
 
-    @Column(name = "출신고교코드") private String highCd;
-    @Column(name = "출신고교명") private String highNm;
+    @Column(name = "출신고교코드") private String neisCd;
+    @Column(name = "출신고교명") private String neisNm;
+
+    @Column(name = "학생지원전형") private String exmAdmNm;
 }

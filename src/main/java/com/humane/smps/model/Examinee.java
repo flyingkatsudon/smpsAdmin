@@ -24,4 +24,5 @@ public class Examinee {
     private Date birth;
     private String neisCd;
     private String neisNm;
+    private String exmAdmNm; // 학생부전형
 }

@@ -1,9 +1,6 @@
 package com.humane.smps.controller.admin;
 
-import com.humane.smps.dto.EvalDto;
-import com.humane.smps.dto.ExamDto;
-import com.humane.smps.dto.ExamineeDto;
-import com.humane.smps.dto.ScoreDto;
+import com.humane.smps.dto.*;
 import com.humane.smps.mapper.DataMapper;
 import com.humane.smps.service.DataService;
 import com.humane.smps.service.ImageService;
@@ -225,15 +222,21 @@ public class DataController {
             List<ScoreDto> scorerList = mapper.scorerList(scoreDto);
 
             // 3. 답안지 1개 당 X 채점자 수 만큼 점수 입력
-            for (int i = 0; i < scorerList.size(); i++) {
-                for (int j = 0; j < fillList.size(); j++) {
-                    // 3-1. 팝업에서 입력한 점수를 저장, 이미 저장되어 있으면 패스
-                    fillList.get(j).setScore01(score);
-                    fillList.get(j).setScorerNm(scorerList.get(i).getScorerNm());
-                    mapper.fillScore(fillList.get(j));
+
+            // 3-1. 어떤 평가위원의 점수도 전송되지 않았다면 return
+            if(scorerList.size()==0){
+                return ResponseEntity.ok("채점한 평가위원이 없습니다. 잠시 후 다시 시도하세요.");
+            }else {
+                for (int i = 0; i < scorerList.size(); i++) {
+                    for (int j = 0; j < fillList.size(); j++) {
+                        // 3-1. 팝업에서 입력한 점수를 저장, 이미 저장되어 있으면 패스
+                        fillList.get(j).setScore01(score);
+                        fillList.get(j).setScorerNm(scorerList.get(i).getScorerNm());
+                        mapper.fillScore(fillList.get(j));
+                    }
                 }
+                return ResponseEntity.ok("점수가 입력되었습니다.");
             }
-            return ResponseEntity.ok("점수가 입력되었습니다.");
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

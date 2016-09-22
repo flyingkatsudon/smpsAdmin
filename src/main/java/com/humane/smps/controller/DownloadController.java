@@ -119,6 +119,10 @@ public class DownloadController {
         zipFile.addFile(fileScorerReport);
         fileScorerReport.delete();
 
+        File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
+        zipFile.addFile(fileDrawReport);
+        fileScorerReport.delete();
+
 /*        // 나머지 가져오기
         // 0. 폴더위치 지정
         String jpgPath = pathRoot + "/jpg";
