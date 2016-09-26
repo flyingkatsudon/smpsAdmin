@@ -76,6 +76,8 @@ public class SystemService {
             queryFactory.delete(examMap).where(examMap.examinee.examineeCd.eq(examineeCd)).execute();
             try {
                 queryFactory.delete(examinee).where(examinee.examineeCd.eq(examineeCd)).execute();
+                if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
+
             } catch (Exception ignored) {
             }
         }
@@ -110,11 +112,6 @@ public class SystemService {
 
         scrollableResults.close();
 
-        // delete photo
-        if (photo) {
-            imageService.deleteImage(pathExaminee);
-        }
-
         deleteFiles(pathJpg, pathPdf);
 
     }
@@ -144,9 +141,10 @@ public class SystemService {
         for (String p : path) {
             File folder = new File(p);
             File[] files = folder.listFiles();
-            for (File file : files) {
-                file.delete();
-            }
+            if (files != null)
+                for (File file : files) {
+                    file.delete();
+                }
         }
     }
 

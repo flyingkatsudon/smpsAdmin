@@ -13,14 +13,16 @@ import java.io.InputStream;
 @Slf4j
 public class ImageService {
 
-    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
-    @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
+    @Value("${path.image.examinee:C:/api/image/examinee}")
+    String pathExaminee;
+    @Value("${path.image.univLogo:C:/api/image/univLogo}")
+    String pathUnivLogo;
 
     public InputStream getExaminee(String fileName) {
         return getFile(pathExaminee, fileName);
     }
 
-    public InputStream getUnivLogo(String fileName){
+    public InputStream getUnivLogo(String fileName) {
         return getFile(pathUnivLogo, fileName);
     }
 
@@ -42,9 +44,10 @@ public class ImageService {
         for (String p : path) {
             File examineePath = new File(p);
             File[] a = examineePath.listFiles();
-            for (File file : a) {
-                file.delete();
-            }
+            if (a != null)
+                for (File file : a) {
+                    file.delete();
+                }
         }
     }
 }

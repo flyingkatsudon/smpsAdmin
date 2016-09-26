@@ -37,8 +37,14 @@ public class FormItemVo {
     @Column(name = "가번호 할당 방식") private String virtNoType;
     @Column(name = "총점") private String totScore;
     @Column(name = "답안지 자릿수") private String paperLen;
-    //@Column(name = "가번호 자동여부") private String isMgrAuto;
+    /*@Column(name = "가번호 자동여부") private String isMgrAuto;*/
     @Column(name = "수험번호 자릿수") private String examineeLen;
+
+    @Column(name = "평가표제목1") private String printTitle1;
+    @Column(name = "평가표제목2") private String printTitle2;
+    @Column(name = "평가내용1") private String printContent1;
+    @Column(name = "평가내용2") private String printContent2;
+    @Column(name = "평가표서명") private String printSign;
 
     @Column(name = "항목수") private String itemCnt;
     @Column(name = "항목1 코드") private String itemNo1;   @Column(name = "항목1 명") private String itemNm1;   @Column(name = "항목1 편차코드") private String deviCd1;

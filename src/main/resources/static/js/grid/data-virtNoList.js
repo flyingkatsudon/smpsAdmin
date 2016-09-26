@@ -10,7 +10,7 @@ define(function (require) {
                 {name: 'groupNm', label: '조'},
                 {name: 'scanDttm', label: '등록시간'},
                 {name: 'examineeCd', label: '수험번호'},
-                {name: 'examineeNm', label: '수험생명'},
+                /*{name: 'examineeNm', label: '수험생명'},*/
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
                 {name: 'examDate', label: '시험일자'},
