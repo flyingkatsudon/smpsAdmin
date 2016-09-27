@@ -1,6 +1,7 @@
 package com.humane.smps.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @Table(name = "exam")
 public class Exam {

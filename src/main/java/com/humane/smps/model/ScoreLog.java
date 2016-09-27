@@ -1,5 +1,6 @@
 package com.humane.smps.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"examCd", "hallCd", "scorerNm", "logDttm"}))
 public class ScoreLog implements Serializable {
     @Id @GeneratedValue public long _id;
