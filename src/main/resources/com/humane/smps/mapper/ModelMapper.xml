@@ -26,6 +26,9 @@
             <if test="param.headNm != null">AND hall.headNm = #{param.headNm}</if>
             <if test="param.bldgNm != null">AND hall.bldgNm = #{param.bldgNm}</if>
             <if test="param.hallNm != null">AND hall.hallNm = #{param.hallNm}</if>
+            <if test="param.userAdmissions != null">
+                AND exam.admission_cd IN (${param.userAdmissions})
+            </if>
         </where>
     </select>
 </mapper>

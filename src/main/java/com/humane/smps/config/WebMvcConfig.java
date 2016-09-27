@@ -3,6 +3,7 @@ package com.humane.smps.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.humane.smps.filter.LoggingFilter;
+import com.humane.smps.filter.ParametersFilter;
 import com.humane.util.filter.MultiReadableHttpServletRequestFilter;
 import com.humane.util.spring.ApplicationContextProvider;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -15,14 +16,9 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
-@EnableSwagger2
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
@@ -65,6 +61,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         return registrationBean;
     }
 
+    @Bean
+    public FilterRegistrationBean parametersFilterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        ParametersFilter parametersFilter = new ParametersFilter();
+        registrationBean.setFilter(parametersFilter);
+        registrationBean.setOrder(3);
+        return registrationBean;
+    }
+
     public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 
@@ -81,14 +86,5 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         //Here we add our custom-configured HttpMessageConverter
         converters.add(jacksonMessageConverter());
         super.configureMessageConverters(converters);
-    }
-
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SPRING_WEB)
-                .groupName("smpsAdmin")
-                .apiInfo(new ApiInfoBuilder().build())
-                .select()
-                .build();
     }
 }

@@ -11,6 +11,17 @@
             COUNT(exam_map.scan_dttm) * 100 / COUNT(*)              AS attend_per,
             (COUNT(*) - COUNT(exam_map.scan_dttm)) * 100 / COUNT(*) AS absent_per
         FROM exam_map
+        INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+        <where>
+            <if test="param != null">
+                <if test="param.userAdmissions != null">
+                    exam.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </if>
+        </where>
     </select>
 
     <select id="dept" resultType="com.humane.smps.dto.StatusDeptDto">

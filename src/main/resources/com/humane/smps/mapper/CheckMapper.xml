@@ -57,7 +57,9 @@
     </select>
 
     <select id="item" resultType="com.humane.smps.dto.CheckItemDto">
-        SELECT admission.admission_nm
+        SELECT *
+        FROM
+        (SELECT admission.admission_nm
         , exam.type_nm
         , exam.exam_date
         , exam.exam_time
@@ -101,8 +103,8 @@
                 <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
                 <if test="param.scorerNm != null">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
                 <if test="param.isVirtNo != null">
-                    <if test="param.isVirtNo == true">AND score.virt_no IS NOT NULL</if>
-                    <if test="param.isVirtNo == false">AND score.virt_no IS NULL</if>
+                    <if test="param.isVirtNo == true">AND exam_map.virt_no IS NOT NULL</if>
+                    <if test="param.isVirtNo == false">AND exam_map.virt_no IS NULL</if>
                 </if>
             </if>
         </where>
@@ -120,10 +122,14 @@
         , examinee.examinee_cd
         , exam_map.virt_no
         , score.scorer_nm
+        ) AS result
+        WHERE result.item_cnt != scored_cnt AND result.virt_no IS NOT NULL
     </select>
 
     <select id="scorer" resultType="com.humane.smps.dto.CheckScorerDto">
-        SELECT admission.admission_nm
+         SELECT *
+         FROM
+        (SELECT admission.admission_nm
         , exam.type_nm
         , exam.exam_date
         , exam.exam_time
@@ -175,5 +181,7 @@
         , examinee.examinee_cd
         , exam_map.virt_no
         , exam.scorer_cnt
+        ) AS result
+        WHERE result.scorer_cnt != result.scored_cnt AND result.virt_no IS NOT NULL
     </select>
 </mapper>

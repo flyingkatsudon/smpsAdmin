@@ -196,6 +196,9 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.userAdmissions != null">
+                    AND exam.admission_cd IN (${param.userAdmissions})
+                </if>
             </where>
         </if>
     </select>
@@ -211,7 +214,7 @@
           order by scorer_nm
         <if test="param != null">
             <where>
-              <if test="param.scorerNm">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
+              <if test="param.scorerNm != null">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
             </where>
         </if>
     </select>
