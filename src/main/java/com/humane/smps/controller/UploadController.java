@@ -106,6 +106,7 @@ public class UploadController {
                 // 3. exam 변환, 저장
                 Exam exam = mapper.convertValue(dto, Exam.class);
                 exam.setAdmission(admission);
+                exam.setVirtNoDigits(Integer.parseInt(dto.getVirtNoDigits()));
                 examRepository.save(exam);
 
                 // 4. item 변환, 저장, 갯수비교
@@ -135,16 +136,15 @@ public class UploadController {
                 /**
                  * 제약조건 : 시험정보는 반드시 업로드 되어 있어야 한다.
                  */
-
                 // 1. 시험정보 생성
                 Exam exam = mapper.convertValue(uploadHallDto, Exam.class);
+
                 exam = examRepository.findOne(new BooleanBuilder()
                         .and(QExam.exam.examNm.eq(exam.getExamNm()))
                         .and(QExam.exam.examDate.eq(exam.getExamDate()))
                         .and(QExam.exam.examTime.eq(exam.getExamTime()))
                 );
 
-                log.debug("{}", exam);
                 // 2. 고사실정보 생성
                 Hall hall = mapper.convertValue(uploadHallDto, Hall.class);
                 hall = hallRepository.save(hall);
@@ -167,6 +167,7 @@ public class UploadController {
             });
             return ResponseEntity.ok("업로드가 완료되었습니다.");
         } catch (Throwable throwable) {
+            throwable.printStackTrace();
             log.error("{}", throwable.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
         }
@@ -184,7 +185,6 @@ public class UploadController {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
             log.debug("{}", examineeList);
             examineeList.forEach(vo -> {
-
                 // 1. ExamHall 에서 고사실 및 시험정보를 가져온다.
                 QExam exam = QExamHall.examHall.exam;
                 QHall hall = QExamHall.examHall.hall;
@@ -197,11 +197,8 @@ public class UploadController {
                         .and(hall.hallNm.eq(vo.getHallNm()))
                 );
 
-                log.debug("{}", examHall);
-
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
-                log.debug("{}", examinee);
                 examineeRepository.save(examinee);
 
                 //ExamMap examMap = new ExamMap();

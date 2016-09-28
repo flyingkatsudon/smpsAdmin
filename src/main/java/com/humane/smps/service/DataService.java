@@ -184,7 +184,7 @@ public class DataService {
             report.addColumn(col.column("총점" + i, "totalScore" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         }
 
-        report.addColumn(col.column("전체 총점", "sumOfTotal", type.doubleType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        report.addColumn(col.column("전체 총점", "total", type.doubleType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
 
         return report;
     }
@@ -283,9 +283,11 @@ public class DataService {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
+            String scorerNm = param.getScorerNm() == null ? "%" : "%" + param.getScorerNm() + "%";
 
-            double sumOfTotal = 0;
-            if (examCd != null && virtNo != null) {
+            map.put("SCORER_NM", scorerNm);
+
+            if (examCd != null && virtNo != null && scorerNm != null) {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);
@@ -305,11 +307,7 @@ public class DataService {
                         map.put("TOTAL_SCORE" + i, score.get("totalScore"));
                         map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
                     }
-                    for (int j = 0; j < 10; j++) {
-                        if (score.get("score" + (j < 10 ? "0" + j : j)) != null)
-                            sumOfTotal += Long.parseLong((String) score.get("score" + (j < 10 ? "0" + j : j)));
-                    }
-                    map.put("SUM_OF_TOTAL", sumOfTotal);
+
                     log.debug("map:{}", map);
                 }
             }
@@ -371,8 +369,7 @@ public class DataService {
             colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
         }
 
-        colModels.add(new ColModel("sumOfTotal", "전체 총점"));
-
+        colModels.add(new ColModel("total", "전체 총점"));
 
         return colModels;
     }

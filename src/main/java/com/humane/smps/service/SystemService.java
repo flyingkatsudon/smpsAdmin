@@ -61,6 +61,7 @@ public class SystemService {
         queryFactory.delete(QSheet.sheet).execute();
         queryFactory.delete(QScore.score).execute();
         queryFactory.delete(QScoreLog.scoreLog).execute();
+        queryFactory.delete(QExamHallDate.examHallDate).execute();
         queryFactory.delete(QExamHall.examHall).execute();
 
         QExaminee examinee = QExaminee.examinee;

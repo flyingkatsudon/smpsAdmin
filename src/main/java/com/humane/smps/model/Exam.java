@@ -37,7 +37,7 @@ public class Exam {
     //@Column(columnDefinition = "int default 1") private int virtNoStart; // 가번호 시작점. 헤더값과는 상관없음.
     //@Column(columnDefinition = "int default 100") private int virtNoEnd; // 가번호 종료점.
     //@Column(columnDefinition = "int default 4") private int virtNoLen; // 가번호+ 헤더 or 가번호
-    //private int virtNoDigits; // 가번호 자릿수
+    private int virtNoDigits; // 가번호 표시 자릿수
     //private String virtNoAssignType; // 가번호 할당 방식.
     @Column(columnDefinition = "bit default 1") private boolean isAbsence; // 결시버튼 사용여부
     @Column(columnDefinition = "bit default 1") private boolean isHorizontal; // 채점방식. 가로, 세로

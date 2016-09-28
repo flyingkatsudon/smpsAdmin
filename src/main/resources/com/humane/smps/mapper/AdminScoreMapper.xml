@@ -80,7 +80,7 @@
                 <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
-                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%'</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
@@ -109,7 +109,7 @@
         <where>
             AND score_log.sheet_no IS NOT NULL
             <if test="param != null">
-                <if test="param.virtNo != null">AND score_log.virt_no = #{param.virtNo}</if>
+                <if test="param.virtNo != null">AND score_log.virt_no LIKE '%' #{param.virtNo} '%'</if>
                 <if test="param.scorerNm != null">AND score_log.scorer_nm = #{param.scorerNm}</if>
             </if>
         </where>

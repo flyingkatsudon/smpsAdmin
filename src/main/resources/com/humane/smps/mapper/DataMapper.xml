@@ -15,16 +15,16 @@
             examinee.examinee_cd, examinee.examinee_nm,
             exam_map.virt_no,
             COUNT(score.scorer_nm)                                             AS scorer_cnt,
-            SUM(score.score01) / COUNT(score.scorer_nm)                        AS avg_score01,
-            SUM(score.score02) / COUNT(score.scorer_nm)                        AS avg_score02,
-            SUM(score.score03) / COUNT(score.scorer_nm)                        AS avg_score03,
-            SUM(score.score04) / COUNT(score.scorer_nm)                        AS avg_score04,
-            SUM(score.score05) / COUNT(score.scorer_nm)                        AS avg_score05,
-            SUM(score.score06) / COUNT(score.scorer_nm)                        AS avg_score06,
-            SUM(score.score07) / COUNT(score.scorer_nm)                        AS avg_score07,
-            SUM(score.score08) / COUNT(score.scorer_nm)                        AS avg_score08,
-            SUM(score.score09) / COUNT(score.scorer_nm)                        AS avg_score09,
-            SUM(score.score10) / COUNT(score.scorer_nm)                        AS avg_score10,
+            ROUND(SUM(score.score01) / COUNT(score.scorer_nm),1)               AS avg_score01,
+            ROUND(SUM(score.score02) / COUNT(score.scorer_nm),1)               AS avg_score02,
+            ROUND(SUM(score.score03) / COUNT(score.scorer_nm),1)               AS avg_score03,
+            ROUND(SUM(score.score04) / COUNT(score.scorer_nm),1)               AS avg_score04,
+            ROUND(SUM(score.score05) / COUNT(score.scorer_nm),1)               AS avg_score05,
+            ROUND(SUM(score.score06) / COUNT(score.scorer_nm),1)               AS avg_score06,
+            ROUND(SUM(score.score07) / COUNT(score.scorer_nm),1)                AS avg_score07,
+            ROUND(SUM(score.score08) / COUNT(score.scorer_nm),1)               AS avg_score08,
+            ROUND(SUM(score.score09) / COUNT(score.scorer_nm),1)               AS avg_score09,
+            ROUND(SUM(score.score10) / COUNT(score.scorer_nm),1)               AS avg_score10,
 
             SUM(score.score01) AS tot_score01,
             SUM(score.score02) AS tot_score02,
@@ -63,7 +63,7 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%' </if>
                 <if test="param.isAttend != null">
                     <if test="param.isAttend == true">AND exam_map.virt_no IS NOT NULL AND score.score01 IS NOT NULL</if>
                     <if test="param.isAttend == false">AND exam_map.virt_no IS NULL AND score.score01 IS NULL</if>
@@ -138,7 +138,7 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%'</if>
                 <if test="param.scorerNm != null">score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
             </if>
         </where>
@@ -174,7 +174,20 @@
             , hall.head_nm
             , hall.bldg_nm
             , hall.hall_nm
-            , (SELECT SUM(score01) FROM score WHERE score.virt_no = exam_map.virt_no) AS total
+            , (
+                SELECT
+                          SUM(CASE WHEN score01 IS NOT NULL THEN score01 ELSE 0 END)
+                        + SUM(CASE WHEN score02 IS NOT NULL THEN score02 ELSE 0 END)
+                        + SUM(CASE WHEN score03 IS NOT NULL THEN score03 ELSE 0 END)
+                        + SUM(CASE WHEN score04 IS NOT NULL THEN score04 ELSE 0 END)
+                        + SUM(CASE WHEN score05 IS NOT NULL THEN score05 ELSE 0 END)
+                        + SUM(CASE WHEN score06 IS NOT NULL THEN score06 ELSE 0 END)
+                        + SUM(CASE WHEN score07 IS NOT NULL THEN score07 ELSE 0 END)
+                        + SUM(CASE WHEN score08 IS NOT NULL THEN score08 ELSE 0 END)
+                        + SUM(CASE WHEN score09 IS NOT NULL THEN score09 ELSE 0 END)
+                        + SUM(CASE WHEN score10 IS NOT NULL THEN score10 ELSE 0 END)
+                    FROM score WHERE score.virt_no = exam_map.virt_no
+              ) AS total
         FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
             INNER JOIN admission ON exam.admission_cd = admission.admission_cd
@@ -211,12 +224,10 @@
            from score
           where exam_cd = #{param.examCd}
             and virt_no = #{param.virtNo}
-          order by scorer_nm
-        <if test="param != null">
-            <where>
-              <if test="param.scorerNm != null">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
-            </where>
-        </if>
+            <if test="param != null">
+                  <if test="param.scorerNm != null">AND score.scorer_nm LIKE #{param.scorerNm} </if>
+            </if>
+        order by scorer_nm
     </select>
 
     <select id="examInfo" resultType="com.humane.smps.dto.ExamDto">

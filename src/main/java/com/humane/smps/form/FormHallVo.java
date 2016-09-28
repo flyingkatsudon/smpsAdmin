@@ -23,6 +23,8 @@ public class FormHallVo {
         return examTime;
     }
 
+    @Column(name = "가번호 시작") private String virtNoStart;
+    @Column(name = "가번호 종료") private String virtNoEnd;
     @Column(name = "고사실코드") private String hallCd;
     @Column(name = "고사본부") private String headNm;
     @Column(name = "고사건물") private String bldgNm;

@@ -12,6 +12,7 @@
             (COUNT(*) - COUNT(exam_map.scan_dttm)) * 100 / COUNT(*) AS absent_per
         FROM exam_map
         INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+        INNER JOIN admission ON admission.admission_cd = exam.admission_cd
         <where>
             <if test="param != null">
                 <if test="param.userAdmissions != null">
