@@ -106,7 +106,7 @@ public class UploadController {
                 // 3. exam 변환, 저장
                 Exam exam = mapper.convertValue(dto, Exam.class);
                 exam.setAdmission(admission);
-                exam.setVirtNoDigits(Integer.parseInt(dto.getVirtNoDigits()));
+                /*exam.setVirtNoDigits(Integer.parseInt(dto.getVirtNoDigits()));*/
                 examRepository.save(exam);
 
                 // 4. item 변환, 저장, 갯수비교
