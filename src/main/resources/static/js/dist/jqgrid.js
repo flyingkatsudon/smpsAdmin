@@ -131,7 +131,7 @@ define(function (require) {
 
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         }, close: function () {
-            $('#alertmod_' + this.$grid[0].p.id).remove();
+            if (this.$grid != undefined) $('#alertmod_' + this.$grid[0].p.id).remove();
             $(window).unbind('resizeEnd.jqGrid' + this.cid);
             this.unbind();
             this.remove();

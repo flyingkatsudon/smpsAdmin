@@ -13,10 +13,12 @@ define(function (require) {
             this.$el.html(Template);
             this.$('#hm-ui-summary').html(InnerTemplate);
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
-            this.summary = new Summary({el: '#hm-ui-summary'}).render();
+            this.summary = new Summary({el: '#hm-ui-summary', parent: this});
+            this.summary.render();
             this.list = new List({el: '.hm-ui-grid', parent: this}).render();
         }, search: function (o) {
             this.list.search(o);
+            this.summary.render(o);
         }
     });
 });

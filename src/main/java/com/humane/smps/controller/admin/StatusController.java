@@ -22,8 +22,9 @@ public class StatusController {
     private final StatusMapper mapper;
 
     @RequestMapping(value = "all")
-    public ResponseEntity all(StatusDto statusDto) {
-        return ResponseEntity.ok(mapper.all(statusDto));
+    public ResponseEntity all(StatusDto param) {
+        log.debug("{}", param);
+        return ResponseEntity.ok(mapper.all(param));
     }
 
     @RequestMapping(value = "dept.{format:json|pdf|xls|xlsx}")
