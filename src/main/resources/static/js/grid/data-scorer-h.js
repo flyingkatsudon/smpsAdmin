@@ -14,6 +14,12 @@ define(function (require) {
                 }
             });
 
+            for(var i = 0; i < colModel.length; i++){
+                var col = colModel[i];
+                col['fixed'] = true;
+                col['width'] = 100;
+            }
+
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/scorerH.json',
@@ -26,6 +32,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
             this.addExcel('data/scorerH.xlsx');
             return this;
         }

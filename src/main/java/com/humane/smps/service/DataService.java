@@ -287,7 +287,7 @@ public class DataService {
 
             map.put("SCORER_NM", scorerNm);
 
-            if (examCd != null && virtNo != null && scorerNm != null) {
+            if (examCd != null && virtNo != null) {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);

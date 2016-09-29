@@ -14,6 +14,12 @@ define(function (require) {
                 }
             });
 
+            for(var i = 0; i < colModel.length; i++){
+                var col = colModel[i];
+                col['fixed'] = true;
+                col['width'] = 100;
+            }
+
             for (var i = 0; i < colModel.length; i++) {
                 if(colModel[i].name == 'isPhoto'){
                     colModel[i]['formatter'] = 'select';
@@ -32,6 +38,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
             this.addExcel('data/scorer.xlsx');
             return this;
         }

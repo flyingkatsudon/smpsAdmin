@@ -217,17 +217,16 @@
     </select>
 
     <select id="scorerH" resultType="com.humane.util.CamelMap">
-        select scorer_nm
+        SELECT scorer_nm
               , score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
               , date_format(score_dttm,'%Y-%m-%d %H:%i:%s') AS score_dttm
               , total_score
-           from score
-          where exam_cd = #{param.examCd}
-            and virt_no = #{param.virtNo}
-            <if test="param != null">
-                  <if test="param.scorerNm != null">AND score.scorer_nm LIKE #{param.scorerNm} </if>
-            </if>
-        order by scorer_nm
+           FROM score A, (SELECT DISTINCT EXAM_CD, VIRT_NO FROM SCORE WHERE SCORER_NM LIKE #{param.scorerNm}) B
+        WHERE A.EXAM_CD = B.EXAM_CD
+          AND A.VIRT_NO = B.VIRT_NO
+          AND A.exam_cd = #{param.examCd}
+          AND A.virt_no = #{param.virtNo}
+        ORDER BY scorer_nm
     </select>
 
     <select id="examInfo" resultType="com.humane.smps.dto.ExamDto">
