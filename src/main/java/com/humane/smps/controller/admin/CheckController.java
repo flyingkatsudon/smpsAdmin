@@ -8,6 +8,7 @@ import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,7 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-send.jrxml"
                         , format
-                        , mapper.send(param, pageable).getContent());
+                        , mapper.send(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -45,7 +46,7 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-item.jrxml"
                         , format
-                        , mapper.item(param, pageable).getContent());
+                        , mapper.item(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -58,7 +59,7 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-scorer.jrxml"
                         , format
-                        , mapper.scorer(param, pageable).getContent());
+                        , mapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 }

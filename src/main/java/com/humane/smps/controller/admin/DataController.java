@@ -12,6 +12,7 @@ import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +72,7 @@ public class DataController {
                 return ResponseEntity.ok(mapper.examinee(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getExamineeReport();
-                report.setDataSource(mapper.examinee(param, pageable).getContent());
+                report.setDataSource(mapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()); // 원인
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("수험생별 종합");
@@ -87,7 +88,7 @@ public class DataController {
                 return ResponseEntity.ok(mapper.examMap(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getVirtNoReport();
-                report.setDataSource(mapper.examMap(param, pageable).getContent());
+                report.setDataSource(mapper.examMap(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("가번호 배정 현황");
@@ -105,7 +106,7 @@ public class DataController {
                 return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getScorerHReport();
-                report.setDataSource(dataService.getScorerHData(param, pageable).getContent());
+                report.setDataSource(dataService.getScorerHData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("채점자별 상세(가로)");
@@ -124,7 +125,7 @@ public class DataController {
                 return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getDrawReport();
-                report.setDataSource(dataService.getScorerHData(param, pageable).getContent());
+                report.setDataSource(dataService.getScorerHData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("동점자 현황");
@@ -142,7 +143,7 @@ public class DataController {
                 return ResponseEntity.ok(mapper.scorer(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getScorerReport();
-                report.setDataSource(mapper.scorer(param, pageable).getContent());
+                report.setDataSource(mapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("채점자별 상세(세로)");

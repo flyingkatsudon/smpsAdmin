@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +43,7 @@ public class AdminScoreController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-print.jrxml"
                         , format
-                        , mapper.sheet(param, pageable).getContent());
+                        , mapper.sheet(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -56,7 +57,7 @@ public class AdminScoreController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-cancel.jrxml"
                         , format
-                        , mapper.sheet(param, pageable).getContent());
+                        , mapper.sheet(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -69,7 +70,7 @@ public class AdminScoreController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-fix.jrxml"
                         , format
-                        , mapper.fix(param, pageable).getContent());
+                        , mapper.fix(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 

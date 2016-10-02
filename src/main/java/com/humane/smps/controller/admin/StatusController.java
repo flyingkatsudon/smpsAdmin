@@ -6,6 +6,7 @@ import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,7 @@ public class StatusController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-dept.jrxml"
                         , format
-                        , mapper.dept(param, pageable).getContent());
+                        , mapper.dept(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -49,7 +50,7 @@ public class StatusController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-major.jrxml"
                         , format
-                        , mapper.major(param, pageable).getContent());
+                        , mapper.major(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -62,7 +63,7 @@ public class StatusController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-hall.jrxml"
                         , format
-                        , mapper.hall(param, pageable).getContent());
+                        , mapper.hall(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -75,7 +76,7 @@ public class StatusController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-group.jrxml"
                         , format
-                        , mapper.group(param, pageable).getContent());
+                        , mapper.group(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 }
