@@ -77,7 +77,7 @@ public class AdminScoreController {
 
     @RequestMapping(value = "detail.pdf")
     public ResponseEntity detail(SheetDto param) throws FileNotFoundException {
-        String fileName = param.getExamCd() + "_" + param.getHallCd() + "_" + param.getScorerNm() + ".pdf";
+        String fileName = param.getExamCd() + "_" + param.getHallCd() + "_" + param.getScorerNm() + "_" + param.getSheetNo() + ".pdf";
         File file = new File(pathRoot, fileName);
         return ResponseEntity.ok(new InputStreamResource(new FileInputStream(file)));
     }
