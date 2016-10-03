@@ -29,8 +29,8 @@ public interface ApiService {
     @GET("api/item")
     Observable<Page<Item>> item(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size, @Query("sort") String sort);
 
-    @GET("api/examMap")
-    Observable<Page<ExamMap>> examMap(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size, @Query("sort") String sort);
+    @GET("api/examMap?sort=_id")
+    Observable<Page<ExamMap>> examMap(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size);
 
     @GET("image/examinee/{fileName}")
     Observable<ResponseBody> imageExaminee(@Path("fileName") String fileName);

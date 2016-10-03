@@ -9,7 +9,6 @@ import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -155,44 +154,31 @@ public class SystemService {
             String newHallCd = examHallWrapper.getHallCd();
 
             Observable.range(0, Integer.MAX_VALUE)
-                    .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).add("hall.hallCd", newHallCd).getMap(), page, Integer.MAX_VALUE, null))
+                    .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).add("hall.hallCd", newHallCd).getMap(), page, Integer.MAX_VALUE))
                     .takeUntil(page -> page.last)
                     .flatMap(page -> {
-                        String examCd = null;
-                        String hallCd = null;
                         for (ExamMap examMap : page.content) {
                             admissionRepository.save(examMap.getExam().getAdmission());
-                            examRepository.save(examMap.getExam());
+
+                            Hall hall = examMap.getHall();
+                            Exam exam = examMap.getExam();
+
                             hallRepository.save(examMap.getHall());
+                            examRepository.save(examMap.getExam());
 
-                            // examHall이 없으면 생성
-                            if (!StringUtils.equals(examCd, examMap.getExam().getExamCd())
-                                    || !StringUtils.equals(hallCd, examMap.getHall().getHallCd())) {
-                                examCd = examMap.getExam().getExamCd();
-                                hallCd = examMap.getHall().getHallCd();
+                            ExamHall findExamHall = examHallRepository.findOne(new BooleanBuilder()
+                                    .and((QExamHall.examHall.exam.examCd.eq(exam.getExamCd())))
+                                    .and(QExamHall.examHall.hall.hallCd.eq(hall.getHallCd()))
+                            );
 
+                            if (findExamHall == null) {
                                 ExamHall examHall = new ExamHall();
-                                examHall.setExam(examMap.getExam());
-                                examHall.setHall(examMap.getHall());
-
-                                ExamHall findExamHall = examHallRepository.findOne(new BooleanBuilder()
-                                        .and(QExamHall.examHall.exam.eq(examMap.getExam()))
-                                        .and(QExamHall.examHall.hall.eq(examMap.getHall()))
-                                );
-
-                                if (findExamHall != null) examHall.set_id(findExamHall.get_id());
+                                examHall.setExam(exam);
+                                examHall.setHall(hall);
                                 examHallRepository.save(examHall);
                             }
 
                             examineeRepository.save(examMap.getExaminee());
-
-                            ExamMap findExamMap = examMapRepository.findOne(new BooleanBuilder()
-                                    .and(QExamMap.examMap.examinee.eq(examMap.getExaminee()))
-                                    .and(QExamMap.examMap.exam.eq(examMap.getExam()))
-                            );
-
-                            if (findExamMap != null) examMap.set_id(findExamMap.get_id());
-
                             examMapRepository.save(examMap);
                         }
                         return Observable.from(page.content);
