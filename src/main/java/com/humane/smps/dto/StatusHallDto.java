@@ -14,8 +14,10 @@ import java.util.Date;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StatusHallDto {
+    private String userAdmissions;
     private String admissionNm;
     private String typeNm;
+    private String examNm;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -32,7 +34,6 @@ public class StatusHallDto {
     private Long examineeCnt;
     private Long attendCnt;
     private Long absentCnt;
-    private Long otherHallCnt;
 
     @JsonSerialize(using = PercentSerializer.class)
     private BigDecimal attendPer;

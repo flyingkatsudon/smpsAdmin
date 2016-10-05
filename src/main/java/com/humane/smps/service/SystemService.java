@@ -40,18 +40,14 @@ public class SystemService {
     private final ExamineeRepository examineeRepository;
     private final ExamMapRepository examMapRepository;
     private final ItemRepository itemRepository;
+    private final HallDateRepository hallDateRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Value("${path.image.examinee:C:/api/image/examinee}")
-    String pathExaminee;
-    @Value("${path.smps.jpg:C:/api/smps/jpg}")
-    String pathJpg;
-    @Value("${path.smps.pdf:C:/api/smps/pdf}")
-    String pathPdf;
-
-    private final ImageService imageService;
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
+    @Value("${path.smps.jpg:C:/api/smps/jpg}") String pathJpg;
+    @Value("${path.smps.pdf:C:/api/smps/pdf}") String pathPdf;
 
     @Transactional
     public void resetData(boolean photo) throws IOException {
@@ -176,6 +172,20 @@ public class SystemService {
                                 examHall.setExam(exam);
                                 examHall.setHall(hall);
                                 examHallRepository.save(examHall);
+                            }
+
+                            ExamHallDate findExamHallDate = hallDateRepository.findOne(new BooleanBuilder()
+                                    .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
+                                    .and(QExamHallDate.examHallDate.hall.hallCd.eq(hall.getHallCd()))
+                                    .and(QExamHallDate.examHallDate.hallDate.eq(examMap.getHallDate()))
+                            );
+
+                            if (findExamHallDate == null) {
+                                ExamHallDate examHallDate = new ExamHallDate();
+                                examHallDate.setExam(exam);
+                                examHallDate.setHall(hall);
+                                examHallDate.setHallDate(examMap.getHallDate());
+                                hallDateRepository.save(examHallDate);
                             }
 
                             examineeRepository.save(examMap.getExaminee());

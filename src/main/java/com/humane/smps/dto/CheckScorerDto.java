@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CheckScorerDto {
+    private String userAdmissions;
     private String admissionNm;
     private String typeNm;
 

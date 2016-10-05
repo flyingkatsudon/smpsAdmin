@@ -18,7 +18,7 @@ define(function (require) {
 
             // 가번호 배정 현황만 보이게 하기
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
-            this.virtNoList = new VirtNoList({el: '.hm-ui-grid'}).render();
+            this.list = new VirtNoList({el: '.hm-ui-grid'}).render();
 
         }, search: function (o) {
             this.list.search(o);

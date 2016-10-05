@@ -7,7 +7,7 @@
         SELECT
             admission.admission_nm,
             exam.type_nm,
-            exam.exam_date, exam.exam_time,
+            exam_map.hall_date AS exam_date,
             examinee.college_nm,
             examinee.dept_nm, examinee.major_nm, exam_map.group_nm,
             exam.exam_nm,
@@ -21,7 +21,7 @@
             ROUND(SUM(score.score04) / COUNT(score.scorer_nm),1)               AS avg_score04,
             ROUND(SUM(score.score05) / COUNT(score.scorer_nm),1)               AS avg_score05,
             ROUND(SUM(score.score06) / COUNT(score.scorer_nm),1)               AS avg_score06,
-            ROUND(SUM(score.score07) / COUNT(score.scorer_nm),1)                AS avg_score07,
+            ROUND(SUM(score.score07) / COUNT(score.scorer_nm),1)               AS avg_score07,
             ROUND(SUM(score.score08) / COUNT(score.scorer_nm),1)               AS avg_score08,
             ROUND(SUM(score.score09) / COUNT(score.scorer_nm),1)               AS avg_score09,
             ROUND(SUM(score.score10) / COUNT(score.scorer_nm),1)               AS avg_score10,
@@ -53,10 +53,10 @@
             LEFT JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
         <where>
             <if test="param != null">
+                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
-                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
-                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
@@ -79,8 +79,6 @@
         </where>
         GROUP BY
                 admission.admission_nm
-                , exam.exam_date
-                , exam.exam_time
                 , examinee.dept_nm
                 , examinee.major_nm
                 , exam.exam_nm
@@ -88,6 +86,7 @@
                 , hall.bldg_nm
                 , hall.hall_nm
                 , exam_map.group_nm
+                , exam_map.hall_date
                 , examinee.examinee_cd
                 , examinee.examinee_nm
     </select>
@@ -96,8 +95,7 @@
             SELECT
                 admission.admission_nm,
                 exam.type_nm,
-                exam.exam_date,
-                exam.exam_time,
+                exam_map.hall_date AS exam_date,
                 examinee.examinee_cd,
                 examinee.examinee_nm,
                 examinee.dept_nm,
@@ -128,11 +126,11 @@
             LEFT JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
         <where>
             <if test="param != null">
+                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
-                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
-                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
@@ -160,14 +158,12 @@
     <select id="examMap" resultType="com.humane.util.CamelMap">
         SELECT admission.admission_nm
             , exam.type_nm
-            , exam.exam_date
-            /*, exam.exam_time*/
-            , date_format(exam_time,'%H:%i') as exam_time
             , examinee.dept_nm
             , examinee.major_nm
             , examinee.examinee_nm
             , exam_map.exam_cd
             , exam_map.virt_no
+            , exam_map.hall_date as exam_date
             , date_format(scan_dttm,'%Y-%m-%d %H:%i:%s') as scan_dttm
             , exam_map.examinee_cd
             , exam_map.group_nm
@@ -197,8 +193,7 @@
             <where>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
-                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
-                <if test="param.examTime != null">AND exam.exam_time = DATE_FORMAT(#{param.examTime}, '%T')</if>
+                <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
@@ -209,8 +204,11 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.userAdmissions != null">
-                    AND exam.admission_cd IN (${param.userAdmissions})
+                <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.scorerNm != null">
+                    AND exam_map.virt_no IN (
+                      SELECT DISTINCT score.virt_no FROM score WHERE score.exam_cd = exam_map.exam_cd AND score.hall_cd = exam_map.hall_cd AND score.scorer_nm LIKE CONCAT('%', #{param.scorerNm}, '%')
+                    )
                 </if>
             </where>
         </if>
@@ -221,10 +219,8 @@
               , score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
               , date_format(score_dttm,'%Y-%m-%d %H:%i:%s') AS score_dttm
               , total_score
-           FROM score A, (SELECT DISTINCT EXAM_CD, VIRT_NO FROM SCORE WHERE SCORER_NM LIKE #{param.scorerNm}) B
-        WHERE A.EXAM_CD = B.EXAM_CD
-          AND A.VIRT_NO = B.VIRT_NO
-          AND A.exam_cd = #{param.examCd}
+           FROM score A
+        WHERE A.exam_cd = #{param.examCd}
           AND A.virt_no = #{param.virtNo}
         ORDER BY scorer_nm
     </select>

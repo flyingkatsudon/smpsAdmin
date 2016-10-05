@@ -14,6 +14,7 @@ import java.util.Date;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StatusGroupDto {
+    private String userAdmissions;
     private String admissionNm;
     private String typeNm;
     private String examNm;
@@ -26,6 +27,7 @@ public class StatusGroupDto {
     @JsonSerialize(using = TimeSerializer.class)
     private Date examTime;
 
+    private String deptNm;
     private String majorNm;
     private String headNm;
     private String bldgNm;

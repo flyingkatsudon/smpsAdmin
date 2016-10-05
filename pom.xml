@@ -32,7 +32,7 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-compress.version>1.11</commons-compress.version>
         <rxjava.version>1.2.0</rxjava.version>
-        <jasperreports.version>6.3.0</jasperreports.version>
+        <jasperreports.version>6.3.1</jasperreports.version>
         <poi.version>3.15</poi.version>
     </properties>
 

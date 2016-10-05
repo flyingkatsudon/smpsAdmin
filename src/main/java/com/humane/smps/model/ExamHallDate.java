@@ -20,6 +20,7 @@ public class ExamHallDate {
     @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @Temporal(TemporalType.DATE)
     private Date hallDate;
 
     @Column String virtNoStart;

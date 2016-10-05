@@ -283,15 +283,10 @@ public class DataService {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
-            String scorerNm = param.getScorerNm() == null ? "%" : "%" + param.getScorerNm() + "%";
-
-            map.put("SCORER_NM", scorerNm);
-
             if (examCd != null && virtNo != null) {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);
-                    log.debug("score: {}", score);
                     if (score != null) {
                         map.put("SCORER_NM" + i, score.get("scorerNm"));
                         map.put("SCORE" + i + "_S1", score.get("score01"));
@@ -307,8 +302,6 @@ public class DataService {
                         map.put("TOTAL_SCORE" + i, score.get("totalScore"));
                         map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
                     }
-
-                    log.debug("map:{}", map);
                 }
             }
         });
