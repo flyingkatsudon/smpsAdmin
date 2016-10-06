@@ -26,16 +26,12 @@
 	<field name="attendPer" class="java.math.BigDecimal"/>
 	<field name="absentCnt" class="java.lang.Long"/>
 	<field name="absentPer" class="java.math.BigDecimal"/>
-	<field name="otherHallCnt" class="java.lang.String"/>
 	<variable name="sumExamineeCnt" class="java.lang.Long" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{examineeCnt}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="sumAttendCnt" class="java.lang.Long" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{attendCnt}]]></variableExpression>
-	</variable>
-	<variable name="sumOtherHallCnt" class="java.lang.Long" resetType="Column" calculation="Sum">
-		<variableExpression><![CDATA[$F{otherHallCnt}]]></variableExpression>
 	</variable>
 	<variable name="sumAbsentCnt" class="java.lang.Long" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{absentCnt}]]></variableExpression>

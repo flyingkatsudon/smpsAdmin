@@ -118,10 +118,11 @@ public class DownloadController {
         File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileScorerReport);
         fileScorerReport.delete();
-
+/*
         File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileDrawReport);
         fileScorerReport.delete();
+*/
 
 /*        // 나머지 가져오기
         // 0. 폴더위치 지정
