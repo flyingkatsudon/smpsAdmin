@@ -158,6 +158,7 @@ public class SystemService {
 
                             Hall hall = examMap.getHall();
                             Exam exam = examMap.getExam();
+                            Examinee examinee = examMap.getExaminee();
 
                             hallRepository.save(examMap.getHall());
                             examRepository.save(examMap.getExam());
@@ -188,8 +189,18 @@ public class SystemService {
                                 hallDateRepository.save(examHallDate);
                             }
 
-                            examineeRepository.save(examMap.getExaminee());
-                            examMapRepository.save(examMap);
+                            examineeRepository.save(examinee);
+
+                            ExamMap findExamMap = examMapRepository.findOne(new BooleanBuilder()
+                                    .and(QExamMap.examMap.examinee.examineeCd.eq(examinee.getExamineeCd()))
+                                    .and(QExamMap.examMap.exam.examCd.eq(exam.getExamCd()))
+                                    .and(QExamMap.examMap.hall.hallCd.eq(hall.getHallCd()))
+                            );
+
+                            if(findExamMap == null){
+                                examMap.set_id(null);
+                                examMapRepository.save(examMap);
+                            }
                         }
                         return Observable.from(page.content);
                     })
