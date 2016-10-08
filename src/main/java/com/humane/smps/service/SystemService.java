@@ -197,10 +197,9 @@ public class SystemService {
                                     .and(QExamMap.examMap.hall.hallCd.eq(hall.getHallCd()))
                             );
 
-                            if(findExamMap == null){
-                                examMap.set_id(null);
-                                examMapRepository.save(examMap);
-                            }
+                            examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
+                            if (findExamMap == null) examMapRepository.save(examMap);
+
                         }
                         return Observable.from(page.content);
                     })
