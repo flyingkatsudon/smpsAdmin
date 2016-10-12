@@ -195,6 +195,7 @@ public class UploadController {
                         .and(hall.headNm.eq(vo.getHeadNm()))
                         .and(hall.bldgNm.eq(vo.getBldgNm()))
                         .and(hall.hallNm.eq(vo.getHallNm()))
+                        .and(exam.examCd.eq(vo.getExamCd())) // 위 5개 조건이 모두 같을 때, 시험코드로 구분하도록
                 );
 
                 // 3. 수험생정보 생성

@@ -26,4 +26,5 @@ public class FormExamineeVo {
     @Column(name = "출신고교명") private String neisNm;
 
     @Column(name = "학생지원전형") private String exmAdmNm;
+    @Column(name = "시험코드") private String examCd;
 }
