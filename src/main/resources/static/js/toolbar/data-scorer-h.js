@@ -50,7 +50,8 @@ define(function (require) {
                     virtNo : _this.$('#virtNo').val(),
                     scorerNm : _this.$('#scorerNm').val(),
                     headNm : _this.$('#headNm').val(),
-                    bldgNm : _this.$('#bldgNm').val()
+                    bldgNm : _this.$('#bldgNm').val(),
+                    hallNm : _this.$('#hallNm').val()
                 });
             }
         },

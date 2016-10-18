@@ -14,12 +14,12 @@ define(function (require) {
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
                 {name: 'examDate', label: '시험일자'},
-                {name: 'examTime', label: '시험시간'},
+                /*{name: 'examTime', label: '시험시간'},*/
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'headNm', label: '고사본부'},
+                /*{name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
-                {name: 'hallNm', label: '고사실'}
+                {name: 'hallNm', label: '고사실'}*/
             ];
 
             for (var i = 0; i < colModel.length; i++) {

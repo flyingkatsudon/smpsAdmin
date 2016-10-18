@@ -58,7 +58,7 @@ public class DataService {
 
         long itemCnt = mapper.getItemCnt();
         for (int i = 1; i <= itemCnt; i++) {
-            colModels.add(new ColModel("avgScore" + (i < 10 ? "0" + i : i), "항목" + i + "평균"));
+            /*colModels.add(new ColModel("avgScore" + (i < 10 ? "0" + i : i), "항목" + i + "평균"));*/
             colModels.add(new ColModel("totScore" + (i < 10 ? "0" + i : i), "항목" + i + "합계"));
         }
         colModels.add(new ColModel("scorerCnt", "평가위원수"));
@@ -72,12 +72,12 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("examTime", "시험시간"));
+        /*colModels.add(new ColModel("examTime", "시험시간"));*/
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
-        colModels.add(new ColModel("headNm", "고사본부"));
+        /*colModels.add(new ColModel("headNm", "고사본부"));
         colModels.add(new ColModel("bldgNm", "고사건물"));
-        colModels.add(new ColModel("hallNm", "고사실"));
+        colModels.add(new ColModel("hallNm", "고사실"));*/
         colModels.add(new ColModel("examineeCd", "수험번호"));
         colModels.add(new ColModel("examineeNm", "수험생명"));
         colModels.add(new ColModel("virtNo", "가번호"));
@@ -90,9 +90,9 @@ public class DataService {
             colModels.add(new ColModel("score" + (i < 10 ? "0" + i : i), "항목" + i));
 
         colModels.add(new ColModel("totalScore", "총점"));
-        colModels.add(new ColModel("memo", "메모"));
+        /*colModels.add(new ColModel("memo", "메모"));
         colModels.add(new ColModel("isPhoto", "사진"));
-        colModels.add(new ColModel("scoreDttm", "채점시간"));
+        colModels.add(new ColModel("scoreDttm", "채점시간"));*/
 
         return colModels;
     }
@@ -105,12 +105,12 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        /*col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
                 )
                 .setPageMargin(DynamicReports.margin(0))
@@ -120,7 +120,7 @@ public class DataService {
         long itemCnt = mapper.getItemCnt();
 
         for (int i = 1; i <= itemCnt; i++) {
-            report.addColumn(col.column("항목" + i + "평균", "avgScore" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            /*report.addColumn(col.column("항목" + i + "평균", "avgScore" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));*/
             report.addColumn(col.column("항목" + i + "합계", "totScore" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         }
         report.addColumn(col.column("평가위원수", "scorerCnt", type.longType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
@@ -142,12 +142,12 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        /*col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(9),
+                        col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
+                        /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(9),
                         col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)*/
                 )
                 .setPageMargin(DynamicReports.margin(0))
                 .setIgnorePageWidth(true)
@@ -163,7 +163,7 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        /*col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -197,12 +197,12 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        /*col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -220,7 +220,7 @@ public class DataService {
             for (int j = 1; j <= itemCnt; j++)
                 report.addColumn(col.column("항목" + j, "score" + i + "S" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             report.addColumn(col.column("총점" + i, "totalScore" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-            report.addColumn(col.column("채점시간", "scoreDttm" + i, type.stringType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
+            /*report.addColumn(col.column("채점시간", "scoreDttm" + i, type.stringType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));*/
         }
         return report;
     }
@@ -233,12 +233,12 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        /*col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -254,9 +254,9 @@ public class DataService {
             report.addColumn(col.column("항목" + i, "score" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
 
         report.addColumn(col.column("총점", "totalScore", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        report.addColumn(col.column("메모", "memo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        report.addColumn(col.column("사진", "isPhoto", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        report.addColumn(col.column("채점시간", "scoreDttm", type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
+        /*report.addColumn(col.column("메모", "memo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        report.addColumn(col.column("사진", "isPhoto", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));*/
+        /*report.addColumn(col.column("채점시간", "scoreDttm", type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));*/
         return report;
 
     }
@@ -319,12 +319,12 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("examTime", "시험시간"));
+        /*colModels.add(new ColModel("examTime", "시험시간"));*/
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
-        colModels.add(new ColModel("headNm", "고사본부"));
+        /*colModels.add(new ColModel("headNm", "고사본부"));
         colModels.add(new ColModel("bldgNm", "고사건물"));
-        colModels.add(new ColModel("hallNm", "고사실"));
+        colModels.add(new ColModel("hallNm", "고사실"));*/
         colModels.add(new ColModel("examineeCd", "수험번호"));
         colModels.add(new ColModel("examineeNm", "수험생명"));
         colModels.add(new ColModel("virtNo", "가번호"));
@@ -338,7 +338,7 @@ public class DataService {
             for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "S" + j, "항목" + j, false));
 
             colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
-            colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));
+            /*colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));*/
         }
         return colModels;
     }
@@ -349,7 +349,7 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("examTime", "시험시간"));
+        /*colModels.add(new ColModel("examTime", "시험시간"));*/
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
         colModels.add(new ColModel("examineeCd", "수험번호"));

@@ -6,6 +6,7 @@
     <select id="toolbar" resultType="com.humane.smps.dto.StatusDto">
         SELECT
         admission.admission_nm,
+        exam.type_nm,
         exam.exam_nm,
         exam_hall_date.hall_date AS exam_date,
         hall.head_nm,

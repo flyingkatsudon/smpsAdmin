@@ -144,6 +144,7 @@
         inner join admission on exam.admission_cd = admission.admission_cd
         inner join examinee on exam_map.examinee_cd = examinee.examinee_cd
         <where>
+            AND exam_map.virt_no IS NOT NULL
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
