@@ -527,3 +527,16 @@ h4 {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+.header-title {
+    float: left;
+    height: 50px;
+    padding: 20px 15px 15px 10px;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.home {
+    float: left;
+    padding: 15px 0 15px 15px;
+}
