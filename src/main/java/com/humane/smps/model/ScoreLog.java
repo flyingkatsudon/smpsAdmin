@@ -34,4 +34,5 @@ public class ScoreLog implements Serializable {
     @Column public String score10;
     @Column public String scoreDttm;
     @Column public Long sheetNo;
+    public Integer adjust;
 }
