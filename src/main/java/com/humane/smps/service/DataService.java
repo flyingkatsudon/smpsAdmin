@@ -280,6 +280,10 @@ public class DataService {
 
     public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.examMap(param, pageable);
+        return fillMap(page);
+    }
+
+    private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
@@ -351,6 +355,10 @@ public class DataService {
         colModels.add(new ColModel("examineeCd", "수험번호"));
         colModels.add(new ColModel("examineeNm", "수험생명"));
         colModels.add(new ColModel("virtNo", "가번호"));
+        colModels.add(new ColModel("evalCd", "답안지번호"));
+        colModels.add(new ColModel("total", "전체 총점"));
+        colModels.add(new ColModel("rank", "순위"));
+        colModels.add(new ColModel("cnt", "동점자"));
 
         long scorerCnt = mapper.getScorerCnt(); // 채점자수
         long itemCnt = mapper.getItemCnt(); // 항목수
@@ -361,9 +369,11 @@ public class DataService {
 
             colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
         }
-
-        colModels.add(new ColModel("total", "전체 총점"));
-
         return colModels;
+    }
+
+    public Page<Map<String, Object>> getDrawData(ScoreDto param, Pageable pageable) {
+        Page<Map<String, Object>> page = mapper.drawData(param, pageable);
+        return fillMap(page);
     }
 }

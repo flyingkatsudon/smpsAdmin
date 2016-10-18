@@ -29,7 +29,7 @@
         <retrofit2.version>2.1.0</retrofit2.version>
         <okhttp3.version>3.4.1</okhttp3.version>
         <commons-io.version>2.5</commons-io.version>
-        <commons-lang3.version>3.4</commons-lang3.version>
+        <commons-lang3.version>3.5</commons-lang3.version>
         <commons-compress.version>1.11</commons-compress.version>
         <rxjava.version>1.2.0</rxjava.version>
         <jasperreports.version>6.3.1</jasperreports.version>
@@ -394,7 +394,7 @@
                             <jar>${project.build.directory}/${project.artifactId}-${project.version}.war</jar>
                             <outfile>${project.build.directory}/${project.artifactId}-${project.version}.exe</outfile>
                             <jre>
-                                <minVersion>1.7.0</minVersion>
+                                <minVersion>1.8.0</minVersion>
                                 <jdkPreference>preferJre</jdkPreference>
                             </jre>
                         </configuration>

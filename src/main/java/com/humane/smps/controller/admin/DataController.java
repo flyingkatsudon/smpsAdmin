@@ -122,10 +122,10 @@ public class DataController {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getDrawModel());
             case JSON:
-                return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
+                return ResponseEntity.ok(dataService.getDrawData(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getDrawReport();
-                report.setDataSource(dataService.getScorerHData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                report.setDataSource(dataService.getDrawData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("동점자 현황");

@@ -14,7 +14,7 @@ define(function (require) {
                 }
             });
 
-            for(var i = 0; i < colModel.length; i++){
+            for (var i = 0; i < colModel.length; i++) {
                 var col = colModel[i];
                 col['fixed'] = true;
                 col['width'] = 100;
@@ -23,7 +23,15 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/draw.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    loadComplete: function (data) {
+                        var ids = $(this).getDataIDs(data);
+
+                        for (var i = 0; i < ids.length; i++) {
+                            var rowData = $(this).getRowData(ids[i]);
+                            if (rowData.cnt > 1) $(this).setRowData(ids[i], false, {background: "#f5a7a4"});
+                        }
+                    }
                 },
                 scrollable: true
             }, options);

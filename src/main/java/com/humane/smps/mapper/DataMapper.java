@@ -42,4 +42,6 @@ public interface DataMapper {
     ExamDto examDetail(@Param("examCd") String examCd);
 
     void fillVirtNo(@Param("param") ExamDto param);
+
+    Page<Map<String,Object>> drawData(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 }
