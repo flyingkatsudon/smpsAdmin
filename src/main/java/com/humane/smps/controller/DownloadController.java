@@ -103,9 +103,9 @@ public class DownloadController {
         zipFile.addFile(fileGroup);
         fileGroup.delete();
 
-        File fileExamineeReport = JasperReportsExportHelper.toXlsxFile("수험생별 종합", dataService.getExamineeReport(), dataMapper.examinee(new ExamineeDto(), pageable).getContent());
+        /*File fileExamineeReport = JasperReportsExportHelper.toXlsxFile("수험생별 종합", dataService.getExamineeReport(), dataMapper.examinee(new ExamineeDto(), pageable).getContent());
         zipFile.addFile(fileExamineeReport);
-        fileExamineeReport.delete();
+        fileExamineeReport.delete();*/
 
         File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examMap(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileVirtNoReport);
@@ -117,6 +117,10 @@ public class DownloadController {
 
         File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileScorerReport);
+        fileScorerReport.delete();
+
+        File fileScoreUploadReport = JasperReportsExportHelper.toXlsxFile("한양대 성적 업로드(교수코드 미포함)", dataService.getScoreUploadReport(), dataMapper.scoreUpload(new ScoreUploadDto(), pageable).getContent());
+        zipFile.addFile(fileScoreUploadReport);
         fileScorerReport.delete();
 /*
         File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());

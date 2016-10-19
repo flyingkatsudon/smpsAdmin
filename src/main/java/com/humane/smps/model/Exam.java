@@ -61,7 +61,6 @@ public class Exam {
     private String printSign;
 
     @Column(columnDefinition = "int default 0") private int itemCnt;
-    @Column(columnDefinition = "bit default 0") private boolean useAdjust;
 
     private String barcodeType;
 }

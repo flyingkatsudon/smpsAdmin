@@ -39,5 +39,4 @@ public class Score implements Serializable {
     private Date scoreDttm;
 
     private Long sheetNo;
-    private Integer adjust;
 }

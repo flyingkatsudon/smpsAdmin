@@ -1,9 +1,6 @@
 package com.humane.smps.mapper;
 
-import com.humane.smps.dto.EvalDto;
-import com.humane.smps.dto.ExamDto;
-import com.humane.smps.dto.ExamineeDto;
-import com.humane.smps.dto.ScoreDto;
+import com.humane.smps.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
@@ -44,4 +41,6 @@ public interface DataMapper {
     void fillVirtNo(@Param("param") ExamDto param);
 
     Page<Map<String,Object>> drawData(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
+
+    Page<ScoreUploadDto> scoreUpload(@Param("param") ScoreUploadDto param, @Param("pageable") Pageable pageable);
 }

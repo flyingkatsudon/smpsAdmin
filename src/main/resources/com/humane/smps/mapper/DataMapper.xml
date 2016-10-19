@@ -104,6 +104,7 @@
                 hall.bldg_nm,
                 hall.hall_nm,
                 exam_map.virt_no,
+                exam_map.eval_cd,
                 exam_map.group_nm,
                 score.scorer_nm,
                 score.score01,
@@ -163,6 +164,7 @@
             , examinee.examinee_nm
             , exam_map.exam_cd
             , exam_map.virt_no
+            , exam_map.eval_cd
             , exam_map.hall_date as exam_date
             , date_format(scan_dttm,'%Y-%m-%d %H:%i:%s') as scan_dttm
             , exam_map.examinee_cd
@@ -339,4 +341,40 @@
         INSERT INTO score(score01, score_dttm, score_seq, scorer_nm, sheet_no, total_score, virt_no, exam_cd, hall_cd)
         VALUES (#{param.score01}, NOW(), '1', #{param.scorerNm}, '1', #{param.score01}, #{param.virtNo}, #{param.examCd}, #{param.hallCd})
     </insert>
+
+    <select id="scoreUpload" resultType="com.humane.smps.dto.ScoreUploadDto">
+        select CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as year
+             , exam_map.examinee_cd
+             , if(exam_map.virt_no is null, 1, 0) as isAbsent
+             , if(a.scorer_nm is null, '%', a.scorer_nm) as scorer_cd
+             , if(a.i is null, '%', a.i) as item_no
+             , if(a.s is null, '', a.s) as score
+          from exam_map
+          left join (select sc.exam_cd, virt_no, scorer_nm
+                              , right(concat('00', item_no),2) as i
+                               , case item.item_no
+                                      when 1 then score01
+                                      when 2 then score02
+                                      when 3 then score03
+                                      when 4 then score04
+                                      when 5 then score05
+                                      when 6 then score06
+                                      when 7 then score07
+                                      when 8 then score08
+                                      when 9 then score09
+                                      when 10 then score10
+                                 end as s
+                           from (
+                                 select exam_cd, virt_no, score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
+                                      , if(@pVirtNo = score.virt_no AND @pExamCd = score.exam_cd, @rownum:=@rownum + 1, @rownum:=1) scorer_nm
+                                      , (@pVirtNo :=score.virt_no) pVirtNo
+                                          , (@pExamCd :=score.exam_cd) pExamCd
+                                      from score
+                                     inner join (select @pExamCd := '', @pVirtNo := '', @rnum := 0) t
+                                     order by exam_cd, virt_no, score.scorer_nm
+                                 ) sc
+                          inner join item on sc.exam_cd = item.exam_cd) a
+               on exam_map.exam_cd = a.exam_cd and exam_map.virt_no = a.virt_no
+        order by examinee_cd, scorer_nm, i
+    </select>
 </mapper>

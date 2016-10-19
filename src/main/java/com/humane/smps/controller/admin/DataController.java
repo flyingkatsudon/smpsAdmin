@@ -152,6 +152,17 @@ public class DataController {
         }
     }
 
+    @RequestMapping(value = "scoreUpload.{format:xlsx}")
+    public ResponseEntity scoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+        JasperReportBuilder report = dataService.getScoreUploadReport();
+        report.setDataSource(mapper.scoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName("한양대 성적 업로드(교수코드 미포함)");
+
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+    }
+
     // 초기에 시험이름, 시험코드를 불러옴
     @RequestMapping(value = "examInfo.json")
     public ResponseEntity examInfo() {

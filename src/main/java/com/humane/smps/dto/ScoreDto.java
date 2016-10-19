@@ -62,4 +62,6 @@ public class ScoreDto {
 
     private String memo;
     private Boolean isPhoto;
+
+    private String evalCd;
 }

@@ -50,14 +50,14 @@
                     <h4 class="panel panel-heading"><label>평가 관리</label></h4>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <!--<div class="panel panel-default">
                 <div class="panel-body">
                     <form action="data/examinee.xlsx" method="get">
                         <span>수험생별 종합</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
-            </div>
+            </div>-->
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="data/virtNo.xlsx" method="get">
@@ -109,6 +109,22 @@
                 <div class="panel-body">
                     <form action="download/scorer.zip" method="get">
                         <span>평가위원 데이터</span>
+                        <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <!--<div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="download/scoreUpload?useScorerCd=true" method="get">
+                        <span>한양대 성적 업로드(교수코드 포함)</span>
+                        <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>-->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="data/scoreUpload.xlsx" method="get">
+                        <span>한양대 성적 업로드(교수코드 미포함)</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
