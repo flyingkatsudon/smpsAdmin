@@ -22,6 +22,7 @@ public class StatusDto implements Serializable {
     private String userAdmissions;
     private String admissionNm;
     private String typeNm;
+    private String examCd;
     private String examNm;
     private String majorNm;
     private String deptNm;

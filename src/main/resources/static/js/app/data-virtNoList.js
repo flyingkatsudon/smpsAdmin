@@ -15,9 +15,10 @@ define(function (require) {
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
             this.summary = new Summary({el: '#hm-ui-summary', parent: this});
             this.summary.render();
-            this.list = new List({el: '.hm-ui-grid'}).render();
+            this.list = new List({el: '.hm-ui-grid', parent: this}).render();
         }, search: function (o) {
             this.list.search(o);
+            this.summary.render(o);
         }
     });
 });
