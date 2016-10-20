@@ -83,6 +83,7 @@ public class DownloadController {
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         File file = new File(currentTime + "_allData.zip");
         ZipFile zipFile = new ZipFile(file);
+        zipFile.setFileNameCharset("EUC-KR");
 
         // entry 생성
         File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(new StatusDeptDto(), pageable).getContent());
@@ -168,6 +169,7 @@ public class DownloadController {
         File file = new File("manager.zip");
 
         ZipFile zipFile = new ZipFile(file);
+        zipFile.setFileNameCharset("EUC-KR");
 
         String path = pathRoot + "/smpsMgr";
 
@@ -195,6 +197,7 @@ public class DownloadController {
         File file = new File("scorer.zip");
 
         ZipFile zipFile = new ZipFile(file);
+        zipFile.setFileNameCharset("EUC-KR");
 
         String jpgPath = pathRoot + "/jpg";
         String pdfPath = pathRoot + "/pdf";
