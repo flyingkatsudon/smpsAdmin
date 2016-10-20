@@ -335,6 +335,8 @@
                 <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
             </where>
         </if>
+        group by
+            rank, eval_cd
     </select>
 
     <insert id="fillScore" parameterType="com.humane.smps.dto.EvalDto">

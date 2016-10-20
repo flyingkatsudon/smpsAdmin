@@ -59,11 +59,11 @@
                     score_log.hall_cd,
                     score_log.virt_no,
                     score_log.scorer_nm,
-                    count(*) - 1 AS update_cnt
+                    count(*) - 2 AS update_cnt
                  FROM score_log
                 WHERE score_log.sheet_no IS NULL
                 GROUP BY score_log.exam_cd, score_log.hall_cd, score_log.virt_no, score_log.scorer_nm
-                HAVING count(*) > 1
+                HAVING count(*) - 1 > 1
          ) a
         INNER JOIN exam_map ON a.exam_cd = exam_map.exam_cd AND a.hall_cd = exam_map.hall_cd AND a.virt_no = exam_map.virt_no
         INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
