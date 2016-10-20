@@ -336,7 +336,10 @@
             </where>
         </if>
         group by
-            rank, eval_cd
+              examinee.dept_nm
+            , examinee.major_nm
+            , rank
+            , exam_map.eval_cd
     </select>
 
     <insert id="fillScore" parameterType="com.humane.smps.dto.EvalDto">
