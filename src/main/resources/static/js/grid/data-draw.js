@@ -24,6 +24,7 @@ define(function (require) {
                 defaults: {
                     url: 'data/draw.json',
                     colModel: colModel,
+                    sortname : 'rank',
                     loadComplete: function (data) {
                         var ids = $(this).getDataIDs(data);
 
