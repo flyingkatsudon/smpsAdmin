@@ -25,7 +25,6 @@
             ROUND(SUM(score.score08) / COUNT(score.scorer_nm),1)               AS avg_score08,
             ROUND(SUM(score.score09) / COUNT(score.scorer_nm),1)               AS avg_score09,
             ROUND(SUM(score.score10) / COUNT(score.scorer_nm),1)               AS avg_score10,
-
             SUM(score.score01) AS tot_score01,
             SUM(score.score02) AS tot_score02,
             SUM(score.score03) AS tot_score03,
@@ -36,9 +35,7 @@
             SUM(score.score08) AS tot_score08,
             SUM(score.score09) AS tot_score09,
             SUM(score.score10) AS tot_score10,
-
-            SUM(score.score01 + score.score02 + score.score03 + score.score04 + score.score05
-                + score.score06 + score.score07 + score.score08 + score.score09 + score.score10) AS total_score,
+            SUM(score.score01 + score.score02 + score.score03 + score.score04 + score.score05 + score.score06 + score.score07 + score.score08 + score.score09 + score.score10) AS total_score,
             CASE WHEN exam_map.virt_no IS NULL THEN FALSE
                   WHEN COUNT(score.scorer_nm) = 0 THEN FALSE
                   WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND score.total_score = '결시') > 0 THEN FALSE
@@ -50,7 +47,20 @@
             INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
             INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
             INNER JOIN admission ON exam.admission_cd = admission.admission_cd
-            LEFT JOIN score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
+            LEFT JOIN (select score.exam_cd, virt_no, scorer_nm, total_score
+                              , if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) as score01
+                              , if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) as score02
+                              , if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) as score03
+                              , if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04) as score04
+                              , if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05) as score05
+                              , if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06) as score06
+                              , if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07) as score07
+                              , if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08) as score08
+                              , if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09) as score09
+                              , if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10) as score10
+                           from score
+                          inner join exam on score.exam_cd = exam.exam_cd
+                        ) as score ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
         <where>
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
@@ -72,9 +82,7 @@
                 <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
                 <if test="param.fromExamineeCd != null and param.toExamineeCd == null">AND examinee.examinee_cd = #{param.fromExamineeCd}</if>
                 <if test="param.fromExamineeCd == null and param.toExamineeCd != null">AND examinee.examinee_cd = #{param.toExamineeCd}</if>
-                <if test="param.fromExamineeCd != null and param.toExamineeCd != null">
-                    AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}
-                </if>
+                <if test="param.fromExamineeCd != null and param.toExamineeCd != null">AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}</if>
             </if>
         </where>
         GROUP BY
@@ -107,17 +115,27 @@
                 exam_map.eval_cd,
                 exam_map.group_nm,
                 score.scorer_nm,
-                score.score01,
-                score.score02,
-                score.score03,
-                score.score04,
-                score.score05,
-                score.score06,
-                score.score07,
-                score.score08,
-                score.score09,
-                score.score10,
-                score.total_score,
+                if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) as score01,
+                if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) as score02,
+                if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) as score03,
+                if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04) as score04,
+                if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05) as score05,
+                if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06) as score06,
+                if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07) as score07,
+                if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08) as score08,
+                if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09) as score09,
+                if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10) as score10,
+                ifnull(if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01), 0)
+                + ifnull(if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02), 0)
+                + ifnull(if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03), 0)
+                + ifnull(if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04), 0)
+                + ifnull(if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05), 0)
+                + ifnull(if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06), 0)
+                + ifnull(if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07), 0)
+                + ifnull(if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08), 0)
+                + ifnull(if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09), 0)
+                + ifnull(if(score10 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score10), 0)
+                AS total_score,
                 score.score_dttm
             FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
@@ -173,18 +191,21 @@
             , hall.bldg_nm
             , hall.hall_nm
             , (
-                SELECT
-                          SUM(CASE WHEN score01 IS NOT NULL THEN score01 ELSE 0 END)
-                        + SUM(CASE WHEN score02 IS NOT NULL THEN score02 ELSE 0 END)
-                        + SUM(CASE WHEN score03 IS NOT NULL THEN score03 ELSE 0 END)
-                        + SUM(CASE WHEN score04 IS NOT NULL THEN score04 ELSE 0 END)
-                        + SUM(CASE WHEN score05 IS NOT NULL THEN score05 ELSE 0 END)
-                        + SUM(CASE WHEN score06 IS NOT NULL THEN score06 ELSE 0 END)
-                        + SUM(CASE WHEN score07 IS NOT NULL THEN score07 ELSE 0 END)
-                        + SUM(CASE WHEN score08 IS NOT NULL THEN score08 ELSE 0 END)
-                        + SUM(CASE WHEN score09 IS NOT NULL THEN score09 ELSE 0 END)
-                        + SUM(CASE WHEN score10 IS NOT NULL THEN score10 ELSE 0 END)
-                    FROM score WHERE score.virt_no = exam_map.virt_no
+                SELECT SUM(
+                        if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) +
+                        if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) +
+                        if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) +
+                        if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04) +
+                        if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05) +
+                        if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06) +
+                        if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07) +
+                        if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08) +
+                        if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09) +
+                        if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10)
+                        )
+                    FROM score
+                   INNER JOIN exam on score.exam_cd = exam.exam_cd
+                   WHERE score.virt_no = exam_map.virt_no
               ) AS total
         FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
@@ -218,13 +239,33 @@
 
     <select id="scorerH" resultType="com.humane.util.CamelMap">
         SELECT scorer_nm
-              , score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
+              , if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) as score01
+              , if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) as score02
+              , if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) as score03
+              , if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04) as score04
+              , if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05) as score05
+              , if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06) as score06
+              , if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07) as score07
+              , if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08) as score08
+              , if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09) as score09
+              , if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10) as score10
               , date_format(score_dttm,'%Y-%m-%d %H:%i:%s') AS score_dttm
-              , total_score
-           FROM score A
-        WHERE A.exam_cd = #{param.examCd}
-          AND A.virt_no = #{param.virtNo}
-        ORDER BY scorer_nm
+              , ifnull(if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01), 0)
+                  + ifnull(if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02), 0)
+                  + ifnull(if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03), 0)
+                  + ifnull(if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04), 0)
+                  + ifnull(if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05), 0)
+                  + ifnull(if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06), 0)
+                  + ifnull(if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07), 0)
+                  + ifnull(if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08), 0)
+                  + ifnull(if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09), 0)
+                  + ifnull(if(score10 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score10), 0)
+						 AS total_score
+           FROM score
+          INNER JOIN exam ON score.exam_cd = exam.exam_cd
+        WHERE score.exam_cd = #{param.examCd}
+          AND score.virt_no = #{param.virtNo}
+        ORDER BY score.scorer_nm
     </select>
 
     <select id="examInfo" resultType="com.humane.smps.dto.ExamDto">
@@ -275,7 +316,7 @@
     </update>
 
     <select id="fillList" resultType="com.humane.smps.dto.EvalDto">
-        SELECT exam_map.examinee_cd, score.scorer_nm, exam_map.virt_no, exam_map.exam_cd, exam_map.eval_cd, score.score01,exam_map.hall_cd
+        SELECT exam_map.examinee_cd, score.scorer_nm, exam_map.virt_no, exam_map.exam_cd, exam_map.eval_cd, exam_map.hall_cd
         FROM attend_map
         INNER JOIN exam_map ON exam_map.examinee_cd = attend_map.examinee_cd
         INNER JOIN attend_paper ON attend_paper.paper_cd = exam_map.eval_cd
@@ -302,16 +343,57 @@
              , examinee.examinee_cd
              , examinee.examinee_nm
              , (select count(*) + 1
-                   from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no) t
+                   from (select score.exam_cd, hall_cd, virt_no
+                               , ifnull(if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01), 0)
+                                    + ifnull(if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02), 0)
+                                    + ifnull(if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03), 0)
+                                    + ifnull(if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04), 0)
+                                    + ifnull(if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05), 0)
+                                    + ifnull(if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06), 0)
+                                    + ifnull(if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07), 0)
+                                    + ifnull(if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08), 0)
+                                    + ifnull(if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09), 0)
+                                    + ifnull(if(score10 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score10), 0)
+                                     as total
+                            from score inner join exam on score.exam_cd = exam.exam_cd
+                           group by score.exam_cd, hall_cd, virt_no) t
                   where t.total > a.total
                     and a.exam_cd = t.exam_cd
                  ) rank
                 , (select count(*)
-                   from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no) t
+                   from (select score.exam_cd, hall_cd, virt_no
+                                , ifnull(if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01), 0)
+                                    + ifnull(if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02), 0)
+                                    + ifnull(if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03), 0)
+                                    + ifnull(if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04), 0)
+                                    + ifnull(if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05), 0)
+                                    + ifnull(if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06), 0)
+                                    + ifnull(if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07), 0)
+                                    + ifnull(if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08), 0)
+                                    + ifnull(if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09), 0)
+                                    + ifnull(if(score10 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score10), 0)
+                                    as total
+                           from score
+                           inner join exam on score.exam_cd = exam.exam_cd
+                  group by score.exam_cd, hall_cd, virt_no) t
                   where t.total = a.total
                     and a.exam_cd = t.exam_cd
                  ) cnt
-          from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no order by total desc) a
+          from (select score.exam_cd, hall_cd, virt_no
+                      , ifnull(if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01), 0)
+                        + ifnull(if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02), 0)
+                        + ifnull(if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03), 0)
+                        + ifnull(if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04), 0)
+                        + ifnull(if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05), 0)
+                        + ifnull(if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06), 0)
+                        + ifnull(if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07), 0)
+                        + ifnull(if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08), 0)
+                        + ifnull(if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09), 0)
+                        + ifnull(if(score10 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score10), 0)
+                        as total
+                  from score inner join exam on score.exam_cd = exam.exam_cd
+                 group by score.exam_cd, hall_cd, virt_no order by total desc
+                ) a
          inner join exam_map on a.exam_cd = exam_map.exam_cd and a.virt_no = exam_map.virt_no
          inner join exam on a.exam_cd = exam.exam_cd
          inner join admission on exam.admission_cd = admission.admission_cd
@@ -365,11 +447,22 @@
                                       when 10 then score10
                                  end as s
                            from (
-                                 select exam_cd, virt_no, score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
+                                 select score.exam_cd, score.virt_no
+                                      , if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) as score01
+                                      , if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) as score02
+                                      , if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) as score03
+                                      , if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04) as score04
+                                      , if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05) as score05
+                                      , if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06) as score06
+                                      , if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07) as score07
+                                      , if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08) as score08
+                                      , if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09) as score09
+                                      , if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10) as score10
                                       , if(@pVirtNo = score.virt_no AND @pExamCd = score.exam_cd, @rownum:=@rownum + 1, @rownum:=1) scorer_nm
                                       , (@pVirtNo :=score.virt_no) pVirtNo
                                           , (@pExamCd :=score.exam_cd) pExamCd
                                       from score
+                                     inner join exam on score.exam_cd = exam.exam_cd
                                      inner join (select @pExamCd := '', @pVirtNo := '', @rnum := 0) t
                                      order by exam_cd, virt_no, score.scorer_nm
                                  ) sc

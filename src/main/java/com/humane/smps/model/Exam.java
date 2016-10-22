@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -63,4 +64,6 @@ public class Exam {
     @Column(columnDefinition = "int default 0") private int itemCnt;
 
     private String barcodeType;
+
+    @Column(columnDefinition = "decimal(10, 1) default 0") BigDecimal adjust;
 }
