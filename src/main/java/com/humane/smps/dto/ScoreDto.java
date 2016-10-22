@@ -7,6 +7,7 @@ import com.humane.util.jackson.TimeSerializer;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class ScoreDto {
     private String score10;
 
     private String avgScore;
-    private String totalScore;
+    private BigDecimal totalScore;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
