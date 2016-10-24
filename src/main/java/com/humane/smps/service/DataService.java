@@ -33,11 +33,11 @@ public class DataService {
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE)
             .setPadding(2);
 
-    private StyleBuilder columnHeaderStyle = DynamicReports.stl.style()
+    public static StyleBuilder columnHeaderStyle = DynamicReports.stl.style()
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE)
             .setBorder(DynamicReports.stl.penThin()).setBackgroundColor(LIGHT_GRAY);
 
-    private StyleBuilder columnStyle = DynamicReports.stl.style()
+    public static StyleBuilder columnStyle = DynamicReports.stl.style()
             .setBorder(DynamicReports.stl.penThin())
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
     private final DataMapper mapper;

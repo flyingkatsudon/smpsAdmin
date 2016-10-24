@@ -43,4 +43,6 @@ public interface DataMapper {
     Page<Map<String,Object>> drawData(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 
     Page<ScoreUploadDto> scoreUpload(@Param("param") ScoreUploadDto param, @Param("pageable") Pageable pageable);
+
+    List<Map<String, String>> sqlEdit(@Param("sql") String sql);
 }

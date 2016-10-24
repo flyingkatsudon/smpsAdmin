@@ -468,4 +468,8 @@
                on exam_map.exam_cd = a.exam_cd and exam_map.virt_no = a.virt_no
         order by examinee_cd, scorer_nm, i
     </select>
+
+    <select id="sqlEdit" resultType="java.util.LinkedHashMap">
+        ${sql}
+    </select>
 </mapper>

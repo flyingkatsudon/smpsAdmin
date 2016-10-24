@@ -8,6 +8,7 @@ import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -16,16 +17,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 
 @RestController
@@ -236,9 +238,9 @@ public class DataController {
             // 3. 답안지 1개 당 X 채점자 수 만큼 점수 입력
 
             // 3-1. 어떤 평가위원의 점수도 전송되지 않았다면 return
-            if(scorerList.size()==0){
+            if (scorerList.size() == 0) {
                 return ResponseEntity.ok("채점한 평가위원이 없습니다. 잠시 후 다시 시도하세요.");
-            }else {
+            } else {
                 for (int i = 0; i < scorerList.size(); i++) {
                     for (int j = 0; j < fillList.size(); j++) {
                         // 3-1. 팝업에서 입력한 점수를 저장, 이미 저장되어 있으면 패스
@@ -252,6 +254,43 @@ public class DataController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "sqlEdit.{format:json|xls|xlsx}")
+    public ResponseEntity sqlEdit(@PathVariable String format, @RequestParam(value = "sql") String sql) throws DRException {
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.sqlEdit(sql));
+            default:
+                List<Map<String, String>> list = mapper.sqlEdit(sql);
+
+                for (Map<String, String> map : list) {
+                    Set<String> keyset = map.keySet();
+                    for (String key : keyset) {
+                        Object value = map.get(key);
+                        map.put(key, String.valueOf(value == null ? "" : String.valueOf(value)));
+                    }
+                }
+
+                JasperReportBuilder report = report()
+                        .setPageMargin(DynamicReports.margin(0))
+                        .setIgnorePageWidth(true)
+                        .setIgnorePagination(true);
+
+                Set<String> keyset = list.get(0).keySet();
+                for (String key : keyset) {
+                    report.addColumn(
+                            col.column(key, key, type.stringType())
+                                    .setTitleStyle(DataService.columnHeaderStyle)
+                                    .setStyle(DataService.columnStyle)
+                                    .setFixedColumns(7)
+                    );
+                }
+
+                report.setDataSource(list);
+                JasperPrint jasperPrint = report.toJasperPrint();
+                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }
     }
 }

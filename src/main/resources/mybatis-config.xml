@@ -5,6 +5,7 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="callSettersOnNulls" value="true"/>
     </settings>
     <plugins>
         <plugin interceptor="com.humane.util.mybatis.pageable.PageableInterceptor">
