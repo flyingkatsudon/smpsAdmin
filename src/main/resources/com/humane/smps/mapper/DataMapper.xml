@@ -468,4 +468,53 @@
                on exam_map.exam_cd = a.exam_cd and exam_map.virt_no = a.virt_no
         order by examinee_cd, scorer_nm, i
     </select>
+
+    <select id="lawScoreUpload" resultType="com.humane.smps.dto.ScoreUploadDto">
+        select '2017' as year
+             , exam_map.examinee_cd as examinee_cd
+             , if(exam_map.virt_no is null, 1, 0) as is_attend
+             , if(b.scorer_cd is null, '%', b.scorer_cd) as scorer_cd
+             , if(a.i is null, '%', a.i) as itemNo
+             , if(a.s is null, '', a.s) as score
+          from exam_map
+          left join (select score.exam_cd, virt_no, scorer_nm
+                              , right(concat('00', item_no),2) as i
+                               , case item.item_no
+                                      when 1 then if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01)
+                                      when 2 then if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02)
+                                      when 3 then if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03)
+                                      when 4 then if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04)
+                                      when 5 then if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05)
+                                      when 6 then if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06)
+                                      when 7 then if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07)
+                                      when 8 then if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08)
+                                      when 9 then if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09)
+                                      when 10 then if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10)
+                                 end as s
+                           from score
+                          inner join exam on score.exam_cd = exam.exam_cd
+                          inner join item on score.exam_cd = item.exam_cd) a
+               on exam_map.exam_cd = a.exam_cd and exam_map.virt_no = a.virt_no
+          left join (           select 'A024769' scorer_cd, '김재봉' scorer_nm
+                      union all select 'A033093', '오윤'
+                      union all select 'A024760', '장근영'
+                      union all select 'A022389', '김종우'
+                      union all select 'A024768', '강성태'
+                      union all select 'A033094', '송호영'
+                      union all select 'A006066', '정문식'
+                      union all select 'A043704', '이광걸'
+               ) b
+               on a.scorer_nm = b.scorer_nm
+        order by examinee_cd, scorer_cd, i
+    </select>
+
+    <select id="failList" resultType="com.humane.smps.dto.ExamineeDto">
+        SELECT CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as year
+            , exam_map.examinee_cd
+            , examinee.examinee_nm
+          FROM exam_map
+          INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
+          INNER JOIN score ON score.exam_cd = exam_map.exam_cd AND score.virt_no = exam_map.virt_no
+          WHERE score.total_score = 'F'
+    </select>
 </mapper>

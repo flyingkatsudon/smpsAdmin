@@ -119,10 +119,18 @@ public class DownloadController {
         File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileScorerReport);
         fileScorerReport.delete();
-
-        File fileScoreUploadReport = JasperReportsExportHelper.toXlsxFile("한양대 성적 업로드(교수코드 미포함)", dataService.getScoreUploadReport(), dataMapper.scoreUpload(new ScoreUploadDto(), pageable).getContent());
+/*
+        File fileScoreUploadReport = JasperReportsExportHelper.toXlsxFile("글로벌인재_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.scoreUpload(new ScoreUploadDto(), pageable).getContent());
         zipFile.addFile(fileScoreUploadReport);
-        fileScorerReport.delete();
+        fileScorerReport.delete();*/
+
+        File fileFailList = JasperReportsExportHelper.toXlsxFile("jrxml/data-failList.jrxml", dataMapper.failList(new ExamineeDto(), pageable).getContent());
+        zipFile.addFile(fileFailList);
+        fileFailList.delete();
+
+        File fileLawScorerUploadReport = JasperReportsExportHelper.toXlsxFile("법학서류평가_성적업로드양식", dataService.getLawScoreUploadReport(), dataMapper.lawScoreUpload(new ScoreUploadDto(), pageable).getContent());
+        zipFile.addFile(fileLawScorerUploadReport);
+        fileLawScorerUploadReport.delete();
 /*
         File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileDrawReport);
