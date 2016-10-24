@@ -160,7 +160,26 @@ public class DataController {
         report.setDataSource(mapper.scoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("한양대 성적 업로드(교수코드 미포함)");
+        jasperPrint.setName("글로벌인재 성적업로드양식");
+
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+    }
+
+    @RequestMapping(value = "failList.xlsx")
+    public ResponseEntity failList(ExamineeDto param, Pageable pageable) throws DRException {
+        return JasperReportsExportHelper.toResponseEntity(
+                "jrxml/data-failList.jrxml"
+                , JasperReportsExportHelper.EXT_XLSX
+                , mapper.failList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+    }
+
+    @RequestMapping(value = "lawScoreUpload.{format:xlsx}")
+    public ResponseEntity lawScoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+        JasperReportBuilder report = dataService.getLawScoreUploadReport();
+        report.setDataSource(mapper.lawScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName("법학서류평가 성적업로드양식");
 
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }

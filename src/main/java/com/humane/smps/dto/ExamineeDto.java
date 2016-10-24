@@ -101,4 +101,5 @@ public class ExamineeDto {
     private Date printDttm;
 
     private BufferedImage univLogo;
+    private String year;
 }
