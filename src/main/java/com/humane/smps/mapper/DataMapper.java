@@ -45,4 +45,9 @@ public interface DataMapper {
     Page<ScoreUploadDto> scoreUpload(@Param("param") ScoreUploadDto param, @Param("pageable") Pageable pageable);
 
     List<Map<String, String>> sqlEdit(@Param("sql") String sql);
+
+    Page<ExamineeDto> failList(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
+
+    Page<ScoreUploadDto> lawScoreUpload(@Param("param") ScoreUploadDto param, @Param("pageable") Pageable pageable);
+
 }
