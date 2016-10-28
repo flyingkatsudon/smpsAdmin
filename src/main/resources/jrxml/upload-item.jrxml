@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-08-10T17:24:58 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="평가항목 양식" pageWidth="3760" pageHeight="60" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="3760" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Key" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
+<!-- 2016-10-28T15:23:29 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SMPS_평가항목양식" pageWidth="4500" pageHeight="60" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="4500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Key" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -20,16 +20,27 @@
 	<field name="typeNm" class="java.lang.String"/>
 	<field name="examCd" class="java.lang.String"/>
 	<field name="examNm" class="java.lang.String"/>
+	<field name="period" class="java.lang.String"/>
 	<field name="examDate" class="java.util.Date"/>
 	<field name="examTime" class="java.util.Date"/>
 	<field name="scorerCnt" class="java.lang.Long"/>
 	<field name="keypadType" class="java.lang.String"/>
+	<field name="virtNoType" class="java.lang.String"/>
+	<field name="isMgrAuto" class="java.lang.String"/>
+	<field name="examineeLen" class="java.lang.String"/>
+	<field name="virtNoDigits" class="java.lang.String"/>
 	<field name="isAbsence" class="java.lang.Boolean"/>
-	<field name="virtNoStart" class="java.lang.Long"/>
-	<field name="virtNoEnd" class="java.lang.Long"/>
-	<field name="virtNoHead" class="java.lang.String"/>
-	<field name="virtNoLen" class="java.lang.String"/>
-	<field name="virtNoAssignType" class="java.lang.String"/>
+	<field name="isClosedView" class="java.lang.Boolean"/>
+	<field name="isMove" class="java.lang.Boolean"/>
+	<field name="isHorizontal" class="java.lang.Boolean"/>
+	<field name="adjust" class="java.math.BigDecimal"/>
+	<field name="barcodeType" class="java.lang.String"/>
+	<field name="totScore" class="java.lang.String"/>
+	<field name="printTitle1" class="java.lang.String"/>
+	<field name="printTitle2" class="java.lang.String"/>
+	<field name="printContent1" class="java.lang.String"/>
+	<field name="printContent2" class="java.lang.String"/>
+	<field name="printSign" class="java.lang.String"/>
 	<field name="itemCnt" class="java.lang.Long"/>
 	<field name="itemCd1" class="java.lang.String"/>
 	<field name="itemNm1" class="java.lang.String"/>
@@ -62,25 +73,24 @@
 	<field name="itemNm10" class="java.lang.String"/>
 	<field name="deviCd10" class="java.lang.String"/>
 	<title>
-		<band height="30" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="3760" height="30" uuid="f1d8a4f9-15d4-4929-a7a7-d9e06f85b15d">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="4500" height="15" uuid="f1d8a4f9-15d4-4929-a7a7-d9e06f85b15d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					<font size="9" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[평가항목 양식]]></text>
+				<text><![CDATA[SMPS_평가항목양식]]></text>
 			</staticText>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="15">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
-				<reportElement x="0" y="0" width="80" height="15" uuid="aeaf36f2-b860-4ba6-a3c2-ef2b11da9319">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<reportElement x="0" y="0" width="111" height="15" uuid="aeaf36f2-b860-4ba6-a3c2-ef2b11da9319">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -89,12 +99,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[모집]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="0" width="80" height="15" uuid="f3745be4-53db-484f-b438-5bd722fdc35a">
+				<reportElement x="111" y="0" width="77" height="15" uuid="f3745be4-53db-484f-b438-5bd722fdc35a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -104,12 +114,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[전형코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="0" width="80" height="15" uuid="ed93cff2-c7d6-4499-a25d-8d2c931c9a6a">
+				<reportElement x="188" y="0" width="77" height="15" uuid="ed93cff2-c7d6-4499-a25d-8d2c931c9a6a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -119,25 +129,25 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[전형명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="0" width="80" height="15" uuid="767ea900-0b83-4a7e-8265-b4b43eb94192"/>
+				<reportElement x="265" y="0" width="77" height="15" uuid="767ea900-0b83-4a7e-8265-b4b43eb94192"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[계열]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="0" width="80" height="15" uuid="d603a4ef-a904-4aa1-bd40-1055a2742e9d"/>
+				<reportElement x="342" y="0" width="77" height="15" uuid="d603a4ef-a904-4aa1-bd40-1055a2742e9d"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -145,12 +155,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[시험코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="80" height="15" uuid="f82e9216-d623-4b47-8ffe-2398cfb6e11a"/>
+				<reportElement x="419" y="0" width="77" height="15" uuid="f82e9216-d623-4b47-8ffe-2398cfb6e11a"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -158,12 +168,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[시험명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="480" y="0" width="80" height="15" uuid="313de723-e194-4cf3-b4b4-74443c8eb00e"/>
+				<reportElement x="496" y="0" width="77" height="15" uuid="9949c954-08c8-4fc5-a97d-e7204ffdf8b6"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -171,12 +181,25 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[단계]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="573" y="0" width="77" height="15" uuid="313de723-e194-4cf3-b4b4-74443c8eb00e"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="560" y="0" width="80" height="15" uuid="8dc597c3-28e8-4901-8819-a7a955d06b2f"/>
+				<reportElement x="650" y="0" width="77" height="15" uuid="8dc597c3-28e8-4901-8819-a7a955d06b2f"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -184,12 +207,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="640" y="0" width="80" height="15" uuid="c4b88937-4997-4eaa-8d42-1275d8b60dfb"/>
+				<reportElement x="727" y="0" width="77" height="15" uuid="c4b88937-4997-4eaa-8d42-1275d8b60dfb"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -197,12 +220,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[평가위원수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="720" y="0" width="80" height="15" uuid="bc67fa63-8cea-40fe-965f-b1d776d0e520"/>
+				<reportElement x="804" y="0" width="77" height="15" uuid="bc67fa63-8cea-40fe-965f-b1d776d0e520"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -210,12 +233,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[키패드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="800" y="0" width="80" height="15" uuid="5a56ecdc-145f-4186-a8a4-88bc40d5b276"/>
+				<reportElement x="881" y="0" width="77" height="15" uuid="2b92dc09-5c89-4822-ac5b-b001a8708b75"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -223,12 +246,41 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[수험번호 자릿수]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="958" y="0" width="77" height="15" uuid="eb1efd11-c133-41b4-8262-5cb75a74d39f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[가번호 표시 자릿수]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1035" y="0" width="77" height="15" uuid="5a56ecdc-145f-4186-a8a4-88bc40d5b276"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[결시버튼 사용여부]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="880" y="0" width="80" height="15" uuid="5ea37615-fe1d-4d02-8ec2-182f8b5f2d3a"/>
+				<reportElement x="1112" y="0" width="77" height="15" uuid="204308c4-85d5-408e-88b9-b767ee1321d9"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -236,12 +288,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[가번호시작]]></text>
+				<text><![CDATA[마감데이터 사용여부]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="960" y="0" width="80" height="15" uuid="31ab2774-e151-41d2-90ab-0a580f9be1a5"/>
+				<reportElement x="1189" y="0" width="77" height="15" uuid="31a8a68e-261a-4341-b2c4-8f5fcfa2a6e7"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -249,12 +301,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[가번호종료]]></text>
+				<text><![CDATA[지정이동 사용여부]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1040" y="0" width="80" height="15" uuid="c1d7259d-ae84-4996-b469-a0dec90cecaf"/>
+				<reportElement x="1266" y="0" width="77" height="15" uuid="c277e064-0668-46ea-92ca-9a99fbece97d"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -262,12 +314,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[가번호헤더]]></text>
+				<text><![CDATA[가로채점방식]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1120" y="0" width="80" height="15" uuid="eb1efd11-c133-41b4-8262-5cb75a74d39f"/>
+				<reportElement x="1343" y="0" width="77" height="15" uuid="0d0b5b56-9764-4c37-9a41-c888102ee65f"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -275,12 +327,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[가번호 자릿수]]></text>
+				<text><![CDATA[조정점수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1200" y="0" width="80" height="15" uuid="5dc1ba69-a9f2-4d1f-9433-ae72afdfc522"/>
+				<reportElement x="1420" y="0" width="77" height="15" uuid="b5e9033f-db3f-4ae8-b5e3-934c9215f310"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -288,12 +340,116 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[바코드타입]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1497" y="0" width="77" height="15" uuid="5dc1ba69-a9f2-4d1f-9433-ae72afdfc522"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[가번호 할당 방식]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1280" y="0" width="80" height="15" uuid="a437d45b-463a-42e1-a1f6-53b5f392f915">
+				<reportElement x="1574" y="0" width="77" height="15" uuid="87151219-4ee1-40fe-b44c-8c7c6f9eb7ab"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[가번호 자동여부]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1651" y="0" width="77" height="15" uuid="e5fee5f0-a0ee-41b9-b47f-a41b0ea3a269"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[평가표제목1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1728" y="0" width="77" height="15" uuid="6be0dced-d4ea-4f5e-8687-578eb8e6f7fc"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[평가표제목2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1805" y="0" width="77" height="15" uuid="6808e58a-7f25-4dfa-a4a4-b7450b7b7ef0"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[평가표문구1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1882" y="0" width="77" height="15" uuid="0c0c0696-2c22-4024-8fe2-7d934439f952"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[평가표문구2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1959" y="0" width="77" height="15" uuid="01c000d2-eff4-4040-b2a7-38b85d8fdf25"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[평가표서명]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2036" y="0" width="77" height="15" uuid="4da605bd-e568-462b-bc0e-02145eada8c2"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[총점]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2113" y="0" width="77" height="15" uuid="a437d45b-463a-42e1-a1f6-53b5f392f915">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<box>
@@ -303,12 +459,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1360" y="0" width="80" height="15" uuid="9efd59f7-5031-4ac8-b0f1-56a6d10b4632"/>
+				<reportElement x="2190" y="0" width="77" height="15" uuid="9efd59f7-5031-4ac8-b0f1-56a6d10b4632"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -316,12 +472,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목1 코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1440" y="0" width="80" height="15" uuid="3853296d-4cbc-4e55-816e-5d52ed37387e">
+				<reportElement x="2267" y="0" width="77" height="15" uuid="3853296d-4cbc-4e55-816e-5d52ed37387e">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -333,12 +489,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목1 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1520" y="0" width="80" height="15" uuid="19d6e941-821d-4108-9f5f-3ea8792eaa4f">
+				<reportElement x="2344" y="0" width="77" height="15" uuid="19d6e941-821d-4108-9f5f-3ea8792eaa4f">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -350,12 +506,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목1 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1600" y="0" width="80" height="15" uuid="9e15f4c0-a5fd-4827-aa34-ee7e91a32524"/>
+				<reportElement x="2421" y="0" width="77" height="15" uuid="9e15f4c0-a5fd-4827-aa34-ee7e91a32524"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -363,12 +519,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목2 코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1680" y="0" width="80" height="15" uuid="e39e9cf6-dc2a-431e-9702-47304279de88"/>
+				<reportElement x="2498" y="0" width="77" height="15" uuid="e39e9cf6-dc2a-431e-9702-47304279de88"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -376,12 +532,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목2 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1760" y="0" width="80" height="15" uuid="40d66c6d-bddf-4563-9594-9357b7bd9113"/>
+				<reportElement x="2575" y="0" width="77" height="15" uuid="40d66c6d-bddf-4563-9594-9357b7bd9113"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -389,12 +545,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목2 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1840" y="0" width="80" height="15" uuid="342385e8-6d8f-46e1-b95e-3f582f63f4c9"/>
+				<reportElement x="2652" y="0" width="77" height="15" uuid="342385e8-6d8f-46e1-b95e-3f582f63f4c9"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -402,12 +558,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목3 코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1920" y="0" width="80" height="15" uuid="9ee12973-5adb-4d2a-9637-a36a53973487"/>
+				<reportElement x="2729" y="0" width="77" height="15" uuid="9ee12973-5adb-4d2a-9637-a36a53973487"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -415,12 +571,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목3 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2000" y="0" width="80" height="15" uuid="ba5ffd53-0834-4abf-9bb7-6bde35f23bd8"/>
+				<reportElement x="2806" y="0" width="77" height="15" uuid="ba5ffd53-0834-4abf-9bb7-6bde35f23bd8"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -428,12 +584,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목3 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2080" y="0" width="80" height="15" uuid="dee4942b-f582-46e2-a25e-d3439d004060"/>
+				<reportElement x="2883" y="0" width="77" height="15" uuid="dee4942b-f582-46e2-a25e-d3439d004060"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -441,12 +597,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목4 코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2160" y="0" width="80" height="15" uuid="ee6678e5-f9b8-49ea-a9d3-d2aec36348b1"/>
+				<reportElement x="2960" y="0" width="77" height="15" uuid="ee6678e5-f9b8-49ea-a9d3-d2aec36348b1"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -454,12 +610,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목4 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2240" y="0" width="80" height="15" uuid="48fd12ea-6dd0-4011-b2eb-53f15d44a9fb"/>
+				<reportElement x="3037" y="0" width="77" height="15" uuid="48fd12ea-6dd0-4011-b2eb-53f15d44a9fb"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -467,12 +623,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목4 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2320" y="0" width="80" height="15" uuid="6c261e8e-7390-44c8-a216-0ccec759d9b5"/>
+				<reportElement x="3114" y="0" width="77" height="15" uuid="6c261e8e-7390-44c8-a216-0ccec759d9b5"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -480,12 +636,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목5 코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2400" y="0" width="80" height="15" uuid="73f330d9-930e-451d-8b0a-afdd4d0743e9"/>
+				<reportElement x="3191" y="0" width="77" height="15" uuid="73f330d9-930e-451d-8b0a-afdd4d0743e9"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -493,12 +649,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목5 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2480" y="0" width="80" height="15" uuid="171c2930-2a1a-458e-9e02-9643a92e0fa8"/>
+				<reportElement x="3268" y="0" width="77" height="15" uuid="171c2930-2a1a-458e-9e02-9643a92e0fa8"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -506,12 +662,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목5 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2560" y="0" width="80" height="15" uuid="756fb73f-52a9-4d9a-a301-2205eb5b8848"/>
+				<reportElement x="3345" y="0" width="77" height="15" uuid="756fb73f-52a9-4d9a-a301-2205eb5b8848"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -519,12 +675,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목6 코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2640" y="0" width="80" height="15" uuid="c4fad9ca-f3fd-4e55-ac8e-97b7a50eefd1"/>
+				<reportElement x="3422" y="0" width="77" height="15" uuid="c4fad9ca-f3fd-4e55-ac8e-97b7a50eefd1"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -532,12 +688,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목6 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2720" y="0" width="80" height="15" uuid="14ee4d15-85d1-4718-ad92-565ac4fe0d7f"/>
+				<reportElement x="3499" y="0" width="77" height="15" uuid="14ee4d15-85d1-4718-ad92-565ac4fe0d7f"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -545,12 +701,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목6 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2800" y="0" width="80" height="15" uuid="3df4dea4-bf0a-40d8-ae76-c01218988dee"/>
+				<reportElement x="3576" y="0" width="77" height="15" uuid="3df4dea4-bf0a-40d8-ae76-c01218988dee"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -558,12 +714,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목6 코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2880" y="0" width="80" height="15" uuid="28f3fb13-4e80-401c-811a-ca3e1ec6a4da"/>
+				<reportElement x="3653" y="0" width="77" height="15" uuid="28f3fb13-4e80-401c-811a-ca3e1ec6a4da"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -571,12 +727,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목7 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2960" y="0" width="80" height="15" uuid="570e24be-2fc7-45bc-a8e1-59d2af77b49f"/>
+				<reportElement x="3730" y="0" width="77" height="15" uuid="570e24be-2fc7-45bc-a8e1-59d2af77b49f"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -584,12 +740,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목7 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3040" y="0" width="80" height="15" uuid="d64f11d4-badc-4b49-962c-44930fb6d1e3"/>
+				<reportElement x="3807" y="0" width="77" height="15" uuid="d64f11d4-badc-4b49-962c-44930fb6d1e3"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -597,12 +753,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목8]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3120" y="0" width="80" height="15" uuid="6004589e-5eda-49f6-ba98-55abf58cf874"/>
+				<reportElement x="3884" y="0" width="77" height="15" uuid="6004589e-5eda-49f6-ba98-55abf58cf874"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -610,12 +766,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목8 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3200" y="0" width="80" height="15" uuid="0ebce292-a591-4722-b54c-b6ea9752bd2d"/>
+				<reportElement x="3961" y="0" width="77" height="15" uuid="0ebce292-a591-4722-b54c-b6ea9752bd2d"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -623,12 +779,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목8 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3280" y="0" width="80" height="15" uuid="92decbfa-da1e-4328-8345-ac4619e57f0f"/>
+				<reportElement x="4038" y="0" width="77" height="15" uuid="92decbfa-da1e-4328-8345-ac4619e57f0f"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -636,12 +792,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목9]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3360" y="0" width="80" height="15" uuid="1bb4a886-5180-4225-8a7f-0b4b9a507f2d"/>
+				<reportElement x="4115" y="0" width="77" height="15" uuid="1bb4a886-5180-4225-8a7f-0b4b9a507f2d"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -649,12 +805,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목9 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3440" y="0" width="80" height="15" uuid="5d9bfd17-87d8-4bba-ae69-0e3fcc236cbd"/>
+				<reportElement x="4192" y="0" width="77" height="15" uuid="5d9bfd17-87d8-4bba-ae69-0e3fcc236cbd"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -662,12 +818,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목9 편차코드]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3520" y="0" width="80" height="15" uuid="bcedac9d-18ba-4699-8346-febda382b4b8"/>
+				<reportElement x="4269" y="0" width="77" height="15" uuid="bcedac9d-18ba-4699-8346-febda382b4b8"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -675,12 +831,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목10]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3600" y="0" width="80" height="15" uuid="d76d8d7b-f8d5-48cc-9bc0-09fbf472039b"/>
+				<reportElement x="4346" y="0" width="77" height="15" uuid="d76d8d7b-f8d5-48cc-9bc0-09fbf472039b"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -688,12 +844,12 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목10 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3680" y="0" width="80" height="15" uuid="b8e08f84-1aeb-4898-b14a-a6a3eaa145c4"/>
+				<reportElement x="4423" y="0" width="77" height="15" uuid="b8e08f84-1aeb-4898-b14a-a6a3eaa145c4"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -701,7 +857,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[항목10 편차코드]]></text>
 			</staticText>
@@ -712,12 +868,14 @@
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="80" height="15" uuid="c21d0eae-80df-45b3-9550-14044f0cb6ec"/>
+				<reportElement x="0" y="0" width="111" height="15" uuid="c21d0eae-80df-45b3-9550-14044f0cb6ec">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -725,7 +883,7 @@
 				<textFieldExpression><![CDATA[$F{recruitNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="80" y="0" width="80" height="15" uuid="1c85795a-24de-409b-807a-22f2a41b7c1d">
+				<reportElement x="111" y="0" width="77" height="15" uuid="1c85795a-24de-409b-807a-22f2a41b7c1d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -740,7 +898,7 @@
 				<textFieldExpression><![CDATA[$F{admissionCd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="160" y="0" width="80" height="15" uuid="bfbb00dd-8537-4768-bc93-703a74ee7ed0">
+				<reportElement x="188" y="0" width="77" height="15" uuid="bfbb00dd-8537-4768-bc93-703a74ee7ed0">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -755,12 +913,12 @@
 				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="240" y="0" width="80" height="15" uuid="8b8ed4aa-9a11-4147-b902-458619c59448"/>
+				<reportElement x="265" y="0" width="77" height="15" uuid="8b8ed4aa-9a11-4147-b902-458619c59448"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -768,7 +926,7 @@
 				<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="320" y="0" width="80" height="15" uuid="c7671ee4-d757-4cc8-a4d2-20a0b6fafe9b"/>
+				<reportElement x="342" y="0" width="77" height="15" uuid="c7671ee4-d757-4cc8-a4d2-20a0b6fafe9b"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -781,7 +939,7 @@
 				<textFieldExpression><![CDATA[$F{examCd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="0" width="80" height="15" uuid="a5291baf-1c4e-42dd-b3ba-9475828b5a75"/>
+				<reportElement x="419" y="0" width="77" height="15" uuid="a5291baf-1c4e-42dd-b3ba-9475828b5a75"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -793,8 +951,21 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{examNm}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="496" y="0" width="77" height="15" uuid="dc055460-8f39-4ab1-b8ad-b8c046e02216"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{period}]]></textFieldExpression>
+			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="480" y="0" width="80" height="15" uuid="534f984e-aca5-4b7b-9801-186c1b600fee"/>
+				<reportElement x="573" y="0" width="77" height="15" uuid="534f984e-aca5-4b7b-9801-186c1b600fee"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -807,7 +978,7 @@
 				<textFieldExpression><![CDATA[$F{examDate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm" isBlankWhenNull="true">
-				<reportElement x="560" y="0" width="80" height="15" uuid="adb0bcd6-5f00-43a1-8818-9f57066b2151"/>
+				<reportElement x="650" y="0" width="77" height="15" uuid="adb0bcd6-5f00-43a1-8818-9f57066b2151"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -820,7 +991,7 @@
 				<textFieldExpression><![CDATA[$F{examTime}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="640" y="0" width="80" height="15" uuid="f348426d-0d21-4dab-9b2b-d85a6e3d920c"/>
+				<reportElement x="727" y="0" width="77" height="15" uuid="f348426d-0d21-4dab-9b2b-d85a6e3d920c"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -833,7 +1004,7 @@
 				<textFieldExpression><![CDATA[$F{scorerCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="720" y="0" width="80" height="15" uuid="9ea99835-562d-488d-8870-c9d98c474f5e"/>
+				<reportElement x="804" y="0" width="77" height="15" uuid="9ea99835-562d-488d-8870-c9d98c474f5e"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -846,7 +1017,35 @@
 				<textFieldExpression><![CDATA[$F{keypadType}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="800" y="0" width="80" height="15" uuid="1efd804c-d1c6-42ed-acf5-061e21edf7ff"/>
+				<reportElement x="881" y="0" width="77" height="15" uuid="9df71a2b-55bf-48cf-8da2-a038a17853fd"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examineeLen}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="958" y="0" width="77" height="15" uuid="b7b878f4-5ed2-4121-88e8-f0b14e7b2545"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{virtNoDigits}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1035" y="0" width="77" height="15" uuid="1efd804c-d1c6-42ed-acf5-061e21edf7ff">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -859,7 +1058,7 @@
 				<textFieldExpression><![CDATA[$F{isAbsence}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="880" y="0" width="80" height="15" uuid="9100497d-6b77-4fe4-81b4-62c712096287"/>
+				<reportElement x="1112" y="0" width="77" height="15" uuid="0e1d3fc8-e309-4bb6-971f-9e98d492599d"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -869,10 +1068,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{virtNoStart}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{isClosedView}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="960" y="0" width="80" height="15" uuid="a17a08ec-0b31-4390-8a6e-1909119a8d5b"/>
+				<reportElement x="1189" y="0" width="77" height="15" uuid="6d91fae2-5ada-4b75-82b6-cc8e42716526"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -882,10 +1081,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{virtNoEnd}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{isMove}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1040" y="0" width="80" height="15" uuid="c8ea5950-b7d0-4049-8344-bd7da2b2f50b"/>
+				<reportElement x="1266" y="0" width="77" height="15" uuid="b39dceca-9560-43a3-8410-d44d3b54900e"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -895,36 +1094,140 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{virtNoHead}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{isHorizontal}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1120" y="0" width="80" height="15" uuid="b7b878f4-5ed2-4121-88e8-f0b14e7b2545"/>
+				<reportElement x="1343" y="0" width="77" height="15" uuid="67b9c1df-db2e-473d-9dda-123a4aa2167a"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{virtNoLen}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{adjust}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1200" y="0" width="80" height="15" uuid="bb148c73-8358-4c38-bb6d-c0dec1229082"/>
+				<reportElement x="1420" y="0" width="77" height="15" uuid="869dd86b-0dbf-4efb-b316-f9c226b28a9d"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{virtNoAssignType}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{barcodeType}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1280" y="0" width="80" height="15" uuid="677db4ee-1f44-4f72-a08c-1de21c2837bc"/>
+				<reportElement x="1497" y="0" width="77" height="15" uuid="bb148c73-8358-4c38-bb6d-c0dec1229082"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{virtNoType}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1574" y="0" width="77" height="15" uuid="dca817a5-142c-40f4-99f9-0008cce8ebca"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{isMgrAuto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1651" y="0" width="77" height="15" uuid="6e879f3b-f0f8-4435-a74f-23e2366e7855"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{printTitle1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1728" y="0" width="77" height="15" uuid="fb28a5f2-b995-4028-9661-8a80d9cf91ae"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{printTitle2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1805" y="0" width="77" height="15" uuid="1f3f5e86-3a3d-45d9-b569-d2d59217f9ae"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{printContent1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1882" y="0" width="77" height="15" uuid="4d9e06cd-ab68-4bb3-947d-6c6f5d9fff7c"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{printContent2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1959" y="0" width="77" height="15" uuid="13428b9e-c51f-48f8-baeb-ce012f0941e0"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{printSign}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2036" y="0" width="77" height="15" uuid="b42f19f5-2335-45da-bb9a-cfb94a8ecef7"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totScore}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2113" y="0" width="77" height="15" uuid="677db4ee-1f44-4f72-a08c-1de21c2837bc"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -937,7 +1240,7 @@
 				<textFieldExpression><![CDATA[$F{itemCnt}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1360" y="0" width="80" height="15" uuid="3d946d56-089f-4128-990b-435d4f50361f">
+				<reportElement x="2190" y="0" width="77" height="15" uuid="3d946d56-089f-4128-990b-435d4f50361f">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<box>
@@ -952,7 +1255,7 @@
 				<textFieldExpression><![CDATA[$F{itemCd1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1440" y="0" width="80" height="15" uuid="1524c60b-0c6e-4183-843c-634078d09b35"/>
+				<reportElement x="2267" y="0" width="77" height="15" uuid="1524c60b-0c6e-4183-843c-634078d09b35"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -965,7 +1268,7 @@
 				<textFieldExpression><![CDATA[$F{itemNm1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1520" y="0" width="80" height="15" uuid="112d9a92-a4ad-4c8d-a80c-bb3904391046"/>
+				<reportElement x="2344" y="0" width="77" height="15" uuid="112d9a92-a4ad-4c8d-a80c-bb3904391046"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -978,7 +1281,7 @@
 				<textFieldExpression><![CDATA[$F{deviCd1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1600" y="0" width="80" height="15" uuid="9ed75491-8e78-4582-a4dc-dc49cff82378"/>
+				<reportElement x="2421" y="0" width="77" height="15" uuid="9ed75491-8e78-4582-a4dc-dc49cff82378"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -991,7 +1294,7 @@
 				<textFieldExpression><![CDATA[$F{itemCd2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1680" y="0" width="80" height="15" uuid="6f6e5bab-bfb1-4858-a3e7-8ba117db5834"/>
+				<reportElement x="2498" y="0" width="77" height="15" uuid="6f6e5bab-bfb1-4858-a3e7-8ba117db5834"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -1004,7 +1307,7 @@
 				<textFieldExpression><![CDATA[$F{itemNm2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1760" y="0" width="80" height="15" uuid="bd0b0b7d-1984-4671-b6ef-fe0be43ef9bb"/>
+				<reportElement x="2575" y="0" width="77" height="15" uuid="bd0b0b7d-1984-4671-b6ef-fe0be43ef9bb"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -1017,7 +1320,7 @@
 				<textFieldExpression><![CDATA[$F{deviCd2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1840" y="0" width="80" height="15" uuid="804b3dc2-c613-43db-ae9a-2e070e8b14a5"/>
+				<reportElement x="2652" y="0" width="77" height="15" uuid="804b3dc2-c613-43db-ae9a-2e070e8b14a5"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -1030,7 +1333,7 @@
 				<textFieldExpression><![CDATA[$F{itemCd3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1920" y="0" width="80" height="15" uuid="b9704738-1f1e-46db-872e-349928ba1623"/>
+				<reportElement x="2729" y="0" width="77" height="15" uuid="b9704738-1f1e-46db-872e-349928ba1623"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -1043,7 +1346,7 @@
 				<textFieldExpression><![CDATA[$F{itemNm3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2000" y="0" width="80" height="15" uuid="9ddeaf01-f260-4ec0-bd45-44f67751d3bd"/>
+				<reportElement x="2806" y="0" width="77" height="15" uuid="9ddeaf01-f260-4ec0-bd45-44f67751d3bd"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -1056,12 +1359,12 @@
 				<textFieldExpression><![CDATA[$F{deviCd3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2080" y="0" width="80" height="15" uuid="2a5bd037-477a-4f12-ab1b-e3f7c8cbeb8b"/>
+				<reportElement x="2883" y="0" width="77" height="15" uuid="2a5bd037-477a-4f12-ab1b-e3f7c8cbeb8b"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1069,12 +1372,12 @@
 				<textFieldExpression><![CDATA[$F{itemCd4}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2160" y="0" width="80" height="15" uuid="738d874d-b189-4b42-8404-18f096fe8775"/>
+				<reportElement x="2960" y="0" width="77" height="15" uuid="738d874d-b189-4b42-8404-18f096fe8775"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1082,12 +1385,12 @@
 				<textFieldExpression><![CDATA[$F{itemNm4}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2240" y="0" width="80" height="15" uuid="69081944-6a5d-4f6b-b13a-adb531612b98"/>
+				<reportElement x="3037" y="0" width="77" height="15" uuid="69081944-6a5d-4f6b-b13a-adb531612b98"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1095,12 +1398,12 @@
 				<textFieldExpression><![CDATA[$F{deviCd4}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2320" y="0" width="80" height="15" uuid="b7fd3a2b-c208-4656-99f2-200ab39c19b6"/>
+				<reportElement x="3114" y="0" width="77" height="15" uuid="b7fd3a2b-c208-4656-99f2-200ab39c19b6"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1108,12 +1411,12 @@
 				<textFieldExpression><![CDATA[$F{itemCd5}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2400" y="0" width="80" height="15" uuid="d47ad53a-54f6-40d6-a425-bf180ae73c3e"/>
+				<reportElement x="3191" y="0" width="77" height="15" uuid="d47ad53a-54f6-40d6-a425-bf180ae73c3e"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1121,12 +1424,12 @@
 				<textFieldExpression><![CDATA[$F{itemNm5}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2480" y="0" width="80" height="15" uuid="b87bef44-4e6c-4726-ba87-b3cf057c5a71"/>
+				<reportElement x="3268" y="0" width="77" height="15" uuid="b87bef44-4e6c-4726-ba87-b3cf057c5a71"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1134,12 +1437,12 @@
 				<textFieldExpression><![CDATA[$F{deviCd5}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2560" y="0" width="80" height="15" uuid="c86d4ecf-6492-4b81-9f07-9af39bbbfa11"/>
+				<reportElement x="3345" y="0" width="77" height="15" uuid="c86d4ecf-6492-4b81-9f07-9af39bbbfa11"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1147,12 +1450,12 @@
 				<textFieldExpression><![CDATA[$F{itemCd6}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2640" y="0" width="80" height="15" uuid="8697913f-bec6-41e3-b436-09e4b2901bcb"/>
+				<reportElement x="3422" y="0" width="77" height="15" uuid="8697913f-bec6-41e3-b436-09e4b2901bcb"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1160,12 +1463,12 @@
 				<textFieldExpression><![CDATA[$F{itemNm6}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2720" y="0" width="80" height="15" uuid="fd449558-16bb-45ba-b593-035e01d80cfe"/>
+				<reportElement x="3499" y="0" width="77" height="15" uuid="fd449558-16bb-45ba-b593-035e01d80cfe"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1173,12 +1476,12 @@
 				<textFieldExpression><![CDATA[$F{deviCd6}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2800" y="0" width="80" height="15" uuid="cb5ec086-01a0-4030-b8f7-6c1711827b1b"/>
+				<reportElement x="3576" y="0" width="77" height="15" uuid="cb5ec086-01a0-4030-b8f7-6c1711827b1b"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1186,12 +1489,12 @@
 				<textFieldExpression><![CDATA[$F{itemCd7}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2880" y="0" width="80" height="15" uuid="9a4f6e46-3be3-41f8-9a0a-4e48d41c50f4"/>
+				<reportElement x="3653" y="0" width="77" height="15" uuid="9a4f6e46-3be3-41f8-9a0a-4e48d41c50f4"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1199,12 +1502,12 @@
 				<textFieldExpression><![CDATA[$F{itemNm7}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="2960" y="0" width="80" height="15" uuid="36d00066-b06c-4195-91ff-4093f554d3d8"/>
+				<reportElement x="3730" y="0" width="77" height="15" uuid="36d00066-b06c-4195-91ff-4093f554d3d8"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1212,12 +1515,12 @@
 				<textFieldExpression><![CDATA[$F{deviCd7}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3040" y="0" width="80" height="15" uuid="a6b1035e-f959-4fc1-b9a4-6a4a56333238"/>
+				<reportElement x="3807" y="0" width="77" height="15" uuid="a6b1035e-f959-4fc1-b9a4-6a4a56333238"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1225,12 +1528,12 @@
 				<textFieldExpression><![CDATA[$F{itemCd8}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3120" y="0" width="80" height="15" uuid="62154136-3051-46af-9ef4-3635c2e28849"/>
+				<reportElement x="3884" y="0" width="77" height="15" uuid="62154136-3051-46af-9ef4-3635c2e28849"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1238,12 +1541,12 @@
 				<textFieldExpression><![CDATA[$F{itemNm8}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3200" y="0" width="80" height="15" uuid="f33eab09-f8e6-475c-a46e-67cc5ccd8a3c"/>
+				<reportElement x="3961" y="0" width="77" height="15" uuid="f33eab09-f8e6-475c-a46e-67cc5ccd8a3c"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1251,12 +1554,12 @@
 				<textFieldExpression><![CDATA[$F{deviNm8}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3280" y="0" width="80" height="15" uuid="1c4a61c7-fc12-4d29-8c0a-9106e056dd66"/>
+				<reportElement x="4038" y="0" width="77" height="15" uuid="1c4a61c7-fc12-4d29-8c0a-9106e056dd66"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1264,12 +1567,12 @@
 				<textFieldExpression><![CDATA[$F{itemCd9}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3360" y="0" width="80" height="15" uuid="07d21a0f-9649-45df-9e11-b45c1cc5a1bd"/>
+				<reportElement x="4115" y="0" width="77" height="15" uuid="07d21a0f-9649-45df-9e11-b45c1cc5a1bd"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1277,12 +1580,12 @@
 				<textFieldExpression><![CDATA[$F{itemNm9}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3440" y="0" width="80" height="15" uuid="1a0f562c-7cbc-475b-8c66-61e42e3376a6"/>
+				<reportElement x="4192" y="0" width="77" height="15" uuid="1a0f562c-7cbc-475b-8c66-61e42e3376a6"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1290,12 +1593,12 @@
 				<textFieldExpression><![CDATA[$F{deviCd9}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3520" y="0" width="80" height="15" uuid="d9e1cfcd-a520-480c-aa0b-08ac148850f0"/>
+				<reportElement x="4269" y="0" width="77" height="15" uuid="d9e1cfcd-a520-480c-aa0b-08ac148850f0"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1303,12 +1606,12 @@
 				<textFieldExpression><![CDATA[$F{itemCd10}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3600" y="0" width="80" height="15" uuid="2202951d-674a-43e1-9424-080f13029877"/>
+				<reportElement x="4346" y="0" width="77" height="15" uuid="2202951d-674a-43e1-9424-080f13029877"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -1316,12 +1619,12 @@
 				<textFieldExpression><![CDATA[$F{itemNm10}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="3680" y="0" width="80" height="15" uuid="9b848866-598b-4795-9193-d49efac0c3a5"/>
+				<reportElement x="4423" y="0" width="77" height="15" uuid="9b848866-598b-4795-9193-d49efac0c3a5"/>
 				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>

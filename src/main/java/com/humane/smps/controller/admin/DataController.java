@@ -175,11 +175,22 @@ public class DataController {
 
     @RequestMapping(value = "lawScoreUpload.{format:xlsx}")
     public ResponseEntity lawScoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
-        JasperReportBuilder report = dataService.getLawScoreUploadReport();
+        JasperReportBuilder report = dataService.getScoreUploadReport();
         report.setDataSource(mapper.lawScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
         jasperPrint.setName("법학서류평가 성적업로드양식");
+
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+    }
+
+    @RequestMapping(value = "medScoreUpload.{format:xlsx}")
+    public ResponseEntity medScoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+        JasperReportBuilder report = dataService.getScoreUploadReport();
+        report.setDataSource(mapper.medScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName("의대서류평가 성적업로드양식");
 
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }

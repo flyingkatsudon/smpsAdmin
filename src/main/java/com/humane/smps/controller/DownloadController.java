@@ -128,9 +128,13 @@ public class DownloadController {
         zipFile.addFile(fileFailList);
         fileFailList.delete();
 
-        File fileLawScorerUploadReport = JasperReportsExportHelper.toXlsxFile("법학서류평가_성적업로드양식", dataService.getLawScoreUploadReport(), dataMapper.lawScoreUpload(new ScoreUploadDto(), pageable).getContent());
+        File fileLawScorerUploadReport = JasperReportsExportHelper.toXlsxFile("법학서류평가_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.lawScoreUpload(new ScoreUploadDto(), pageable).getContent());
         zipFile.addFile(fileLawScorerUploadReport);
         fileLawScorerUploadReport.delete();
+
+        File fileMedScorerUploadReport = JasperReportsExportHelper.toXlsxFile("의대서류평가_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.medScoreUpload(new ScoreUploadDto(), pageable).getContent());
+        zipFile.addFile(fileMedScorerUploadReport);
+        fileMedScorerUploadReport.delete();
 /*
         File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileDrawReport);

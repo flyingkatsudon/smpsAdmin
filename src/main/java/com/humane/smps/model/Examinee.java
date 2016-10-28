@@ -27,4 +27,5 @@ public class Examinee {
     private String neisCd;
     private String neisNm;
     private String exmAdmNm; // 학생부전형
+    private String gender;
 }

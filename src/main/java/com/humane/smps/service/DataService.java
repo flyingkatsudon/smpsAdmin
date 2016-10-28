@@ -258,7 +258,7 @@ public class DataService {
         for (int i = 1; i <= itemCnt; i++)
             report.addColumn(col.column("항목" + i, "score" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
 
-        report.addColumn(col.column("총점", "totalScore", type.bigDecimalType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7).setPattern("#0.0"));
+        report.addColumn(col.column("총점", "totalScore", type.bigDecimalType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         /*report.addColumn(col.column("메모", "memo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         report.addColumn(col.column("사진", "isPhoto", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));*/
         /*report.addColumn(col.column("채점시간", "scoreDttm", type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));*/
@@ -271,23 +271,7 @@ public class DataService {
                 .columns(
                         col.column("입학년도", "year", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("결시여부", "isAbsent", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("평가위원", "scorerCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("항목코드", "itemNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("평가값", "score", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
-                )
-                .setPageMargin(DynamicReports.margin(0))
-                .setIgnorePageWidth(true)
-                .setIgnorePagination(true);
-        return report;
-    }
-
-    public JasperReportBuilder getLawScoreUploadReport(){
-        JasperReportBuilder report = report()
-                .columns(
-                        col.column("입학년도", "year", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("결시여부", "isAbsent", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("결시여부", "isAttend", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("평가위원", "scorerCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("항목코드", "itemNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("평가값", "score", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)

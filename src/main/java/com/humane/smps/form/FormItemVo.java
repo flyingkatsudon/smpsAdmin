@@ -34,9 +34,12 @@ public class FormItemVo {
     @Column(name = "가번호 할당 방식") private String virtNoType;
     @Column(name = "총점") private String totScore;
     @Column(name = "답안지 자릿수") private String paperLen;
-    /*@Column(name = "가번호 자동여부") private String isMgrAuto;*/
+    @Column(name = "가번호 자동여부") private Boolean isMgrAuto;
     @Column(name = "가번호 표시 자릿수") private String virtNoDigits;
     @Column(name = "수험번호 자릿수") private String examineeLen;
+
+    @Column(name = "바코드타입") private String barcodeType;
+    @Column(name = "조정점수") private String adjust;
 
     @Column(name = "평가표제목1") private String printTitle1;
     @Column(name = "평가표제목2") private String printTitle2;
