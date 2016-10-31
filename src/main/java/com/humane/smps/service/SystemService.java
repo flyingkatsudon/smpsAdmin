@@ -147,10 +147,9 @@ public class SystemService {
     public void saveExamMap(ApiService apiService, DownloadWrapper wrapper) {
         for (DownloadWrapper.ExamHallWrapper examHallWrapper : wrapper.getList()) {
             String newExamCd = examHallWrapper.getExamCd();
-            String newHallCd = examHallWrapper.getHallCd();
 
             Observable.range(0, Integer.MAX_VALUE)
-                    .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).add("hall.hallCd", newHallCd).getMap(), page, Integer.MAX_VALUE))
+                    .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).getMap(), page, Integer.MAX_VALUE))
                     .takeUntil(page -> page.last)
                     .flatMap(page -> {
                         for (ExamMap examMap : page.content) {

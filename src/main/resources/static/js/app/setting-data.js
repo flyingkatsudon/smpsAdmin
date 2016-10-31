@@ -109,8 +109,7 @@ define(function (require) {
                             for (var i = 0; i < rows.length; i++) {
                                 var rowdata = $grid.jqGrid('getRowData', rows[i]);
                                 param.list.push({
-                                    examCd: rowdata['exam.examCd'],
-                                    hallCd: rowdata['hall.hallCd']
+                                    examCd: rowdata['examCd']
                                 });
                             }
 

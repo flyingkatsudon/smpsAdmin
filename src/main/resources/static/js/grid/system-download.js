@@ -6,15 +6,15 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
-                {name: 'exam.admission.admissionNm', label: '전형'},
-                {name: 'exam.examCd', label: '시험코드', hidden:true},
-                {name: 'exam.examNm', label: '시험명'},
-                {name: 'exam.examDate', label: '시험일자'},
-                {name: 'exam.examTime', label: '시험시간'},
+                {name: 'admission.admissionNm', label: '전형'},
+                {name: 'examCd', label: '시험코드', hidden:true},
+                {name: 'examNm', label: '시험명'},
+                {name: 'examDate', label: '시험일자'},
+                {name: 'examTime', label: '시험시간'}/*,
                 {name: 'hall.hallCd', label: '고사실코드', hidden:true},
                 {name: 'hall.headNm', label: '고사본부'},
                 {name: 'hall.bldgNm', label: '고사건물'},
-                {name: 'hall.hallNm', label: '고사실'}
+                {name: 'hall.hallNm', label: '고사실'}*/
             ];
 
             for (var i = 0; i < colModel.length; i++) {

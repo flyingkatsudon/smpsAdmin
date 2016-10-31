@@ -46,11 +46,9 @@ public class SystemController {
             return ResponseEntity.ok(new Page());
         }
 
-        System.out.println(url);
-        log.debug("{}", url);
         ApiService apiService = ServiceBuilder.INSTANCE.createService(url, ApiService.class);
         try {
-            return ResponseEntity.ok(apiService.examHall(new HashMap<>(), page, size, sort).toBlocking().first());
+            return ResponseEntity.ok(apiService.exam(new HashMap<>(), page, size, sort).toBlocking().first());
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
@@ -65,7 +63,7 @@ public class SystemController {
             return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("url이 올바르지 않습니다.");
 
         for (DownloadWrapper.ExamHallWrapper examHall : wrapper.getList()) {
-            if (StringUtils.isEmpty(examHall.getExamCd()) || StringUtils.isEmpty(examHall.getHallCd()))
+            if (StringUtils.isEmpty(examHall.getExamCd()))
                 return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("시험코드 및 고사실이 올바르지 않습니다.");
         }
 
