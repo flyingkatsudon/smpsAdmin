@@ -5,49 +5,42 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="panel panel-heading"><label>응시율 통계</label></h4>
+                    <h4 class="panel panel-heading"><label>공통 산출물</label></h4>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="status/dept.xlsx" method="get">
-                        <span>모집단위별</span>
+                        <span>모집단위별 응시율</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="status/major.xlsx" method="get">
-                        <span>전공별</span>
+                        <span>전공별 응시율</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="status/hall.xlsx" method="get">
-                        <span>고사실별</span>
+                        <span>고사실별 응시율</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="status/group.xlsx" method="get">
-                        <span>조별</span>
+                        <span>조별 응시율</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h4 class="panel panel-heading"><label>평가 관리</label></h4>
                 </div>
             </div>
             <!--<div class="panel panel-default">
@@ -58,7 +51,7 @@
                     </form>
                 </div>
             </div>-->
-            <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="data/virtNo.xlsx" method="get">
                         <span>가번호 배정 현황</span>
@@ -66,7 +59,7 @@
                     </form>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="data/scorerH.xlsx" method="get">
                         <span>채점자별 상세(가로)</span>
@@ -74,7 +67,7 @@
                     </form>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="data/scorer.xlsx" method="get">
                         <span>채점자별 상세(세로)</span>
@@ -90,19 +83,13 @@
                     </form>
                 </div>
             </div>-->
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form action="data/failList.xlsx" method="get">
-                        <span>법학서류평가 F처리자</span>
-                        <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
-                    </form>
-                </div>
-            </div>
         </div>
-        <div class="col-lg-4">
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="panel panel-heading"><label>기타 자료</label></h4>
+                    <h4 class="panel panel-heading"><label>개별 산출물</label></h4>
                 </div>
             </div>
             <!--<div class="panel panel-default">
@@ -121,15 +108,15 @@
                     </form>
                 </div>
             </div>-->
-           <!-- <div class="panel panel-default">
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="data/scoreUpload.xlsx" method="get">
                         <span>글로벌인재 성적업로드양식</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
-            </div>-->
-            <div class="panel panel-default">
+            </div>
+            <div class="panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="data/lawScoreUpload.xlsx" method="get">
                         <span>법학서류평가 성적업로드양식</span>
@@ -137,29 +124,31 @@
                     </form>
                 </div>
             </div>
-             <div class="panel panel-default">
-                 <div class="panel-body">
-                     <form action="data/medScoreUpload.xlsx" method="get">
-                         <span>의대서류평가 성적업로드양식</span>
-                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
-                     </form>
-                 </div>
-             </div>
+            <div class="panel panel-default col-sm-3">
+                <div class="panel-body">
+                    <form action="data/failList.xlsx" method="get">
+                        <span>법학서류평가 F처리자</span>
+                        <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default col-sm-3">
+                <div class="panel-body">
+                    <form action="data/medScoreUpload.xlsx" method="get">
+                        <span>의대서류평가 성적업로드양식</span>
+                        <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
         <div class="col-lg-12">
-            <h3 class="page-header">전체 다운로드</h3>
+            <h4 class="page-header"><label>공통 다운로드</label></h4>
         </div>
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <label>전체 데이터 다운로드</label>
-                </div>
                 <div class="panel-body">
                     <form action="download/allData.zip" method="get">
-                        <span>전체 데이터를 다운로드 합니다.</span>
+                        <span>공통 산출물을 다운로드 합니다.</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>

@@ -10,10 +10,8 @@ define(function (require) {
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
                 {name: 'examCd', label: '시험코드', hidden:true},
-                {name: 'examNm', label: '시험명'},
                 {name: 'examDate', label: '시험일자'},
-                {name: 'examTime', label: '시험시간'},
-                {name: 'headNm', label: '고사본부'},
+                /*{name: 'examTime', label: '시험시간'},*/
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallCd', label: '고사실코드', hidden:true},
                 {name: 'hallNm', label: '고사실'},
@@ -30,11 +28,11 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'score/print.json',
-                    colModel: colModel,
+                    colModel: colModel/*,
                     onSelectRow : function(rowid, status, e){
                         var param = $(this).jqGrid('getRowData', rowid);
                         new DlgPdf().setUrl('score/detail.pdf?' + $.param(param)).render();
-                    }
+                    }*/
                 }
             }, options);
 

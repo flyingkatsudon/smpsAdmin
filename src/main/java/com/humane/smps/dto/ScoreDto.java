@@ -53,7 +53,8 @@ public class ScoreDto {
     private String score10;
 
     private String avgScore;
-    private BigDecimal totalScore;
+   // private BigDecimal totalScore; // 법대용
+    private String totalScore;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

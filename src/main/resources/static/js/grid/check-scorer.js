@@ -12,8 +12,6 @@ define(function (require) {
                 /*{name: 'examTime', label: '시험시간'},*/
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'examNm', label: '시험명'},
-                {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'examineeCd', label: '수험번호'},
@@ -29,7 +27,7 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'check/scorer.json',
-                    colModel: colModel,
+                    colModel: colModel/*,
                     loadComplete: function (data) {
                         var ids = $(this).getDataIDs(data);
 
@@ -42,7 +40,7 @@ define(function (require) {
                                     $(this).setRowData(ids[i], false, {background: "#d9edf7"});
                             }
                         }
-                    }
+                    }*/
                 }
             }, options);
 

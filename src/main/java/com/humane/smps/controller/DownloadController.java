@@ -122,7 +122,7 @@ public class DownloadController {
 /*
         File fileScoreUploadReport = JasperReportsExportHelper.toXlsxFile("글로벌인재_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.scoreUpload(new ScoreUploadDto(), pageable).getContent());
         zipFile.addFile(fileScoreUploadReport);
-        fileScorerReport.delete();*/
+        fileScorerReport.delete();
 
         File fileFailList = JasperReportsExportHelper.toXlsxFile("jrxml/data-failList.jrxml", dataMapper.failList(new ExamineeDto(), pageable).getContent());
         zipFile.addFile(fileFailList);
@@ -135,6 +135,7 @@ public class DownloadController {
         File fileMedScorerUploadReport = JasperReportsExportHelper.toXlsxFile("의대서류평가_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.medScoreUpload(new ScoreUploadDto(), pageable).getContent());
         zipFile.addFile(fileMedScorerUploadReport);
         fileMedScorerUploadReport.delete();
+*/
 /*
         File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileDrawReport);

@@ -127,7 +127,8 @@
                 score10,
                 ROUND(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
                       + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1)
-                AS total_score,
+                -- AS total_score -- 법대용
+                , score.total_score, -- 의대용
                 score.score_dttm
             FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
@@ -212,6 +213,19 @@
                    INNER JOIN exam on score.exam_cd = exam.exam_cd
                    WHERE score.virt_no = exam_map.virt_no
               ) AS total
+            , (SELECT
+                    SUM(
+                    IF(score01 IS NOT NULL, 1, 0)
+                    + IF(score02 IS NOT NULL, 1, 0)
+                    + IF(score03 IS NOT NULL, 1, 0)
+                    + IF(score04 IS NOT NULL, 1, 0)
+                    + IF(score05 IS NOT NULL, 1, 0)
+                    + IF(score06 IS NOT NULL, 1, 0)
+                    + IF(score07 IS NOT NULL, 1, 0)
+                    )
+                    FROM score
+                    WHERE exam_map.virt_no = score.virt_no
+            ) AS scored_cnt -- 평가자별 채점항목 수 검증용
         FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
             INNER JOIN admission ON exam.admission_cd = admission.admission_cd
@@ -246,9 +260,10 @@
         SELECT scorer_nm, score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
               , ROUND(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
                       + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1)
-                AS total_score
+              -- AS total_score -- 법대용
+              , total_score -- 의대용
               , date_format(score_dttm,'%Y-%m-%d %H:%i:%s') AS score_dttm
-           FROM ( SELECT score.exam_cd, virt_no, scorer_nm, score_dttm
+           FROM ( SELECT score.exam_cd, virt_no, scorer_nm, score_dttm, total_score
                       , if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) as score01
                       , if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) as score02
                       , if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) as score03
@@ -514,7 +529,7 @@
     </select>
 
     <select id="failList" resultType="com.humane.smps.dto.ExamineeDto">
-        SELECT CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as year
+        SELECT DISTINCT CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as year
         , exam_map.examinee_cd
         , examinee.examinee_nm
         FROM exam_map
@@ -527,13 +542,14 @@
         -- 의대
         select CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as year
              , exam_map.examinee_cd as examinee_cd
-             , if(exam_map.virt_no is null, 1, 0) as is_attend
+             , if(a.s is null, 1, 0) as is_attend
              , if(b.scorer_cd is null, '%', b.scorer_cd) as scorer_cd
              , if(a.i is null, '%', a.i) as item_no
              , if(a.s is null, '', a.s) as score
           from exam_map
-          left join (select score.exam_cd, virt_no, scorer_nm
-                              , right(concat('00', item_no),2) as i
+          left join (select distinct score.exam_cd, virt_no, if(score.total_score = 'F', null, scorer_nm) as scorer_nm
+                                    , if(score.total_score = 'F', null, right(concat('00', item_no),2)) as i
+                                    , if(score.total_score = 'F', null
                                , case item.item_no
                                       when 1 then (select max_score from devi where item.devi_cd = devi.fk_devi_cd and score01 = devi.devi_nm)
                                       when 2 then (select max_score from devi where item.devi_cd = devi.fk_devi_cd and score02 = devi.devi_nm)
@@ -545,7 +561,7 @@
                                       when 8 then (select max_score from devi where item.devi_cd = devi.fk_devi_cd and score08 = devi.devi_nm)
                                       when 9 then (select max_score from devi where item.devi_cd = devi.fk_devi_cd and score09 = devi.devi_nm)
                                       when 10 then (select max_score from devi where item.devi_cd = devi.fk_devi_cd and score10 = devi.devi_nm)
-                                 end as s
+                                 end) as s
                            from score
                           inner join item on score.exam_cd = item.exam_cd
                           inner join devi on devi.devi_cd = item.devi_cd

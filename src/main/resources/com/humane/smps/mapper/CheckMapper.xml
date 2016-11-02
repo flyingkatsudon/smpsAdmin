@@ -81,6 +81,7 @@
         + (score.score08 IS NOT NULL)
         + (score.score09 IS NOT NULL)
         + (score.score10 IS NOT NULL) AS scored_cnt
+        , score.total_score
         FROM exam_map
         INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
         INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
@@ -120,7 +121,7 @@
         , exam_map.virt_no
         , score.scorer_nm
         ) AS result
-        WHERE result.item_cnt != scored_cnt AND result.virt_no IS NOT NULL
+        WHERE result.item_cnt != scored_cnt AND result.virt_no IS NOT NULL AND result.total_score IS NOT NULL
     </select>
 
     <select id="scorer" resultType="com.humane.smps.dto.CheckScorerDto">
@@ -176,5 +177,90 @@
             , exam.scorer_cnt
         having exam.scorer_cnt != count(score.scorer_nm)
         /*having count(*) != count(score.scorer_nm)*/
+    </select>
+
+    <select id="getScorerCnt" resultType="java.lang.Long">
+        SELECT max(cnt)
+        FROM(SELECT count(*) AS cnt
+            FROM(SELECT exam_hall_date.hall_date, exam_hall_date.hall_cd, scorer_nm
+                    FROM score
+                    INNER JOIN exam_hall_date ON exam_hall_date.hall_cd = score.hall_cd AND exam_hall_date.exam_cd = score.exam_cd
+                    GROUP BY scorer_nm
+                    ) AS tmp
+            GROUP BY hall_date, hall_cd
+        ) AS result
+    </select>
+
+    <select id="getItemCnt" resultType="java.lang.Long">
+        SELECT max(cnt)
+        FROM (
+        SELECT count(*) AS cnt
+        FROM item
+        GROUP BY exam_cd
+        ) a
+    </select>
+
+    <select id="scoredCnt" resultType="com.humane.util.CamelMap">
+        select  admission.admission_nm
+              , exam.type_nm, exam.exam_date, hall_date
+              , hall.head_nm, hall.bldg_nm, hall.hall_nm
+              , exam.scorer_cnt
+              , e.scored_cnt, e.virt_no_cnt
+              , e.scorer_nm1, e.scored_cnt1
+              , e.scorer_nm2, e.scored_cnt2
+              , e.scorer_nm3, e.scored_cnt3
+              , e.scorer_nm4, e.scored_cnt4
+              , e.scorer_nm5, e.scored_cnt5
+          from ( select exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date
+                         , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) + if(scored_cnt3 != 0, 1, 0) + if(scored_cnt4 != 0, 1, 0) + if(scored_cnt5 != 0, 1, 0) as scored_cnt
+                          , (select count(*) from exam_map where exam_hall_date.exam_cd = exam_map.exam_cd and exam_hall_date.hall_cd = exam_map.hall_cd and exam_hall_date.hall_date = exam_map.hall_date and virt_no is not null) as virt_no_cnt
+                         , scorer_nm1, scored_cnt1
+                         , scorer_nm2, scored_cnt2
+                         , scorer_nm3, scored_cnt3
+                         , scorer_nm4, scored_cnt4
+                         , scorer_nm5, scored_cnt5
+                      from exam_hall_date
+                     inner join exam on exam.exam_cd = exam_hall_date.exam_cd
+                      left join (select exam_cd, hall_cd, hall_date
+                                     , min(if(rn = 1, scorer_nm, null)) as scorer_nm1, min(if(rn = 1, cnt, null)) as scored_cnt1
+                                     , min(if(rn = 2, scorer_nm, null)) as scorer_nm2, min(if(rn = 2, cnt, null)) as scored_cnt2
+                                     , min(if(rn = 3, scorer_nm, null)) as scorer_nm3, min(if(rn = 3, cnt, null)) as scored_cnt3
+                                     , min(if(rn = 4, scorer_nm, null)) as scorer_nm4, min(if(rn = 4, cnt, null)) as scored_cnt4
+                                     , min(if(rn = 5, scorer_nm, null)) as scorer_nm5, min(if(rn = 5, cnt, null)) as scored_cnt5
+                                  from ( select a.*
+                                                 , case when @prev_exam_cd = exam_cd and @prev_hall_cd = hall_cd and @prev_hall_date = hall_date then @rownum := @rownum + 1 else @rownum := 1 end as rn
+                                                 , @prev_exam_cd := exam_cd
+                                                 , @prev_hall_cd := hall_cd
+                                                 , @prev_hall_date := hall_date
+                                              from (select exam_map.hall_date, score.exam_cd, score.hall_cd, score.scorer_nm, count(*) as cnt
+                                                         from score
+                                                        inner join exam_map on exam_map.exam_cd = score.exam_cd and exam_map.hall_cd = score.hall_cd and exam_map.virt_no = score.virt_no
+                                                        group by exam_map.hall_date,  score.exam_cd, score.hall_cd,  score.scorer_nm
+                                                        order by exam_map.hall_date, exam_cd, hall_cd,  scorer_nm) a
+                                                  , (select @rownum := 1, @prev_exam_cd := '', @prev_hall_cd := '', @prev_hall_date := '') b
+                                       )c
+                                 group by exam_cd, hall_cd, hall_date) d on exam_hall_date.exam_cd = d.exam_cd and exam_hall_date.hall_cd = d.hall_cd and exam_hall_date.hall_date = d.hall_date
+                                 ) e
+         inner join exam on e.exam_cd = exam.exam_cd
+         inner join admission on exam.admission_cd  = admission.admission_cd
+         inner join hall on e.hall_cd = hall.hall_cd
+         <where>case when exam.scorer_cnt = scored_cnt and exam.scorer_cnt = 1 and virt_no_cnt = scored_cnt1 then 1
+                    when exam.scorer_cnt = scored_cnt and exam.scorer_cnt = 2 and virt_no_cnt = scored_cnt1 and virt_no_cnt = scored_cnt2 then 1
+                    when exam.scorer_cnt = scored_cnt and exam.scorer_cnt = 3 and virt_no_cnt = scored_cnt1 and virt_no_cnt = scored_cnt2 and virt_no_cnt = scored_cnt3 then 1
+                    when exam.scorer_cnt = scored_cnt and exam.scorer_cnt = 4 and virt_no_cnt = scored_cnt1 and virt_no_cnt = scored_cnt2 and virt_no_cnt = scored_cnt3 and virt_no_cnt = scored_cnt4 then 1
+                    when exam.scorer_cnt = scored_cnt and exam.scorer_cnt = 5 and virt_no_cnt = scored_cnt1 and virt_no_cnt = scored_cnt2 and virt_no_cnt = scored_cnt3 and virt_no_cnt = scored_cnt4 and virt_no_cnt = scored_cnt5 then 1
+                    else 0
+                end = 0
+            <if test="param != null">
+                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
+                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.scorerNm != null">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
+            </if>
+         </where>
     </select>
 </mapper>
