@@ -19,7 +19,8 @@ define(function (require) {
                 {name: 'attendCnt', label: '응시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'attendPer', label: '응시율', formatter: 'number', formatoptions: {suffix: '%'}},
                 {name: 'absentCnt', label: '결시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
-                {name: 'absentPer', label: '결시율', formatter: 'number', formatoptions: {suffix: '%'}}
+                {name: 'absentPer', label: '결시율', formatter: 'number', formatoptions: {suffix: '%'}},
+                {name: '', label: '출결시스템'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

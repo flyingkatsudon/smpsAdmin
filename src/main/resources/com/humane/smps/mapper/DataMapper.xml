@@ -246,6 +246,10 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.isVirtNo != null">
+                    <if test="param.isVirtNo == true">AND exam_map.virt_no IS NOT NULL</if>
+                    <if test="param.isVirtNo == false">AND exam_map.virt_no IS NULL</if>
+                </if>
                 <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.scorerNm != null">
                     AND exam_map.virt_no IN (

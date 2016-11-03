@@ -66,4 +66,6 @@ public class ScoreDto {
     private Boolean isPhoto;
 
     private String evalCd;
+
+    private Boolean isVirtNo;
 }
