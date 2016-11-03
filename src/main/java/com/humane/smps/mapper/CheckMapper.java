@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -25,4 +26,6 @@ public interface CheckMapper {
     long getItemCnt();
 
     Page<Map<String, Object>> scoredCnt(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
+
+    Page<Map<String, Object>> scoredF(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 }

@@ -88,6 +88,7 @@ public class CheckService {
         return mapper.scoredCnt(param, pageable);
     }
 
+    // 평가위원 당 채점인원 수 검증
     public List<ColModel> getScoredCntModel() {
         // 기본 생성
         List<ColModel> colModels = new ArrayList<>();
@@ -108,5 +109,57 @@ public class CheckService {
             colModels.add(new ColModel("scoredCnt" + i, "채점인원" + i, false));
         }
         return colModels;
+    }
+
+    // 가번호 당 평가위원의 F 점수 검증
+    public Page<Map<String, Object>> getScoredFData(ScoreDto param, Pageable pageable) {
+        return mapper.scoredF(param, pageable);
+    }
+
+    public List<ColModel> getScoredFModel() {
+        // 기본 생성
+        List<ColModel> colModels = new ArrayList<>();
+        colModels.add(new ColModel("admissionNm", "전형"));
+        colModels.add(new ColModel("typeNm", "계열"));
+        colModels.add(new ColModel("examDate", "시험일자"));
+        colModels.add(new ColModel("headNm", "고사본부"));
+        colModels.add(new ColModel("bldgNm", "고사건물"));
+        colModels.add(new ColModel("hallNm", "고사실"));
+        colModels.add(new ColModel("virtNo", "가번호"));
+        colModels.add(new ColModel("cnt", "F 항목갯수"));
+
+        long scorerCnt = mapper.getScorerCnt(); // 채점자수
+
+        for (int i = 1; i <= scorerCnt; i++) {
+            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
+            colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
+        }
+        return colModels;
+    }
+
+    public JasperReportBuilder getScoredFReport() {
+        JasperReportBuilder report = report()
+                .title(cmp.text("F 항목 불일치 리스트").setStyle(columnTitleStyle))
+                .columns(
+                        col.reportRowNumberColumn("번호").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(10),
+                        col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
+                )
+                .setPageMargin(DynamicReports.margin(0))
+                .setIgnorePageWidth(true)
+                .setIgnorePagination(true);
+
+        long scorerCnt = mapper.getScorerCnt();
+
+        for (int i = 1; i <= scorerCnt; i++) {
+            report.addColumn(col.column("평가위원" + i, "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("총점", "totalScore" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        }
+        return report;
     }
 }

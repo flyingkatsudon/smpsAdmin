@@ -88,4 +88,22 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }
     }
+
+    @RequestMapping(value = "scoredF.{format:colmodel|json|xls|xlsx}")
+    public ResponseEntity scoredF(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+        switch (format) {
+            case COLMODEL:
+                return ResponseEntity.ok(checkService.getScoredFModel());
+            case JSON:
+                return ResponseEntity.ok(checkService.getScoredFData(param, pageable));
+            default:
+                JasperReportBuilder report = checkService.getScoredFReport();
+                report.setDataSource(checkService.getScoredFData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+                JasperPrint jasperPrint = report.toJasperPrint();
+                jasperPrint.setName("F 항목 불일치 리스트");
+
+                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        }
+    }
 }
