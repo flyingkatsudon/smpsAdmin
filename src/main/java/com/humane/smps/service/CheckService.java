@@ -126,7 +126,7 @@ public class CheckService {
         colModels.add(new ColModel("bldgNm", "고사건물"));
         colModels.add(new ColModel("hallNm", "고사실"));
         colModels.add(new ColModel("virtNo", "가번호"));
-        colModels.add(new ColModel("cnt", "F 항목갯수"));
+        colModels.add(new ColModel("cnt", "결시 항목 수"));
 
         long scorerCnt = mapper.getScorerCnt(); // 채점자수
 
