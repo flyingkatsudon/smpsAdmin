@@ -348,7 +348,7 @@
         SELECT DISTINCT score.scorer_nm
         FROM score
     </select>
-
+<!--
     <select id="drawData" resultType="com.humane.util.CamelMap">
         select a.exam_cd, a.hall_cd, a.virt_no, a.total
              , admission.admission_nm
@@ -416,6 +416,111 @@
          inner join admission on exam.admission_cd = admission.admission_cd
          inner join examinee on exam_map.examinee_cd = examinee.examinee_cd
          inner join hall on exam_map.hall_cd = hall.hall_cd
+        <if test="param != null">
+            <where>
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
+                <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
+                <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%'</if>
+                <if test="param.examineeCd != null">AND exam_map.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
+                <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
+            </where>
+        </if>
+    </select>
+-->
+
+    <!-- 채점자별 상세(가로) 1개 쿼리로 -->
+    <select id="scoredH" resultType="com.humane.util.CamelMap">
+    SELECT result.*
+            FROM(SELECT  admission.admission_nm
+                        , exam.exam_date
+                        , hall.head_nm, hall.bldg_nm, hall.hall_nm, e.virt_no
+                        , e.scorer_nm1, e.total_score1, e.score1s1, e.score1s2, e.score1s3, e.score1s4
+						, e.scorer_nm2, e.total_score2, e.score2s1, e.score2s2, e.score2s3, e.score2s4
+                        , e.total
+                        , e.examinee_cd, e.examinee_nm, e.dept_nm, e.major_nm
+                FROM ( SELECT exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date, d.virt_no
+                            , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) AS scored_cnt
+                            , scorer_nm1, cast(total_score1 AS unsigned) AS total_score1
+                             , scorer_nm2, cast(total_score2 AS unsigned) AS total_score2
+                             , (case when total_score1 is not null then cast(total_score1 AS unsigned) else 0 end)
+                             + (case when total_score2 is not null then cast(total_score2 AS unsigned) else 0 end) as total
+                            , score1S1, score1S2, score1S3, score1S4, score2S1, score2S2, score2S3, score2S4
+                            , d.examinee_cd, d.examinee_nm, d.dept_nm, d.major_nm
+                        FROM exam_hall_date
+                        INNER JOIN exam on exam.exam_cd = exam_hall_date.exam_cd
+                        LEFT JOIN (SELECT exam_cd, hall_cd, hall_date, virt_no, examinee_cd, examinee_nm, dept_nm, major_nm
+                                    , MIN(if(rn = 1, scorer_nm, NULL)) AS scorer_nm1, MIN(if(rn = 1, total_score, NULL)) AS total_score1
+                                    , MIN(if(rn = 2, scorer_nm, NULL)) AS scorer_nm2, MIN(if(rn = 2, total_score, NULL)) AS total_score2
+
+                                    , MIN(if(rn = 1, cnt, NULL)) AS scored_cnt1, MIN(if(rn = 2, cnt, NULL)) AS scored_cnt2
+
+                                    , MIN(if(rn = 1, score01, NULL)) AS score1S1, MIN(if(rn = 1, score02, NULL)) AS score1S2, MIN(if(rn = 1, score03, NULL)) AS score1S3, MIN(if(rn = 1, score04, NULL)) AS score1S4
+                                    , MIN(if(rn = 2, score01, NULL)) AS score2S1, MIN(if(rn = 2, score02, NULL)) AS score2S2, MIN(if(rn = 2, score03, NULL)) AS score2S3, MIN(if(rn = 2, score04, NULL)) AS score2S4
+                                    FROM ( SELECT a.*
+                                            , CASE WHEN @prev_exam_cd = exam_cd AND @prev_hall_cd = hall_cd AND @prev_hall_date = hall_date AND @prev_virt_no = virt_no then @rownum := @rownum + 1 else @rownum := 1 end AS rn
+                                            , @prev_exam_cd := exam_cd
+                                            , @prev_hall_cd := hall_cd
+                                            , @prev_hall_date := hall_date
+                                            , @prev_virt_no := virt_no
+                                            FROM (SELECT exam_map.hall_date, score.exam_cd, score.hall_cd, score.virt_no, score.scorer_nm, score.total_score
+                                            					, score.score01, score.score02, score.score03, score.score04, examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm
+                                                , (SELECT count(*) FROM score f WHERE f.virt_no = score.virt_no GROUP BY virt_no) AS cnt
+                                                    FROM score
+                                                    INNER JOIN exam ON exam.exam_cd = score.exam_cd
+                                                    INNER JOIN exam_map ON exam_map.exam_cd = score.exam_cd AND exam_map.hall_cd = score.hall_cd AND exam_map.virt_no = score.virt_no
+                                                    INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
+                                                    GROUP BY exam_map.hall_date,  score.exam_cd, score.hall_cd, score.virt_no, score.scorer_nm, score.total_score
+                                                    ORDER BY exam_map.hall_date, exam_cd, hall_cd, virt_no, scorer_nm) a
+                                                    , (SELECT @rownum := 1, @prev_exam_cd := '', @prev_hall_cd := '', @prev_hall_date := '', @prev_virt_no := '') b
+                                                  )c
+                                            GROUP BY exam_cd, hall_cd, hall_date, virt_no) d on exam_hall_date.exam_cd = d.exam_cd AND exam_hall_date.hall_cd = d.hall_cd AND exam_hall_date.hall_date = d.hall_date
+                                    ) e
+            INNER JOIN exam ON e.exam_cd = exam.exam_cd
+            INNER JOIN admission ON exam.admission_cd  = admission.admission_cd
+            INNER JOIN hall ON e.hall_cd = hall.hall_cd
+            INNER JOIN examinee ON examinee.examinee_cd = e.virt_no
+            GROUP BY admission.admission_nm
+                    , exam.type_nm, exam.exam_date, hall_date
+                    , hall.head_nm, hall.bldg_nm, hall.hall_nm, e.virt_no
+            ) result
+        where
+            virt_no IS NOT NULL
+    </select>
+
+    <!-- total_score까지 전송된 경우, 경북대 면접 적용 -->
+    <select id="drawData" resultType="com.humane.util.CamelMap">
+        select a.*
+        , admission.admission_nm
+        , exam.type_nm
+        , exam_map.hall_date as exam_date
+        , exam_map.eval_cd
+        , examinee.dept_nm
+        , examinee.major_nm
+        , examinee.examinee_cd
+        , examinee.examinee_nm
+        , (select count(*) + 1
+            from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no) t
+                    where t.total > a.total and a.exam_cd = t.exam_cd
+            ) rank
+        , (select count(*)
+            from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no) t
+                    where t.total = a.total and a.exam_cd = t.exam_cd
+            ) cnt
+        from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no order by total desc) a
+        inner join exam_map on a.exam_cd = exam_map.exam_cd and a.virt_no = exam_map.virt_no
+        inner join exam on a.exam_cd = exam.exam_cd
+        inner join admission on exam.admission_cd = admission.admission_cd
+        inner join examinee on exam_map.examinee_cd = examinee.examinee_cd
+        inner join hall on exam_map.hall_cd = hall.hall_cd
         <if test="param != null">
             <where>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>

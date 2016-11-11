@@ -33,4 +33,6 @@ public class ExamMap {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
     private Date hallDate;
+
+    private Long orderby;
 }

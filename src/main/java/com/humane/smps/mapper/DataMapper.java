@@ -24,6 +24,9 @@ public interface DataMapper {
 
     List<Map<String, Object>> scorerH(@Param("param") Map map);
 
+    // 채점자별 상세(가로)
+    Page<Map<String, Object>> scoredH(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
+
     List<EvalDto> paperToSmps(@Param("param") EvalDto param);
 
     void fillEvalCd(@Param("param") EvalDto param);

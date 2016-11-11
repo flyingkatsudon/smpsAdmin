@@ -303,7 +303,7 @@ public class DataService {
         }
     }
 
-    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+   /* public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.examMap(param, pageable);
         return fillMap(page);
     }
@@ -343,6 +343,48 @@ public class DataService {
         });
 
         return page;
+    }*/
+
+    // 경북대용, '결시' 버튼이 있는 경우
+    private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
+        page.forEach(map -> {
+            String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
+            String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
+            if (examCd != null && virtNo != null) {
+                List<Map<String, Object>> scoreList = mapper.scorerH(map);
+                long total = 0;
+                for (int i = 1; i <= scoreList.size(); i++) {
+                    Map<String, Object> score = scoreList.get(i - 1);
+                    if (score != null) {
+                        map.put("SCORER_NM" + i, score.get("scorerNm"));
+                        map.put("SCORE" + i + "_S1", score.get("score01"));
+                        map.put("SCORE" + i + "_S2", score.get("score02"));
+                        map.put("SCORE" + i + "_S3", score.get("score03"));
+                        map.put("SCORE" + i + "_S4", score.get("score04"));
+                        map.put("SCORE" + i + "_S5", score.get("score05"));
+                        map.put("SCORE" + i + "_S6", score.get("score06"));
+                        map.put("SCORE" + i + "_S7", score.get("score07"));
+                        map.put("SCORE" + i + "_S8", score.get("score08"));
+                        map.put("SCORE" + i + "_S9", score.get("score09"));
+                        map.put("SCORE" + i + "_S10", score.get("score10"));
+                        map.put("TOTAL_SCORE" + i, score.get("totalScore"));
+                        map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
+
+                        String tmp = String.valueOf((score.get("totalScore")));
+                        if(!tmp.equals("결시")) {
+                            total += Long.parseLong(tmp);
+                        }
+                    }
+                }
+                map.put("TOTAL", total);
+            }
+        });
+        return page;
+    }
+
+    // 가로버전
+    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+        return mapper.scoredH(param, pageable);
     }
 
     public List<ColModel> getScorerHModel() {
@@ -365,13 +407,13 @@ public class DataService {
         long scorerCnt = mapper.getScorerCnt(); // 채점자수
         long itemCnt = mapper.getItemCnt(); // 항목수
 
-        colModels.add(new ColModel("total", "전체 총점", false));
+        colModels.add(new ColModel("total", "전체 총점"));
         for (int i = 1; i <= scorerCnt; i++) {
-            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
+            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i));
             for (int j = 1; j <= itemCnt; j++)
-                colModels.add(new ColModel("score" + i + "S" + j, "항목" + i + "." + j, false));
+                colModels.add(new ColModel("score" + i + "s" + j, "항목" + i + "." + j));
 
-            colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
+            colModels.add(new ColModel("totalScore" + i, "총점" + i));
             /*colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));*/
         }
         return colModels;
@@ -409,5 +451,6 @@ public class DataService {
     public Page<Map<String, Object>> getDrawData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.drawData(param, pageable);
         return fillMap(page);
+       // return mapper.drawData(param, pageable);
     }
 }

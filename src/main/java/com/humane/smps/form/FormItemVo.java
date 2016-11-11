@@ -33,7 +33,7 @@ public class FormItemVo {
     @Column(name = "키패드") private String keypadType;
     @Column(name = "가번호 할당 방식") private String virtNoType;
     @Column(name = "총점") private String totScore;
-    @Column(name = "답안지 자릿수") private String paperLen;
+    @Column(name = "결시버튼 사용여부") private Boolean isAbsence;
     @Column(name = "가번호 자동여부") private Boolean isMgrAuto;
     @Column(name = "가번호 표시 자릿수") private String virtNoDigits;
     @Column(name = "수험번호 자릿수") private String examineeLen;
@@ -59,4 +59,14 @@ public class FormItemVo {
     @Column(name = "항목9 코드") private String itemNo9;   @Column(name = "항목9 명") private String itemNm9;   @Column(name = "항목9 편차코드") private String deviCd9;
     @Column(name = "항목10 코드") private String itemNo10; @Column(name = "항목10 명") private String itemNm10; @Column(name = "항목10 편차코드") private String deviCd10;
 
+    @Column(name = "항목1 최대점") private String maxScore01; @Column(name = "항목1 최소점") private String minScore01;
+    @Column(name = "항목2 최대점") private String maxScore02; @Column(name = "항목2 최소점") private String minScore02;
+    @Column(name = "항목3 최대점") private String maxScore03; @Column(name = "항목3 최소점") private String minScore03;
+    @Column(name = "항목4 최대점") private String maxScore04; @Column(name = "항목4 최소점") private String minScore04;
+    @Column(name = "항목5 최대점") private String maxScore05; @Column(name = "항목5 최소점") private String minScore05;
+    @Column(name = "항목6 최대점") private String maxScore06; @Column(name = "항목6 최소점") private String minScore06;
+    @Column(name = "항목7 최대점") private String maxScore07; @Column(name = "항목7 최소점") private String minScore07;
+    @Column(name = "항목8 최대점") private String maxScore08; @Column(name = "항목8 최소점") private String minScore08;
+    @Column(name = "항목9 최대점") private String maxScore09; @Column(name = "항목9 최소점") private String minScore09;
+    @Column(name = "항목10 최대점") private String maxScore10; @Column(name = "항목10 최소점") private String minScore10;
 }
