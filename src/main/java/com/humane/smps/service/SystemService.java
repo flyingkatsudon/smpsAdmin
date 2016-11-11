@@ -123,7 +123,7 @@ public class SystemService {
         QExamMap examMap = QExamMap.examMap;
 
         queryFactory.update(examMap)
-                .setNull(examMap.virtNo)
+                //.setNull(examMap.virtNo)
                 .setNull(examMap.scanDttm)
                 .setNull(examMap.photoNm)
                 .setNull(examMap.memo)

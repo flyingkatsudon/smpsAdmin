@@ -18,8 +18,10 @@ define(function (require) {
                     _this.$('#examineeCnt').html(response.examineeCnt);
                     _this.$('#attendCnt').html(response.attendCnt);
                     _this.$('#absentCnt').html(response.absentCnt);
-                    _this.$('#attendPer').html(response.attendPer + "%");
-                    _this.$('#absentPer').html(response.absentPer + "%");
+                    if(response.attendPer == undefined) _this.$('#attendPer').html('0.00%');
+                    else _this.$('#attendPer').html(response.attendPer + "%");
+                    if(response.absentPer == undefined) _this.$('#absentPer').html('0.00%');
+                    else _this.$('#absentPer').html(response.absentPer + "%");
                 }
             });
         }

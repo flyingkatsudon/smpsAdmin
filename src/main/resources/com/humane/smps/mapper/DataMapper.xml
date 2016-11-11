@@ -437,7 +437,7 @@
     </select>
 -->
 
-    <!-- 채점자별 상세(가로) 1개 쿼리로 -->
+    <!-- 채점자별 상세(가로) 1개 쿼리로, '결시' 버튼이 '결시'인 경우 -->
     <select id="scoredH" resultType="com.humane.util.CamelMap">
     SELECT result.*
             FROM(SELECT  admission.admission_nm
@@ -449,10 +449,13 @@
                         , e.examinee_cd, e.examinee_nm, e.dept_nm, e.major_nm
                 FROM ( SELECT exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date, d.virt_no
                             , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) AS scored_cnt
-                            , scorer_nm1, cast(total_score1 AS unsigned) AS total_score1
-                             , scorer_nm2, cast(total_score2 AS unsigned) AS total_score2
-                             , (case when total_score1 is not null then cast(total_score1 AS unsigned) else 0 end)
-                             + (case when total_score2 is not null then cast(total_score2 AS unsigned) else 0 end) as total
+                            , scorer_nm1, case when total_score1 = '결시' then '결시' else cast(total_score1 AS unsigned) end AS total_score1
+                            , scorer_nm2, case when total_score2 = '결시' then '결시' else cast(total_score2 AS unsigned) end AS total_score2
+                             , case when total_score1 = '결시' or total_score2 = '결시' then '결시'
+                                else(
+                                    (case when total_score1 is not null then cast(total_score1 AS unsigned) else 0 end)
+                                  + (case when total_score2 is not null then cast(total_score2 AS unsigned) else 0 end)
+                                ) end as total
                             , score1S1, score1S2, score1S3, score1S4, score2S1, score2S2, score2S3, score2S4
                             , d.examinee_cd, d.examinee_nm, d.dept_nm, d.major_nm
                         FROM exam_hall_date
