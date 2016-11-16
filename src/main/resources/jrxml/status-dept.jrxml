@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-09-06T09:59:50 -->
+<!-- 2016-11-11T16:46:10 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="모집단위별 응시율" pageWidth="920" pageHeight="60" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="920" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" isIgnorePagination="true" uuid="1d8d5473-da75-420c-b65d-d70368d197b8">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
@@ -56,7 +56,7 @@
 				<text><![CDATA[번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="80" y="0" width="120" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="0b6d4cbe-cf2c-4616-b70a-f73706d2415e">
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="80" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="0b6d4cbe-cf2c-4616-b70a-f73706d2415e">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -71,7 +71,7 @@
 				<text><![CDATA[전형]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="200" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="84fee460-fd5e-42ef-8d76-2b391f0cb82e"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="160" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="84fee460-fd5e-42ef-8d76-2b391f0cb82e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -84,7 +84,7 @@
 				<text><![CDATA[계열]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="280" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="5e56fc09-20cf-4986-828a-c22bceface5e"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="240" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="5e56fc09-20cf-4986-828a-c22bceface5e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -97,7 +97,7 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="360" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="320" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -110,7 +110,7 @@
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="440" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="400" y="0" width="120" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -206,7 +206,7 @@
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="80" y="0" width="120" height="15" uuid="33498fd4-795a-4076-bb32-853c632eebd1"/>
+				<reportElement mode="Opaque" x="80" y="0" width="80" height="15" uuid="33498fd4-795a-4076-bb32-853c632eebd1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -219,7 +219,7 @@
 				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="200" y="0" width="80" height="15" uuid="212bbecd-2253-40e2-a49e-d3995a0633e5"/>
+				<reportElement mode="Opaque" x="160" y="0" width="80" height="15" uuid="212bbecd-2253-40e2-a49e-d3995a0633e5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -230,7 +230,7 @@
 				<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="280" y="0" width="80" height="15" uuid="6e54c11f-72a7-4b73-ba1d-30f919eff387"/>
+				<reportElement mode="Opaque" x="240" y="0" width="80" height="15" uuid="6e54c11f-72a7-4b73-ba1d-30f919eff387"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -243,7 +243,7 @@
 				<textFieldExpression><![CDATA[$F{examDate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="360" y="0" width="80" height="15" uuid="c5eef54c-4455-4053-a45f-b99786d86714"/>
+				<reportElement mode="Opaque" x="320" y="0" width="80" height="15" uuid="c5eef54c-4455-4053-a45f-b99786d86714"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -256,7 +256,7 @@
 				<textFieldExpression><![CDATA[$F{examTime}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="440" y="0" width="80" height="15" uuid="b59b7640-762b-4b7f-8603-d470a89e7917"/>
+				<reportElement mode="Opaque" x="400" y="0" width="120" height="15" uuid="b59b7640-762b-4b7f-8603-d470a89e7917"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -352,7 +352,7 @@
 				<text><![CDATA[합계]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="80" y="0" width="120" height="15" uuid="af248e3b-cec0-442b-ace5-ca7b6a86192b"/>
+				<reportElement mode="Opaque" x="80" y="0" width="80" height="15" uuid="af248e3b-cec0-442b-ace5-ca7b6a86192b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -365,7 +365,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="200" y="0" width="80" height="15" uuid="b0ee7a05-a04f-469e-80a0-073cfbc89b50"/>
+				<reportElement mode="Opaque" x="160" y="0" width="80" height="15" uuid="b0ee7a05-a04f-469e-80a0-073cfbc89b50"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -378,7 +378,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="280" y="0" width="80" height="15" uuid="3088c2e4-ef4b-434d-8881-d97d2d5a11d7"/>
+				<reportElement mode="Opaque" x="240" y="0" width="80" height="15" uuid="3088c2e4-ef4b-434d-8881-d97d2d5a11d7"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -391,7 +391,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="360" y="0" width="80" height="15" uuid="c240a1be-0348-4c7c-beaa-f3413bb4c846"/>
+				<reportElement mode="Opaque" x="320" y="0" width="80" height="15" uuid="c240a1be-0348-4c7c-beaa-f3413bb4c846"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -404,7 +404,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="440" y="0" width="80" height="15" uuid="21ca43f3-715e-4847-a11e-fa869f7c9e3d"/>
+				<reportElement mode="Opaque" x="400" y="0" width="120" height="15" uuid="21ca43f3-715e-4847-a11e-fa869f7c9e3d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>

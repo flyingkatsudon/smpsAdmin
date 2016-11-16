@@ -195,6 +195,28 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
+    @RequestMapping(value = "knuScorer.{format:xlsx}")
+    public ResponseEntity knuScorer(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+        JasperReportBuilder report = dataService.getKnuScorer();
+        report.setDataSource(mapper.knuScorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName("경북대학교 채점자별 상세(세로)");
+
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+    }
+
+    @RequestMapping(value = "absentList.{format:xlsx}")
+    public ResponseEntity absentList(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException, JRException {
+        JasperReportBuilder report = dataService.getAbsentList();
+        report.setDataSource(mapper.absentList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName("경북대학교 채점자별 상세(세로)");
+
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+    }
+
     // 초기에 시험이름, 시험코드를 불러옴
     @RequestMapping(value = "examInfo.json")
     public ResponseEntity examInfo() {

@@ -102,4 +102,6 @@ public class ExamineeDto {
 
     private BufferedImage univLogo;
     private String year;
+
+    private String exmAdmNm;
 }

@@ -16,6 +16,10 @@ public interface DataMapper {
 
     Page<ScoreDto> scorer(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 
+    Page<ScoreDto> knuScorer(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
+
+    Page<ExamineeDto> absentList(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
+
     long getScorerCnt();
 
     long getItemCnt();

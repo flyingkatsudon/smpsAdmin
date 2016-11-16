@@ -68,4 +68,14 @@ public class ScoreDto {
     private String evalCd;
 
     private Boolean isVirtNo;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date birth;
+
+    private String grade01;
+    private String grade02;
+    private String grade03;
+    private String grade04;
+    private String exmAdmNm;
 }
