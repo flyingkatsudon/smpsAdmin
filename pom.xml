@@ -396,6 +396,8 @@
                             <jre>
                                 <minVersion>1.8.0</minVersion>
                                 <jdkPreference>preferJre</jdkPreference>
+                                <initialHeapSize>2048</initialHeapSize>
+                                <maxHeapSize>2048</maxHeapSize>
                             </jre>
                         </configuration>
                     </execution>
