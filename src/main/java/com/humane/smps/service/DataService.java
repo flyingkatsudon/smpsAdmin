@@ -280,7 +280,7 @@ public class DataService {
                         col.column("전형구분", "exmAdmNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(16),
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(16),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("생년월일", "birth", type.dateType()).setPattern("yyyy-mm-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("생년월일", "birth", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(10),
                         col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
