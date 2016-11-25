@@ -70,7 +70,7 @@ public class UploadController {
 
                         // 2.2 fk 설정
                         Devi fkDevi = deviRepository.findOne(vo.getFkDeviCd());
-                        if (fkDevi != null) devi.setDevi(fkDevi);
+                        if (fkDevi != null) devi.setFkDevi(fkDevi);
 
                         // 2.3 편차 저장
                         devi = deviRepository.save(devi);

@@ -20,9 +20,13 @@ public interface DataMapper {
 
     Page<ExamineeDto> absentList(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 
+    Page<physicalDto> physical(@Param("param") physicalDto param, @Param("pageable") Pageable pageable);
+
     long getScorerCnt();
 
     long getItemCnt();
+
+    long ericaItemCnt(@Param("param") String param);
 
     Page<Map<String, Object>> examMap(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 
@@ -42,6 +46,8 @@ public interface DataMapper {
     List<ScoreDto> scorerList(@Param("param") ScoreDto param);
 
     List<ExamDto> examInfo();
+
+    List<ExamDto> ericaExamInfo(@Param("param") String param);
 
     ExamDto examDetail(@Param("examCd") String examCd);
 

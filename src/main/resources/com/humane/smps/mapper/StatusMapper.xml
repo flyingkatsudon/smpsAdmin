@@ -40,10 +40,11 @@
         , COUNT(a.virt_no) * 100 / COUNT(*) AS attend_per
         , (COUNT(*) - COUNT(a.virt_no)) * 100 / COUNT(*) AS absent_per
         FROM exam_map
-        INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+        INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd AND exam.fk_exam_cd IS NULL
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
         INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
         INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
+        INNER JOIN exam_hall_date ON exam_map.hall_cd = exam_hall_date.hall_cd AND exam_map.hall_date = exam_hall_date.hall_date AND exam_map.exam_cd = exam_hall_date.exam_cd
         LEFT JOIN (SELECT DISTINCT virt_no FROM score
                       WHERE virt_no NOT IN (SELECT virt_no FROM score WHERE total_score = '결시')
                     ) AS a ON a.virt_no = exam_map.examinee_cd
@@ -81,7 +82,7 @@
                         WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND (score.total_score = '결시' or score.total_score = 'F')) > 0 THEN 1 ELSE 0
                     END) AS absent_cnt
              FROM exam_map
-            INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
+            INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd AND exam.fk_exam_cd IS NULL
             INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
             INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
             INNER JOIN admission ON admission.admission_cd = exam.admission_cd
@@ -124,7 +125,7 @@
                         WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND (score.total_score = '결시' or score.total_score = 'F')) > 0 THEN 1 ELSE 0
                     END) AS absent_cnt
              FROM exam_map
-            INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
+            INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd AND exam.fk_exam_cd IS NULL
             INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
             INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
             INNER JOIN admission ON admission.admission_cd = exam.admission_cd
@@ -170,7 +171,7 @@
                         WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND (score.total_score = '결시' or score.total_score = 'F')) > 0 THEN 1 ELSE 0
                     END) AS absent_cnt
             FROM exam_map
-            INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
+            INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd AND exam.fk_exam_cd IS NULL
             INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
             INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
             INNER JOIN admission ON admission.admission_cd = exam.admission_cd
@@ -221,7 +222,7 @@
                             WHEN (SELECT COUNT(*) FROM score WHERE exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no AND (score.total_score = '결시' or score.total_score = 'F')) > 0 THEN 1 ELSE 0
                         END) AS absent_cnt
                  FROM exam_map
-                INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
+                INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd AND exam.fk_exam_cd IS NULL
                 INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
                 INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
                 INNER JOIN admission ON admission.admission_cd = exam.admission_cd

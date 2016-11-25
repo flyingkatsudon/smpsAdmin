@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,9 +14,10 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-@Table(name = "exam")
-public class Exam {
+public class Exam implements Serializable{
     @Id private String examCd; // 시험코드
+
+    @ManyToOne @JoinColumn(name = "fkExamCd") private Exam fkExam;
     private String examNm; // 시험명
     private String typeNm;
 

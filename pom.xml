@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.1.RELEASE</version>
+        <version>1.4.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -27,11 +27,11 @@
         <mybatis-starter.version>1.1.1</mybatis-starter.version>
         <springfox-swagger.version>2.5.0</springfox-swagger.version>
         <retrofit2.version>2.1.0</retrofit2.version>
-        <okhttp3.version>3.4.1</okhttp3.version>
+        <okhttp3.version>3.4.2</okhttp3.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-compress.version>1.11</commons-compress.version>
-        <rxjava.version>1.2.0</rxjava.version>
+        <rxjava.version>1.2.2</rxjava.version>
         <jasperreports.version>6.3.1</jasperreports.version>
         <poi.version>3.15</poi.version>
     </properties>

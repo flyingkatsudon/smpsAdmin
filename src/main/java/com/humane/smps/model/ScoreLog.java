@@ -18,6 +18,7 @@ public class ScoreLog implements Serializable {
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
     @Column(nullable = false) public String scorerNm;
+    @Column(nullable = true) private String scorerNm2;
     @Column(nullable = false) public String logDttm;
 
     @Column public String virtNo;

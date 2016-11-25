@@ -1,5 +1,6 @@
 package com.humane.smps.service;
 
+import com.humane.smps.dto.ExamDto;
 import com.humane.smps.dto.ScoreDto;
 import com.humane.smps.mapper.DataMapper;
 import lombok.Data;
@@ -334,6 +335,87 @@ public class DataService {
         return report;
     }
 
+    // 한양대 에리카 체육
+    public List<ColModel> getPhysicalModel() {
+        // 기본 생성
+        List<ColModel> colModels = new ArrayList<>();
+        colModels.add(new ColModel("admissionNm", "전형"));
+        colModels.add(new ColModel("typeNm", "계열"));
+        colModels.add(new ColModel("examDate", "시험일자"));
+        colModels.add(new ColModel("examTime", "시험시간"));
+        colModels.add(new ColModel("deptNm", "모집단위"));
+        colModels.add(new ColModel("majorNm", "전공"));
+        colModels.add(new ColModel("headNm", "고사본부"));
+        colModels.add(new ColModel("bldgNm", "고사건물"));
+        colModels.add(new ColModel("hallNm", "고사실"));
+        colModels.add(new ColModel("examineeCd", "수험번호"));
+        colModels.add(new ColModel("examineeNm", "수험생명"));
+        colModels.add(new ColModel("virtNo", "실기번호"));
+        colModels.add(new ColModel("groupNm", "조"));
+
+        List<ExamDto> examDto = mapper.ericaExamInfo("80%");
+
+        for (int i = 0; i < examDto.size(); i++) {
+            long itemCnt = mapper.ericaItemCnt(examDto.get(i).getExamCd());
+
+            colModels.add(new ColModel("scorerNm" + (i+1) + "1", "측정교수"));
+            colModels.add(new ColModel("scorerNm" + (i+1) + "2", "기록입력위원"));
+
+            for (int j = 1; j <= itemCnt; j++) {
+                if (itemCnt < 2) continue;
+                else colModels.add(new ColModel("score" + (i+1) + j, examDto.get(i).examNm + " 측정기록"));
+            }
+            colModels.add(new ColModel("total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), examDto.get(i).examNm + " 최고기록"));
+            colModels.add(new ColModel("scoreDttm" + (i+1), "채점시간"));
+            colModels.add(new ColModel("grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), "변환점수"));
+        }
+
+        return colModels;
+    }
+
+    public JasperReportBuilder getPhysicalReport() {
+        List<ExamDto> examDto = mapper.ericaExamInfo("80%");
+
+        JasperReportBuilder report = report()
+                .title(cmp.text("한양대 에리카 체육 산출물").setStyle(columnTitleStyle))
+                .columns(
+                        col.reportRowNumberColumn("번호").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(3),
+                        col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(15),
+                        col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5),
+                        col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5),
+                        col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(10),
+                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("실기번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("조", "groupNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(3)
+                )
+                .setPageMargin(DynamicReports.margin(0))
+                .setIgnorePageWidth(true)
+                .setIgnorePagination(true);
+
+        log.debug("{}", examDto);
+        for (int i = 0; i < examDto.size(); i++) {
+            long itemCnt = mapper.ericaItemCnt(examDto.get(i).getExamCd());
+
+            report.addColumn(col.column("측정교수", "scorerNm" + (i+1) + "1", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5));
+            report.addColumn(col.column("기록입력위원", "scorerNm" + (i+1) + "2", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+
+            for (int j = 1; j <= itemCnt; j++) {
+                if (itemCnt < 2) continue;
+                else report.addColumn(col.column(examDto.get(i).examNm + " 측정기록" + j, "score" + (i+1) + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(15));
+            }
+            report.addColumn(col.column(examDto.get(i).examNm + " 최고기록", "total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(17));
+            report.addColumn(col.column("채점시간", "scoreDttm" + (i+1), type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
+            report.addColumn(col.column("변환점수", "grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
+        }
+        return report;
+    }
+
     @Data
     private class ColModel {
         private String name;
@@ -419,7 +501,7 @@ public class DataService {
                         map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
 
                         String tmp = String.valueOf((score.get("totalScore")));
-                        if(!tmp.equals("결시")) {
+                        if (!tmp.equals("결시")) {
                             total += Long.parseLong(tmp);
                         }
                     }
@@ -499,6 +581,6 @@ public class DataService {
     public Page<Map<String, Object>> getDrawData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.drawData(param, pageable);
         return fillMap(page);
-       // return mapper.drawData(param, pageable);
+        // return mapper.drawData(param, pageable);
     }
 }

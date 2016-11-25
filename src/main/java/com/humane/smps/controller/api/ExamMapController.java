@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "api/examMap", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -47,6 +49,20 @@ public class ExamMapController {
         if(findMap != null) examMap.set_id(findMap.get_id());
 
         ExamMap rtn = repository.save(examMap);
+
+        // 하위 시험이 존재할 경우 하위 시험의 가번호를 강제로 설정한다.
+        String fkExamCd = examMap.getExam().getExamCd();
+        String virtNo = examMap.getVirtNo();
+
+        repository.findAll(new BooleanBuilder()
+                .and(qExamMap.examinee.eq(examMap.getExaminee()))
+                .and(qExamMap.exam.fkExam.examCd.eq(fkExamCd))
+                .and(qExamMap.hall.eq(examMap.getHall()))
+        ).forEach(examMap1 -> {
+            examMap1.setVirtNo(virtNo);
+            repository.save(examMap1);
+        });
+
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 

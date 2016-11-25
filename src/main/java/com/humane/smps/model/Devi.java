@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Cacheable
 public class Devi implements Serializable {
     @Id private String deviCd;
-    @ManyToOne @JoinColumn(name = "fkDeviCd") private Devi devi;
+    @ManyToOne @JoinColumn(name = "fkDeviCd") private Devi fkDevi;
 
     private String deviNm;
     @Column(columnDefinition = "int default 0") private int minScore;

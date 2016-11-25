@@ -100,7 +100,10 @@ public class DownloadController {
         fileHall.delete();
 
         // 1. xlsx 파일 생성
-        File fileGroup = JasperReportsExportHelper.toXlsxFile("jrxml/status-group.jrxml", statusMapper.group(new StatusGroupDto(), pageable).getContent());
+        File fileGroup = JasperReportsExportHelper.toXlsxFile(
+                "jrxml/status-group.jrxml"
+                , statusMapper.group(new StatusGroupDto(), pageable).getContent()
+        );
         zipFile.addFile(fileGroup);
         fileGroup.delete();
 
@@ -135,14 +138,13 @@ public class DownloadController {
         File fileMedScorerUploadReport = JasperReportsExportHelper.toXlsxFile("의대서류평가_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.medScoreUpload(new ScoreUploadDto(), pageable).getContent());
         zipFile.addFile(fileMedScorerUploadReport);
         fileMedScorerUploadReport.delete();
-*/
-/*
+
         File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileDrawReport);
         fileScorerReport.delete();
 */
 
-/*        // 나머지 가져오기
+        // 나머지 가져오기
         // 0. 폴더위치 지정
         String jpgPath = pathRoot + "/jpg";
         // 1. 사진 폴더 생성
@@ -152,9 +154,9 @@ public class DownloadController {
         // 1.2 사진 저장
         for (File f : jpgList) {
             if (f.isFile())
-                zipFile.addFile("평가위원 서명", f);
+                zipFile.addFile("수험생서명", f);
         }
-
+/*
         String pdfPath = pathRoot + "/pdf";
         // 2. pdf 폴더 생성
         File pdfFolder = new File(pdfPath);

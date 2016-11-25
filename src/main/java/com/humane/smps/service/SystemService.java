@@ -84,8 +84,8 @@ public class SystemService {
         } catch (Exception ignored) {
         }
         queryFactory.delete(QItem.item).execute();
-        queryFactory.delete(QDevi.devi1).where(QDevi.devi1.devi.isNotNull()).execute();
-        queryFactory.delete(QDevi.devi1).execute();
+        queryFactory.delete(QDevi.devi).where(QDevi.devi.isNotNull()).execute();
+        queryFactory.delete(QDevi.devi).execute();
 
 
         QExam exam = QExam.exam;

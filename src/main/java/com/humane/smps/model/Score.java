@@ -22,6 +22,7 @@ public class Score implements Serializable {
     @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
     @Column(nullable = false) private String virtNo;
     @Column(nullable = false) private String scorerNm;
+    @Column(nullable = true) private String scorerNm2;
 
     private String score01;
     private String score02;

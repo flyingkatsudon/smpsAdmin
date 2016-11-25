@@ -217,6 +217,24 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
+    @RequestMapping(value = "physical.{format:json|colmodel|xlsx}")
+    public ResponseEntity physicalReport(@PathVariable String format, physicalDto param, Pageable pageable) throws DRException, JRException {
+        switch (format) {
+            case COLMODEL:
+                return ResponseEntity.ok(dataService.getPhysicalModel());
+            case JSON:
+                return ResponseEntity.ok(mapper.physical(param, pageable));
+            default:
+                JasperReportBuilder report = dataService.getPhysicalReport();
+                report.setDataSource(mapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+                JasperPrint jasperPrint = report.toJasperPrint();
+                jasperPrint.setName("한양대 에리카 체육 산출물");
+
+                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        }
+    }
+
     // 초기에 시험이름, 시험코드를 불러옴
     @RequestMapping(value = "examInfo.json")
     public ResponseEntity examInfo() {

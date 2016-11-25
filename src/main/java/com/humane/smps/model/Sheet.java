@@ -19,6 +19,7 @@ public class Sheet {
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
     @Column(nullable = false) private String scorerNm;
+    @Column(nullable = true) private String scorerNm2;
     @Column(nullable = false) private Long sheetNo;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
