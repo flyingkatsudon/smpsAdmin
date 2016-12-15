@@ -92,8 +92,8 @@ public class DataService {
 
         colModels.add(new ColModel("totalScore", "총점"));
         /*colModels.add(new ColModel("memo", "메모"));
-        colModels.add(new ColModel("isPhoto", "사진"));
-        colModels.add(new ColModel("scoreDttm", "채점시간"));*/
+        colModels.add(new ColModel("isPhoto", "사진"));*/
+        colModels.add(new ColModel("scoreDttm", "채점시간"));
 
         return colModels;
     }
@@ -265,7 +265,7 @@ public class DataService {
         report.addColumn(col.column("총점", "totalScore", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         /*report.addColumn(col.column("메모", "memo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         report.addColumn(col.column("사진", "isPhoto", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));*/
-        /*report.addColumn(col.column("채점시간", "scoreDttm", type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));*/
+        report.addColumn(col.column("채점시간", "scoreDttm", type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
         return report;
 
     }

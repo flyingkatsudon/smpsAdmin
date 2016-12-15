@@ -22,6 +22,8 @@ public interface DataMapper {
 
     Page<physicalDto> physical(@Param("param") physicalDto param, @Param("pageable") Pageable pageable);
 
+    List<Map<String, String>> runningResult();
+
     long getScorerCnt();
 
     long getItemCnt();

@@ -84,6 +84,7 @@ public class SystemService {
         } catch (Exception ignored) {
         }
         queryFactory.delete(QItem.item).execute();
+        queryFactory.delete(QDevi.devi).where(QDevi.devi.fkDevi.isNotNull()).execute(); // added
         queryFactory.delete(QDevi.devi).where(QDevi.devi.isNotNull()).execute();
         queryFactory.delete(QDevi.devi).execute();
 
@@ -123,7 +124,7 @@ public class SystemService {
         QExamMap examMap = QExamMap.examMap;
 
         queryFactory.update(examMap)
-                //.setNull(examMap.virtNo)
+                .setNull(examMap.virtNo)
                 .setNull(examMap.scanDttm)
                 .setNull(examMap.photoNm)
                 .setNull(examMap.memo)

@@ -788,13 +788,13 @@
                   case
                     when total03 = '실격' or total03 is null
                     then total03
-                    else concat(floor(total03 / 60),':', lpad(floor(total03) % 60, 2, '0'), ':', substring(total03, instr(total03, '.')+1))
+                    else concat(lpad(floor(total03 / 60), 2, '0'),':', lpad(floor(total03) % 60, 2, '0'), ':', substring(total03, instr(total03, '.')+1))
                   end total03, grade03, score_dttm3
                     , result.scorer_nm41, result.scorer_nm42,
                   case
                     when total04 = '실격' or total04 is null
                     then total04
-                    else concat(floor(total04 / 60),':', lpad(floor(total04) % 60, 2, '0'), ':', substring(total04, instr(total04, '.')+1))
+                    else concat(lpad(floor(total04 / 60), 2, '0'),':', lpad(floor(total04) % 60, 2, '0'), ':', substring(total04, instr(total04, '.')+1))
                   end total04, grade04, score_dttm4
                 from exam_map
                 inner join exam on exam.exam_cd = exam_map.exam_cd and exam.fk_exam_cd is null
@@ -815,12 +815,12 @@
                 , score_dttm2
                 , scorer_nm31, scorer_nm32, total03
                 , if(total03 = '실격', '0'
-                    , (select grade from score_devi where a.exam_cd3 = exam_cd and a.gender = gender and total03 between min_score and max_score)
+        , if(total03 = '0.00', (select min(grade) from score_devi where a.exam_cd3 = exam_cd and a.gender = gender), (select grade from score_devi where a.exam_cd3 = exam_cd and a.gender = gender and total03 between min_score and max_score))
                     ) grade03
                 , score_dttm3
                 , scorer_nm41, scorer_nm42, total04
                 , if(total04 = '실격', '0'
-                    , (select grade from score_devi where a.exam_cd4 = exam_cd and a.gender = gender and total04 between min_score and max_score)
+        , if(total04 = '0.00', (select min(grade) from score_devi where a.exam_cd4 = exam_cd and a.gender = gender), (select grade from score_devi where a.exam_cd4 = exam_cd and a.gender = gender and total04 between min_score and max_score))
                     ) grade04
                 , score_dttm4
                 from ( select exam_map.examinee_cd, score.virt_no
@@ -878,6 +878,33 @@
                             </if>
                         </if>
                     </where>
+    </select>
+
+    <select id="runningResult" resultType="com.humane.util.CamelMap">
+        select examinee.examinee_cd
+                , case
+                    when total03 = '실격' or total03 is null
+                    then total03
+                    else concat(lpad(floor(total03 / 60),2,'0'),':', lpad(floor(total03) % 60, 2, '0'), ':', substring(total03, instr(total03, '.')+1))
+                  end total03
+                , case
+                    when total04 = '실격' or total04 is null
+                    then total04
+                    else concat(lpad(floor(total04 / 60),2,'0'),':', lpad(floor(total04) % 60, 2, '0'), ':', substring(total04, instr(total04, '.')+1))
+                  end total04
+            from exam_map
+            inner join exam on exam.exam_cd = exam_map.exam_cd and exam.fk_exam_cd is null
+            inner join examinee on examinee.examinee_cd = exam_map.examinee_cd
+            left join (select a.examinee_cd, a.virt_no, total03, total04
+                            from ( select exam_map.examinee_cd, score.virt_no
+                                        , min(if(score.exam_cd = '8013', total_score, null)) total03
+                                        , min(if(score.exam_cd = '8014', total_score, null)) total04
+                                        from score
+                                        inner join exam_map on exam_map.exam_cd = score.exam_cd and exam_map.virt_no = score.virt_no
+                                        inner join exam on exam.exam_cd = exam_map.exam_cd and exam.exam_cd = score.exam_cd
+                                        group by exam_map.examinee_cd) a
+            ) result on result.examinee_cd = exam_map.examinee_cd
+            where total03 is not null or total04 is not null
     </select>
 
     <select id="ericaExamInfo" resultType="com.humane.smps.dto.ExamDto">

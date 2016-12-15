@@ -13,8 +13,8 @@
                             <label>출력할 전형과 시험일자 및 계열을 선택하세요.</label>
                             <div style="float:right">
                                 <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
-                                <label for="attendDate">시험일자</label> <select id="attendDate"> </select>
-                                <label for="attendTime">시험시간</label> <select id="attendTime"> </select>
+                                <label for="examDate">시험일자</label> <select id="examDate"> </select>
+                                <label for="examTime">시험시간</label> <select id="examTime"> </select>
                             </div>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-lg-6">
-                    <h4 class="panel panel-heading"><label>경북대</label></h4>
+                    <h4 class="panel panel-heading"><label>경북대학교 전용</label></h4>
                 </div>
             </div>
             <div class="panel panel-default col-sm-6">
@@ -178,25 +178,31 @@
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-lg-6">
-                    <h4 class="panel panel-heading"><label>한양대 에리카</label></h4>
+                    <h4 class="panel panel-heading"><label>한양대학교(에리카) 체육실기 전용</label></h4>
                 </div>
             </div>
-            <div class="panel panel-default col-sm-6">
+            <div class="panel panel-default col-sm-4">
                 <div class="panel-body">
                     <form action="data/physical.xlsx" method="get">
-                        <span>체육 산출물</span>
+                        <span>기록점수</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
             </div>
-            <!--<div class="panel panel-default col-sm-6">
+            <div class="panel panel-default col-sm-4">
                 <div class="panel-body">
-                    <form action="data/signData.zip" method="get">
-                        <span>체육 수험생 서명</span>
+                    <span>달리기 기록</span>
+                    <a href="#data-report"><input id="txtDownload" type="submit" class="btn-download pull-right" style="padding: 6px 12px" value="다운로드"/></a>
+                </div>
+            </div>
+            <div class="panel panel-default col-sm-4">
+                <div class="panel-body">
+                    <form action="download/signData.zip" method="get">
+                        <span>수험생 서명</span>
                         <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
                     </form>
                 </div>
-            </div>-->
+            </div>
         </div>
         <div class="col-lg-12">
             <h4 class="page-header"><label>공통 다운로드</label></h4>

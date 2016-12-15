@@ -8,6 +8,8 @@ define(function (require) {
     var Toolbar = require('../dist/toolbar.js');
     var ToolbarModel = require('../model/model-status-toolbar.js');
 
+    var BootstrapDialog = require('bootstrap-dialog');
+
     return Toolbar.extend({
         initialize: function (o) {
             this.el = o.el;
@@ -17,24 +19,24 @@ define(function (require) {
         render: function () {
             this.$el.html(Template);
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime()));
         },
         events: {
             'click .btn': 'buttonClicked',
-            'click .noIdCard': 'noIdCardClicked',
+            'click #txtDownload': 'txtDownloadClicked',
             'change #admissionNm': 'admissionNmChanged',
-            'change #attendDate': 'attendDateChanged'
+            'change #examDate': 'examDateClicked'
         },
         buttonClicked: function (e) {
             e.preventDefault();
 
             var admissionNm = this.$('#admissionNm').val();
-            var attendDate = this.$('#attendDate').val();
-            var attendTime = this.$('#attendTime').val();
+            var examDate = this.$('#examDate').val();
+            var examTime = this.$('#examTime').val();
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionNm=" + admissionNm + "&attendTime=" + attendTime + "&attendDate=" + attendDate });
+            this.dlgDownload.render({url: url + "?admissionNm=" + admissionNm + "&examTime=" + examTime + "&examDate=" + examDate });
 
             return false;
         },
@@ -42,27 +44,29 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
+            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
         },
-        attendDateChanged: function (e) {
+        examDateClicked: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
-                attendDate: e.currentTarget.value
+                examDate: e.currentTarget.value
             };
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
+            this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
         },
-        noIdCardClicked: function (e) {
-            e.preventDefault();
-
-            var admissionNm = this.$('#admissionNm').val();
-            var attendDate = this.$('#attendDate').val();
-            var attendTime = this.$('#attendTime').val();
-
-            var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?isAttend=true" + "&admissionNm=" + admissionNm + "&attendTime=" + attendTime + "&attendDate=" + attendDate  });
-
-            return false;
+        txtDownloadClicked: function(e){
+            BootstrapDialog.show({
+                title: '텍스트파일 다운로드',
+                message: '다운로드가 완료되었습니다.',
+                closable: true,
+                onshow: function (dialog) {
+                    $.ajax({
+                        url: 'data/physical.txt',
+                        success: function (data) {
+                        }
+                    });
+                }
+            });
         }
     });
 });

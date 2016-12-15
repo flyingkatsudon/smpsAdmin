@@ -141,7 +141,7 @@ public class DownloadController {
 
         File fileDrawReport = JasperReportsExportHelper.toXlsxFile("동점자 현황", dataService.getDrawReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
         zipFile.addFile(fileDrawReport);
-        fileScorerReport.delete();
+        fileDrawReport.delete();
 */
 
         // 나머지 가져오기
@@ -241,6 +241,37 @@ public class DownloadController {
         headers.setContentType(MediaType.parseMediaType("application/zip"));
         headers.setContentLength(ba.length);
         headers.add("Content-Disposition", FileNameEncoder.encode("평가위원 데이터.zip"));
+
+        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "signData.zip", method = RequestMethod.GET)
+    public ResponseEntity signData() throws IOException, ZipException, DRException {
+
+        // 압축파일 생성
+        String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        File file = new File(currentTime + "_allData.zip");
+        ZipFile zipFile = new ZipFile(file);
+        zipFile.setFileNameCharset("EUC-KR");
+
+        File path = new File(pathRoot, "jpg");
+        if (!path.exists()) path.mkdirs();
+
+        File[] files = path.listFiles((dir, name) -> name.endsWith(".jpg"));
+        if(files != null && files.length > 0){
+            for(File f : files){
+                if (f.isFile())
+                    zipFile.addFile(f);
+            }
+        }
+
+        byte[] ba = file.exists() ? FileUtils.getByteArray(file) : null;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Set-Cookie", "fileDownload=true; path=/");
+        headers.setContentType(MediaType.parseMediaType("application/zip"));
+        headers.setContentLength(ba == null ? 0 : ba.length);
+        headers.add("Content-Disposition", FileNameEncoder.encode("수험생서명_에리카체육.zip"));
 
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }

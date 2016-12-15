@@ -13,6 +13,7 @@ import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +37,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 public class DataController {
     private static final String JSON = "json";
     private static final String COLMODEL = "colmodel";
+    private static final String TXT = "txt";
     private final DataService dataService;
     private final DataMapper mapper;
     private final ImageService imageService;
@@ -217,13 +218,74 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
-    @RequestMapping(value = "physical.{format:json|colmodel|xlsx}")
+    @RequestMapping(value = "physical.{format:json|colmodel|xlsx|txt}")
     public ResponseEntity physicalReport(@PathVariable String format, physicalDto param, Pageable pageable) throws DRException, JRException {
         switch (format) {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getPhysicalModel());
             case JSON:
-                return ResponseEntity.ok(mapper.physical(param, pageable));
+                return ResponseEntity.ok(mapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+            case TXT:
+                String userprofile = System.getenv("USERPROFILE");
+
+                List<Map<String, String>> runningResult = mapper.runningResult();
+
+                File file = new File(userprofile + "/Downloads/10m X 2회 왕복달리기_기록.txt");
+                int increase = 1;
+                while (file.exists()) {
+                    increase++;
+                    file = new File(userprofile + "/Downloads/10m X 2회 왕복달리기_기록(" + increase + ").txt");
+                }
+                if (!file.exists()) {
+                    try {
+                        //10m 기록 파일 생성
+                        StringBuffer sb = new StringBuffer();
+
+                        for (int i = 0; i < runningResult.size(); i++) {
+                            Map map = runningResult.get(i);
+                            if (map.get("total03") != null) {
+                                if (i == runningResult.size() - 1) sb.append(map.get("examineeCd") + "," + map.get("total03"));
+                                else sb.append(map.get("examineeCd") + "," + map.get("total03") + ",");
+                                sb.append(System.getProperty("line.separator"));
+                            }
+                        }
+                        file.createNewFile();
+
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+
+                        bw.write(sb.toString());
+                        bw.close();
+                    } catch (IOException e) {
+                    }
+                }
+
+                File file2 = new File(userprofile + "/Downloads/25m X 4회 왕복달리기_기록.txt");
+                increase = 1;
+                while (file2.exists()) {
+                    increase++;
+                    file2 = new File(userprofile + "/Downloads/25m X 4회 왕복달리기_기록(" + increase + ").txt");
+                }
+                if (!file2.exists()) {
+                    try {
+                        //10m 기록 파일 생성
+                        StringBuffer sb2 = new StringBuffer();
+
+                        for (int i = 0; i < runningResult.size(); i++) {
+                            Map map = runningResult.get(i);
+                            if (i == runningResult.size() - 1) sb2.append(map.get("examineeCd") + "," + map.get("total04"));
+                            else sb2.append(map.get("examineeCd") + "," + map.get("total04") + ",");
+                            sb2.append(System.getProperty("line.separator"));
+                        }
+                        file2.createNewFile();
+
+                        BufferedWriter bw2 = new BufferedWriter(new FileWriter(file2.getAbsoluteFile()));
+
+                        bw2.write(sb2.toString());
+                        bw2.close();
+                    } catch (IOException e) {
+                    }
+                }
+                return ResponseEntity.ok("완료되었습니다");
             default:
                 JasperReportBuilder report = dataService.getPhysicalReport();
                 report.setDataSource(mapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
