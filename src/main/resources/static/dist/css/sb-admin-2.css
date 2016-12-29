@@ -236,12 +236,14 @@ body {
 }
 
 .login-title {
-    font-size: 20px;
+    font-size: 30px;
     font-weight:bold;
 }
 
 .login-btn {
     margin-top: 20%;
+    color: #fff;
+    background-color: #07312d;
 }
 
 .login-footer {
