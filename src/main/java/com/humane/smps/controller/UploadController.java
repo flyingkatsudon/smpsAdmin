@@ -140,6 +140,7 @@ public class UploadController {
                 Exam exam = mapper.convertValue(uploadHallDto, Exam.class);
 
                 exam = examRepository.findOne(new BooleanBuilder()
+                        .and(QExam.exam.examCd.eq(exam.getExamCd()))
                         .and(QExam.exam.examNm.eq(exam.getExamNm()))
                         .and(QExam.exam.examDate.eq(exam.getExamDate()))
                         .and(QExam.exam.examTime.eq(exam.getExamTime()))
