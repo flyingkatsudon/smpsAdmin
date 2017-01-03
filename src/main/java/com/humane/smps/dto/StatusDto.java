@@ -20,6 +20,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StatusDto implements Serializable {
     private String userAdmissions;
+    private String univCd;
+    private String admissionCd;
     private String admissionNm;
     private String typeNm;
     private String examCd;

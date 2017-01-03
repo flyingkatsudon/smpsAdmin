@@ -10,4 +10,6 @@ import java.util.List;
 public interface ModelMapper {
 
     List<StatusDto> toolbar(@Param("param") StatusDto param);
+
+    List<StatusDto> reportToolbar(@Param("param") StatusDto param);
 }

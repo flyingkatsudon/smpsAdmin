@@ -26,7 +26,7 @@ public class SystemController {
 
     @RequestMapping(value = "server.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listServer() {
-        ApiService apiService = ServiceBuilder.INSTANCE.createService("http://humane.ipdisk.co.kr:10000", ApiService.class);
+        ApiService apiService = ServiceBuilder.INSTANCE.createService("http://update.humanesystem.com:10000", ApiService.class);
         try {
             return ResponseEntity.ok(apiService.checkUrl().toBlocking().first());
         } catch (Exception e) {

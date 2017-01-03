@@ -367,7 +367,7 @@ public class DataService {
             }
             colModels.add(new ColModel("total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), examDto.get(i).examNm + " 최고기록"));
             colModels.add(new ColModel("scoreDttm" + (i+1), "채점시간"));
-            colModels.add(new ColModel("grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), "변환점수"));
+            /*colModels.add(new ColModel("grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), "변환점수"));*/
         }
 
         return colModels;
@@ -411,7 +411,7 @@ public class DataService {
             }
             report.addColumn(col.column(examDto.get(i).examNm + " 최고기록", "total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(17));
             report.addColumn(col.column("채점시간", "scoreDttm" + (i+1), type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
-            report.addColumn(col.column("변환점수", "grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
+            /*report.addColumn(col.column("변환점수", "grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));*/
         }
         return report;
     }

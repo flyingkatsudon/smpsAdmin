@@ -25,4 +25,10 @@ public class ModelController {
     public ResponseEntity toolbar(StatusDto statusDto) {
         return ResponseEntity.ok(mapper.toolbar(statusDto));
     }
+
+    @RequestMapping(value = "reportToolbar.json")
+    public ResponseEntity reportToolbar(StatusDto statusDto, String admissionCd) {
+        statusDto.setAdmissionCd(admissionCd);
+        return ResponseEntity.ok(mapper.reportToolbar(statusDto));
+    }
 }

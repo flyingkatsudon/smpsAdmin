@@ -7,6 +7,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ScoreUploadDto {
     private String userAdmissions;
+    private String admissionNm;
     private String year;
     private String examineeCd;
     private String isAttend;

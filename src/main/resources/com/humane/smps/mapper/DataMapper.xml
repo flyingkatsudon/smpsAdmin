@@ -657,6 +657,14 @@
                                  ) sc
                           inner join item on sc.exam_cd = item.exam_cd) a
                on exam_map.exam_cd = a.exam_cd and exam_map.virt_no = a.virt_no
+               inner join exam on exam.exam_cd = exam_map.exam_cd
+               inner join admission on admission.admission_cd = exam.admission_cd
+                <where>
+                       <if test="param != null">
+                           <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                           <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                       </if>
+                </where>
         order by examinee_cd, scorer_nm, i
     </select>
 
@@ -701,6 +709,16 @@
                     union all select 'A043704', '이광걸'
                     ) b
                     on a.scorer_nm = b.scorer_nm
+
+       <!-- inner join exam on exam.exam_cd = exam_map.exam_cd
+        inner join admission on admission.admission_cd = exam.admission_cd
+        <where>
+            <if test="param != null">
+                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
+            </if>
+        </where>
+-->
         order by examinee_cd, scorer_cd, i
     </select>
 
@@ -759,7 +777,7 @@
                ) b on a.scorer_nm = b.scorer_nm
         order by examinee_cd, scorer_cd, i
     </select>
-
+<!--
     <select id="physical" resultType="com.humane.smps.dto.physicalDto">
         select admission.admission_nm
                 , exam.exam_cd
@@ -879,7 +897,109 @@
                         </if>
                     </where>
     </select>
-
+-->
+    <select id="physical" resultType="com.humane.smps.dto.physicalDto">
+        select admission.admission_nm
+                , exam.exam_cd
+                , exam.type_nm
+                , exam_hall_date.hall_date as exam_date
+                , case
+                when exam_map.group_nm = 'A1' then '08:30'
+                when exam_map.group_nm = 'A2' then '12:30'
+                when exam_map.group_nm = 'A3' then '17:00'
+                when exam_map.group_nm = 'B1' then '08:30'
+                when exam_map.group_nm = 'B2' then '12:30'
+                when exam_map.group_nm = 'B3' then '17:00'
+                end as exam_time
+                , examinee.dept_nm
+                , examinee.major_nm
+                , hall.head_nm
+                , hall.bldg_nm
+                , hall.hall_nm
+                , examinee.examinee_cd
+                , examinee.examinee_nm
+                , exam_map.virt_no
+                , exam_map.group_nm
+                , result.scorer_nm11, result.scorer_nm12, result.score11, score12, total01, score_dttm1
+                , result.scorer_nm21, result.scorer_nm22, result.score21, score22, total02, score_dttm2
+                , result.scorer_nm31, result.scorer_nm32,
+                case
+                when total03 = '실격' or total03 is null
+                then total03
+                else concat(lpad(floor(total03 / 60), 2, '0'),':', lpad(floor(total03) % 60, 2, '0'), ':', substring(total03, instr(total03, '.')+1))
+                end total03, score_dttm3
+                , result.scorer_nm41, result.scorer_nm42,
+                case
+                when total04 = '실격' or total04 is null
+                then total04
+                else concat(lpad(floor(total04 / 60), 2, '0'),':', lpad(floor(total04) % 60, 2, '0'), ':', substring(total04, instr(total04, '.')+1))
+                end total04, score_dttm4
+                from exam_map
+                inner join exam on exam.exam_cd = exam_map.exam_cd and exam.fk_exam_cd is null
+                inner join admission on admission.admission_cd = exam.admission_cd
+                inner join examinee on examinee.examinee_cd = exam_map.examinee_cd
+                inner join hall on hall.hall_cd = exam_map.hall_cd
+                INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
+                left join (select a.examinee_cd, a.virt_no
+                                    , scorer_nm11, scorer_nm12, score11, score12, total01, score_dttm1
+                                    , scorer_nm21, scorer_nm22, score21, score22, total02, score_dttm2
+                                    , scorer_nm31, scorer_nm32, total03, score_dttm3
+                                    , scorer_nm41, scorer_nm42, total04, score_dttm4
+                            from ( select exam_map.examinee_cd, score.virt_no
+                                            , substring(exam_map.examinee_cd, 5, 1) gender
+                                            , min(if(score.exam_cd = '8021', score.scorer_nm, null)) scorer_nm11
+                                            , min(if(score.exam_cd = '8021', score.scorer_nm2, null)) scorer_nm12
+                                            , min(if(score.exam_cd = '8021', score.exam_cd, null)) exam_cd1
+                                            , min(if(score.exam_cd = '8021', score01, null)) score11
+                                            , min(if(score.exam_cd = '8021', score02, null)) score12
+                                            , min(if(score.exam_cd = '8021', total_score, null)) total01
+                                            , min(if(score.exam_cd = '8021', score.score_dttm, null)) score_dttm1
+                                            , min(if(score.exam_cd = '8022', score.scorer_nm, null)) scorer_nm21
+                                            , min(if(score.exam_cd = '8022', score.scorer_nm2, null)) scorer_nm22
+                                            , min(if(score.exam_cd = '8022', score.exam_cd, null)) exam_cd2
+                                            , min(if(score.exam_cd = '8022', score01, null)) score21
+                                            , min(if(score.exam_cd = '8022', score02, null)) score22
+                                            , min(if(score.exam_cd = '8022', total_score, null)) total02
+                                            , min(if(score.exam_cd = '8022', score.score_dttm, null)) score_dttm2
+                                            , min(if(score.exam_cd = '8023', score.scorer_nm, null)) scorer_nm31
+                                            , min(if(score.exam_cd = '8023', score.scorer_nm2, null)) scorer_nm32
+                                            , min(if(score.exam_cd = '8023', score.exam_cd, null)) exam_cd3
+                                            , min(if(score.exam_cd = '8023', total_score, null)) total03
+                                            , min(if(score.exam_cd = '8023', score.score_dttm, null)) score_dttm3
+                                            , min(if(score.exam_cd = '8024', score.scorer_nm, null)) scorer_nm41
+                                            , min(if(score.exam_cd = '8024', score.scorer_nm2, null)) scorer_nm42
+                                            , min(if(score.exam_cd = '8024', score.exam_cd, null)) exam_cd4
+                                            , min(if(score.exam_cd = '8024', total_score, null)) total04
+                                            , min(if(score.exam_cd = '8024', score.score_dttm, null)) score_dttm4
+                                    from score
+                                    inner join exam_map on exam_map.exam_cd = score.exam_cd and exam_map.virt_no = score.virt_no
+                                    inner join exam on exam.exam_cd = exam_map.exam_cd and exam.exam_cd = score.exam_cd
+                                    where score.exam_cd in ('8021', '8022', '8023', '8024')
+                                    group by exam_map.examinee_cd) a
+                            ) result on result.examinee_cd = exam_map.examinee_cd
+                <where> AND exam.exam_cd = '8021'
+                <if test="param != null">
+                    <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                    <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                    <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
+                    <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
+                    <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
+                    <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                    <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                    <if test="param.groupNm != null">AND exam_map.group_nm LIKE '%' #{param.groupNm} '%' </if>
+                    <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                    <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                    <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                    <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%' </if>
+                    <if test="param.examineeCd != null">AND examinee.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
+                    <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
+                    <if test="param.isVirtNo != null">
+                        <if test="param.isVirtNo == true">AND exam_map.virt_no IS NOT NULL</if>
+                        <if test="param.isVirtNo == false">AND exam_map.virt_no IS NULL</if>
+                    </if>
+                </if>
+            </where>
+    </select>
     <select id="runningResult" resultType="com.humane.util.CamelMap">
         select examinee.examinee_cd
                 , case
