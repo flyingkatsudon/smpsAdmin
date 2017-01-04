@@ -76,8 +76,28 @@ public class DownloadController {
     }
 
     @RequestMapping(value = "allData.zip", method = RequestMethod.GET)
-    public ResponseEntity allData() throws IOException, ZipException, DRException {
+    public ResponseEntity allData(StatusDto statusDto) throws IOException, ZipException, DRException {
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
+
+        StatusDeptDto statusDeptDto = new StatusDeptDto();
+        statusDeptDto.setAdmissionNm(statusDto.getAdmissionNm());
+        statusDeptDto.setExamDate(statusDto.getExamDate());
+
+        StatusMajorDto statusMajorDto = new StatusMajorDto();
+        statusMajorDto.setAdmissionNm(statusDto.getAdmissionNm());
+        statusMajorDto.setExamDate(statusDto.getExamDate());
+
+        StatusHallDto statusHallDto = new StatusHallDto();
+        statusHallDto.setAdmissionNm(statusDto.getAdmissionNm());
+        statusHallDto.setExamDate(statusDto.getExamDate());
+
+        StatusGroupDto statusGroupDto = new StatusGroupDto();
+        statusGroupDto.setAdmissionNm(statusDto.getAdmissionNm());
+        statusGroupDto.setExamDate(statusDto.getExamDate());
+
+        ScoreDto scoreDto = new ScoreDto();
+        scoreDto.setAdmissionNm(statusDto.getAdmissionNm());
+        scoreDto.setExamDate(statusDto.getExamDate());
 
         // 압축파일 생성
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -86,24 +106,21 @@ public class DownloadController {
         zipFile.setFileNameCharset("EUC-KR");
 
         // entry 생성
-        File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(new StatusDeptDto(), pageable).getContent());
+        File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(statusDeptDto, pageable).getContent());
         zipFile.addFile(fileDept);
         fileDept.delete();
 
-        File fileMajor = JasperReportsExportHelper.toXlsxFile("jrxml/status-major.jrxml", statusMapper.major(new StatusMajorDto(), pageable).getContent());
+        File fileMajor = JasperReportsExportHelper.toXlsxFile("jrxml/status-major.jrxml", statusMapper.major(statusMajorDto, pageable).getContent());
         zipFile.addFile(fileMajor);
         fileMajor.delete();
 
         //1. xlsx 파일 생성
-        File fileHall = JasperReportsExportHelper.toXlsxFile("jrxml/status-hall.jrxml", statusMapper.hall(new StatusHallDto(), pageable).getContent());
+        File fileHall = JasperReportsExportHelper.toXlsxFile("jrxml/status-hall.jrxml", statusMapper.hall(statusHallDto, pageable).getContent());
         zipFile.addFile(fileHall);
         fileHall.delete();
 
         // 1. xlsx 파일 생성
-        File fileGroup = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/status-group.jrxml"
-                , statusMapper.group(new StatusGroupDto(), pageable).getContent()
-        );
+        File fileGroup = JasperReportsExportHelper.toXlsxFile("jrxml/status-group.jrxml", statusMapper.group(statusGroupDto, pageable).getContent());
         zipFile.addFile(fileGroup);
         fileGroup.delete();
 
@@ -111,15 +128,15 @@ public class DownloadController {
         zipFile.addFile(fileExamineeReport);
         fileExamineeReport.delete();*/
 
-        File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examMap(new ScoreDto(), pageable).getContent());
+        File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examMap(scoreDto, pageable).getContent());
         zipFile.addFile(fileVirtNoReport);
         fileVirtNoReport.delete();
 
-        File fileScorerHReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(가로)", dataService.getScorerHReport(), dataService.getScorerHData(new ScoreDto(), pageable).getContent());
+        File fileScorerHReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(가로)", dataService.getScorerHReport(), dataService.getScorerHData(scoreDto, pageable).getContent());
         zipFile.addFile(fileScorerHReport);
         fileScorerHReport.delete();
 
-        File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(new ScoreDto(), pageable).getContent());
+        File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(scoreDto, pageable).getContent());
         zipFile.addFile(fileScorerReport);
         fileScorerReport.delete();
 /*

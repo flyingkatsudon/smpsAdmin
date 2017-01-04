@@ -353,7 +353,7 @@ public class DataService {
         colModels.add(new ColModel("virtNo", "실기번호"));
         colModels.add(new ColModel("groupNm", "조"));
 
-        List<ExamDto> examDto = mapper.ericaExamInfo("80%");
+        List<ExamDto> examDto = mapper.ericaExamInfo("802%");
 
         for (int i = 0; i < examDto.size(); i++) {
             long itemCnt = mapper.ericaItemCnt(examDto.get(i).getExamCd());
@@ -374,7 +374,7 @@ public class DataService {
     }
 
     public JasperReportBuilder getPhysicalReport() {
-        List<ExamDto> examDto = mapper.ericaExamInfo("80%");
+        List<ExamDto> examDto = mapper.ericaExamInfo("802%");
 
         JasperReportBuilder report = report()
                 .title(cmp.text("한양대 에리카 체육 산출물").setStyle(columnTitleStyle))
