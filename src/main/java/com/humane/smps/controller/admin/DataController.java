@@ -243,7 +243,7 @@ public class DataController {
 
                         for (int i = 0; i < runningResult.size(); i++) {
                             Map map = runningResult.get(i);
-                            if (map.get("total03") != null) {
+                            if (map.get("total03") != null && !map.get("total03").equals("미응시") && !map.get("total03").equals("실격")) {
                                 if (i == runningResult.size() - 1) sb.append(map.get("examineeCd") + "," + map.get("total03"));
                                 else sb.append(map.get("examineeCd") + "," + map.get("total03") + ",");
                                 sb.append(System.getProperty("line.separator"));
@@ -272,9 +272,12 @@ public class DataController {
 
                         for (int i = 0; i < runningResult.size(); i++) {
                             Map map = runningResult.get(i);
-                            if (i == runningResult.size() - 1) sb2.append(map.get("examineeCd") + "," + map.get("total04"));
-                            else sb2.append(map.get("examineeCd") + "," + map.get("total04") + ",");
-                            sb2.append(System.getProperty("line.separator"));
+                            if (map.get("total04") != null && !map.get("total04").equals("미응시") && !map.get("total04").equals("실격")) {
+                                if (i == runningResult.size() - 1)
+                                    sb2.append(map.get("examineeCd") + "," + map.get("total04"));
+                                else sb2.append(map.get("examineeCd") + "," + map.get("total04") + ",");
+                                sb2.append(System.getProperty("line.separator"));
+                            }
                         }
                         file2.createNewFile();
 
