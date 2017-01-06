@@ -34,6 +34,7 @@ public class FormItemVo {
     @Column(name = "가번호 할당 방식") private String virtNoType;
     @Column(name = "총점") private String totScore;
     @Column(name = "결시버튼 사용여부") private Boolean isAbsence;
+    @Column(name = "마감데이터 사용여부") private Boolean isClosedView;
     @Column(name = "가번호 자동여부") private Boolean isMgrAuto;
     @Column(name = "가번호 표시 자릿수") private String virtNoDigits;
     @Column(name = "수험번호 자릿수") private String examineeLen;
