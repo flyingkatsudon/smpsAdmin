@@ -72,7 +72,7 @@
          FROM (
             SELECT
                 admission.admission_nm,
-                exam.exam_nm,
+              --  exam.exam_nm,
                 exam.type_nm,
                 exam_hall_date.hall_date AS exam_date,
                 examinee.dept_nm,
@@ -101,7 +101,7 @@
                 admission.admission_nm,
                 exam.type_nm,
                 exam_hall_date.hall_date,
-                exam.exam_nm,
+         --       exam.exam_nm,
                 examinee.dept_nm
             ) AS result
     </select>
@@ -159,7 +159,7 @@
         FROM (
             SELECT
                 admission.admission_nm,
-                exam.exam_nm,
+              --  exam.exam_nm,
                 exam.type_nm,
                 exam_hall_date.hall_date AS exam_date,
                 hall.head_nm,
@@ -192,7 +192,7 @@
                 admission.admission_nm,
                 exam.type_nm,
                 exam_hall_date.hall_date,
-                exam.exam_nm,
+           --     exam.exam_nm,
                 hall.head_nm,
                 hall.bldg_nm,
                 hall.hall_nm
