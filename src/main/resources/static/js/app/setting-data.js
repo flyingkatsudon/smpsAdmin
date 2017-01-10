@@ -9,6 +9,7 @@ define(function (require) {
     var BootstrapDialog = require('bootstrap-dialog');
     var List = require('../grid/system-download.js');
     var dlgUniv = require('text!tpl/dlg-univ.html');
+    var examList = [];
 
     return Backbone.View.extend({
         initialize: function (o) {
@@ -229,15 +230,72 @@ define(function (require) {
                 }
             });
         }, initClicked: function (e) {
+            var text = '<select id="examCd"><option value="">전체</option>';
+
             BootstrapDialog.show({
                 title: '서버 데이터 관리',
-                message: '가번호 및 점수 데이터를 초기화 하시겠습니까?',
+                //message: '가번호 및 점수 데이터를 초기화 하시겠습니까?',
+                message: '초기화할 시험을 선택하세요.' +  this.getExamList(text),
                 closable: true,
                 buttons: [
+                    {
+                        label: '계속',
+                        cssClass: 'btn-primary',
+                        action: function(dialog){
+                            var examCd = $('#examCd').val();
+                            var examNm = '';
+
+                            for(var i = 0; i < examList.length; i++){
+                                if(examList[i].examCd == examCd)
+                                    examNm = examList[i].examNm;
+                            }
+
+                            dialog.close();
+                            BootstrapDialog.show({
+                                title: '서버 데이터 관리',
+                                message: examNm + ' 시험의 가번호와 점수를 초기화 하시겠습니까?',
+                                closable: false,
+                                buttons: [
+                                    {
+                                        label: '초기화',
+                                        cssClass: 'btn-primary',
+                                        action: function(dialog){
+                                            $.ajax({
+                                                url: 'system/init?examCd=' + examCd,
+                                                success: function (data) {
+                                                    BootstrapDialog.closeAll();
+                                                    BootstrapDialog.show({
+                                                        title: '서버 데이터 관리',
+                                                        message: '완료되었습니다.',
+                                                        closable: true,
+                                                        buttons: [{
+                                                            label: '확인',
+                                                            action: function (dialog) {
+                                                                dialog.close();
+                                                            }
+                                                        }]
+                                                    });
+                                                }
+                                            });
+                                            dialog.close();
+                                        }
+                                    },{
+                                        label: '닫기',
+                                        action: function(dialog){
+                                            dialog.close();
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+                    },
+                    /*
                     {
                         label: '초기화',
                         cssClass: 'btn-primary',
                         action: function () {
+                            var examCd = this.$('#examCd').val();
+
                             BootstrapDialog.closeAll();
                             BootstrapDialog.show({
                                 title: '서버 데이터 관리',
@@ -262,7 +320,7 @@ define(function (require) {
                                 }
                             });
                         }
-                    },
+                    },*/
                     {
                         label: '닫기',
                         action: function (dialog) {
@@ -274,20 +332,9 @@ define(function (require) {
         }, fillClicked: function (e) {
             var text = '<select id="examCd"><option value="">선택하세요</option>';
 
-            $.ajax({
-                url: 'data/examInfo.json',
-                async: false,
-                success: function (response) {
-                    for (var i = 0; i < response.length; i++) {
-                        text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>'
-                    }
-                    text += '</select>';
-                }
-            });
-
             BootstrapDialog.show({
                 title: '가번호 / 답안지 번호 / 점수',
-                message: '입력할 시험을 선택하세요 ' + text,
+                message: '입력할 시험을 선택하세요 ' + this.getExamList(text),
                 closable: true,
                 buttons: [
                     {
@@ -417,6 +464,19 @@ define(function (require) {
                     }
                 ]
             });
+        }, getExamList: function(text){
+            $.ajax({
+                url: 'data/examInfo.json',
+                async: false,
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>'
+                        examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
+                    }
+                    text += '</select>';
+                }
+            });
+            return text;
         }
     });
 });

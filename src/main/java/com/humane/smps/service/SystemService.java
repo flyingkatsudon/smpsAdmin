@@ -114,22 +114,38 @@ public class SystemService {
     }
 
     @Transactional
-    public void initData() throws IOException {
+    public void initData(String examCd) throws IOException {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        queryFactory.delete(QSheet.sheet).execute();
-        queryFactory.delete(QScoreLog.scoreLog).execute();
-        queryFactory.delete(QScore.score).execute();
+        if(examCd != null) {
+            queryFactory.delete(QSheet.sheet).where(QSheet.sheet.exam.examCd.eq(examCd)).execute();
+            queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
+            queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();
 
-        QExamMap examMap = QExamMap.examMap;
+            QExamMap examMap = QExamMap.examMap;
 
-        queryFactory.update(examMap)
-                .setNull(examMap.virtNo)
-                .setNull(examMap.scanDttm)
-                .setNull(examMap.photoNm)
-                .setNull(examMap.memo)
-                .setNull(examMap.evalCd)
-                .execute();
+            queryFactory.update(examMap)
+                    .setNull(examMap.virtNo)
+                    .setNull(examMap.scanDttm)
+                    .setNull(examMap.photoNm)
+                    .setNull(examMap.memo)
+                    .setNull(examMap.evalCd)
+                    .where(examMap.exam.examCd.eq(examCd))
+                    .execute();
+        }else{
+            queryFactory.delete(QSheet.sheet).execute();
+            queryFactory.delete(QScoreLog.scoreLog).execute();
+            queryFactory.delete(QScore.score).execute();
+
+            QExamMap examMap = QExamMap.examMap;
+            queryFactory.update(examMap)
+                    .setNull(examMap.virtNo)
+                    .setNull(examMap.scanDttm)
+                    .setNull(examMap.photoNm)
+                    .setNull(examMap.memo)
+                    .setNull(examMap.evalCd)
+                    .execute();
+        }
 
         deleteFiles(pathJpg, pathPdf);
     }

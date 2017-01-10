@@ -83,7 +83,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "init")
-    public void init() throws IOException {
-        systemService.initData();
+    public void init(String examCd) throws IOException {
+        systemService.initData(examCd);
     }
 }
