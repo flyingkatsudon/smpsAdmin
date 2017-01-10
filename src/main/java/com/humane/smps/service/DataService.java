@@ -250,7 +250,7 @@ public class DataService {
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         /*col.column("답안지번호", "evalCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
-                        /*col.column("조", "groupNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
+                        col.column("조", "groupNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("평가위원", "scorerNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
                 )
                 .setPageMargin(DynamicReports.margin(0))
@@ -532,7 +532,7 @@ public class DataService {
         colModels.add(new ColModel("examineeCd", "수험번호"));
         colModels.add(new ColModel("examineeNm", "수험생명"));
         colModels.add(new ColModel("virtNo", "가번호"));
-        /*colModels.add(new ColModel("groupNm", "조"));*/
+        colModels.add(new ColModel("groupNm", "조"));
 
         long scorerCnt = mapper.getScorerCnt(); // 채점자수
         long itemCnt = mapper.getItemCnt(); // 항목수
