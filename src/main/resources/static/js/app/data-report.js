@@ -162,7 +162,7 @@ define(function (require) {
             e.preventDefault();
 
             var param = {
-                admissionNm: this.getAdmissionNm(this.$('#admissionCd').val()),
+                admissionNm: this.getAdmissionNm(this.$('#admissionNm').val()),
                 examDate: this.$('#examDate').val(),
                 examTime: this.$('#examTime').val()
             };

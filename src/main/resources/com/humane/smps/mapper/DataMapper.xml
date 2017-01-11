@@ -635,7 +635,32 @@
             		INNER JOIN admission ON admission.admission_cd = exam.admission_cd
             		INNER JOIN examinee ON examinee.examinee_cd = e.examinee_cd
             		INNER JOIN exam_map ON exam_map.examinee_cd = e.examinee_cd
-
+                    INNER JOIN hall ON hall.hall_cd = e.hall_cd
+        <if test="param != null">
+            <where>
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
+                <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
+                <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
+                <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%'</if>
+                <if test="param.examineeCd != null">AND exam_map.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
+                <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.scorerNm != null">
+                    AND (e.scorer_nm1 LIKE '%' #{param.scorerNm} '%'
+                          OR e.scorer_nm2 LIKE '%' #{param.scorerNm} '%'
+                          OR e.scorer_nm3 LIKE '%' #{param.scorerNm} '%'
+                          OR e.scorer_nm4 LIKE '%' #{param.scorerNm} '%'
+                          OR e.scorer_nm5 LIKE '%' #{param.scorerNm} '%')
+                </if>
+                <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
+            </where>
+        </if>
     </select>
 
     <!-- total_score까지 전송된 경우, 경북대 면접 적용 -->

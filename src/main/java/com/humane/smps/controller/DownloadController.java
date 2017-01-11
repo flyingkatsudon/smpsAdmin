@@ -160,7 +160,7 @@ public class DownloadController {
         zipFile.addFile(fileDrawReport);
         fileDrawReport.delete();
 */
-
+/*
         // 나머지 가져오기
         // 0. 폴더위치 지정
         String jpgPath = pathRoot + "/jpg";
@@ -172,7 +172,7 @@ public class DownloadController {
         for (File f : jpgList) {
             if (f.isFile())
                 zipFile.addFile("수험생서명", f);
-        }
+        }*/
 /*
         String pdfPath = pathRoot + "/pdf";
         // 2. pdf 폴더 생성

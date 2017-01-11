@@ -41,6 +41,7 @@ define(function (require) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
                     typeNm: _this.$('#typeNm').val(),
+                    examDate: _this.$('#examDate').val(),
                     deptNm: _this.$('#deptNm').val(),
                     majorNm: _this.$('#majorNm').val(),
                     headNm: _this.$('#headNm').val(),

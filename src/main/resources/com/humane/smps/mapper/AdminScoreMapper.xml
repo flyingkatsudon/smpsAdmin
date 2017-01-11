@@ -27,6 +27,7 @@
                 <if test="param.isCancel == true">AND sheet.cancel_dttm IS NOT NULL</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
+                <if test="param.examDate != null">AND exam_hall_date.hall_date = #{param.examDate}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
                 <if test="param.sheetNo != null">AND sheet.sheet_no = #{param.sheetNo}</if>
@@ -51,7 +52,7 @@
             exam_map.virt_no,
             exam_map.hall_date AS exam_date,
             a.scorer_nm,
-            a.update_cnt
+            a.update_cnt - 1 as update_cnt
         FROM (
                 SELECT
                     score_log.exam_cd,

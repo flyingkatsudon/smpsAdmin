@@ -289,38 +289,6 @@ define(function (require) {
                             });
                         }
                     },
-                    /*
-                    {
-                        label: '초기화',
-                        cssClass: 'btn-primary',
-                        action: function () {
-                            var examCd = this.$('#examCd').val();
-
-                            BootstrapDialog.closeAll();
-                            BootstrapDialog.show({
-                                title: '서버 데이터 관리',
-                                message: '진행 중입니다. 잠시만 기다려주세요.',
-                                closable: false
-                            });
-                            $.ajax({
-                                url: 'system/init',
-                                success: function (data) {
-                                    BootstrapDialog.closeAll();
-                                    BootstrapDialog.show({
-                                        title: '서버 데이터 관리',
-                                        message: '완료되었습니다.',
-                                        closable: true,
-                                        buttons: [{
-                                            label: '확인',
-                                            action: function (dialog) {
-                                                dialog.close();
-                                            }
-                                        }]
-                                    });
-                                }
-                            });
-                        }
-                    },*/
                     {
                         label: '닫기',
                         action: function (dialog) {
