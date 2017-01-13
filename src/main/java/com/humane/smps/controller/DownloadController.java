@@ -160,19 +160,24 @@ public class DownloadController {
         zipFile.addFile(fileDrawReport);
         fileDrawReport.delete();
 */
-/*
         // 나머지 가져오기
         // 0. 폴더위치 지정
         String jpgPath = pathRoot + "/jpg";
         // 1. 사진 폴더 생성
         File jpgFolder = new File(jpgPath);
-        // 1.1 사진 가져옴
-        File[] jpgList = jpgFolder.listFiles();
-        // 1.2 사진 저장
-        for (File f : jpgList) {
-            if (f.isFile())
-                zipFile.addFile("수험생서명", f);
-        }*/
+
+        if(jpgFolder.exists()) {
+            // 1.1 사진 가져옴
+            File[] jpgList = jpgFolder.listFiles();
+            if(jpgList != null) {
+                // 1.2 사진 저장
+                for (File f : jpgList) {
+                    if (f.isFile())
+                        zipFile.addFile("수험생서명", f);
+                }
+            }
+        }
+        else jpgFolder.mkdirs();
 /*
         String pdfPath = pathRoot + "/pdf";
         // 2. pdf 폴더 생성
@@ -183,7 +188,8 @@ public class DownloadController {
         for (File f : pdfList) {
             if (f.isFile())
                 zipFile.addFile("평가위원 평가표", f);
-        }*/
+        }
+*/
 
         byte[] ba = FileUtils.getByteArray(zipFile.getFile());
 
