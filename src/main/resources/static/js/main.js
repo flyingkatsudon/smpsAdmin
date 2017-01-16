@@ -60,16 +60,27 @@ define(function (require) {
     var router = new Router();
     Backbone.history.start();
 
-    // TODO: header.html에 툴바를 만들 때
-/*
+    // TODO: header.html에 툴바있는 버전
     $(window.document).ready(function(){
         headerToolbar('');
     });
 
     // 2016.12.22 시작 부분
-    window.$('#admissionCd').change(function(){
-
+    window.$('#admissionNm').change(function(){
+        window.admissionNm = getAdmissionNm(window.$('#admissionNm').val());
+        return window.admissionNm;
     });
+
+    // $('#admissionNm).val()가 가지는 admissionCd로 실제 admissionNm을 구함
+    var getAdmissionNm = function(e){
+        var admissionNm = window.$('#admissionNm').val();
+
+        for(var i = 0; i < admissions.length; i++){
+            if(admissions[i].admissionCd == e)
+                admissionNm = admissions[i].admissionNm;
+        }
+        return admissionNm;
+    };
 
     function headerToolbar(e){
         console.log(e);
@@ -80,7 +91,7 @@ define(function (require) {
                 var flag = true;
                 window.admissions = [];
 
-                var admissionCd = '<option value="">전체</option>';
+                var admissionNm = '<option value="">전체</option>';
                 var examDate = '<option value="">전체</option>';
                 var examTime = '<option value="">전체</option>';
 
@@ -89,9 +100,9 @@ define(function (require) {
                         if (response[i].admissionNm == response[j].admissionNm) flag = false;
                     if (flag == true) {
                         if(response[i].admissionCd == e)
-                            admissionCd += '<option value="' + response[i].admissionCd + '" selected>' + response[i].admissionNm + '</option>';
+                            admissionNm += '<option value="' + response[i].admissionCd + '" selected>' + response[i].admissionNm + '</option>';
                         else
-                            admissionCd += '<option value="' + response[i].admissionCd + '">' + response[i].admissionNm + '</option>';
+                            admissionNm += '<option value="' + response[i].admissionCd + '">' + response[i].admissionNm + '</option>';
                         admissions.push({admissionCd: response[i].admissionCd, admissionNm: response[i].admissionNm});
 
                         examDate += '<option value="' + response[i].examDate + '">' + response[i].examDate + '</option>';
@@ -100,11 +111,10 @@ define(function (require) {
                     flag = true;
                 }
 
-                window.$('#admissionCd').html(admissionCd);
+                window.$('#admissionNm').html(admissionNm);
                 window.$('#examDate').html(examDate);
                 window.$('#examTime').html(examTime);
             }
         });
     }
-*/
 });

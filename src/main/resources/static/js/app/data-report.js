@@ -1,6 +1,5 @@
-// TODO: header.html에 툴바를 만들 때
-/*
-define(function (require) {
+// TODO: header.html에 툴바있는 버전
+/*define(function (require) {
     "use strict";
 
     var Backbone = require('backbone');
@@ -22,18 +21,18 @@ define(function (require) {
             $('.report').hide(); // 모든 버튼을 가린다
 
             $(window.document).ready(function(){
-                if($(window.$('#admissionCd').val() != null))
+                if($(window.$('#admissionNm').val() != null))
                     _this.viewButton();
             });
 
-            $(window.$('#admissionCd')).change(function (){
+            $(window.$('#admissionNm')).change(function (){
                 _this.viewButton();
             });
         },
         viewButton: function(){
             var admissions = window.admissions;
 
-            var admissionCd = window.$('#admissionCd').val();
+            var admissionCd = window.$('#admissionNm').val();
             var univCd = admissionCd.substr(0, 3); // 전형코드의 앞 3자리는 항상 학교를 의미함
 
             $('.report').hide(); // 모든 버튼 및 타이틀을 가린다
@@ -58,12 +57,14 @@ define(function (require) {
         buttonClicked: function (e) {
             e.preventDefault();
 
-            var admissionCd = window.$('#admissionCd').val();
-            var examDate = window.$('#examDate').val();
-            var examTime = window.$('#examTime').val();
+            var param = {
+                admissionNm: window["admissionNm"],
+                examDate: window.$('#examDate').val(),
+                examTime: window.$('#examTime').val()
+            };
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionCd=" + admissionCd + "&examTime=" + examTime + "&examDate=" + examDate});
+            //this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&examTime=" + param.examTime + "&examDate=" + param.examDate });
 
             return false;
         },
@@ -80,11 +81,23 @@ define(function (require) {
                     });
                 }
             });
-        }
+        },
+        // $('#admissionNm).val()가 가지는 admissionCd로 실제 admissionNm을 구함
+        /!*getAdmissionNm: function(e){
+            var admissionNm = '';
+
+            for(var i = 0; i < admissions.length; i++){
+                if(admissions[i].admissionCd == e){
+                    admissionNm = admissions[i].admissionNm;
+                }
+            }
+
+            return admissionNm;
+        }*!/
     });
-});
-*/
-// header.html에 툴바 없는 버전
+});*/
+// TODO: header.html에 툴바없는 버전
+
 define(function (require) {
     "use strict";
 
@@ -149,7 +162,7 @@ define(function (require) {
                     $('#' + univCd).show(); // 해당 전형의 학교 전용이라는 것을 표시한다
                     $('#' + admissionCd).show(); // 있다면 보여주고
                 }
-                else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김*!/
+                else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김*/
             });
         },
         events: {

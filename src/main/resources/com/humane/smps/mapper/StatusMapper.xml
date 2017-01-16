@@ -3,7 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.smps.mapper.StatusMapper">
-<!--
     <select id="all" resultType="com.humane.smps.dto.StatusDto">
         SELECT
             COUNT(*)                                                AS examinee_cnt,
@@ -31,9 +30,8 @@
             </if>
         </where>
     </select>
--->
     <!-- 가번호가 배정된 경우 응시율 요약 -->
-    <select id="all" resultType="com.humane.smps.dto.StatusDto">
+   <!-- <select id="all" resultType="com.humane.smps.dto.StatusDto">
         SELECT COUNT(*) AS examinee_cnt
         , COUNT(a.virt_no) AS attend_cnt
         , COUNT(*) - COUNT(a.virt_no) AS absent_cnt
@@ -62,7 +60,7 @@
                 <if test="param.groupNm != null">AND exam_map.group_nm LIKE '%' #{param.groupNm} '%' </if>
             </if>
         </where>
-    </select>
+    </select>-->
 
     <select id="dept" resultType="com.humane.smps.dto.StatusDeptDto">
         SELECT *,
