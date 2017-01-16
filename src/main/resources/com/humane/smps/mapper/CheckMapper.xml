@@ -261,6 +261,7 @@
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
                 <if test="param.scorerNm != null">AND score.scorer_nm LIKE '%' #{param.scorerNm} '%'</if>
             </if>
+             AND scored_cnt > 0
          </where>
     </select>
 
