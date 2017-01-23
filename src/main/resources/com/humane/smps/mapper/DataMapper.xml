@@ -1003,14 +1003,14 @@
                 , exam.exam_cd
                 , exam.type_nm
                 , exam_hall_date.hall_date as exam_date
-                , case
+                /*, case
                 when exam_map.group_nm = 'A1' then '08:30'
                 when exam_map.group_nm = 'A2' then '12:30'
                 when exam_map.group_nm = 'A3' then '17:00'
                 when exam_map.group_nm = 'B1' then '08:30'
                 when exam_map.group_nm = 'B2' then '12:30'
                 when exam_map.group_nm = 'B3' then '17:00'
-                end as exam_time
+                end as exam_time*/
                 , examinee.dept_nm
                 , examinee.major_nm
                 , hall.head_nm
@@ -1042,7 +1042,10 @@
                 INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
                 left join (select a.examinee_cd, a.virt_no
                                     , scorer_nm11, scorer_nm12, score11, score12, total01, score_dttm1
-                                    , scorer_nm21, scorer_nm22, score21, score22, total02, score_dttm2
+                                    , scorer_nm21, scorer_nm22,
+                                    , if(score21 = '파울', score21, (select max_score from score_devi2 where a.exam_cd2 = exam_cd and score21 = grade)) as score21
+                                    , if(score22 = '파울', score22, (select max_score from score_devi2 where a.exam_cd2 = exam_cd and score22 = grade)) as score22
+                                    , if(total02 = '파울', total02, (select max_score from score_devi2 where a.exam_cd2 = exam_cd and total02 = grade)) as total02, score_dttm2
                                     , scorer_nm31, scorer_nm32, total03, score_dttm3
                                     , scorer_nm41, scorer_nm42, total04, score_dttm4
                             from ( select exam_map.examinee_cd, score.virt_no
