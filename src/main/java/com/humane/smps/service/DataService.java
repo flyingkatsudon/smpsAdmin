@@ -301,6 +301,25 @@ public class DataService {
         return report;
     }
 
+    public JasperReportBuilder attendanceReport() {
+        JasperReportBuilder report = report()
+                .title(cmp.text("출결현황 리스트").setStyle(columnTitleStyle))
+                .columns(
+                        col.reportRowNumberColumn("번호").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(3),
+                        col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(15),
+                        col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("실기번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("조", "groupNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(3),
+                        col.column("응시여부", "attendance", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7))
+                .setPageMargin(DynamicReports.margin(0))
+                .setIgnorePageWidth(true)
+                .setIgnorePagination(true);
+        return report;
+    }
+
     // 경북대용
     public JasperReportBuilder getAbsentList() {
         JasperReportBuilder report = report()

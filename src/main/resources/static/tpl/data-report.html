@@ -12,9 +12,11 @@
                         <div class="panel panel-heading" style="margin-top:30px">
                             <label>출력할 전형과 시험일자 및 계열을 선택하세요.</label>
                             <div style="float:right">
-                                <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
+                                <!--<label for="admissionNm">전형</label> <select id="admissionNm"> </select>
                                 <label for="examDate">시험일자</label> <select id="examDate"> </select>
-                                <label for="examTime">시험시간</label> <select id="examTime"> </select>
+                                <label for="examTime">시험시간</label> <select id="examTime"> </select>-->
+                                <label for="deptNm">모집단위</label> <select id="deptNm"> </select>
+                                <label for="majorNm">전공</label> <select id="majorNm"> </select>
                             </div>
                         </div>
                     </div>
@@ -85,6 +87,14 @@
                     </form>
                 </div>
             </div>
+            <div class="panel panel-default col-sm-3">
+                <div class="panel-body">
+                    <form action="data/attendance.xlsx" method="get">
+                        <span>출결현황 리스트</span>
+                        <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
+                    </form>
+                </div>
+            </div>
             <!--<div class="panel panel-default">
                 <div class="panel-body">
                     <form action="data/draw.xlsx" method="get">
@@ -102,7 +112,7 @@
                     <h4 class="panel panel-heading"><label>한양대학교 전용</label></h4>
                 </div>
             </div>
-            <div id="HYU005" class="report panel panel-default col-sm-3">
+            <div id="HYU004" class="report panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="data/scoreUpload.xlsx" method="get">
                         <span>글로벌인재 성적업로드양식</span>
@@ -110,7 +120,7 @@
                     </form>
                 </div>
             </div>
-            <div id="HYU006" class="report">
+            <div id="HYU005" class="report">
                 <div class="panel panel-default col-sm-3">
                     <div class="panel-body">
                         <form action="data/lawScoreUpload.xlsx" method="get">
@@ -128,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div id="HYU007" class="report panel panel-default col-sm-3">
+            <div id="HYU006" class="report panel panel-default col-sm-3">
                 <div class="panel-body">
                     <form action="data/medScoreUpload.xlsx" method="get">
                         <span>의대서류평가 성적업로드양식</span>
@@ -170,31 +180,6 @@
                 </div>
             </div>
             <div id="ERC003" class="report">
-                <div class="panel panel-default col-sm-2">
-                    <div class="panel-body">
-                        <form action="data/physical.xlsx" method="get">
-                            <span>기록점수</span>
-                            <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
-                        </form>
-                    </div>
-                </div>
-                <div class="panel panel-default col-sm-2">
-                    <div class="panel-body">
-                        <span>달리기 기록</span>
-                        <a href="#data-report"><input type="submit" class="txtDownload btn-download pull-right"
-                                                      style="padding: 6px 12px" value="다운로드"/></a>
-                    </div>
-                </div>
-                <div class="panel panel-default col-sm-2">
-                    <div class="panel-body">
-                        <form action="download/signData.zip" method="get">
-                            <span>수험생 서명</span>
-                            <input type="submit" class="btn btn-download pull-right" value="다운로드"/>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div id="ERC004" class="report">
                 <div class="panel panel-default col-sm-2">
                     <div class="panel-body">
                         <form action="data/physical.xlsx" method="get">

@@ -49,7 +49,10 @@ public class UploadController {
     private final ScoreRepository scoreRepository;
     private final ScoreLogRepository scoreLogRepository;
 
+    // Windows
     @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    // Mac (smpsroot is different each)
+    //@Value("${path.image.examinee:/Users/smpsroot}") String pathRoot;
 
     @RequestMapping(value = "devi", method = RequestMethod.POST)
     public ResponseEntity<String> devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {

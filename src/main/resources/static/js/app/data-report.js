@@ -1,5 +1,5 @@
 // TODO: header.html에 툴바있는 버전
-/*define(function (require) {
+define(function (require) {
     "use strict";
 
     var Backbone = require('backbone');
@@ -7,6 +7,11 @@
     var DlgDownload = require('../dist/dlg-download.js');
 
     var BootstrapDialog = require('bootstrap-dialog');
+
+    var Toolbar = require('../dist/toolbar.js');
+    var ToolbarModel = require('../model/model-status-toolbar.js');
+
+    var toolbar = new Toolbar();
 
     return Backbone.View.extend({
         initialize: function (o) {
@@ -18,21 +23,35 @@
             this.$el.html(Template);
 
             var _this = this;
-            $('.report').hide(); // 모든 버튼을 가린다
 
             $(window.document).ready(function(){
-                if($(window.$('#admissionNm').val() != null))
+                if($(window.$('#admNm, #tNm, #exDate').val() != null)) {
+                    _this.innerToolbar();
                     _this.viewButton();
+                    $('.report').hide(); // 모든 버튼을 가린다
+                }
             });
 
-            $(window.$('#admissionNm')).change(function (){
+            $(window.$('#admNm, #tNm, #exDate')).change(function (){
+                _this.innerToolbar();
                 _this.viewButton();
             });
+        },
+        innerToolbar: function(){
+
+            var param = {
+                admissionNm: window["admNm"],
+                examDate: window.$('#exDate').val()
+            };
+
+            this.$('#deptNm').html(toolbar.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm(param)));
+
         },
         viewButton: function(){
             var admissions = window.admissions;
 
-            var admissionCd = window.$('#admissionNm').val();
+            var admissionCd = window.$('#admNm').val();
             var univCd = admissionCd.substr(0, 3); // 전형코드의 앞 3자리는 항상 학교를 의미함
 
             $('.report').hide(); // 모든 버튼 및 타이틀을 가린다
@@ -48,23 +67,38 @@
                 $('#' + univCd).show(); // 해당 전형의 학교 전용이라는 것을 표시한다
                 $('#' + admissionCd).show(); // 있다면 보여주고
             }
-            else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김*!/
+            else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김*/
         },
         events: {
             'click .btn': 'buttonClicked',
-            'click #txtDownload': 'txtDownloadClicked'
+            'click #txtDownload': 'txtDownloadClicked',
+            'change #deptNm': 'deptNmChanged'
+        },
+        deptNmChanged: function(e){
+
+            var param = {
+                admissionNm: window["admNm"],
+                examDate: window.$('#exDate').val(),
+                deptNm: e.currentTarget.value
+            };
+
+            this.$('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm(param)));
         },
         buttonClicked: function (e) {
             e.preventDefault();
 
             var param = {
-                admissionNm: window["admissionNm"],
-                examDate: window.$('#examDate').val(),
-                examTime: window.$('#examTime').val()
+                admissionNm: window["admNm"],
+                typeNm: window.$('#tNm').val(),
+                examDate: window.$('#exDate').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: this.$('#majorNm').val()
             };
 
+            console.log(param);
+
             var url = e.currentTarget.form.action;
-            //this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&examTime=" + param.examTime + "&examDate=" + param.examDate });
+            this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&typeNm=" + param.typeNm + "&examDate=" + param.examDate + '&deptNm=' + param.deptNm + '&majorNm=' + param.majorNm});
 
             return false;
         },
@@ -83,7 +117,7 @@
             });
         },
         // $('#admissionNm).val()가 가지는 admissionCd로 실제 admissionNm을 구함
-        /!*getAdmissionNm: function(e){
+        /*getAdmissionNm: function(e){
             var admissionNm = '';
 
             for(var i = 0; i < admissions.length; i++){
@@ -93,10 +127,11 @@
             }
 
             return admissionNm;
-        }*!/
+        }*/
     });
-});*/
+});
 // TODO: header.html에 툴바없는 버전
+/*
 
 define(function (require) {
     "use strict";
@@ -144,6 +179,9 @@ define(function (require) {
             this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime()));
 
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
+
             $('.report').hide(); // 모든 버튼 및 타이틀을 가린다
 
             $('#admissionNm').change(function(e){
@@ -162,14 +200,15 @@ define(function (require) {
                     $('#' + univCd).show(); // 해당 전형의 학교 전용이라는 것을 표시한다
                     $('#' + admissionCd).show(); // 있다면 보여주고
                 }
-                else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김*/
+                else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김*!/
             });
         },
         events: {
             'click .btn': 'buttonClicked',
             'click .txtDownload': 'txtDownloadClicked',
             'change #admissionNm': 'admissionNmChanged',
-            'change #examDate': 'examDateChanged'
+            'change #examDate': 'examDateChanged',
+            'change #deptNm': 'deptNmChanged'
         },
         buttonClicked: function (e) {
             e.preventDefault();
@@ -177,11 +216,13 @@ define(function (require) {
             var param = {
                 admissionNm: this.getAdmissionNm(this.$('#admissionNm').val()),
                 examDate: this.$('#examDate').val(),
-                examTime: this.$('#examTime').val()
+                examTime: this.$('#examTime').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: this.$('#majorNm').val()
             };
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&examTime=" + param.examTime + "&examDate=" + param.examDate });
+            this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&examTime=" + param.examTime + "&examDate=" + param.examDate + "&deptNm=" + param.deptNm + "&majorNm=" + param.majorNm});
 
             return false;
         },
@@ -198,6 +239,13 @@ define(function (require) {
                 examDate: e.currentTarget.value
             };
             this.$('#examTime').html(this.getOptions(ToolbarModel.getExamTime(param)));
+        },
+
+        deptNmChanged: function(e){
+            var param = {
+                deptNm: e.currentTarget.value
+            };
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)))  ;
         },
         txtDownloadClicked: function(e){
             BootstrapDialog.show({
@@ -227,3 +275,4 @@ define(function (require) {
         }
     });
 });
+*/

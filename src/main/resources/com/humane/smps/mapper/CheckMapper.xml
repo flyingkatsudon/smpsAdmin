@@ -175,7 +175,7 @@
             , exam_map.examinee_cd
             , exam_map.virt_no
             , exam.scorer_cnt
-        having exam.scorer_cnt != count(score.scorer_nm)
+        having exam.scorer_cnt != count(score.scorer_nm) and count(score.scorer_nm) > 0
         /*having count(*) != count(score.scorer_nm)*/
     </select>
 

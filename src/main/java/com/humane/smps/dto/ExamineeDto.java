@@ -104,4 +104,5 @@ public class ExamineeDto {
     private String year;
 
     private String exmAdmNm;
+    private String attendance;
 }

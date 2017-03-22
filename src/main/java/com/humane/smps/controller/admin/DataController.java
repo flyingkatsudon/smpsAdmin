@@ -13,7 +13,6 @@ import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -153,6 +152,17 @@ public class DataController {
 
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }
+    }
+
+    @RequestMapping(value = "attendance.{format:xlsx}")
+    public ResponseEntity attendance(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException, JRException {
+        JasperReportBuilder report = dataService.attendanceReport();
+        report.setDataSource(mapper.attendance(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName("출결현황 리스트");
+
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
     @RequestMapping(value = "scoreUpload.{format:xlsx}")

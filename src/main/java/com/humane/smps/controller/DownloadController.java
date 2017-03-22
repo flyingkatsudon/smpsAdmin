@@ -82,22 +82,38 @@ public class DownloadController {
         StatusDeptDto statusDeptDto = new StatusDeptDto();
         statusDeptDto.setAdmissionNm(statusDto.getAdmissionNm());
         statusDeptDto.setExamDate(statusDto.getExamDate());
+        statusDeptDto.setDeptNm(statusDto.getDeptNm());
+        statusDeptDto.setMajorNm(statusDto.getMajorNm());
 
         StatusMajorDto statusMajorDto = new StatusMajorDto();
         statusMajorDto.setAdmissionNm(statusDto.getAdmissionNm());
         statusMajorDto.setExamDate(statusDto.getExamDate());
+        statusMajorDto.setDeptNm(statusDto.getDeptNm());
+        statusMajorDto.setMajorNm(statusDto.getMajorNm());
 
         StatusHallDto statusHallDto = new StatusHallDto();
         statusHallDto.setAdmissionNm(statusDto.getAdmissionNm());
         statusHallDto.setExamDate(statusDto.getExamDate());
+        statusHallDto.setDeptNm(statusDto.getDeptNm());
+        statusHallDto.setMajorNm(statusDto.getMajorNm());
 
         StatusGroupDto statusGroupDto = new StatusGroupDto();
         statusGroupDto.setAdmissionNm(statusDto.getAdmissionNm());
         statusGroupDto.setExamDate(statusDto.getExamDate());
+        statusGroupDto.setDeptNm(statusDto.getDeptNm());
+        statusGroupDto.setMajorNm(statusDto.getMajorNm());
 
         ScoreDto scoreDto = new ScoreDto();
         scoreDto.setAdmissionNm(statusDto.getAdmissionNm());
         scoreDto.setExamDate(statusDto.getExamDate());
+        scoreDto.setDeptNm(statusDto.getDeptNm());
+        scoreDto.setDeptNm(statusDto.getDeptNm());
+
+        ExamineeDto examineeDto = new ExamineeDto();
+        examineeDto.setAdmissionNm(statusDto.getAdmissionNm());
+        examineeDto.setExamDate(statusDto.getExamDate());
+        examineeDto.setDeptNm(statusDto.getDeptNm());
+        examineeDto.setMajorNm(statusDto.getMajorNm());
 
         // 압축파일 생성
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -139,6 +155,10 @@ public class DownloadController {
         File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(scoreDto, pageable).getContent());
         zipFile.addFile(fileScorerReport);
         fileScorerReport.delete();
+
+        File fileAttendanceReport = JasperReportsExportHelper.toXlsxFile("출결현황 리스트", dataService.attendanceReport(), dataMapper.attendance(examineeDto, pageable).getContent());
+        zipFile.addFile(fileAttendanceReport);
+        fileAttendanceReport.delete();
 /*
         File fileScoreUploadReport = JasperReportsExportHelper.toXlsxFile("글로벌인재_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.scoreUpload(new ScoreUploadDto(), pageable).getContent());
         zipFile.addFile(fileScoreUploadReport);

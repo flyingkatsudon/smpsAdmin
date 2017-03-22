@@ -66,4 +66,6 @@ public interface DataMapper {
     Page<ScoreUploadDto> lawScoreUpload(@Param("param") ScoreUploadDto param, @Param("pageable") Pageable pageable);
 
     Page<ScoreUploadDto> medScoreUpload(@Param("param") ScoreUploadDto param, @Param("pageable") Pageable pageable);
+
+    Page<ExamineeDto> attendance(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 }
