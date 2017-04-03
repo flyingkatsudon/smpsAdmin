@@ -1186,7 +1186,7 @@
     </select>
 
     <select id="attendance" resultType="com.humane.smps.dto.ExamineeDto">
-        SELECT admission.admission_nm, exam_hall_date.hall_date AS exam_date
+        SELECT DISTINCT admission.admission_nm, exam_hall_date.hall_date AS exam_date
                 , examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, exam_map.virt_no, exam_map.group_nm
                 , IF(exam_map.virt_no IS NULL, '결시', '응시') AS attendance
         FROM exam_map
