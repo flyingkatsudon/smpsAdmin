@@ -6,20 +6,19 @@ import com.humane.smps.repository.ExamMapRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "api/examMap", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -30,6 +29,21 @@ public class ExamMapController {
     @RequestMapping(method = RequestMethod.GET)
     public Page<ExamMap> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
         return repository.findAll(predicate, pageable);
+    }
+
+    @RequestMapping(value = "updateVirtNo", method = RequestMethod.GET)
+    public ResponseEntity<?> updateVirtNo(@RequestParam(defaultValue = "") String examCd, @RequestParam(defaultValue = "") String hallCd,
+                                          @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hallDate) {
+        if (StringUtils.isAnyEmpty(examCd, hallCd) || hallDate == null)
+            return new ResponseEntity<>("parameters empty!", HttpStatus.BAD_REQUEST);
+
+        BooleanBuilder predicate = new BooleanBuilder()
+                .and(QExamMap.examMap.exam.examCd.eq(examCd))
+                .and(QExamMap.examMap.hall.hallCd.eq(hallCd))
+                .and(QExamMap.examMap.hallDate.eq(hallDate))
+                .and(QExamMap.examMap.virtNo.isNotNull());
+
+        return ResponseEntity.ok(repository.findAll(predicate));
     }
 
     @RequestMapping(method = RequestMethod.POST)
