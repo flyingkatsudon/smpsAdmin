@@ -32,10 +32,10 @@ public class ExamMapController {
     }
 
     @RequestMapping(value = "updateVirtNo", method = RequestMethod.GET)
-    public ResponseEntity<?> updateVirtNo(@RequestParam(defaultValue = "") String examCd, @RequestParam(defaultValue = "") String hallCd,
-                                          @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hallDate) {
+    public Page<ExamMap> updateVirtNo(@RequestParam(defaultValue = "") String examCd, @RequestParam(defaultValue = "") String hallCd,
+                                          @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hallDate, @PageableDefault Pageable pageable) {
         if (StringUtils.isAnyEmpty(examCd, hallCd) || hallDate == null)
-            return new ResponseEntity<>("parameters empty!", HttpStatus.BAD_REQUEST);
+            return null;
 
         BooleanBuilder predicate = new BooleanBuilder()
                 .and(QExamMap.examMap.exam.examCd.eq(examCd))
@@ -43,7 +43,7 @@ public class ExamMapController {
                 .and(QExamMap.examMap.hallDate.eq(hallDate))
                 .and(QExamMap.examMap.virtNo.isNotNull());
 
-        return ResponseEntity.ok(repository.findAll(predicate));
+        return repository.findAll(predicate, pageable);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -60,7 +60,7 @@ public class ExamMapController {
         );
 
         // pk 지정. pk가 있을 경우는 update된다.
-        if(findMap != null) examMap.set_id(findMap.get_id());
+        if (findMap != null) examMap.set_id(findMap.get_id());
 
         ExamMap rtn = repository.save(examMap);
 
