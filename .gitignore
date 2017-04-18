@@ -12,3 +12,5 @@ node_modules/
 *.iws
 *.ipr
 *.iml
+.classpath
+.project
