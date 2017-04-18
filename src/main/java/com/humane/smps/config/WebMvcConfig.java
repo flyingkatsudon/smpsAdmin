@@ -6,7 +6,7 @@ import com.humane.smps.filter.LoggingFilter;
 import com.humane.smps.filter.ParametersFilter;
 import com.humane.util.filter.MultiReadableHttpServletRequestFilter;
 import com.humane.util.spring.ApplicationContextProvider;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;

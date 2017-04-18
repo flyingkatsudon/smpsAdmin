@@ -30,6 +30,8 @@ public class StatusHallDto {
     private String headNm;
     private String bldgNm;
     private String hallNm;
+    private String deptNm;
+    private String majorNm;
 
     private Long examineeCnt;
     private Long attendCnt;

@@ -28,6 +28,7 @@ public class StatusDeptDto {
     private Date examTime;
 
     private String deptNm;
+    private String majorNm;
     private Long examineeCnt;
     private Long attendCnt;
     private Long absentCnt;
