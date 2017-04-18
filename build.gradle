@@ -85,10 +85,6 @@ project.afterEvaluate {
 	]
 }
 
-clean {
-	delete "target"
-}
-
 task bowerInstall(type: Exec){
 	if(System.getProperty('os.name').toLowerCase().contains('windows')){
 		commandLine 'cmd', '/c','bower','install'
