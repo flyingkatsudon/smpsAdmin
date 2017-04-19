@@ -37,18 +37,21 @@ ext {
 	poiVersion = "3.16"
 }
 
+/*
 configurations {
 	all.collect { configuration ->
 		configuration.exclude group:'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 	}
 }
+*/
+
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-devtools')
 	compile('org.springframework.boot:spring-boot-starter')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	providedCompile('org.springframework.boot:spring-boot-starter-undertow')
-	providedRuntime('org.springframework.boot:spring-boot-starter-undertow')
+//	providedCompile('org.springframework.boot:spring-boot-starter-undertow')
+//	providedRuntime('org.springframework.boot:spring-boot-starter-undertow')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
