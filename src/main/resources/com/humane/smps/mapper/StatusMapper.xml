@@ -15,6 +15,7 @@
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
         INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
         INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
+        INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
         <where>
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>

@@ -266,7 +266,7 @@ public class SystemService {
                             examRepository.save(item.getExam());
 
                             Item findItem = itemRepository.findOne(new BooleanBuilder()
-                                    .and(QItem.item.exam.eq(item.getExam()))
+                                    .and(QItem.item.exam.examCd.eq(item.getExam().getExamCd()))
                                     .and(QItem.item.itemNo.eq(item.getItemNo()))
                             );
 

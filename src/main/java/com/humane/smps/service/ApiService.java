@@ -31,4 +31,7 @@ public interface ApiService {
 
     @GET("image/examinee/{fileName}")
     Observable<ResponseBody> imageExaminee(@Path("fileName") String fileName);
+
+    @GET("file/document")
+    Observable<ResponseBody> document();
 }
