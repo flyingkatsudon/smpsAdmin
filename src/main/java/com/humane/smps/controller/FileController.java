@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class FileController {
 
     // Windows
-    //@Value("${path.file.document:C:/api/smps/file/document}")
+    @Value("${path.file.document:C:/api/smps/file/document}")
     // Mac
-    @Value("${path.file.document:/Users/Jeremy/Humane/api/smps/file/document}")
+    //@Value("${path.file.document:/Users/Jeremy/Humane/api/smps/file/document}")
     String basicPath;
 
     private final FileService fileService;
