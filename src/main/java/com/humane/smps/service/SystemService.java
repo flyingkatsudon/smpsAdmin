@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.humane.smps.model.QExamMap.examMap;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -60,6 +58,7 @@ public class SystemService {
         queryFactory.delete(QExamHall.examHall).execute();
 
         QExaminee examinee = QExaminee.examinee;
+        QExamMap examMap = QExamMap.examMap;
 
         ScrollableResults scrollableResults = queryFactory.select(examMap.examinee.examineeCd)
                 .distinct()
