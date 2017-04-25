@@ -196,6 +196,7 @@ public class UploadController {
                 ExamHall examHall = examHallRepository.findOne(new BooleanBuilder()
                         .and(exam.examDate.eq(dtf.parseLocalDateTime(vo.getExamDate()).toDate()))
                         .and(exam.examTime.eq(dtf.parseLocalDateTime(vo.getExamTime()).toDate()))
+                        .and(hall.hallCd.eq(vo.getHallCd()))
                         .and(hall.headNm.eq(vo.getHeadNm()))
                         .and(hall.bldgNm.eq(vo.getBldgNm()))
                         .and(hall.hallNm.eq(vo.getHallNm()))
