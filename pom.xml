@@ -325,7 +325,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-                            <nodeVersion>v4.8.2</nodeVersion>
+                            <nodeVersion>v6.10.2</nodeVersion>
                         </configuration>
 					</execution>
 					<execution>
