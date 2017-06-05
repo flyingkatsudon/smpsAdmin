@@ -51,7 +51,7 @@ public interface DataMapper {
 
     List<ExamDto> ericaExamInfo(@Param("param") String param);
 
-    ExamDto examDetail(@Param("examCd") String examCd);
+    List<ExamDto> examDetail(@Param("examCd") String examCd);
 
     void fillVirtNo(@Param("param") ExamDto param);
 

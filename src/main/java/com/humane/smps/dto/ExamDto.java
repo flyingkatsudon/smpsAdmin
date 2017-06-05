@@ -13,4 +13,5 @@ public class ExamDto {
 
     public String examCd;
     public String examNm;
+    public String hallCd;
 }

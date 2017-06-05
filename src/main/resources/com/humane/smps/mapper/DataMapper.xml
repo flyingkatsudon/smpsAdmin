@@ -355,14 +355,14 @@
     </select>
 
     <select id="examDetail" resultType="com.humane.smps.dto.ExamDto">
-        SELECT exam.exam_cd, exam.exam_nm,
+        SELECT exam.exam_cd, exam.exam_nm, exam_map.hall_cd,
 		  MAX(exam_map.virt_no) AS last_virt_no
         , COUNT(exam_map.virt_no) AS virt_no_cnt, COUNT(exam_map.examinee_cd) AS examinee_cnt
         , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_dttm IS NOT NULL AND attend_map.attend_cd = exam_map.exam_cd) AS attend_cnt
         FROM exam_map
         INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
         WHERE exam.exam_cd = #{examCd}
-        GROUP BY exam.exam_cd, exam.exam_nm
+        GROUP BY exam.exam_cd, exam.exam_nm, exam_map.hall_cd
     </select>
 
     <update id="fillVirtNo">

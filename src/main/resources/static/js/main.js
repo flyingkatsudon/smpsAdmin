@@ -67,20 +67,27 @@ define(function (require) {
     });
 
     // 2017.02.16 시작 부분
+    var Toolbar = require('./dist/toolbar.js');
+    var ToolbarModel = require('./model/model-status-toolbar.js');
+    var toolbar = new Toolbar();
+
     window.$('#admNm').change(function () {
-        window.admNm = getAdmissionNm(window.$('#admNm').val());
-
-        var Toolbar = require('./dist/toolbar.js');
-        var ToolbarModel = require('./model/model-status-toolbar.js');
-        var toolbar = new Toolbar();
-
         var param = {
-            admissionNm: window["admNm"]
+            //admissionCd: window.$('#admNm').val(),
+            admissionNm: getAdmissionNm(window.$('#admNm').val())
+        };
+
+        window.$('#tNm').html(toolbar.getOptions(ToolbarModel.getTypeNm(param)));
+        window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate(param)));
+    });
+
+    window.$('#tNm').change(function () {
+        var param = {
+            admissionNm: getAdmissionNm(window.$('#admNm').val()),
+            typeNm: window.$('#tNm').val()
         };
 
         window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate(param)));
-
-        return window.admNm;
     });
 
     // $('#admissionNm).val()가 가지는 admissionCd로 실제 admissionNm을 구함
@@ -96,81 +103,72 @@ define(function (require) {
     };
 
     function headerToolbar(e) {
+
+        var Toolbar = require('./dist/toolbar.js');
+        var ToolbarModel = require('./model/model-status-toolbar.js');
+        var toolbar = new Toolbar();
+
         $.ajax({
             url: 'model/reportToolbar.json',
             async: false,
             success: function (response) {
-                /*var flag = true;
-                 window.admissions = [];
+                var flag = true;
+                window.admissions = [];
 
-                 var admissionNm = '<option value="">전체</option>';
-                 var examDate = '<option value="">전체</option>';
+                /**
+                 *      toolbar에 typeNm, examDate 관련 필터는 포함되어 있다.
+                 *      admissionNm은 value가 admissionCd이기 때문에 따로 만듦
+                 */
 
-                 for (var i = 0; i < response.length; i++) {
-                 for (var j = 0; j < i; j++)
-                 if (response[i].admissionNm == response[j].admissionNm) flag = false;
-                 if (flag == true) {
-                 if(response[i].admissionCd == e)
-                 admissionNm += '<option value="' + response[i].admissionCd + '" selected>' + response[i].admissionNm + '</option>';
-                 else
-                 admissionNm += '<option value="' + response[i].admissionCd + '">' + response[i].admissionNm + '</option>';
-                 admissions.push({admissionCd: response[i].admissionCd, admissionNm: response[i].admissionNm});
+                var admissionNm = '<option value="">전체</option>';
 
-                 examDate += '<option value="' + response[i].examDate + '">' + response[i].examDate + '</option>';
-                 }
-                 flag = true;
-                 }
+                for (var i = 0; i < response.length; i++) {
+                    for (var j = 0; j < i; j++)
+                        if (response[i].admissionNm == response[j].admissionNm) flag = false;
+                    if (flag == true) {
+                        if (response[i].admissionCd == e)
+                            admissionNm += '<option value="' + response[i].admissionCd + '" selected>' + response[i].admissionNm + '</option>';
+                        else
+                            admissionNm += '<option value="' + response[i].admissionCd + '">' + response[i].admissionNm + '</option>';
+                        admissions.push({admissionCd: response[i].admissionCd, admissionNm: response[i].admissionNm});
+                    }
+                    flag = true;
+                }
 
-                 window.$('#admissionNm').html(admissionNm);
-                 window.$('#examDate').html(examDate);
+                window.$('#admNm').html(admissionNm);
+                //window.$('#admNm').html(toolbar.getOptions(ToolbarModel.getAdmissionNm()));
+                window.$('#tNm').html(toolbar.getOptions(ToolbarModel.getTypeNm()));
+                window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate()));
 
-                 console.log(response);*/
-                renderToolbar(response, e);
             }
         });
-
     }
 
-    function renderToolbar(response, e) {
-        var flag = true;
-        window.admissions = [];
+    // 상단 필터 값 초기화
+    window.param = {
+        admissionCd: '',
+        admissionNm: '',
+        typeNm: '',
+        examDate: '',
+        filter: 'with', // header: 상단만, with: 상, 하단 동시에
+        empty: true
+    };
 
-        var admissionNm = '<option value="">전체</option>';
-        var typeNm = '<option value="">전체</option>';
-        var examDate = '<option value="">전체</option>';
-
-        for (var i = 0; i < response.length; i++) {
-            for (var j = 0; j < i; j++)
-                if (response[i].admissionNm == response[j].admissionNm) flag = false;
-            if (flag == true) {
-                if (response[i].admissionCd == e)
-                    admissionNm += '<option value="' + response[i].admissionCd + '" selected>' + response[i].admissionNm + '</option>';
-                else
-                    admissionNm += '<option value="' + response[i].admissionCd + '">' + response[i].admissionNm + '</option>';
-                admissions.push({admissionCd: response[i].admissionCd, admissionNm: response[i].admissionNm});
-
-                //examDate += '<option value="' + response[i].examDate + '">' + response[i].examDate + '</option>';
-            }
-            flag = true;
-        }
-
-        window.$('#admNm').html(admissionNm);
-        window.$('#tNm').html(typeNm);
-        window.$('#exDate').html(examDate);
-    }
-
-    window.param = '';
+    // 상단 필터 선택하면 window.param의 값을 업데이트 한다 -> 각 페이지에서 필터로 쓰임
     $(window.$('#admNm, #tNm, #exDate')).change(function () {
+
         window.param = {
-            admissionNm: window["admNm"],
+            admissionCd: window.$('#admNm').val(),
+            admissionNm: getAdmissionNm(window.$('#admNm').val()),
             typeNm: window.$('#tNm').val(),
-            examDate: window.$('#exDate').val()
+            examDate: window.$('#exDate').val(),
+            filter: 'header',
+            empty: false
         };
 
-        if (param.admissionNm == '' && param.examDate == '' && param.typeNm == '')
-            window.param = '';
-
-        console.log(window.param);
-        console.log($('.hm-ui-grid'));
+        if (param.admissionNm == '' && param.examDate == '' && param.typeNm == '') {
+            window.param.filter = 'with';
+            window.param.empty = true;
+        }
     });
 });

@@ -27,8 +27,7 @@ public class ModelController {
     }
 
     @RequestMapping(value = "reportToolbar.json")
-    public ResponseEntity reportToolbar(StatusDto statusDto, String admissionCd) {
-        statusDto.setAdmissionCd(admissionCd);
+    public ResponseEntity reportToolbar(StatusDto statusDto){
         return ResponseEntity.ok(mapper.reportToolbar(statusDto));
     }
 }

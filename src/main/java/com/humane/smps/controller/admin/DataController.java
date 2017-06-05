@@ -254,7 +254,8 @@ public class DataController {
                         for (int i = 0; i < runningResult.size(); i++) {
                             Map map = runningResult.get(i);
                             if (map.get("total03") != null && !map.get("total03").equals("미응시") && !map.get("total03").equals("실격")) {
-                                if (i == runningResult.size() - 1) sb.append(map.get("examineeCd") + "," + map.get("total03"));
+                                if (i == runningResult.size() - 1)
+                                    sb.append(map.get("examineeCd") + "," + map.get("total03"));
                                 else sb.append(map.get("examineeCd") + "," + map.get("total03") + ",");
                                 sb.append(System.getProperty("line.separator"));
                             }
@@ -329,7 +330,7 @@ public class DataController {
     public ResponseEntity fillVirtNo(String examCd) {
         try {
             // 1. 현재 마지막 가번호, 입력된 가번호 수, 선택한 시험의 학생 수 가져옴
-            ExamDto examDto = mapper.examDetail(examCd);
+         /*   ExamDto examDto = mapper.examDetail(examCd);
             log.debug("examDetail: {}", examDto);
 
             if (examDto.getAttendCnt() - examDto.getVirtNoCnt() == 0) {
@@ -342,7 +343,27 @@ public class DataController {
                     mapper.fillVirtNo(examDto);
                 }
                 return ResponseEntity.ok("가번호가 입력되었습니다.");
+            }*/
+
+            // 임시 가번호 입력
+            List<ExamDto> examDtoList = mapper.examDetail(examCd);
+
+            // 고사실 갯수만큼 반복
+            for (int i = 0; i < examDtoList.size(); i++) {
+                ExamDto examDto = examDtoList.get(i);
+                long cnt = examDto.getExamineeCnt();
+
+                int virtNo = 0;
+                if(examDto.getLastVirtNo() == null) virtNo = 1;
+                else virtNo = Integer.parseInt(examDto.getLastVirtNo()) + 1;
+
+                for (int j = virtNo; j <= cnt; j++) {
+                    examDto.setLastVirtNo(String.valueOf(j));
+                    mapper.fillVirtNo(examDto);
+                }
             }
+
+            return ResponseEntity.ok("가번호가 입력되었습니다.");
         } catch (Exception e) {
             log.debug("{}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
