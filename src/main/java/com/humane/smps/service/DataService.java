@@ -49,7 +49,6 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("examTime", "시험시간"));
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
         colModels.add(new ColModel("headNm", "고사본부"));
@@ -73,7 +72,6 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        /*colModels.add(new ColModel("examTime", "시험시간"));*/
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
         /*colModels.add(new ColModel("headNm", "고사본부"));
@@ -361,7 +359,6 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("examTime", "시험시간"));
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
         colModels.add(new ColModel("headNm", "고사본부"));
@@ -542,7 +539,6 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        /*colModels.add(new ColModel("examTime", "시험시간"));*/
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
         /*colModels.add(new ColModel("headNm", "고사본부"));
@@ -574,7 +570,6 @@ public class DataService {
         colModels.add(new ColModel("admissionNm", "전형"));
         colModels.add(new ColModel("typeNm", "계열"));
         colModels.add(new ColModel("examDate", "시험일자"));
-        /*colModels.add(new ColModel("examTime", "시험시간"));*/
         colModels.add(new ColModel("deptNm", "모집단위"));
         colModels.add(new ColModel("majorNm", "전공"));
         colModels.add(new ColModel("examineeCd", "수험번호"));

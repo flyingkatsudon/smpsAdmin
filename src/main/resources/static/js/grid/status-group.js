@@ -11,7 +11,6 @@ define(function (require) {
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
                 {name: 'examDate', label: '시험일자'},
-                {name: 'examTime', label: '시험시간'},
                 {name: 'majorNm', label: '전공'},
                 {name: 'groupNm', label: '조'},
                 {name: 'headNm', label: '고사본부'},

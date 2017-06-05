@@ -11,7 +11,6 @@ define(function (require) {
                 {name: 'typeNm', label: '계열'},
                 {name: 'examCd', label: '시험코드', hidden:true},
                 {name: 'examDate', label: '시험일자'},
-                /*{name: 'examTime', label: '시험시간'},*/
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallCd', label: '고사실코드', hidden:true},
                 {name: 'hallNm', label: '고사실'},
