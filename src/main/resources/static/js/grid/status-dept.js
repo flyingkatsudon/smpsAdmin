@@ -6,7 +6,8 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             this.parent = options.parent;
-            var _this = this;
+            this.param = options.param;
+
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
@@ -25,14 +26,45 @@ define(function (require) {
                 colModel[i].label = colModel[i].label === undefined ? colModel[i].name : colModel[i].label;
             }
 
+            var url = 'status/dept.json';
+
+            var param = this.param;
+
+            if(param.filter == 'header') {
+                if (!param.empty) {
+                    if (param.admissionCd != '' && param.typeNm != undefined) {
+                        if (param.typeNm != '' && param.typeNm != undefined) {
+                            if (param.examDate != '' && param.examDate != undefined)
+                                url += '?admissionNm=' + param.admissionNm + '&typeNm=' + param.typeNm + '&examDate=' + param.examDate;
+                            else
+                                url += '?admissionNm=' + param.admissionNm + '&typeNm=' + param.typeNm;
+                        }
+                        else {
+                            if (param.examDate != '' && param.examDate != undefined)
+                                url += '?admissionNm=' + param.admissionNm + '&examDate=' + param.examDate;
+                            else
+                                url += '?admissionNm=' + param.admissionNm;
+                        }
+                    }
+                    else {
+                        if (param.typeNm != '' && param.typeNm != undefined) {
+                            if (param.examDate != '' && param.examDate != undefined)
+                                url += '?typeNm=' + param.typeNm + '&examDate=' + param.examDate;
+                            else
+                                url += '?typeNm=' + param.typeNm;
+                        }
+                        else {
+                            if (param.examDate != '' && param.examDate != undefined)
+                                url += '?examDate=' + param.examDate;
+                        }
+                    }
+                }
+            }
+
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/dept.json',
+                    url: url,
                     colModel: colModel
-                    /*, gridComplete: function () {
-                        var data = $(this).jqGrid('getRowData');
-                        _this.parent.renderChart(data);
-                    }*/
                 }
             }, options);
 

@@ -7,13 +7,16 @@ define(function (require) {
         initialize: function (o) {
             this.el = o.el;
             this.parent = o.parent;
+            this.param = o.param;
         },
         render: function (e) {
-            var e = e ? e : {};
+
+            if(this.param != undefined) this.param.deptNm = $('#deptNm').val();
+
             var _this = this;
             $.ajax({
                 url: 'status/all',
-                data: e,
+                data: this.param,
                 success: function (response) {
                     _this.$('#examineeCnt').html(response.examineeCnt);
                     _this.$('#attendCnt').html(response.attendCnt);
