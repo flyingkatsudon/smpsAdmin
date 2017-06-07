@@ -32,7 +32,6 @@ public class UploadService {
                 .and(QExam.exam.examCd.eq(exam.getExamCd()))
                 .and(QExam.exam.examNm.eq(exam.getExamNm()))
                 .and(QExam.exam.examDate.eq(exam.getExamDate()))
-                .and(QExam.exam.examTime.eq(exam.getExamTime()))
         );
         long itemCnt = Long.parseLong(dto.getItemCnt());
 

@@ -16,7 +16,7 @@ public class FormHallVo {
     @Column(name = "시험코드") private String examCd;
     @Column(name = "시험명") private String examNm;
     @Column(name = "시험일자") private String examDate;
-    @Column(name = "시험시간") private String examTime;
+    /*@Column(name = "시험시간") private String examTime;
 
     public String getExamTime() {
         try {
@@ -26,7 +26,7 @@ public class FormHallVo {
             e.printStackTrace();
         }
         return examTime;
-    }
+    }*/
 
     @Column(name = "가번호 시작") private String virtNoStart;
     @Column(name = "가번호 종료") private String virtNoEnd;

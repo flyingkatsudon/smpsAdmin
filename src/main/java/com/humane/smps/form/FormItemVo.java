@@ -17,17 +17,6 @@ public class FormItemVo {
     @Column(name = "시험명") private String examNm;
     @Column(name = "단계") private String period;
     @Column(name = "시험일자") private String examDate;
-    @Column(name = "시험시간") private String examTime;
-
-    public String getExamTime() {
-        try {
-            Date date = new SimpleDateFormat("YYYY-mm-dd HH:mm:ss").parse(examTime);
-            return new SimpleDateFormat("HH:mm:ss").format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return examTime;
-    }
 
     @Column(name = "평가위원수") private String scorerCnt;
     @Column(name = "키패드") private String keypadType;

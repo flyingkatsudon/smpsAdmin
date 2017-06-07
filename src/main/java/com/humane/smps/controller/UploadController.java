@@ -146,7 +146,6 @@ public class UploadController {
                         .and(QExam.exam.examCd.eq(exam.getExamCd()))
                         .and(QExam.exam.examNm.eq(exam.getExamNm()))
                         .and(QExam.exam.examDate.eq(exam.getExamDate()))
-                        .and(QExam.exam.examTime.eq(exam.getExamTime()))
                 );
 
                 // 2. 고사실정보 생성
@@ -195,7 +194,6 @@ public class UploadController {
 
                 ExamHall examHall = examHallRepository.findOne(new BooleanBuilder()
                         .and(exam.examDate.eq(dtf.parseLocalDateTime(vo.getExamDate()).toDate()))
-                        .and(exam.examTime.eq(dtf.parseLocalDateTime(vo.getExamTime()).toDate()))
                         .and(hall.hallCd.eq(vo.getHallCd()))
                         .and(hall.headNm.eq(vo.getHeadNm()))
                         .and(hall.bldgNm.eq(vo.getBldgNm()))
