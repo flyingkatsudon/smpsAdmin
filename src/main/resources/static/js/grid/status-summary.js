@@ -1,9 +1,9 @@
 define(function (require) {
     "use strict";
 
-    var Backbone = require('backbone');
+    var GridBase = require('../dist/jqgrid.js');
 
-    return Backbone.View.extend({
+    return GridBase.extend({
         initialize: function (o) {
             this.el = o.el;
             this.parent = o.parent;
