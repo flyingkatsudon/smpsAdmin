@@ -22,8 +22,24 @@ define(function (require) {
             this.list = new List({el: '.hm-ui-grid', parent: this, param: param}).render();
 
         }, search: function (o) {
-            this.list.search(o);
-            this.summary.render(o);
+            // 상단 필터와 기존 필터가 동시에 쓰이도록 함
+            if(o.deptNm == undefined) o.deptNm = '';
+
+            var _param = {
+                deptNm: o.deptNm,
+                filter: window.param.filter
+            };
+
+            // 두 필터를 함께 사용한다면
+            if(_param.filter == 'with') {
+                _param.admissionNm = $('#admissionNm').val();
+                _param.typeNm = $('#typeNm').val();
+                _param.examDate = $('#examDate').val();
+                _param.deptNm = $('#deptNm').val();
+            }
+
+            this.list.search(_param);
+            this.summary.render(_param);
         }
     });
 });

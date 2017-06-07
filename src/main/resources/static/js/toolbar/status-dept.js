@@ -13,8 +13,9 @@ define(function (require) {
             this.parent = o.parent;
             this.param = o.param;
         },
-        render: function () {// header.html의 필터를 사용할 때
+        render: function () {
 
+            // header.html의 필터를 사용할 때 = 상단 필터가 비어있지 않다면
             if (!this.param.empty) {
                 this.$('#admissionNm').html(this.selected(this.param.admissionNm));
                 this.$('#typeNm').html(this.selected(this.param.typeNm));
