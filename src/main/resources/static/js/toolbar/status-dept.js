@@ -14,7 +14,7 @@ define(function (require) {
             this.param = o.param;
         },
         render: function () {
-
+            // TODO: toolbar의 공통된 부분 하나로 묶어야
             // header.html의 필터를 사용할 때 = 상단 필터가 비어있지 않다면
             if (!this.param.empty) {
                 this.$('#admissionNm').html(this.selected(this.param.admissionNm));
@@ -29,7 +29,7 @@ define(function (require) {
 
                 this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(tmp)));
 
-                this.disableFilter('on');
+                this.disableFilter();
             } else {
                 this.makeToolbar(this.param);
             }
@@ -40,32 +40,21 @@ define(function (require) {
             if (o == '') return '<option value="">전체</option>';
             else return '<option value="' + o + '" selected>' + o + '</option>';
         },
-        disableFilter: function (option) {
-            if (option == 'on') {
-                this.$('#admissionNm').attr('disabled', true);
-                this.$('#admissionNm').css('background', '#fbf7f7');
-                this.$('#admissionNm').css('color', 'graytext');
+        disableFilter: function () {
+            this.$('#admissionNm').attr('disabled', true);
+            this.$('#admissionNm').css('background', '#fbf7f7');
+            this.$('#admissionNm').css('color', 'graytext');
+            this.$('#admissionNm').css('cursor', 'not-allowed');
 
-                this.$('#typeNm').attr('disabled', true);
-                this.$('#typeNm').css('background', '#fbf7f7');
-                this.$('#typeNm').css('color', 'graytext');
+            this.$('#typeNm').attr('disabled', true);
+            this.$('#typeNm').css('background', '#fbf7f7');
+            this.$('#typeNm').css('color', 'graytext');
+            this.$('#typeNm').css('cursor', 'not-allowed');
 
-                this.$('#examDate').attr('disabled', true);
-                this.$('#examDate').css('background', '#fbf7f7');
-                this.$('#examDate').css('color', 'graytext');
-            } else {
-                this.$('#admissionNm').attr('disabled', false);
-                this.$('#admissionNm').css('background', '');
-                this.$('#admissionNm').css('color', '');
-
-                this.$('#typeNm').attr('disabled', false);
-                this.$('#typeNm').css('background', '#fbf7f7');
-                this.$('#typeNm').css('color', '');
-
-                this.$('#examDate').attr('disabled', false);
-                this.$('#examDate').css('background', '');
-                this.$('#examDate').css('color', '');
-            }
+            this.$('#examDate').attr('disabled', true);
+            this.$('#examDate').css('background', '#fbf7f7');
+            this.$('#examDate').css('color', 'graytext');
+            this.$('#examDate').css('cursor', 'not-allowed');
         },
         makeToolbar: function (o) {
             // 상단필터 사용 안할 시
@@ -94,9 +83,6 @@ define(function (require) {
 
             }
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
-
-            // etc
-            this.disableFilter('off');
         },
         events: {
             'click #search': 'searchClicked',

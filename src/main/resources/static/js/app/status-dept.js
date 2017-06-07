@@ -23,7 +23,7 @@ define(function (require) {
 
         }, search: function (o) {
             // 상단 필터와 기존 필터가 동시에 쓰이도록 함
-            if(o.deptNm == undefined) o.deptNm = '';
+            if (o.deptNm == undefined) o.deptNm = '';
 
             var _param = {
                 deptNm: o.deptNm,
@@ -31,7 +31,7 @@ define(function (require) {
             };
 
             // 두 필터를 함께 사용한다면
-            if(_param.filter == 'with') {
+            if (_param.filter == 'with') {
                 _param.admissionNm = $('#admissionNm').val();
                 _param.typeNm = $('#typeNm').val();
                 _param.examDate = $('#examDate').val();

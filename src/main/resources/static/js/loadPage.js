@@ -65,22 +65,31 @@ define(function (require) {
             this.summary.render();
             this.list = new List({el: '.hm-ui-grid', parent: this, param: o}).render();
 
-        }, search:function(o){
-            if(o.deptNm == undefined) o.deptNm = '';
-            if(o.majorNm == undefined) o.majorNm = '';
+        }, search: function (o) {
+            if (o.deptNm == undefined) o.deptNm = '';
+            if (o.majorNm == undefined) o.majorNm = '';
+            if (o.headNm == undefined) o.headNm = '';
+            if (o.bldgNm == undefined) o.bldgNm = '';
+            if (o.hallNm == undefined) o.hallNm = '';
 
             var _param = {
                 deptNm: o.deptNm,
                 majorNm: o.majorNm,
+                headNm: o.headNm,
+                bldgNm: o.bldgNm,
+                hallNm: o.hallNm,
                 filter: window.param.filter
             };
 
-            if(_param.filter == 'with') {
+            if (_param.filter == 'with') {
                 _param.admissionNm = $('#admissionNm').val();
                 _param.typeNm = $('#typeNm').val();
                 _param.examDate = $('#examDate').val();
                 _param.deptNm = $('#deptNm').val();
                 _param.majorNm = $('#majorNm').val();
+                _param.headNm = $('#headNm').val();
+                _param.bldgNm = $('#bldgNm').val();
+                _param.hallNm = $('#hallNm').val();
             }
 
             this.list.search(_param);

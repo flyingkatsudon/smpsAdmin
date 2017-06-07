@@ -11,8 +11,13 @@ define(function (require) {
         },
         render: function (e) {
 
-            if(this.param != undefined) this.param.deptNm = $('#deptNm').val();
-            if(this.param != undefined) this.param.majorNm = $('#majorNm').val();
+            if (this.param != undefined) {
+                this.param.deptNm = $('#deptNm').val();
+                this.param.majorNm = $('#majorNm').val();
+                this.param.headNm = $('#headNm').val();
+                this.param.bldgNm = $('#bldgNm').val();
+                this.param.hallNm = $('#hallNm').val();
+            }
 
             var _this = this;
             $.ajax({
@@ -22,9 +27,9 @@ define(function (require) {
                     _this.$('#examineeCnt').html(response.examineeCnt);
                     _this.$('#attendCnt').html(response.attendCnt);
                     _this.$('#absentCnt').html(response.absentCnt);
-                    if(response.attendPer == undefined) _this.$('#attendPer').html('0.00%');
+                    if (response.attendPer == undefined) _this.$('#attendPer').html('0.00%');
                     else _this.$('#attendPer').html(response.attendPer + "%");
-                    if(response.absentPer == undefined) _this.$('#absentPer').html('0.00%');
+                    if (response.absentPer == undefined) _this.$('#absentPer').html('0.00%');
                     else _this.$('#absentPer').html(response.absentPer + "%");
                 }
             });

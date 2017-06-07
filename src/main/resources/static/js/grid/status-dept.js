@@ -29,7 +29,7 @@ define(function (require) {
 
             var param = this.param;
 
-            if(param.filter == 'header') {
+            if (param.filter == 'header') {
                 if (!param.empty) {
                     if (param.admissionCd != '' && param.typeNm != undefined) {
                         if (param.typeNm != '' && param.typeNm != undefined) {
