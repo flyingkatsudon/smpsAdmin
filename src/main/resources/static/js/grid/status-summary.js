@@ -12,6 +12,7 @@ define(function (require) {
         render: function (e) {
 
             if(this.param != undefined) this.param.deptNm = $('#deptNm').val();
+            if(this.param != undefined) this.param.majorNm = $('#majorNm').val();
 
             var _this = this;
             $.ajax({

@@ -15,7 +15,6 @@ define(function (require) {
             this.$('#hm-ui-summary').html(InnerTemplate);
 
             var param = window.param;
-            console.log(window.param);
 
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this, param: param}).render();
             this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: param});

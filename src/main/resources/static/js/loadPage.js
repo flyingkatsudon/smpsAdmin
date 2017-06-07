@@ -67,9 +67,11 @@ define(function (require) {
 
         }, search:function(o){
             if(o.deptNm == undefined) o.deptNm = '';
+            if(o.majorNm == undefined) o.majorNm = '';
 
             var _param = {
                 deptNm: o.deptNm,
+                majorNm: o.majorNm,
                 filter: window.param.filter
             };
 
@@ -78,6 +80,7 @@ define(function (require) {
                 _param.typeNm = $('#typeNm').val();
                 _param.examDate = $('#examDate').val();
                 _param.deptNm = $('#deptNm').val();
+                _param.majorNm = $('#majorNm').val();
             }
 
             this.list.search(_param);
