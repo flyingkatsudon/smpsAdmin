@@ -41,7 +41,7 @@ define(function (require) {
             if (o == '') return '<option value="">전체</option>';
             else return '<option value="' + o + '" selected>' + o + '</option>';
         },
-        disableFilter: function (option) {
+        disableFilter: function () {
             this.$('#admissionNm').attr('disabled', true);
             this.$('#admissionNm').css('background', '#fbf7f7');
             this.$('#admissionNm').css('color', 'graytext');
