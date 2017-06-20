@@ -4,8 +4,17 @@ define(function (require) {
     var GridBase = require('../dist/jqgrid.js');
     var DlgPdf = require('../dist/dlg-pdf.js');
 
+    var GetUrl = require('./../getUrl.js');
+
+    var JSON = '.json';
+    var XLSX = '.xlsx';
+
     return GridBase.extend({
         initialize: function (options) {
+            this.parent = options.parent;
+            this.param = options.param;
+            this.baseName = options.baseName;
+
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
@@ -26,12 +35,12 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'score/print.json',
+                    url: new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl(),
                     colModel: colModel/*,
-                    onSelectRow : function(rowid, status, e){
-                        var param = $(this).jqGrid('getRowData', rowid);
-                        new DlgPdf().setUrl('score/detail.pdf?' + $.param(param)).render();
-                    }*/
+                     onSelectRow : function(rowid, status, e){
+                     var param = $(this).jqGrid('getRowData', rowid);
+                     new DlgPdf().setUrl('score/detail.pdf?' + $.param(param)).render();
+                     }*/
                 }
             }, options);
 
@@ -39,7 +48,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('score/print.xlsx');
+            this.addExcel(new GetUrl({baseName: this.baseName, suffix: XLSX, param: this.param}).getUrl());
             return this;
         }
     });

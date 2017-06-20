@@ -4,9 +4,9 @@ define(function (require) {
 
     var Common = require('./common.js');
 
-    require('../grid/score-cancel.js');
-    require('../toolbar/score-cancel.js');
-    require('text!/tpl/score-cancel.html');
+    require('../grid/data-scorerH.js');
+    require('../toolbar/data-scorerH.js');
+    require('text!/tpl/data-scorerH.html');
 
     return Backbone.View.extend({
         initialize: function () {

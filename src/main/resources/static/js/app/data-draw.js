@@ -2,17 +2,15 @@ define(function (require) {
     "use strict";
     var Backbone = require('backbone');
 
-    var List = require('../grid/data-draw.js');
-    var Toolbar = require('../toolbar/data-draw.js');
-    var Template = require('text!/tpl/data-draw.html');
+    var Common = require('./common.js');
+
+    require('../grid/data-draw.js');
+    require('../toolbar/data-draw.js');
+    require('text!/tpl/data-draw.html');
 
     return Backbone.View.extend({
-        render: function () {
-            this.$el.html(Template);
-            this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
-            this.list = new List({el: '.hm-ui-grid', parent: this}).render();
-        }, search: function (o) {
-            this.list.search(o);
+        initialize: function () {
+            new Common().render();
         }
     });
 });

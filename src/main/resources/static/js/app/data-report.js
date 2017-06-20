@@ -13,57 +13,49 @@ define(function (require) {
 
     var toolbar = new Toolbar();
 
-    // $('#admissionNm).val()가 가지는 admissionCd로 실제 admissionNm을 구함
-    var getAdmissionNm = function (e) {
-        var admissionNm = window.$('#admNm').val();
-
-        for (var i = 0; i < admissions.length; i++) {
-            if (admissions[i].admissionCd == e)
-                admissionNm = admissions[i].admissionNm;
-        }
-
-        return admissionNm;
-    };
-
     return Backbone.View.extend({
         initialize: function (o) {
-            this.el = o.el;
-            this.parent = o.parent;
+            // this.el = o.el;
+            // this.parent = o.parent;
+
+            if (o.param == undefined) this.param = window.param;
+            else this.param = o.param;
+
             this.dlgDownload = new DlgDownload();
         },
         render: function () {
-            this.$el.html(Template);
+            // this.$el.html(Template);
+            $('#page-wrapper').html(Template);
 
             var _this = this;
 
-            $(window.document).ready(function () {
-                if ($(window.$('#admNm, #tNm, #exDate').val() != null)) {
-                    _this.innerToolbar();
-                    _this.viewButton();
-                    $('.report').hide(); // 모든 버튼을 가린다
-                }
-            });
-
-            $(window.$('#admNm, #tNm, #exDate')).change(function () {
-                _this.innerToolbar();
-                _this.viewButton();
-            });
+            _this.innerToolbar(this.param);
+            _this.viewButton(this.param);
         },
-        innerToolbar: function () {
+        innerToolbar: function (o) {
 
-            var param = {
-                admissionNm: getAdmissionNm(window.$('#admNm').val()),
-                examDate: window.$('#exDate').val()
-            };
+            if (o.empty) {
+                $('.report').hide(); // 모든 버튼을 가린다
 
-            this.$('#deptNm').html(toolbar.getOptions(ToolbarModel.getDeptNm(param)));
-            this.$('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm(param)));
+                $('#deptNm').html(toolbar.getOptions(ToolbarModel.getDeptNm()));
+                $('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm()));
+            } else {
+                var param = {
+                    admissionNm: o.admissionNm,
+                    typeNm: o.typeNm,
+                    examDate: o.examDate
+                };
 
+                $('#deptNm').html(toolbar.getOptions(ToolbarModel.getDeptNm(param)));
+                $('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm(param)));
+            }
         },
-        viewButton: function () {
+        viewButton: function (o) {
             var admissions = window.admissions;
+            var admissionCd = o.admissionCd;
 
-            var admissionCd = window.$('#admNm').val();
+            if (o.admissionCd == undefined) admissionCd = '';
+
             var univCd = admissionCd.substr(0, 3); // 전형코드의 앞 3자리는 항상 학교를 의미함
 
             $('.report').hide(); // 모든 버튼 및 타이틀을 가린다
@@ -89,8 +81,8 @@ define(function (require) {
         deptNmChanged: function (e) {
 
             var param = {
-                admissionNm: getAdmissionNm(window.$('#admNm').val()),
-                examDate: window.$('#exDate').val(),
+                admissionNm: this.param.admissionNm,
+                examDate: this.param.examDate,
                 deptNm: e.currentTarget.value
             };
 
@@ -100,11 +92,11 @@ define(function (require) {
             e.preventDefault();
 
             var param = {
-                admissionNm: getAdmissionNm(window.$('#admNm').val()),
-                typeNm: window.$('#tNm').val(),
-                examDate: window.$('#exDate').val(),
-                deptNm: this.$('#deptNm').val(),
-                majorNm: this.$('#majorNm').val()
+                admissionNm: window.param.admissionNm,
+                typeNm: $('#tNm').val(),
+                examDate: $('#exDate').val(),
+                deptNm: $('#deptNm').val(),
+                majorNm: $('#majorNm').val()
             };
 
             console.log(param);

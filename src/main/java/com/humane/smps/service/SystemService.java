@@ -116,7 +116,7 @@ public class SystemService {
     public void initData(String examCd) throws IOException {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        if(examCd != null) {
+        if (examCd != null) {
             queryFactory.delete(QSheet.sheet).where(QSheet.sheet.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();

@@ -30,6 +30,7 @@ public class ExamMap {
     private String memo;
     private String photoNm;
     private String evalCd;
+    private String groupOrder;
     private String groupNm;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

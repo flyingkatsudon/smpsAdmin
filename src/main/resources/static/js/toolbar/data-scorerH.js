@@ -108,6 +108,7 @@ define(function (require) {
             e.preventDefault();
 
             var _this = this;
+
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),

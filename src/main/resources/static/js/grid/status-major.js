@@ -2,11 +2,16 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var GetUrl = require('./../getUrl.js');
+
+    var JSON = '.json';
+    var XLSX = '.xlsx';
 
     return GridBase.extend({
         initialize: function (options) {
             this.parent = options.parent;
             this.param = options.param;
+            this.baseName = options.baseName;
 
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
@@ -26,44 +31,9 @@ define(function (require) {
                 colModel[i].label = colModel[i].label === undefined ? colModel[i].name : colModel[i].label;
             }
 
-            var url = 'status/major.json';
-
-            var param = this.param;
-
-            if (param.filter == 'header') {
-                if (!param.empty) {
-                    if (param.admissionCd != '' && param.typeNm != undefined) {
-                        if (param.typeNm != '' && param.typeNm != undefined) {
-                            if (param.examDate != '' && param.examDate != undefined)
-                                url += '?admissionNm=' + param.admissionNm + '&typeNm=' + param.typeNm + '&examDate=' + param.examDate;
-                            else
-                                url += '?admissionNm=' + param.admissionNm + '&typeNm=' + param.typeNm;
-                        }
-                        else {
-                            if (param.examDate != '' && param.examDate != undefined)
-                                url += '?admissionNm=' + param.admissionNm + '&examDate=' + param.examDate;
-                            else
-                                url += '?admissionNm=' + param.admissionNm;
-                        }
-                    }
-                    else {
-                        if (param.typeNm != '' && param.typeNm != undefined) {
-                            if (param.examDate != '' && param.examDate != undefined)
-                                url += '?typeNm=' + param.typeNm + '&examDate=' + param.examDate;
-                            else
-                                url += '?typeNm=' + param.typeNm;
-                        }
-                        else {
-                            if (param.examDate != '' && param.examDate != undefined)
-                                url += '?examDate=' + param.examDate;
-                        }
-                    }
-                }
-            }
-
             var opt = $.extend(true, {
                 defaults: {
-                    url: url,
+                    url: new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl(),
                     colModel: colModel
                 }
             }, options);
@@ -72,7 +42,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('status/major.xlsx');
+            this.addExcel(new GetUrl({baseName: this.baseName, suffix: XLSX, param: this.param}).getUrl());
             return this;
         }
     });

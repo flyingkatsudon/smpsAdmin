@@ -119,7 +119,9 @@ define(function (require) {
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm: _this.$('#hallNm').val(),
                     scorerNm: _this.$('#scorerNm').val(),
-                    virtNo: _this.$('#virtNo').val()
+                    isVirtNo: _this.$('#isVirtNo').val(),
+                    virtNo: _this.$('#virtNo').val(),
+                    examineeCd: _this.$('#examineeCd').val()
                 });
             }
         },

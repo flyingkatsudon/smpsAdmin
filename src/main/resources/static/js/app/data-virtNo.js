@@ -4,9 +4,11 @@ define(function (require) {
 
     var Common = require('./common.js');
 
-    require('../grid/score-cancel.js');
-    require('../toolbar/score-cancel.js');
-    require('text!/tpl/score-cancel.html');
+    require('../grid/data-virtNo.js');
+    require('../grid/status-summary.js');
+    require('../toolbar/data-virtNo.js');
+    require('text!/tpl/data-virtNo.html');
+    require('text!/tpl/status-summary.html');
 
     return Backbone.View.extend({
         initialize: function () {
