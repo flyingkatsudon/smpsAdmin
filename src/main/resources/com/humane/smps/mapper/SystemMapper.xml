@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.humane.smps.mapper.SystemMapper">
+    <select id="account" resultType="com.humane.smps.dto.AccountDto">
+        select *
+        from (select user.user_id, user.password,
+                if(user_role.role_name = 'ROLE_ADMIN', '', concat(count(user_admission.admission_cd), '개')) as admissions
+                , (select group_concat(admission.admission_nm) from user_admission
+                    inner join admission on admission.admission_cd = user_admission.admission_cd where user.user_id = user_id group by user_id
+                  ) as lists
+                , case user_role.role_name
+                    when 'ROLE_ADMIN' then '관리자'
+                    when 'ROLE_USER' then '사용자'
+                    else '기타' end as role
+                , user_role.role_name
+                from user
+                inner join user_role on user_role.user_id = user.user_id
+                left join user_admission on user_admission.user_id = user.user_id
+                left join admission on admission.admission_cd = user_admission.admission_cd
+                <where>
+                    not user.user_id = 'api' and not user.user_id = 'admin'
+                    <if test="param != null">
+                        <if test="param.userId != null">and user_id like '%' #{param.user_id} '%'</if>
+                        <if test="param.roleName != null">and role_name = #{param.roleName}</if>
+                    </if>
+                </where>
+                group by user.user_id, user.password
+        ) result
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm != null">and lists like '%' #{param.admissionNm} '%' </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="admission" resultType="com.humane.smps.dto.AccountDto">
+        select distinct admission.admission_cd, admission.admission_nm from admission
+        inner join exam on exam.admission_cd = exam.admission_cd order by admission.admission_cd, admission.admission_nm
+    </select>
+
+    <select id="accountDetail" resultType="com.humane.smps.dto.AccountDto">
+        select admission.admission_cd, admission_nm, user_id
+        from admission
+        inner join user_admission on user_admission.admission_cd = admission.admission_cd
+        <where>
+            <if test="userId != null">
+                and user_admission.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertAdmission" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        insert into user_admission values (null, #{admissionCd}, #{userId})
+
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteAdmission" parameterType="String">
+        delete from user_admission where user_id = #{userId}
+    </delete>
+
+    <update id="modifyRole" parameterType="String">
+        update user_role set user_role.role_name = #{roleName} where user_role.user_id = #{userId}
+    </update>
+
+    <update id="modifyUser" parameterType="String">
+        update user set user.password = #{password} where user.user_id = #{userId}
+    </update>
+
+    <delete id="deleteRole" parameterType="String">
+        delete from user_role where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteAccount" parameterType="String">
+        delete from user where user_id = #{userId}
+    </delete>
+
+    <insert id="addAccount" parameterType="String">
+        insert into user values (#{userId}, #{password})
+    </insert>
+
+    <insert id="addRole" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        insert into user_role values (null, #{roleName}, #{userId})
+
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="idCheck" resultType="com.humane.smps.dto.AccountDto">
+        select user_id from user
+    </select>
+</mapper>

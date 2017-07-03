@@ -26,6 +26,8 @@ define(function (require) {
             this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: this.param});
             this.summary.render();
 
+            console.log(this.baseName);
+
             var afterUrlList = [
                 'data-scorerH', 'data-scorer', 'data-draw', 'data-physical',
                 'check-item', 'check-scoredCnt', 'check-scorer', 'check-scoredF'
@@ -75,6 +77,8 @@ define(function (require) {
             if (o.examineeCd == undefined) o.examineeCd = '';
             if (o.examineeNm == undefined) o.examineeNm = '';
 
+            if (o.roleName == undefined) o.roleName = '';
+
             var _param = {
                 admissionNm: o.admissionNm,
                 typeNm: o.typeNm,
@@ -90,6 +94,7 @@ define(function (require) {
                 virtNo: o.virtNo,
                 examineeCd: o.examineeCd,
                 examineeNm: o.examineeNm,
+                roleName: o.roleName,
                 filter: window.param.filter
             };
 
@@ -109,6 +114,7 @@ define(function (require) {
                 _param.virtNo = $('#virtNo').val();
                 _param.examineeCd = $('#examineeCd').val();
                 _param.examineeNm = $('#examineeNm').val();
+                _param.roleName = $('#roleName').val();
             }
 
             // grid가 '검색' 버튼을 눌러야 로딩되는 경우
