@@ -38,8 +38,6 @@ define(function (require) {
             var i, length = data.length, rtn = {};
             for (i = 0; i < length; i++)
                 rtn[data[i].get(key)] = data[i].get(value);
-
-            console.log(this.toArray(rtn, 'value'));
             return this.toArray(rtn, 'value');
         }, getExamCd: function (obj) {
             return this.getObjectList(obj, 'examCd', 'examCd');

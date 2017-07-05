@@ -28,8 +28,6 @@ define(function (require) {
             this.uploadForm('#frmUploadVirtNo');
             this.uploadForm('#frmUploadScore');
 
-            console.log($(".hm-ui-search").html());
-            console.log(this.$('#admissionNm').html());
             // 평가(시험) 정보 관리 메뉴
             this.toolbar = new ExamInfoDataToolbar({el: '.hm-ui-search', parent: this}).render();
             this.list = new SettingExamInfo({el: '#examInfo', parent: this}).render();
