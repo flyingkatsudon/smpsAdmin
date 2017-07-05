@@ -39,4 +39,7 @@ public class ExamMap {
     private Date hallDate;
 
     private Long orderby;
+
+    private String debateNm;
+    private String debateOrder;
 }

@@ -20,6 +20,7 @@ public class Item implements Serializable {
     private String itemNm;
     private Long minScore;
     private Long maxScore;
+    private String keypadType;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "deviCd", nullable = false) private Devi devi;

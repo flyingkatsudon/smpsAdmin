@@ -362,11 +362,10 @@ public class DataController {
                     mapper.fillVirtNo(examDto);
                 }
             }
-
-            return ResponseEntity.ok("가번호가 입력되었습니다.");
+            return ResponseEntity.ok("가번호가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
         } catch (Exception e) {
             log.debug("{}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
         }
     }
 
@@ -382,10 +381,10 @@ public class DataController {
             for (int i = 0; i < evalList.size(); i++)
                 mapper.fillEvalCd(evalList.get(i));
 
-            return ResponseEntity.ok("답안지 번호가 입력되었습니다.");
+            return ResponseEntity.ok("캔버스 번호가 저장되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답안지를 입력하는 시험이 아닙니다. 다른 시험을 선택하세요.");
         }
     }
 
@@ -419,7 +418,7 @@ public class DataController {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
         }
     }
 

@@ -13,8 +13,6 @@ define(function (require) {
             this.param = options.param;
             this.baseName = options.baseName;
 
-            console.log(this.baseName);
-
             var colModel = [
                 {name: 'virtNo', label: '가번호'},
                 {name: 'groupNm', label: '조'},

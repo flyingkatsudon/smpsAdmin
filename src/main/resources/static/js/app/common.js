@@ -26,8 +26,6 @@ define(function (require) {
             this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: this.param});
             this.summary.render();
 
-            console.log(this.baseName);
-
             var afterUrlList = [
                 'data-scorerH', 'data-scorer', 'data-draw', 'data-physical',
                 'check-item', 'check-scoredCnt', 'check-scorer', 'check-scoredF'

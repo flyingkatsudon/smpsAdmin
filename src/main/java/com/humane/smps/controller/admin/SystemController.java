@@ -3,10 +3,7 @@ package com.humane.smps.controller.admin;
 import com.humane.smps.dto.AccountDto;
 import com.humane.smps.dto.DownloadWrapper;
 import com.humane.smps.mapper.SystemMapper;
-import com.humane.smps.model.QUser;
-import com.humane.smps.model.QUserAdmission;
-import com.humane.smps.model.User;
-import com.humane.smps.model.UserAdmission;
+import com.humane.smps.model.*;
 import com.humane.smps.repository.UserAdmissionRepository;
 import com.humane.smps.repository.UserRepository;
 import com.humane.smps.repository.UserRoleRepository;
@@ -74,33 +71,49 @@ public class SystemController {
 
     @RequestMapping(value = "download", method = RequestMethod.POST)
     public ResponseEntity download(@RequestBody DownloadWrapper wrapper) {
-        // 1. validate wrapper
-        if (StringUtils.isEmpty(wrapper.getUrl()))
-            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("url이 올바르지 않습니다.");
+        try {
+            // 1. validate wrapper
+            if (StringUtils.isEmpty(wrapper.getUrl()))
+                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("url이 올바르지 않습니다.");
 
-        for (DownloadWrapper.ExamHallWrapper examHall : wrapper.getList()) {
-            if (StringUtils.isEmpty(examHall.getExamCd()))
-                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("시험코드 및 고사실이 올바르지 않습니다.");
+            for (DownloadWrapper.ExamHallWrapper examHall : wrapper.getList()) {
+                if (StringUtils.isEmpty(examHall.getExamCd()))
+                    return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("시험코드 및 고사실이 올바르지 않습니다.");
+            }
+
+            // 2. create http service
+            ApiService apiService = ServiceBuilder.INSTANCE.createService(wrapper.getUrl(), ApiService.class);
+
+            // 3. getData(iterator)
+            systemService.saveExamMap(apiService, wrapper);
+            systemService.saveItem(apiService, wrapper);
+
+            return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
         }
-
-        // 2. create http service
-        ApiService apiService = ServiceBuilder.INSTANCE.createService(wrapper.getUrl(), ApiService.class);
-
-        // 3. getData(iterator)
-        systemService.saveExamMap(apiService, wrapper);
-        systemService.saveItem(apiService, wrapper);
-
-        return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
     }
 
     @RequestMapping(value = "reset")
-    public void reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
-        systemService.resetData(photo);
+    public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
+        try{
+            systemService.resetData(photo);
+            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
+        }catch(Exception e){
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
+        }
     }
 
     @RequestMapping(value = "init")
-    public void init(String examCd) throws IOException {
-        systemService.initData(examCd);
+    public ResponseEntity init(String examCd) throws IOException {
+        try{
+            systemService.initData(examCd);
+            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
+        }catch(Exception e){
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
+        }
     }
 
     @RequestMapping(value = "account")

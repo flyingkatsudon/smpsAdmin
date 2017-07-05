@@ -54,10 +54,6 @@ define(function (require) {
             return this.getObjectList(obj, 'hallNm', 'hallNm');
         }, getGroupNm: function (obj) {
             return this.getObjectList(obj, 'groupNm', 'groupNm');
-        }, getAttendDate: function (obj) {
-            return this.getObjectList(obj, 'attendDate', 'attendDate');
-        }, getAttendTime: function (obj) {
-            return this.getObjectList(obj, 'attendTime', 'attendTime');
         }, getExamDate: function (obj) {
             return this.getObjectList(obj, 'examDate', 'examDate');
         }, getExamTime: function (obj) {

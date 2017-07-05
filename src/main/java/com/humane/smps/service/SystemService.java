@@ -90,6 +90,26 @@ public class SystemService {
 
         QExam exam = QExam.exam;
 
+        // fk_exam_cd가 존재하는 시험부터 삭제
+        scrollableResults = queryFactory.select(exam.admission.admissionCd)
+                .distinct()
+                .from(exam)
+                .where(exam.fkExam.examCd.isNotNull())
+                .setFetchSize(Integer.MIN_VALUE)
+                .scroll(ScrollMode.FORWARD_ONLY);
+
+        while (scrollableResults.next()){
+
+            String admissionCd = scrollableResults.getString(0);
+            queryFactory.delete(exam).where(
+                    exam.admission.admissionCd.eq(admissionCd)
+                    .and(exam.fkExam.examCd.isNotNull())
+            ).execute();
+        }
+
+        scrollableResults.close();
+
+        // 나머지 exam 삭제
         scrollableResults = queryFactory.select(exam.admission.admissionCd)
                 .distinct()
                 .from(exam)
