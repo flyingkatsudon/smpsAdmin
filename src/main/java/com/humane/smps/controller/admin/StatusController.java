@@ -1,6 +1,7 @@
 package com.humane.smps.controller.admin;
 
 import com.humane.smps.dto.*;
+import com.humane.smps.mapper.ModelMapper;
 import com.humane.smps.mapper.StatusMapper;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatusController {
     private static final String JSON = "json";
     private final StatusMapper mapper;
+    private final ModelMapper modelMapper;
 
     @RequestMapping(value = "all")
     public ResponseEntity all(StatusDto param) {
@@ -78,5 +80,10 @@ public class StatusController {
                         , format
                         , mapper.group(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
+    }
+
+    @RequestMapping(value = "getExamInfo")
+    public ResponseEntity getExamInfo(ExamInfoDto param, Pageable pageable) {
+        return ResponseEntity.ok(mapper.getExamInfo(param, pageable).getContent());
     }
 }

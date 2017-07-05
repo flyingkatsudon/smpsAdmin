@@ -4,7 +4,7 @@ define(function (require) {
     var Backbone = require('backbone');
 
     var Collection = Backbone.Collection.extend({
-        url: 'model/toolbar.json',
+        url: 'model/getExamInfoToolbar.json',
         initialize: function () {
             this.fetch({
                 async: false
@@ -29,6 +29,7 @@ define(function (require) {
             return rtn;
         }, getObjectList: function (obj, key, value) {
             $.each(obj, function (k, v) {
+                console.log("exam is... (" + k + " : " + v + ")");
                 if (v === '' || v === null || v === undefined) {
                     delete obj[k];
                 }
@@ -37,33 +38,15 @@ define(function (require) {
             var i, length = data.length, rtn = {};
             for (i = 0; i < length; i++)
                 rtn[data[i].get(key)] = data[i].get(value);
+
+            console.log(this.toArray(rtn, 'value'));
             return this.toArray(rtn, 'value');
+        }, getExamCd: function (obj) {
+            return this.getObjectList(obj, 'examCd', 'examCd');
+        }, getAdmissionCd: function (obj) {
+            return this.getObjectList(obj, 'admissionCd', 'admissionCd');
         }, getAdmissionNm: function (obj) {
             return this.getObjectList(obj, 'admissionNm', 'admissionNm');
-        }, getTypeNm: function (obj) {
-            return this.getObjectList(obj, 'typeNm', 'typeNm');
-        }, getDeptNm: function (obj) {
-            return this.getObjectList(obj, 'deptNm', 'deptNm');
-        }, getMajorNm: function (obj) {
-            return this.getObjectList(obj, 'majorNm', 'majorNm');
-        }, getHeadNm: function (obj) {
-            return this.getObjectList(obj, 'headNm', 'headNm');
-        }, getBldgNm: function (obj) {
-            return this.getObjectList(obj, 'bldgNm', 'bldgNm');
-        }, getHallNm: function (obj) {
-            return this.getObjectList(obj, 'hallNm', 'hallNm');
-        }, getGroupNm: function (obj) {
-            return this.getObjectList(obj, 'groupNm', 'groupNm');
-        }, getAttendDate: function (obj) {
-            return this.getObjectList(obj, 'attendDate', 'attendDate');
-        }, getAttendTime: function (obj) {
-            return this.getObjectList(obj, 'attendTime', 'attendTime');
-        }, getExamDate: function (obj) {
-            return this.getObjectList(obj, 'examDate', 'examDate');
-        }, getExamTime: function (obj) {
-            return this.getObjectList(obj, 'examTime', 'examTime');
-        }, getScorerNm: function (obj) {
-            return this.getObjectList(obj, 'scorerNm', 'scorerNm');
         }, getExamNm: function (obj) {
             return this.getObjectList(obj, 'examNm', 'examNm');
         }

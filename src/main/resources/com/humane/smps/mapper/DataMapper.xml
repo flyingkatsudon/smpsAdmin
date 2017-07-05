@@ -350,7 +350,7 @@
         <where>
             <if test="param!=null">
                 AND exam_cd = #{examCd}
-            </if>
+            </if>fo;;
         </where>
     </select>
 

@@ -17,4 +17,6 @@ public interface StatusMapper {
     Page<StatusHallDto> hall(@Param("param") StatusHallDto param, @Param("pageable") Pageable pageable);
 
     Page<StatusGroupDto> group(@Param("param") StatusGroupDto param, @Param("pageable") Pageable pageable);
+
+    Page<ExamInfoDto> getExamInfo(@Param("param") ExamInfoDto param, @Param("pageable") Pageable pageable);
 }

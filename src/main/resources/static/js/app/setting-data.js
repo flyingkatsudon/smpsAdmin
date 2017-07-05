@@ -11,6 +11,9 @@ define(function (require) {
     var dlgUniv = require('text!tpl/dlg-univ.html');
     var examList = [];
 
+    var SettingExamInfo = require('./../grid/setting-data.js');
+    var ExamInfoDataToolbar = require('./../toolbar/setting-data.js');
+
     return Backbone.View.extend({
         initialize: function (o) {
             this.el = o.el;
@@ -24,6 +27,15 @@ define(function (require) {
             this.uploadForm('#frmUploadExaminee');
             this.uploadForm('#frmUploadVirtNo');
             this.uploadForm('#frmUploadScore');
+
+            console.log($(".hm-ui-search").html());
+            console.log(this.$('#admissionNm').html());
+            // 평가(시험) 정보 관리 메뉴
+            this.toolbar = new ExamInfoDataToolbar({el: '.hm-ui-search', parent: this}).render();
+            this.list = new SettingExamInfo({el: '#examInfo', parent: this}).render();
+
+        }, search: function (o) {
+            this.list.search(o);
         }, uploadForm: function (id) {
             this.$(id).ajaxForm({
                 beforeSubmit: function (arr) {
