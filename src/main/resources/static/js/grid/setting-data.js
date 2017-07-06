@@ -93,7 +93,7 @@ define(function (require) {
 
                                     basicHtml += '<div style="margin:3% 0 0 3%;">'
                                               +      '평&nbsp;&nbsp;가&nbsp;&nbsp;명'
-                                              +      '<input type="text" id="examNm" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.examNm + '"/>'
+                                              +      '<input type="text" id="examName" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.examNm + '"/>'
                                               +  '</div>';   // 평가 (examNm)
 
                                     basicHtml += '<div style="margin:3% 0 0 3%;">'
@@ -345,11 +345,11 @@ define(function (require) {
                                  * 4. 가번호 자동 할당 여부   (isMgrAuto)
                                  * 5. 지정이동 사용 여부      (isMove)
                                  */
-                                $('input:radio[name="isAbsence"][value="' + (rowData.isAbsence == 0 ? 'false' : 'true') + '"]').prop('checked', true);
-                                $('input:radio[name="isClosedView"][value="' + (rowData.isClosedView == 0 ? 'false' : 'true') + '"]').prop('checked', true);
-                                $('input:radio[name="isHorizontal"][value="' + (rowData.isHorizontal == 0 ? 'false' : 'true') + '"]').prop('checked', true);
-                                $('input:radio[name="isMgrAuto"][value="' + (rowData.isMgrAuto == 0 ? 'false' : 'true') + '"]').prop('checked', true);
-                                $('input:radio[name="isMove"][value="' + (rowData.isMove == 0 ? 'false' : 'true') + '"]').prop('checked', true);
+                                $('input:radio[name="isAbsence"][value="' + rowData.isAbsence + '"]').prop('checked', true);
+                                $('input:radio[name="isClosedView"][value="' + rowData.isClosedView + '"]').prop('checked', true);
+                                $('input:radio[name="isHorizontal"][value="' + rowData.isHorizontal + '"]').prop('checked', true);
+                                $('input:radio[name="isMgrAuto"][value="' + rowData.isMgrAuto + '"]').prop('checked', true);
+                                $('input:radio[name="isMove"][value="' + rowData.isMove + '"]').prop('checked', true);
 
                             }, // onShown
                             buttons: [{
@@ -357,10 +357,11 @@ define(function (require) {
                                 label: '변경 내용 저장',
                                 cssClass: 'btn-primary',
                                 action: function (dialog) {
+                                    console.log($('#examName').val());
                                     var param = {
                                           examCd        : rowData.examCd
                                         , typeNm        : $('#typeNm').val()
-                                        , examNm        : $('#examNm').val()
+                                        , examNm        : $('#examName').val()
                                         , period        : $('#period').val()
                                         , hallDate      : $('#hallDate').val()
 
