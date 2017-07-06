@@ -1,8 +1,12 @@
 package com.humane.smps.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -10,18 +14,18 @@ import lombok.NoArgsConstructor;
 public class ExamInfoDto {
     // exam
     public String examCd;
-    public String adjust;
+    public BigDecimal adjust;
     public String barcodeType;
     public String examNm;
-    public String examineeLen;
+    public Long examineeLen;
 
-    public String isAbsence;
-    public String isClosedView;
-    public String isHirizontal;
-    public String isMgrAuto;
-    public String isMove;
+    public boolean isAbsence;
+    public boolean isClosedView;
+    public boolean isHorizontal;
+    public boolean isMgrAuto;
+    public boolean isMove;
 
-    public String itemCnt;
+    public Long itemCnt;
     public String keypadType;
     public String period;
 
@@ -31,11 +35,11 @@ public class ExamInfoDto {
     public String printTitle1;
     public String printTitle2;
 
-    public String scorerCnt;
-    public String totScore;
+    public Long scorerCnt;
+    public Long totScore;
     public String typeNm;
 
-    public String virtNoDigits;
+    public Long virtNoDigits;
     public String virtNoType;
 
     public String fkExamCd;
@@ -44,6 +48,8 @@ public class ExamInfoDto {
     public String admissionNm;
 
     // exam_hall_date
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     public String hallDate;
     public String virtNoEnd;
     public String virtNoStart;

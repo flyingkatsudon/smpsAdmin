@@ -10,19 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "status", method = RequestMethod.GET)
+@RequestMapping(value = "status")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StatusController {
     private static final String JSON = "json";
     private final StatusMapper mapper;
-    private final ModelMapper modelMapper;
 
     @RequestMapping(value = "all")
     public ResponseEntity all(StatusDto param) {
@@ -85,5 +83,12 @@ public class StatusController {
     @RequestMapping(value = "getExamInfo")
     public ResponseEntity getExamInfo(ExamInfoDto param, Pageable pageable) {
         return ResponseEntity.ok(mapper.getExamInfo(param, pageable).getContent());
+    }
+
+    @RequestMapping(value = "modifyExamInfo")
+    @Transactional(propagation= Propagation.REQUIRED, rollbackFor={Throwable.class})
+    public void modifyExamInfo(@RequestBody ExamInfoDto param) {
+        mapper.modifyExamInfo(param);
+        mapper.modifyExamHallDateOfExamInfo(param);
     }
 }

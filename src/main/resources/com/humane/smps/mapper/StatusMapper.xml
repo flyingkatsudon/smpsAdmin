@@ -302,4 +302,46 @@
             </if>
         </where>
     </select>
+
+    <update id="modifyExamInfo">
+        <if test="param != null">
+            UPDATE exam
+            <set>
+                <if test="param.typeNm != null">type_nm = #{param.typeNm},</if>
+                <if test="param.examNm != null">exam_nm = #{param.examNm},</if>
+                <if test="param.period != null">period = #{param.period},</if>
+                <if test="param.adjust != null">adjust = #{param.adjust},</if>
+                <if test="param.barcodeType != null">barcode_type = #{param.barcodeType},</if>
+                <if test="param.examineeLen != null">examinee_len = #{param.examineeLen},</if>
+                <if test="param.isAbsence != null">is_absence = #{param.isAbsence},</if>
+                <if test="param.isClosedView != null">is_closed_view = #{param.isClosedView},</if>
+                <if test="param.isHorizontal != null">is_horizontal = #{param.isHorizontal},</if>
+                <if test="param.isMgrAuto != null">is_mgr_auto = #{param.isMgrAuto},</if>
+                <if test="param.isMove != null">is_move = #{param.isMove},</if>
+                <if test="param.itemCnt != null">item_cnt = #{param.itemCnt},</if>
+                <if test="param.keypadType != null">keypad_type = #{param.keypadType},</if>
+                <if test="param.printTitle1 != null">print_title1 = #{param.printTitle1},</if>
+                <if test="param.printContent1 != null">print_content1 = #{param.printContent1},</if>
+                <if test="param.printTitle2 != null">print_title2 = #{param.printTitle2},</if>
+                <if test="param.printContent2 != null">print_content2 = #{param.printContent2},</if>
+                <if test="param.scorerCnt != null">scorer_cnt = #{param.scorerCnt},</if>
+                <if test="param.totScore != null">tot_score = #{param.totScore},</if>
+                <if test="param.virtNoDigits != null">virt_no_digits = #{param.virtNoDigits},</if>
+                <if test="param.virtNoType != null">virt_no_type = #{param.virtNoType}</if>
+            </set>
+            WHERE exam_cd = #{param.examCd}
+        </if>
+    </update>
+
+    <update id="modifyExamHallDateOfExamInfo">
+        <if test="param != null">
+            UPDATE exam_hall_date
+            <set>
+                <if test="param.hallDate">hall_date = #{param.hallDate},</if>
+                <if test="param.virtNoStart != null">virt_no_start = #{param.virtNoStart},</if>
+                <if test="param.virtNoEnd != null">virt_no_end = #{param.virtNoEnd}</if>
+            </set>
+            WHERE exam_cd = #{param.examCd}
+        </if>
+    </update>
 </mapper>

@@ -19,4 +19,7 @@ public interface StatusMapper {
     Page<StatusGroupDto> group(@Param("param") StatusGroupDto param, @Param("pageable") Pageable pageable);
 
     Page<ExamInfoDto> getExamInfo(@Param("param") ExamInfoDto param, @Param("pageable") Pageable pageable);
+
+    void modifyExamInfo(@Param("param") ExamInfoDto param);
+    void modifyExamHallDateOfExamInfo(@Param("param") ExamInfoDto param);
 }

@@ -19,8 +19,6 @@ define(function (require) {
         render: function () {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             this.$('#examNm').html(this.getOptions(ToolbarModel.getExamNm()));
-
-            console.log(this.$('#examNm').html());
             return this;
         },
         events: {
