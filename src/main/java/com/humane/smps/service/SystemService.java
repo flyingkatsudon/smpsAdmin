@@ -118,11 +118,16 @@ public class SystemService {
 
         while (scrollableResults.next()) {
             String admissionCd = scrollableResults.getString(0);
-            queryFactory.delete(exam).where(exam.admission.admissionCd.eq(admissionCd)).execute();
+            queryFactory.delete(exam)
+                    .where(exam.admission.admissionCd.eq(admissionCd))
+                    .execute();
 
             try {
-                queryFactory.delete(QAdmission.admission).where(QAdmission.admission.admissionCd.eq(admissionCd)).execute();
-            } catch (Exception ignored) {
+                queryFactory.delete(QAdmission.admission)
+                        .where(QAdmission.admission.admissionCd.eq(admissionCd))
+                        .execute();
+            } catch (Exception e) {
+                log.error("{}", e.getMessage());
             }
         }
 
