@@ -205,12 +205,8 @@ public class UploadController {
                     hallDate.setVirtNoEnd(null);
 
                 } else {
-
                     hallDate.setVirtNoStart(vo.getVirtNoStart());
-
-                    if (Long.parseLong(vo.getVirtNoEnd()) < 100)
-                        hallDate.setVirtNoEnd('0' + vo.getVirtNoEnd());
-                    else hallDate.setVirtNoEnd(vo.getVirtNoEnd());
+                    hallDate.setVirtNoEnd(vo.getVirtNoEnd());
                 }
 
                 ExamHallDate tmp = hallDateRepository.findOne(new BooleanBuilder()
