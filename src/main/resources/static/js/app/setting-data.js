@@ -31,7 +31,7 @@ define(function (require) {
                 beforeSubmit: function (arr) {
                     for (var i in arr) {
                         if (arr[i].name == 'file' && arr[i].value == '') {
-                            this.error();
+                            _this.completeDialog('파일을 선택하세요');
                             return false;
                         }
                     }
@@ -47,11 +47,12 @@ define(function (require) {
                     dialog.open();
 
                 },
-                error: function () {
-                    _this.completeDialog('양식 파일이 맞는지 확인하세요');
+                error: function (response) {
+                    console.log(response);
+                    _this.errorDialog(response.responseJSON);
                 },
-                success: function () {
-                    _this.completeDialog('업로드가 완료되었습니다');
+                success: function (response) {
+                    _this.completeDialog(response);
                 }
             });
         }, events: {
@@ -193,7 +194,7 @@ define(function (require) {
                 success: function (response) {
                     _this.completeDialog(response);
                 }, error: function (response){
-                    _this.completeDialog(response.JSON);
+                    _this.completeDialog(response.responseJSON);
                 }
             });
         },
@@ -357,7 +358,7 @@ define(function (require) {
                                                 _this.completeDialog(response);
                                             },
                                             error: function (response) {
-                                                _this.completeDialog(response.JSON);
+                                                _this.completeDialog(response.responseJSON);
                                             }
                                         });
                                     }
@@ -417,6 +418,20 @@ define(function (require) {
             var dialog = new BootstrapDialog({
                 title: '',
                 message: '<h5 style="margin-left:20%">' + msg + '</h5>',
+                closable: true
+            });
+
+            dialog.realize();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalHeader().hide();
+            dialog.getModalFooter().hide();
+            dialog.open();
+        }, errorDialog: function(msg){
+            BootstrapDialog.closeAll();
+
+            var dialog = new BootstrapDialog({
+                title: '',
+                message: '<h5 style="margin-left:5%">' + msg + '</h5>',
                 closable: true
             });
 
