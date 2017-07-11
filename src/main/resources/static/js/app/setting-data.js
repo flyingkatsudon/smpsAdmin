@@ -203,8 +203,7 @@ define(function (require) {
 
             var _this = this;
             var dialog = new BootstrapDialog({
-                title: '<h4>데이터 초기화</h4>',
-                message: '<h5 style="margin-left:10%">시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getExamList(text) + '</h5>',
+                message: '<h5 style="margin-left:10%">초기화할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getExamList(text) + '</h5>',
                 closable: true,
                 buttons: [
                     {
@@ -243,6 +242,7 @@ define(function (require) {
 
                             innerDialog.realize();
                             innerDialog.getModalDialog().css('margin-top', '20%');
+                            innerDialog.getModalHeader().hide();
                             innerDialog.open();
                         }
                     },
@@ -257,6 +257,7 @@ define(function (require) {
 
             dialog.realize();
             dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalHeader().hide();
             dialog.open();
 
         }, fillClicked: function (e) {

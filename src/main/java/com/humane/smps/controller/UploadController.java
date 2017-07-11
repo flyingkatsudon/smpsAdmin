@@ -52,12 +52,12 @@ public class UploadController {
     private final SheetRepository sheetRepository;
     private final ScoreRepository scoreRepository;
     private final ScoreLogRepository scoreLogRepository;
+    private final GroupInfoRepository groupInfoRepository;
 
     // Windows
-    //@Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
-    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}")
-    String pathRoot;
+    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
 
     @RequestMapping(value = "devi", method = RequestMethod.POST)
     public ResponseEntity<String> devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
@@ -84,10 +84,10 @@ public class UploadController {
                         devi = deviRepository.save(devi);
                     }
             );
-            return ResponseEntity.ok("업로드가 완료되었습니다.");
+            return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             log.debug("{}", throwable.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }
 
@@ -116,11 +116,10 @@ public class UploadController {
 
                 log.debug("{}", vo);
 
-                if(!vo.getFkExamCd().equals("")){
+                if (!vo.getFkExamCd().equals("") && vo.getFkExamCd() != null) {
                     Exam tmp = examRepository.findOne(new BooleanBuilder()
                             .and(QExam.exam.examCd.eq(vo.getFkExamCd()))
                     );
-
                     exam.setFkExam(tmp);
                 }
 
@@ -130,14 +129,14 @@ public class UploadController {
 
                 // 4. item 변환, 저장, 갯수비교
                 if (Long.parseLong(vo.getItemCnt()) != uploadService.saveItems(vo)) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("항목 개수가 일치하지 않습니다!.");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("항목 개수가 일치하지 않습니다!");
                 }
             }
-            return ResponseEntity.ok("업로드가 완료되었습니다.");
-        } catch (Throwable t) {
-            t.printStackTrace();
-            log.error("{}", t.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
+            return ResponseEntity.ok("업로드가 완료되었습니다");
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            log.error("{}", throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }
 
@@ -198,14 +197,25 @@ public class UploadController {
                     e.printStackTrace();
                 }
 
-                hallDate.setVirtNoStart(vo.getVirtNoStart());
+                // 가번호 정보가 없거나 공백이면 null로 저장
+                if ((vo.getVirtNoEnd() == null && vo.getVirtNoStart() == null) ||
+                        (vo.getVirtNoEnd() == "" && vo.getVirtNoStart() == "")) {
 
-                if (Long.parseLong(vo.getVirtNoEnd()) < 100)
-                    hallDate.setVirtNoEnd('0' + vo.getVirtNoEnd());
-                else hallDate.setVirtNoEnd(vo.getVirtNoEnd());
+                    hallDate.setVirtNoStart(null);
+                    hallDate.setVirtNoEnd(null);
+
+                } else {
+
+                    hallDate.setVirtNoStart(vo.getVirtNoStart());
+
+                    if (Long.parseLong(vo.getVirtNoEnd()) < 100)
+                        hallDate.setVirtNoEnd('0' + vo.getVirtNoEnd());
+                    else hallDate.setVirtNoEnd(vo.getVirtNoEnd());
+                }
 
                 ExamHallDate tmp = hallDateRepository.findOne(new BooleanBuilder()
                         .and(QExamHallDate.examHallDate.hallDate.eq(hallDate.getHallDate()))
+                        .and(QExamHallDate.examHallDate.hall.hallCd.eq(hallDate.getHall().getHallCd()))
                         .and(QExamHallDate.examHallDate.exam.examCd.eq(hallDate.getExam().getExamCd()))
                 );
 
@@ -213,12 +223,28 @@ public class UploadController {
 
                 hallDateRepository.save(hallDate);
 
+                /*GroupInfo find = groupInfoRepository.findOne(new BooleanBuilder()
+                        .and(QGroupInfo.groupInfo.groupNm.eq(vo.getGroupNm()))
+                        .and(QGroupInfo.groupInfo.deptNm.eq(vo.getDeptNm()))
+                        .and(QGroupInfo.groupInfo.hallCd.eq(hall.getHallCd()))
+                );
+
+                if (find == null) {
+
+                    GroupInfo groupInfo = new GroupInfo();
+                    groupInfo.setDeptNm(vo.getDeptNm());
+                    groupInfo.setGroupNm(vo.getGroupNm());
+                    groupInfo.setHallCd(hall.getHallCd());
+
+                    groupInfoRepository.save(groupInfo);
+                }*/
+
             });
-            return ResponseEntity.ok("업로드가 완료되었습니다.");
+            return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             log.error("{}", throwable.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }
 
@@ -235,7 +261,7 @@ public class UploadController {
             log.debug("{}", examineeList);
             examineeList.forEach(vo -> {
                 // 1. ExamHall 에서 고사실 및 시험정보를 가져온다.
-                QExam exam = QExamHall.examHall.exam;
+                /*QExam exam = QExamHall.examHall.exam;
                 QHall hall = QExamHall.examHall.hall;
 
                 ExamHall examHall = examHallRepository.findOne(new BooleanBuilder()
@@ -245,6 +271,20 @@ public class UploadController {
                         .and(hall.bldgNm.eq(vo.getBldgNm()))
                         .and(hall.hallNm.eq(vo.getHallNm()))
                         .and(exam.examCd.eq(vo.getExamCd())) // 위 5개 조건이 모두 같을 때, 시험코드로 구분하도록
+                );*/
+
+                // 시험정보
+                Exam exam = examRepository.findOne(new BooleanBuilder()
+                        .and(QExam.exam.examCd.eq(vo.getExamCd()))
+                );
+
+                // 1. ExamHallDate에서 시험 및 고사실 정보를 가져옴
+                ExamHallDate hallDate = hallDateRepository.findOne(new BooleanBuilder()
+                        .and(QExamHallDate.examHallDate.exam.examCd.eq(vo.getExamCd()))
+                        .and(QExamHallDate.examHallDate.hallDate.eq(dtf.parseLocalDateTime(vo.getExamDate()).toDate()))
+                        .and(QExamHallDate.examHallDate.hall.headNm.eq(vo.getHeadNm()))
+                        .and(QExamHallDate.examHallDate.hall.bldgNm.eq(vo.getBldgNm()))
+                        .and(QExamHallDate.examHallDate.hall.hallNm.eq(vo.getHallNm()))
                 );
 
                 // 3. 수험생정보 생성
@@ -255,8 +295,9 @@ public class UploadController {
 
                 //ExamMap examMap = new ExamMap();
                 ExamMap examMap = mapper.convertValue(vo, ExamMap.class);
-                examMap.setExam(examHall.getExam());
-                examMap.setHall(examHall.getHall());
+                examMap.setExam(hallDate.getExam());
+                examMap.setHall(hallDate.getHall());
+                examMap.setExam(exam);
                 examMap.setExaminee(examinee);
 
                 ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()
@@ -269,11 +310,11 @@ public class UploadController {
                 // 3.1 수험생정보 저장
                 examMapRepository.save(examMap);
             });
-            return ResponseEntity.ok("업로드가 완료되었습니다.");
+            return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }
 
@@ -361,11 +402,11 @@ public class UploadController {
                     zipFile.extractFile(fileHeader, pathRoot + "/jpg");
                 }
             }
-            return ResponseEntity.ok("업로드가 완료되었습니다.");
+            return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요");
         }
     }
 
@@ -406,11 +447,11 @@ public class UploadController {
                     zipFile.extractFile(fileHeader, pathRoot + "/smpsMgr/jpg");
                 }
             }
-            return ResponseEntity.ok("업로드가 완료되었습니다.");
+            return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요");
         }
     }
 

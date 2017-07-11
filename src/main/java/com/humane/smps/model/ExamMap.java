@@ -21,7 +21,7 @@ public class ExamMap {
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
     @ManyToOne @JoinColumn(name = "examineeCd", nullable = false) private Examinee examinee;
-    @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
+    @ManyToOne @JoinColumn(name = "hallCd") private Hall hall;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date scanDttm;
