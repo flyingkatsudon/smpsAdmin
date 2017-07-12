@@ -124,7 +124,7 @@ define(function (require) {
                                         _this.completeDialog(response);
                                     },
                                     error: function (response, status, error) {
-                                        _this.completeDialog(response.JSON);
+                                        _this.completeDialog(response.responseJSON);
                                     }
                                 });
                             } else {
