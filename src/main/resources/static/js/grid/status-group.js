@@ -2,11 +2,17 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var GetUrl = require('./../getUrl.js');
+
+    var JSON = '.json';
+    var XLSX = '.xlsx';
 
     return GridBase.extend({
         initialize: function (options) {
             this.parent = options.parent;
-            var _this = this;
+            this.param = options.param;
+            this.baseName = options.baseName;
+
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
@@ -30,7 +36,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/group.json',
+                    url: new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl(),
                     colModel: colModel
                 }
             }, options);
@@ -39,7 +45,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('status/group.xlsx');
+            this.addExcel(new GetUrl({baseName: this.baseName, suffix: XLSX, param: this.param}).getUrl());
             return this;
         }
     });

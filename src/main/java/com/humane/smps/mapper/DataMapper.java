@@ -55,7 +55,7 @@ public interface DataMapper {
 
     void fillVirtNo(@Param("param") ExamDto param);
 
-    Page<Map<String,Object>> drawData(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
+    Page<Map<String, Object>> drawData(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 
     Page<ScoreUploadDto> scoreUpload(@Param("param") ScoreUploadDto param, @Param("pageable") Pageable pageable);
 

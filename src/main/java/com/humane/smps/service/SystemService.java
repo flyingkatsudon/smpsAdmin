@@ -90,6 +90,26 @@ public class SystemService {
 
         QExam exam = QExam.exam;
 
+        // fk_exam_cd가 존재하는 시험부터 삭제
+        scrollableResults = queryFactory.select(exam.admission.admissionCd)
+                .distinct()
+                .from(exam)
+                .where(exam.fkExam.examCd.isNotNull())
+                .setFetchSize(Integer.MIN_VALUE)
+                .scroll(ScrollMode.FORWARD_ONLY);
+
+        while (scrollableResults.next()){
+
+            String admissionCd = scrollableResults.getString(0);
+            queryFactory.delete(exam).where(
+                    exam.admission.admissionCd.eq(admissionCd)
+                    .and(exam.fkExam.examCd.isNotNull())
+            ).execute();
+        }
+
+        scrollableResults.close();
+
+        // 나머지 exam 삭제
         scrollableResults = queryFactory.select(exam.admission.admissionCd)
                 .distinct()
                 .from(exam)
@@ -98,11 +118,16 @@ public class SystemService {
 
         while (scrollableResults.next()) {
             String admissionCd = scrollableResults.getString(0);
-            queryFactory.delete(exam).where(exam.admission.admissionCd.eq(admissionCd)).execute();
+            queryFactory.delete(exam)
+                    .where(exam.admission.admissionCd.eq(admissionCd))
+                    .execute();
 
             try {
-                queryFactory.delete(QAdmission.admission).where(QAdmission.admission.admissionCd.eq(admissionCd)).execute();
-            } catch (Exception ignored) {
+                queryFactory.delete(QAdmission.admission)
+                        .where(QAdmission.admission.admissionCd.eq(admissionCd))
+                        .execute();
+            } catch (Exception e) {
+                log.error("{}", e.getMessage());
             }
         }
 
@@ -116,7 +141,7 @@ public class SystemService {
     public void initData(String examCd) throws IOException {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        if(examCd != null) {
+        if (examCd != null) {
             queryFactory.delete(QSheet.sheet).where(QSheet.sheet.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();

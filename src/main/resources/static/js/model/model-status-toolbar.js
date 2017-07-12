@@ -54,18 +54,12 @@ define(function (require) {
             return this.getObjectList(obj, 'hallNm', 'hallNm');
         }, getGroupNm: function (obj) {
             return this.getObjectList(obj, 'groupNm', 'groupNm');
-        }, getAttendDate: function (obj) {
-            return this.getObjectList(obj, 'attendDate', 'attendDate');
-        }, getAttendTime: function (obj) {
-            return this.getObjectList(obj, 'attendTime', 'attendTime');
         }, getExamDate: function (obj) {
             return this.getObjectList(obj, 'examDate', 'examDate');
         }, getExamTime: function (obj) {
             return this.getObjectList(obj, 'examTime', 'examTime');
         }, getScorerNm: function (obj) {
             return this.getObjectList(obj, 'scorerNm', 'scorerNm');
-        }, getExamNm: function (obj) {
-            return this.getObjectList(obj, 'examNm', 'examNm');
         }
     });
     return new Collection();

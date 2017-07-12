@@ -2,9 +2,17 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var GetUrl = require('./../getUrl.js');
+
+    var JSON = '.json';
+    var XLSX = '.xlsx';
 
     return GridBase.extend({
         initialize: function (options) {
+            this.parent = options.parent;
+            this.param = options.param;
+            this.baseName = options.baseName;
+
             var colModel = [
                 {name: 'virtNo', label: '가번호'},
                 {name: 'groupNm', label: '조'},
@@ -27,7 +35,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/virtNo.json',
+                    url: new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl(),
                     colModel: colModel
                 }
             }, options);
@@ -36,7 +44,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/virtNo.xlsx');
+            this.addExcel(new GetUrl({baseName: this.baseName, suffix: XLSX, param: this.param}).getUrl());
             return this;
         }
     });

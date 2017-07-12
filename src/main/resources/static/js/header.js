@@ -7,7 +7,7 @@ define(function (require) {
     var Backbone = require('backbone');
 
     return Backbone.View.extend({
-        render: function(o){
+        render: function (o) {
 
             $(window.document).ready(function () {
                 headerToolbar('');
@@ -76,13 +76,15 @@ define(function (require) {
                                     admissionNm += '<option value="' + response[i].admissionCd + '" selected>' + response[i].admissionNm + '</option>';
                                 else
                                     admissionNm += '<option value="' + response[i].admissionCd + '">' + response[i].admissionNm + '</option>';
-                                admissions.push({admissionCd: response[i].admissionCd, admissionNm: response[i].admissionNm});
+                                admissions.push({
+                                    admissionCd: response[i].admissionCd,
+                                    admissionNm: response[i].admissionNm
+                                });
                             }
                             flag = true;
                         }
 
                         window.$('#admNm').html(admissionNm);
-                        //window.$('#admNm').html(toolbar.getOptions(ToolbarModel.getAdmissionNm()));
                         window.$('#tNm').html(toolbar.getOptions(ToolbarModel.getTypeNm()));
                         window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate()));
 
@@ -97,7 +99,7 @@ define(function (require) {
                 typeNm: '',
                 examDate: '',
                 filter: 'with', // header: 상단만, with: 상, 하단 동시에
-                empty: true
+                empty: true // 상단 필터 값이 비어있는지 여부, true: 비어있음
             };
 
             // 상단 필터 선택하면 window.param의 값을 업데이트 한다 -> 각 페이지에서 필터로 쓰임
@@ -117,11 +119,18 @@ define(function (require) {
                     window.param.empty = true;
                 }
 
-                var baseName = location.hash.substring(1, location.hash.length);
+                if(location.hash != '') var baseName = location.hash.substring(1, location.hash.length);
+                else var baseName = 'data-virtNo';
 
-                var LoadPage = require('./loadPage.js');
-                new LoadPage({param: window.param, baseName: baseName}).render();
-
+                if (baseName == 'data-report') {
+                    var Report = require('./app/data-report.js');
+                    new Report({param: window.param}).render();
+                }
+                else {
+                    var LoadPage = require('./loadPage.js');
+                    // when: grid가 로딩되는 때, 'before'이면 페이지 로딩 시 함께 로딩 - default
+                    new LoadPage({param: window.param, baseName: baseName, when: 'before'}).render();
+                }
             });
         }
     });

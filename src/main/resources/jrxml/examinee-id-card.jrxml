@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-09-13T17:53:15 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-07-12T11:31:30 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="examinee-id-card" pageWidth="595" pageHeight="841" columnWidth="369" leftMargin="113" rightMargin="113" topMargin="56" bottomMargin="42" uuid="3c7d4f36-0838-46cc-ab8d-49673d9f8876">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -19,7 +19,7 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="admissionNm" class="java.lang.String"/>
+	<field name="exmAdmNm" class="java.lang.String"/>
 	<field name="examineeCd" class="java.lang.String"/>
 	<field name="examineeNm" class="java.lang.String"/>
 	<field name="typeNm" class="java.lang.String"/>
@@ -62,9 +62,9 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
-							<text><![CDATA[전형명]]></text>
+							<text><![CDATA[전     형]]></text>
 						</staticText>
 						<staticText>
 							<reportElement x="0" y="40" width="108" height="45" uuid="a0a95494-9f7f-44ea-86a2-a072e0da41ab"/>
@@ -75,7 +75,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<text><![CDATA[수험번호]]></text>
 						</staticText>
@@ -88,9 +88,9 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
-							<text><![CDATA[성명]]></text>
+							<text><![CDATA[성     명]]></text>
 						</staticText>
 						<staticText>
 							<reportElement x="0" y="119" width="15" height="148" uuid="bc85457d-01a5-4def-8555-48803155d4bc">
@@ -103,7 +103,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="13" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="13" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<text><![CDATA[지원사항]]></text>
 						</staticText>
@@ -116,9 +116,9 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
-							<text><![CDATA[계열]]></text>
+							<text><![CDATA[계     열]]></text>
 						</staticText>
 						<staticText>
 							<reportElement x="15" y="148" width="93" height="30" uuid="b529d318-bc3a-4c0a-8f9a-2b58ab36ab00"/>
@@ -129,7 +129,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<text><![CDATA[모집단위]]></text>
 						</staticText>
@@ -142,9 +142,9 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
-							<text><![CDATA[캠퍼스]]></text>
+							<text><![CDATA[캠 퍼 스]]></text>
 						</staticText>
 						<staticText>
 							<reportElement x="15" y="208" width="93" height="30" uuid="5b342fa0-2f07-401f-8f0f-2f3e2837b83b"/>
@@ -155,7 +155,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<text><![CDATA[고사건물]]></text>
 						</staticText>
@@ -168,21 +168,10 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="15" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="15" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
-							<text><![CDATA[고사실]]></text>
+							<text><![CDATA[고 사 실]]></text>
 						</staticText>
-						<frame>
-							<reportElement x="15" y="0" width="78" height="267" uuid="3deb21aa-2987-40be-aa74-29ade0bc7104">
-								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.0" lineColor="#FC0905"/>
-								<leftPen lineWidth="0.0" lineColor="#FC0905"/>
-								<bottomPen lineWidth="0.0" lineColor="#FC0905"/>
-								<rightPen lineWidth="0.0" lineColor="#FC0905"/>
-							</box>
-						</frame>
 					</frame>
 					<frame>
 						<reportElement x="108" y="1" width="202" height="266" uuid="42273da2-38ef-41da-a739-2e37b004a11f"/>
@@ -195,9 +184,9 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="16" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="16" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{exmAdmNm}]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement x="0" y="39" width="202" height="45" uuid="b27cfabb-e06f-47c9-b203-49403aa8de54"/>
@@ -208,7 +197,7 @@
 								<rightPen lineWidth="0.3" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="22" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="22" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 								<paragraph spacingBefore="0" spacingAfter="0"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{examineeCd}]]></textFieldExpression>
@@ -222,7 +211,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="16" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="16" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
 						</textField>
@@ -235,7 +224,7 @@
 								<rightPen lineWidth="0.3" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="14" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
 						</textField>
@@ -248,7 +237,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="14" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
 						</textField>
@@ -261,9 +250,9 @@
 								<rightPen lineWidth="0.3" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="14" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
-							<text><![CDATA[서울 캠퍼스]]></text>
+							<text><![CDATA[서울캠퍼스]]></text>
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement x="0" y="207" width="202" height="30" uuid="03b31866-80cd-4d5b-ad10-0ab070beebe0"/>
@@ -274,7 +263,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="14" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{bldgNm}]]></textFieldExpression>
 						</textField>
@@ -287,7 +276,7 @@
 								<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+								<font size="14" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{hallNm}]]></textFieldExpression>
 						</textField>
@@ -367,7 +356,7 @@
 				<staticText>
 					<reportElement x="30" y="0" width="310" height="49" uuid="cd6025fb-15b7-48ab-91ef-6718fcb8fd16"/>
 					<textElement textAlignment="Center" verticalAlignment="Bottom">
-						<font size="22" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+						<font size="22" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[수  험  표]]></text>
 				</staticText>
@@ -376,7 +365,7 @@
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+						<font size="12" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[재출력 일시:]]></text>
 				</staticText>
@@ -389,7 +378,7 @@
 						<rightPen lineWidth="0.0" lineColor="#FF0400"/>
 					</box>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+						<font size="12" isBold="true" pdfFontName="./HYGoThic-Medium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{printDttm}]]></textFieldExpression>
 				</textField>

@@ -11,17 +11,87 @@ define(function (require) {
         initialize: function (o) {
             this.el = o.el;
             this.parent = o.parent;
+            this.param = o.param;
         },
         render: function () {
-            this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
-            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+
+            // header.html의 필터를 사용할 때 = 상단 필터가 비어있지 않다면
+            if (!this.param.empty) {
+                this.$('#admissionNm').html(this.selected(this.param.admissionNm));
+                this.$('#typeNm').html(this.selected(this.param.typeNm));
+                this.$('#examDate').html(this.selected(this.param.examDate));
+
+                var tmp = {
+                    admissionNm: this.$('#admissionNm').val(),
+                    typeNm: this.$('#typeNm').val(),
+                    examDate: this.$('#examDate').val()
+                };
+
+                this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(tmp)));
+                this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(tmp)));
+                this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(tmp)));
+                this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(tmp)));
+                this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(tmp)));
+
+                this.disableFilter();
+            } else {
+                this.makeToolbar(this.param);
+            }
+
+            return this;
+        },
+        selected: function (o) {
+            if (o == '') return '<option value="">전체</option>';
+            else return '<option value="' + o + '" selected>' + o + '</option>';
+        },
+        disableFilter: function () {
+            this.$('#admissionNm').attr('disabled', true);
+            this.$('#admissionNm').css('background', '#fbf7f7');
+            this.$('#admissionNm').css('color', 'graytext');
+            this.$('#admissionNm').css('cursor', 'not-allowed');
+
+            this.$('#typeNm').attr('disabled', true);
+            this.$('#typeNm').css('background', '#fbf7f7');
+            this.$('#typeNm').css('color', 'graytext');
+            this.$('#typeNm').css('cursor', 'not-allowed');
+
+            this.$('#examDate').attr('disabled', true);
+            this.$('#examDate').css('background', '#fbf7f7');
+            this.$('#examDate').css('color', 'graytext');
+            this.$('#examDate').css('cursor', 'not-allowed');
+        },
+        makeToolbar: function (o) {
+            // 상단필터 사용 안할 시
+            if (o.empty) {
+                this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
+                this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
+                this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+            } else {
+                if (o.admissionNm == '') {
+                    this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
+                    this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
+                    this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+
+                    if (o.type == '') {
+                        this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
+                        if (o.examDate == '')
+                            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+                    }
+                } else {
+                    if (o.type == '') {
+                        this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
+                        if (o.examDate == '')
+                            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate()));
+                    }
+                }
+
+            }
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
-            this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm()));
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm()));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
+
             return this;
         },
         events: {
@@ -31,10 +101,8 @@ define(function (require) {
             'change #examDate': 'examDateChanged',
             'change #deptNm': 'deptNmChanged',
             'change #majorNm': 'majorNmChanged',
-            'change #scorerNm': 'scorerNmChanged',
             'change #headNm': 'headNmChanged',
-            'change #bldgNm': 'bldgNmChanged',
-            'change #hallNm': 'hallNmChanged'
+            'change #bldgNm': 'bldgNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -47,16 +115,17 @@ define(function (require) {
                     examDate: _this.$('#examDate').val(),
                     deptNm: _this.$('#deptNm').val(),
                     majorNm: _this.$('#majorNm').val(),
-                    virtNo : _this.$('#virtNo').val(),
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
-                    hallNm : _this.$('#hallNm').val(),
-                    examineeCd: _this.$('#examineeCd').val(),
-                    examineeNm: _this.$('#examineeNm').val(),
-                    isVirtNo: _this.$('#isVirtNo').val()
+                    hallNm: _this.$('#hallNm').val(),
+                    scorerNm: _this.$('#scorerNm').val(),
+                    isVirtNo: _this.$('#isVirtNo').val(),
+                    virtNo: _this.$('#virtNo').val(),
+                    examineeCd: _this.$('#examineeCd').val()
                 });
             }
         },
+
         admissionNmChanged: function (e) {
             var param = {
                 admissionNm: e.currentTarget.value
@@ -75,6 +144,7 @@ define(function (require) {
                 typeNm: e.currentTarget.value
             };
             this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
@@ -103,6 +173,7 @@ define(function (require) {
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
+
         majorNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
@@ -134,7 +205,6 @@ define(function (require) {
                 examDate: this.$('#examDate').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
-                headNm: this.$('#headNm').val(),
                 bldgNm: e.currentTarget.value
             };
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));

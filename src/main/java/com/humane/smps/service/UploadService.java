@@ -8,6 +8,7 @@ import com.humane.smps.repository.ExamRepository;
 import com.humane.smps.repository.ItemRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UploadService {
@@ -40,6 +42,16 @@ public class UploadService {
             String itemNm = (String) new PropertyDescriptor("itemNm" + i, FormItemVo.class).getReadMethod().invoke(dto);
             String deviCd = (String) new PropertyDescriptor("deviCd" + i, FormItemVo.class).getReadMethod().invoke(dto);
 
+            String maxScore = (String) new PropertyDescriptor("maxScore" + i, FormItemVo.class).getReadMethod().invoke(dto);
+            String minScore = (String) new PropertyDescriptor("minScore" + i, FormItemVo.class).getReadMethod().invoke(dto);
+            String keypadType = (String) new PropertyDescriptor("keypadType" + i, FormItemVo.class).getReadMethod().invoke(dto);
+
+            // Long 타입이라 기본값이 필요함
+            if(maxScore.equals("")) maxScore = "0";
+            if(minScore.equals("")) minScore = "0";
+
+            if(keypadType.equals("")) keypadType = null;
+
             Devi devi = new Devi();
             devi.setDeviCd(deviCd);
 
@@ -56,10 +68,19 @@ public class UploadService {
                 item.setDevi(devi);
                 item.setExam(exam);
                 item.setOrderby(i);
+
+                item.setMaxScore(Long.parseLong(maxScore));
+                item.setMinScore(Long.parseLong(minScore));
+                item.setKeypadType(keypadType);
+
             } else { // update
                 item.setItemNm(itemNm);
                 item.setDevi(devi);
                 item.setOrderby(i);
+
+                item.setMaxScore(Long.parseLong(maxScore));
+                item.setMinScore(Long.parseLong(minScore));
+                item.setKeypadType(keypadType);
             }
             itemRepository.save(item);
         }

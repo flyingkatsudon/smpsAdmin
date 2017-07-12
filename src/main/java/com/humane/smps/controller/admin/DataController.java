@@ -362,11 +362,10 @@ public class DataController {
                     mapper.fillVirtNo(examDto);
                 }
             }
-
-            return ResponseEntity.ok("가번호가 입력되었습니다.");
+            return ResponseEntity.ok("가번호가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
         } catch (Exception e) {
             log.debug("{}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
         }
     }
 
@@ -382,10 +381,10 @@ public class DataController {
             for (int i = 0; i < evalList.size(); i++)
                 mapper.fillEvalCd(evalList.get(i));
 
-            return ResponseEntity.ok("답안지 번호가 입력되었습니다.");
+            return ResponseEntity.ok("캔버스 번호가 저장되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답안지를 입력하는 시험이 아닙니다. 다른 시험을 선택하세요");
         }
     }
 
@@ -405,7 +404,7 @@ public class DataController {
 
             // 3-1. 어떤 평가위원의 점수도 전송되지 않았다면 return
             if (scorerList.size() == 0) {
-                return ResponseEntity.ok("채점한 평가위원이 없습니다. 잠시 후 다시 시도하세요.");
+                return ResponseEntity.ok("채점한 평가위원이 없습니다. 잠시 후 다시 시도하세요");
             } else {
                 for (int i = 0; i < scorerList.size(); i++) {
                     for (int j = 0; j < fillList.size(); j++) {
@@ -415,11 +414,11 @@ public class DataController {
                         mapper.fillScore(fillList.get(j));
                     }
                 }
-                return ResponseEntity.ok("점수가 입력되었습니다.");
+                return ResponseEntity.ok("점수가 입력되었습니다");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
         }
     }
 

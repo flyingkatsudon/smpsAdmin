@@ -11,6 +11,7 @@ require.config({
         'jquery-simple-datetimepicker': {deps: ['css!bower_components/jquery-simple-datetimepicker-master/jquery.simple-dtpicker']}
     },
     paths: {
+        'jquery-simple-datetimepicker': 'bower_components/jquery-simple-datetimepicker-master/jquery.simple-dtpicker',
         'jquery': 'bower_components/jquery/dist/jquery.min',
         'bootstrap': 'bower_components/bootstrap/dist/js/bootstrap.min',
         'metisMenu': 'bower_components/metisMenu/dist/metisMenu.min',
@@ -24,8 +25,7 @@ require.config({
         'jquery-bootstrap': 'dist/js/jquery.bootstrap.min',
         'jquery-file-download': 'bower_components/jquery-file-download/src/Scripts/jquery.fileDownload',
         'bootstrap-dialog': 'bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min',
-        'jquery.ajaxForm': 'bower_components/jquery-form/jquery.form',
-        'jquery-simple-datetimepicker': 'bower_components/jquery-simple-datetimepicker-master/jquery.simple-dtpicker',
+        'jquery.ajaxForm': 'bower_components/jquery-form/jquery.form'
     },
     map: {
         '*': {'css': 'bower_components/require-css/css.min'}

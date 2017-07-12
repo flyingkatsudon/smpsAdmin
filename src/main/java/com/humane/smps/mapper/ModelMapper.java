@@ -9,10 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface ModelMapper {
-
     List<StatusDto> toolbar(@Param("param") StatusDto param);
-
     List<StatusDto> reportToolbar(@Param("param") StatusDto param);
-
     List<ExamInfoDto> getExamInfoToolbar(@Param("param") ExamInfoDto param);
 }
