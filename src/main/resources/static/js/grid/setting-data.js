@@ -86,28 +86,20 @@ define(function (require) {
                                  *
                                  * @type {string}
                                  */
-                                var basicHtml  = '<div style="margin:3% 0 0 3%;">'
-                                              +      '계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;열'
-                                              +      '<input type="text" id="typeNm" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.typeNm + '"/>'
-                                              +  '</div>';   // 계열 (typeNm)
+                                    // 기본정보 설정값
 
-                                    basicHtml += '<div style="margin:3% 0 0 3%;">'
-                                              +      '평&nbsp;&nbsp;가&nbsp;&nbsp;명'
-                                              +      '<input type="text" id="examName" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.examNm + '"/>'
-                                              +  '</div>';   // 평가 (examNm)
+                                var basic1Html = '<div style="margin:3% 0 0 3%;">시험구분<input type="text" id="examName" class="set-basic" value="' + rowData.examNm + '"/></div>'; // 평가 (examNm)
+                                basic1Html += '<div style="margin:3% 0 0 3%;">계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;열<input type="text" id="typeNm" class="set-basic" value="' + rowData.typeNm + '"/></div>';   // 계열 (typeNm)
+                                basic1Html += '<div style="margin:3% 0 0 3%;">수험번호<input type="number" min="0" id="examineeLen" class="set-short" value="' + rowData.examineeLen + '"/>&nbsp;자리</div>';
+                                basic1Html += '<div style="margin:3% 0 0 3%;">평가항목<input type="number" min="0" id="itemCnt" class="set-short" value="' + rowData.itemCnt + '"/>&nbsp;개</div>';
 
-                                    basicHtml += '<div style="margin:3% 0 0 3%;">'
-                                              +      '단&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;계'
-                                              +      '<input type="text" id="period" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.period + '"/>'
-                                              +  '</div>';   // 단계 (period)
+                                var basic2Html = '<div style="margin:3% 0 0 3%;">단&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;계<input type="text" id="period" class="set-basic" value="' + rowData.period + '"/></div>';   // 단계 (period)
+                                basic2Html += '<div style="margin:3% 0 0 3%;">시험일자<input type="text" id="hallDate" class="set-basic" value="' + rowData.hallDate + '"/></div>';   // 시험일자 (hallDate)
+                                basic2Html += '<div style="margin:3% 0 0 3%;">평가위원<input type="number" min="0" id="scorerCnt" class="set-short" value="' + rowData.scorerCnt + '"/>&nbsp;명</div>';
+                                basic2Html += '<div style="margin:3% 0 0 3%;">총&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점<input type="number" min="0" id="totSccore" class="set-short" value="' + rowData.totScore + '"/>&nbsp;점</div>';
 
-                                    basicHtml += '<div style="margin:3% 0 0 3%;">'
-                                              +      '시험일자'
-                                              +      '<input type="text" id="hallDate" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.hallDate + '"/>'
-                                              +  '</div>';   // 시험일자 (hallDate)
-
-                                $('#basicPart').append(basicHtml);
-
+                                $('#basicPart1').append(basic1Html);
+                                $('#basicPart2').append(basic2Html);
 
                                 /**
                                  * 세부 정보 : 수정 가능
@@ -136,205 +128,55 @@ define(function (require) {
                                  *
                                  * @type {string}
                                  */
-                                var detailHtml  = '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '조&nbsp;정&nbsp;점&nbsp;수'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="text" id="adjust" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.adjust + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
-
+                                    // 세부정보 설정값
                                 //TODO: 확인 필요!
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '바코드&nbsp;종류'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="text" id="barcodeType" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.barcodeType + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                var detail1Html = '<div style="margin:3% 0 0 3%;">조정&nbsp;&nbsp;&nbsp;&nbsp;점수<input type="text" id="adjust" class="set-short" value="' + rowData.adjust + '"/></div>';
+                                detail1Html += '<div style="margin:3% 0 0 3%;">키패드 타입<input type="number" min="0" id="keypadType" class="set-short" value="' + rowData.keypadType + '"/></div>';
+                                detail1Html += '<div style="margin:3% 0 0 3%;">바코드&nbsp;종류<input type="text" id="barcodeType" class="set-mid" value="' + rowData.barcodeType + '"/></div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '수험번호&nbsp;자릿수'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="0" id="examineeLen" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.examineeLen + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                var detail2Html = '<div style="margin:3% 0 0 3%;">가번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="0" id="virtNoDigits" class="set-short" value="' + rowData.virtNoDigits + '"/>&nbsp;자리</div>';
+                                detail2Html += '<div style="margin:3% 0 0 3%;">가번호 표시<input type="text" id="virtNoType" class="set-mid" value="' + rowData.virtNoType + '"/></div>';
+                                detail2Html += '<div style="margin:3% 0 0 3%;">가번호 시작<input type="number" min="1" id="virtNoStart" class="set-mid" value="' + rowData.virtNoStart + '"/></div>';
+                                detail2Html += '<div style="margin:3% 0 0 3%;">가번호 종료<input type="number" min="1" id="virtNoEnd" class="set-mid" value="' + rowData.virtNoEnd + '"/></div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '결시&nbsp;사용&nbsp;여부'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="radio" name="isAbsence" id="isAbsenceTrue" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=true />'
-                                               +          '<label for="isAbsenceTrue">&nbsp;사용</label>'
-                                               +          '<input type="radio" name="isAbsence" id="isAbsenceFalse" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=false />'
-                                               +          '<label for="isAbsenceFalse">&nbsp;미사용</label>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '마담데이터&nbsp;사용&nbsp;여부'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="radio" name="isClosedView" id="isClosedViewTrue" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=true />'
-                                               +          '<label for="isClosedViewTrue">&nbsp;사용</label>'
-                                               +          '<input type="radio" name="isClosedView" id="isClosedViewFalse" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=false />'
-                                               +          '<label for="isClosedViewFalse">&nbsp;미사용</label>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '채&nbsp;점&nbsp;방&nbsp;향'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="radio" name="isHorizontal" id="isHorizontalTrue" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=true />'
-                                               +          '<label for="isHorizontalTrue">&nbsp;가로</label>'
-                                               +          '<input type="radio" name="isHorizontal" id="isHorizontalFalse" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=false />'
-                                               +          '<label for="isHorizontalFalse">&nbsp;세로</label>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '가번호&nbsp;자동&nbsp;할당&nbsp;여부'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="radio" name="isMgrAuto" id="isMgrAutoTrue" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=true />'
-                                               +          '<label for="isMgrAutoTrue">&nbsp;사용</label>'
-                                               +          '<input type="radio" name="isMgrAuto" id="isMgrAutoFalse" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=false />'
-                                               +          '<label for="isMgrAutoFalse">&nbsp;미사용</label>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '지정이동&nbsp;사용&nbsp;여부'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="radio" name="isMove" id="isMoveTrue" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=true />'
-                                               +          '<label for="isMoveTrue">&nbsp;사용</label>'
-                                               +          '<input type="radio" name="isMove" id="isMoveFalse" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value=false />'
-                                               +          '<label for="isMoveFalse">&nbsp;미사용</label>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '항목&nbsp;갯수'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="0" id="itemCnt" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.itemCnt + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                $('#detailPart1').append(detail1Html);
+                                $('#detailPart2').append(detail2Html);
 
                                 //TODO: select 박스 도입 필요
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '점수&nbsp;입력패드&nbsp;종류'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="0" id="keypadType" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.keypadType + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                var detail3Html = '<div style="margin:3% 0 0 3%; padding-bottom: 6%">결시&nbsp;&nbsp;&nbsp;&nbsp;버튼'
+                                    + '<input type="radio" name="isAbsence" id="isAbsenceTrue" class="set-radioBtn" value=true />&nbsp;사용'
+                                    + '<input type="radio" name="isAbsence" id="isAbsenceFalse" class="set-radioBtn" value=false />&nbsp;미사용'
+                                    + '</div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '평가표&nbsp;제목&nbsp;1'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="text" id="printTitle1" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.printTitle1 + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                detail3Html += '<div style="margin:3% 0 0 3%; padding-bottom: 6%">마감 데이터'
+                                    + '<input type="radio" name="isClosedView" id="isClosedViewTrue" class="set-radioBtn" value=true />&nbsp;사용'
+                                    + '<input type="radio" name="isClosedView" id="isClosedViewFalse" class="set-radioBtn" value=false />&nbsp;미사용'
+                                    + '</div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '평가표&nbsp;내용&nbsp;1'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="text" id="printContent1" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.printContent1 + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                detail3Html += '<div style="margin:3% 0 0 3%; padding-bottom: 6%">채점&nbsp;&nbsp;&nbsp;&nbsp;방향'
+                                    + '<input type="radio" name="isHorizontal" id="isHorizontalTrue" class="set-radioBtn" value=true />&nbsp;가로'
+                                    + '<input type="radio" name="isHorizontal" id="isHorizontalFalse" class="set-radioBtn" value=false />&nbsp;세로'
+                                    + '</div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '평가표&nbsp;제목&nbsp;2'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="text" id="printTitle2" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.printTitle2 + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                detail3Html += '<div style="margin:3% 0 0 3%; padding-bottom: 6%">가번호 할당'
+                                    + '<input type="radio" name="isMgrAuto" id="isMgrAutoTrue" class="set-radioBtn" value=true />&nbsp;자동'
+                                    + '<input type="radio" name="isMgrAuto" id="isMgrAutoFalse" class="set-radioBtn" value=false />&nbsp;수동'
+                                    + '</div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '평가표&nbsp;내용&nbsp;2'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="text" id="printContent2" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.printContent2 + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                detail3Html += '<div style="margin:3% 0 0 3%; padding-bottom: 6%">지정&nbsp;&nbsp;&nbsp;&nbsp;이동'
+                                    + '<input type="radio" name="isMove" id="isMoveTrue" class="set-radioBtn" value=true />&nbsp;사용'
+                                    + '<input type="radio" name="isMove" id="isMoveFalse" class="set-radioBtn" value=false />&nbsp;미사용'
+                                    + '</div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '평가&nbsp;인원수'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="0" id="scorerCnt" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.scorerCnt + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                $('#detailPart3').append(detail3Html);
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '총&nbsp;&nbsp;&nbsp;&nbsp;점'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="0" id="totSccore" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.totScore + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
+                                // 평가표 설정값
+                                var detail4Html = '<div style="padding: 2% 0 0 2%">평가표&nbsp;제목&nbsp;1<input type="text" id="printTitle1" class="sheet" value="' + rowData.printTitle1 + '"/></div>';
+                                detail4Html += '<div style="padding: 2% 0 0 2%">평가표&nbsp;제목&nbsp;2<input type="text" id="printTitle2" class="sheet"  value="' + rowData.printTitle2 + '"/></div>';
+                                detail4Html += '<div style="padding: 2% 0 0 2%">평가표&nbsp;내용&nbsp;1<input type="text" id="printContent1" class="sheet"  value="' + rowData.printContent1 + '"/></div>';
+                                detail4Html += '<div style="padding: 2% 0 0 2%">평가표&nbsp;내용&nbsp;2<input type="text" id="printContent2" class="sheet" value="' + rowData.printContent2 + '"/></div>';
 
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '가번호&nbsp;표시&nbsp;자릿수'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="0" id="virtNoDigits" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.virtNoDigits + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '가번호&nbsp;표시&nbsp;내용'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="text" id="virtNoType" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.virtNoType + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '가번호&nbsp;시작번호'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="1" id="virtNoStart" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.virtNoStart + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-                                    detailHtml += '<div style="margin:3% 0 0 3%;">'
-                                               +      '<div style="width:30%;float:left;">'
-                                               +          '가번호&nbsp;종료번호'
-                                               +      '</div>'
-                                               +      '<div>'
-                                               +          '<input type="number" min="1" id="virtNoEnd" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.virtNoEnd + '"/>'
-                                               +      '</div>'
-                                               +  '</div>';
-
-
-                                $('#detailPart').append(detailHtml);
+                                $('#detailPart4').append(detail4Html);
 
                                 /**
                                  * input[type="radio"] set checked
@@ -359,37 +201,37 @@ define(function (require) {
                                 action: function (dialog) {
                                     console.log($('#examName').val());
                                     var param = {
-                                          examCd        : rowData.examCd
-                                        , typeNm        : $('#typeNm').val()
-                                        , examNm        : $('#examName').val()
-                                        , period        : $('#period').val()
-                                        , hallDate      : $('#hallDate').val()
+                                        examCd: rowData.examCd
+                                        , typeNm: $('#typeNm').val()
+                                        , examNm: $('#examName').val()
+                                        , period: $('#period').val()
+                                        , hallDate: $('#hallDate').val()
 
-                                        , adjust        : $('#adjust').val()
-                                        , barcodeType   : $('#barcodeType').val()
-                                        , examineeLen   : $('#examineeLen').val()
-                                        , isAbsence     : $('input:radio[name="isAbsence"]:checked').val()
-                                        , isClosedView  : $('input:radio[name="isClosedView"]:checked').val()
-                                        , isHorizontal  : $('input:radio[name="isHorizontal"]:checked').val()
-                                        , isMgrAuto     : $('input:radio[name="isMgrAuto"]:checked').val()
-                                        , isMove        : $('input:radio[name="isMove"]:checked').val()
-                                        , itemCnt       : $('#itemCnt').val()
-                                        , keypadType    : $('#keypadType').val()
-                                        , printTitle1   : $('#printTitle1').val()
-                                        , printContent1 : $('#printContent1').val()
-                                        , printTitle2   : $('#printTitle2').val()
-                                        , printContent2 : $('#printContent2').val()
-                                        , scorerCnt     : $('#scorerCnt').val()
-                                        , totScore      : $('#totScore').val()
-                                        , virtNoDigits  : $('#virtNoDigits').val()
-                                        , virtNoType    : $('#virtNoType').val()
-                                        , virtNoStart   : $('#virtNoStart').val()
-                                        , virtNoEnd     : $('#virtNoEnd').val()
+                                        , adjust: $('#adjust').val()
+                                        , barcodeType: $('#barcodeType').val()
+                                        , examineeLen: $('#examineeLen').val()
+                                        , isAbsence: $('input:radio[name="isAbsence"]:checked').val()
+                                        , isClosedView: $('input:radio[name="isClosedView"]:checked').val()
+                                        , isHorizontal: $('input:radio[name="isHorizontal"]:checked').val()
+                                        , isMgrAuto: $('input:radio[name="isMgrAuto"]:checked').val()
+                                        , isMove: $('input:radio[name="isMove"]:checked').val()
+                                        , itemCnt: $('#itemCnt').val()
+                                        , keypadType: $('#keypadType').val()
+                                        , printTitle1: $('#printTitle1').val()
+                                        , printContent1: $('#printContent1').val()
+                                        , printTitle2: $('#printTitle2').val()
+                                        , printContent2: $('#printContent2').val()
+                                        , scorerCnt: $('#scorerCnt').val()
+                                        , totScore: $('#totScore').val()
+                                        , virtNoDigits: $('#virtNoDigits').val()
+                                        , virtNoType: $('#virtNoType').val()
+                                        , virtNoStart: $('#virtNoStart').val()
+                                        , virtNoEnd: $('#virtNoEnd').val()
                                     };
 
                                     //TODO: 빈 항목 체크, 개선 필요!
                                     var validated = true;
-                                    for(var obj in param) {
+                                    for (var obj in param) {
                                         if (obj == '') {
                                             $('#detailPart').append('<div style="margin:10% 0 0 0; text-align:center"><h4 style="margin-top: 1%; color:crimson">빈 항목을 확인하세요</h4></div>');
                                             validated = false;
