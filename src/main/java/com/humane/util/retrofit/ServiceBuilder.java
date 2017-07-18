@@ -20,7 +20,7 @@ public enum ServiceBuilder {
         httpClient.interceptors().add(chain -> {
             Request original = chain.request();
 
-            String auth = "api:humane12!";
+            String auth = "api:humane!814";
             byte[] encodeAuth = Base64.encodeBase64(auth.getBytes());
 
             // Request customization: add request headers
