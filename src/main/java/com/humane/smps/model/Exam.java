@@ -27,10 +27,6 @@ public class Exam implements Serializable{
     @Temporal(TemporalType.DATE)
     private Date examDate; // 시험일자
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
-    @Temporal(TemporalType.TIME)
-    private Date examTime; // 시험시간
-
     @Column(columnDefinition = "int default 100") private int totScore; // 총점
 
     private String virtNoType; // 가번호 타입. 수험번호? 답안지번호? 순차번호?

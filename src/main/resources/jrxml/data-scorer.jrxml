@@ -91,19 +91,6 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="15" uuid="778ea867-2772-48db-9271-07f3f273c197"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[시험시간]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="400" y="0" width="100" height="15" uuid="60aaaccf-b1cf-40ed-a49e-da1db0659863"/>
 				<box>
 					<topPen lineWidth="0.5"/>
