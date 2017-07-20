@@ -428,12 +428,10 @@ public class UploadController {
                     QExamMap qExamMap = QExamMap.examMap;
 
                     wrapper.getContent().forEach(examMap -> {
-                        ExamMap tmp = null;
-                        tmp = examMapRepository.findOne(
-                                new BooleanBuilder()
-                                        .and(qExamMap.examinee.examineeCd.eq(examMap.getExaminee().getExamineeCd()))
-                                        .and(qExamMap.hall.hallCd.eq(examMap.getHall().getHallCd()))
-                                        .and(qExamMap.exam.examCd.eq(examMap.getExam().getExamCd()))
+                        ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()
+                                .and(qExamMap.examinee.examineeCd.eq(examMap.getExaminee().getExamineeCd()))
+                                //.and(qExamMap.hall.hallCd.eq(examMap.getHall().getHallCd())) // 고사실이 의미가 없는 경우 주석처리함
+                                .and(qExamMap.exam.examCd.eq(examMap.getExam().getExamCd()))
                         );
 
                         if (tmp != null) examMap.set_id(tmp.get_id());

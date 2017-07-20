@@ -6,27 +6,27 @@
     <select id="account" resultType="com.humane.smps.dto.AccountDto">
         select *
         from (select user.user_id, user.password,
-                if(user_role.role_name = 'ROLE_ADMIN', '', concat(count(user_admission.admission_cd), '개')) as admissions
-                , (select group_concat(admission.admission_nm) from user_admission
-                    inner join admission on admission.admission_cd = user_admission.admission_cd where user.user_id = user_id group by user_id
-                  ) as lists
-                , case user_role.role_name
-                    when 'ROLE_ADMIN' then '관리자'
-                    when 'ROLE_USER' then '사용자'
-                    else '기타' end as role
-                , user_role.role_name
-                from user
-                inner join user_role on user_role.user_id = user.user_id
-                left join user_admission on user_admission.user_id = user.user_id
-                left join admission on admission.admission_cd = user_admission.admission_cd
-                <where>
-                    not user.user_id = 'api' and not user.user_id = 'admin'
-                    <if test="param != null">
-                        <if test="param.userId != null">and user_id like '%' #{param.user_id} '%'</if>
-                        <if test="param.roleName != null">and role_name = #{param.roleName}</if>
-                    </if>
-                </where>
-                group by user.user_id, user.password
+            if(user_role.role_name = 'ROLE_ADMIN', '', concat(count(user_admission.admission_cd), '개')) as admissions
+            , (select group_concat(admission.admission_nm) from user_admission
+            inner join admission on admission.admission_cd = user_admission.admission_cd where user.user_id = user_id group by user_id
+            ) as lists
+            , case user_role.role_name
+            when 'ROLE_ADMIN' then '관리자'
+            when 'ROLE_USER' then '사용자'
+            else '신분증확인용' end as role
+            , user_role.role_name
+            from user
+            inner join user_role on user_role.user_id = user.user_id
+            left join user_admission on user_admission.user_id = user.user_id
+            left join admission on admission.admission_cd = user_admission.admission_cd
+            <where>
+                <!--not user.user_id = 'api' and not user.user_id = 'admin'-->
+                <if test="param != null">
+                    <if test="param.userId != null">and user_id like '%' #{param.user_id} '%'</if>
+                    <if test="param.roleName != null">and role_name = #{param.roleName}</if>
+                </if>
+            </where>
+            group by user.user_id, user.password
         ) result
         <where>
             <if test="param != null">

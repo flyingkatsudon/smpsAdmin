@@ -97,19 +97,6 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="320" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[시험시간]]></text>
-			</staticText>
-			<staticText>
 				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="400" y="0" width="120" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
 				<box>
 					<topPen lineWidth="0.5"/>

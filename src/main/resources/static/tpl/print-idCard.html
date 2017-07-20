@@ -16,7 +16,6 @@
                         <label for="bldgNm">고사건물</label><select id="bldgNm"></select>
                         <label for="hallNm">고사실</label><select id="hallNm"></select><br>
                         <label for="examDate">시험일자</label><select id="examDate"></select>
-                        <label for="examTime">시험시간</label><select id="examTime"></select>
                     </div>
                     <div class="panel-footer align-right">
                         <button id="printHall" class="btn btn-primary btn-others">출력</button>
@@ -44,20 +43,6 @@
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4>수험번호별</h4>
-                    </div>
-                    <div class="panel-body panel-height">
-                        <label for="fromExamineeCd">시작 번호</label><input type="text" id="fromExamineeCd"/>
-                        <label for="toExamineeCd">종료 번호</label><input type="text" id="toExamineeCd"/>
-                    </div>
-                    <div class="panel-footer align-right">
-                        <button id="printExamineeList" class="btn btn-primary btn-others">출력</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 pull-right">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
                         <h4>수험생별</h4>
                     </div>
                     <div class="panel-body panel-height">
@@ -66,6 +51,20 @@
                     </div>
                     <div class="panel-footer align-right">
                         <button id="printExaminee" class="btn btn-primary btn-others">출력</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>수험번호별</h4>
+                    </div>
+                    <div class="panel-body panel-height">
+                        <label for="fromExamineeCd">시작 번호</label><input type="text" id="fromExamineeCd"/>
+                        <label for="toExamineeCd">종료 번호</label><input type="text" id="toExamineeCd"/>
+                    </div>
+                    <div class="panel-footer align-right">
+                        <button id="printExamineeList" class="btn btn-primary btn-others">출력</button>
                     </div>
                 </div>
             </div>

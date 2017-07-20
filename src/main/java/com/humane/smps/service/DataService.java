@@ -27,6 +27,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DataService {
+    // 산출물 디자인
     private StyleBuilder boldStyle = DynamicReports.stl.style().bold();
     private StyleBuilder boldCenteredStyle = DynamicReports.stl.style(boldStyle);
 
@@ -42,6 +43,23 @@ public class DataService {
             .setBorder(DynamicReports.stl.penThin())
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
     private final DataMapper mapper;
+
+    @Data
+    private class ColModel {
+        private String name;
+        private String label;
+        private boolean sortable = true;
+
+        public ColModel(String name, String label) {
+            this.name = name;
+            this.label = label;
+        }
+
+        public ColModel(String name, String label, boolean sortable) {
+            this(name, label);
+            this.sortable = sortable;
+        }
+    }
 
     public Object getExamineeModel() {
         // 기본 생성
@@ -96,6 +114,102 @@ public class DataService {
         return colModels;
     }
 
+    public List<ColModel> getScorerHModel() {
+        // 기본 생성
+        List<ColModel> colModels = new ArrayList<>();
+        colModels.add(new ColModel("admissionNm", "전형"));
+        colModels.add(new ColModel("typeNm", "계열"));
+        colModels.add(new ColModel("examDate", "시험일자"));
+        colModels.add(new ColModel("deptNm", "모집단위"));
+        colModels.add(new ColModel("majorNm", "전공"));
+        /*colModels.add(new ColModel("headNm", "고사본부"));
+        colModels.add(new ColModel("bldgNm", "고사건물"));
+        colModels.add(new ColModel("hallNm", "고사실"));*/
+        colModels.add(new ColModel("examineeCd", "수험번호"));
+        colModels.add(new ColModel("examineeNm", "수험생명"));
+        colModels.add(new ColModel("virtNo", "가번호"));
+        colModels.add(new ColModel("groupNm", "조"));
+
+        long scorerCnt = mapper.getScorerCnt(); // 채점자수
+        long itemCnt = mapper.getItemCnt(); // 항목수
+
+        colModels.add(new ColModel("total", "전체 총점"));
+        for (int i = 1; i <= scorerCnt; i++) {
+            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i));
+            for (int j = 1; j <= itemCnt; j++)
+                colModels.add(new ColModel("score" + i + "s" + j, "항목" + i + "." + j));
+
+            colModels.add(new ColModel("totalScore" + i, "총점" + i));
+            /*colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));*/
+        }
+        return colModels;
+    }
+
+    public List<ColModel> getDrawModel() {
+        // 기본 생성
+        List<ColModel> colModels = new ArrayList<>();
+        colModels.add(new ColModel("admissionNm", "전형"));
+        colModels.add(new ColModel("typeNm", "계열"));
+        colModels.add(new ColModel("examDate", "시험일자"));
+        colModels.add(new ColModel("deptNm", "모집단위"));
+        colModels.add(new ColModel("majorNm", "전공"));
+        colModels.add(new ColModel("examineeCd", "수험번호"));
+        colModels.add(new ColModel("examineeNm", "수험생명"));
+        colModels.add(new ColModel("virtNo", "가번호"));
+        /*colModels.add(new ColModel("evalCd", "답안지번호"));*/
+        colModels.add(new ColModel("total", "전체 총점"));
+        colModels.add(new ColModel("rank", "순위"));
+        colModels.add(new ColModel("cnt", "동점자"));
+
+        long scorerCnt = mapper.getScorerCnt(); // 채점자수
+        long itemCnt = mapper.getItemCnt(); // 항목수
+
+        for (int i = 1; i <= scorerCnt; i++) {
+            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
+            for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "S" + j, "항목" + j, false));
+
+            colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
+        }
+        return colModels;
+    }
+
+    // 한양대 에리카 체육
+    public List<ColModel> getPhysicalModel() {
+        // 기본 생성
+        List<ColModel> colModels = new ArrayList<>();
+        colModels.add(new ColModel("admissionNm", "전형"));
+        colModels.add(new ColModel("typeNm", "계열"));
+        colModels.add(new ColModel("examDate", "시험일자"));
+        colModels.add(new ColModel("deptNm", "모집단위"));
+        colModels.add(new ColModel("majorNm", "전공"));
+        colModels.add(new ColModel("headNm", "고사본부"));
+        colModels.add(new ColModel("bldgNm", "고사건물"));
+        colModels.add(new ColModel("hallNm", "고사실"));
+        colModels.add(new ColModel("examineeCd", "수험번호"));
+        colModels.add(new ColModel("examineeNm", "수험생명"));
+        colModels.add(new ColModel("virtNo", "실기번호"));
+        colModels.add(new ColModel("groupNm", "조"));
+
+        List<ExamDto> examDto = mapper.ericaExamInfo("802%");
+
+        for (int i = 0; i < examDto.size(); i++) {
+            long itemCnt = mapper.ericaItemCnt(examDto.get(i).getExamCd());
+
+            colModels.add(new ColModel("scorerNm" + (i+1) + "1", "측정교수"));
+            colModels.add(new ColModel("scorerNm" + (i+1) + "2", "기록입력위원"));
+
+            for (int j = 1; j <= itemCnt; j++) {
+                if (itemCnt < 2) continue;
+                else colModels.add(new ColModel("score" + (i+1) + j, examDto.get(i).examNm + " 측정기록"));
+            }
+            colModels.add(new ColModel("total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), examDto.get(i).examNm + " 최고기록"));
+            colModels.add(new ColModel("scoreDttm" + (i+1), "채점시간"));
+            /*colModels.add(new ColModel("grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), "변환점수"));*/
+        }
+
+        return colModels;
+    }
+
     public JasperReportBuilder getExamineeReport() {
         JasperReportBuilder report = report()
                 .title(cmp.text("수험생별 종합").setStyle(columnTitleStyle))
@@ -104,7 +218,6 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        /*col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -142,7 +255,6 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        /*col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
                         /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(9),
@@ -163,7 +275,6 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        /*col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -199,7 +310,6 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        /*col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
                         /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -230,6 +340,7 @@ public class DataService {
         return report;
     }
 
+    // TODO: 일반 세로 산출물
     public JasperReportBuilder getScorerReport() {
         JasperReportBuilder report = report()
                 .title(cmp.text("채점자별 상세(세로)").setStyle(columnTitleStyle))
@@ -238,7 +349,6 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        /*col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),*/
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
                         /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -268,7 +378,7 @@ public class DataService {
 
     }
 
-    // 경북대용
+    // TODO: 경북대용 세로 산출물
     public JasperReportBuilder getKnuScorer() {
         JasperReportBuilder report = report()
                 .title(cmp.text("채점자별 상세(세로)").setStyle(columnTitleStyle))
@@ -280,7 +390,6 @@ public class DataService {
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(16),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("생년월일", "birth", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("시험시간", "examTime", type.dateType()).setPattern("HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(10),
                         col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("평가위원", "scorerNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
@@ -352,43 +461,6 @@ public class DataService {
         return report;
     }
 
-    // 한양대 에리카 체육
-    public List<ColModel> getPhysicalModel() {
-        // 기본 생성
-        List<ColModel> colModels = new ArrayList<>();
-        colModels.add(new ColModel("admissionNm", "전형"));
-        colModels.add(new ColModel("typeNm", "계열"));
-        colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("deptNm", "모집단위"));
-        colModels.add(new ColModel("majorNm", "전공"));
-        colModels.add(new ColModel("headNm", "고사본부"));
-        colModels.add(new ColModel("bldgNm", "고사건물"));
-        colModels.add(new ColModel("hallNm", "고사실"));
-        colModels.add(new ColModel("examineeCd", "수험번호"));
-        colModels.add(new ColModel("examineeNm", "수험생명"));
-        colModels.add(new ColModel("virtNo", "실기번호"));
-        colModels.add(new ColModel("groupNm", "조"));
-
-        List<ExamDto> examDto = mapper.ericaExamInfo("802%");
-
-        for (int i = 0; i < examDto.size(); i++) {
-            long itemCnt = mapper.ericaItemCnt(examDto.get(i).getExamCd());
-
-            colModels.add(new ColModel("scorerNm" + (i+1) + "1", "측정교수"));
-            colModels.add(new ColModel("scorerNm" + (i+1) + "2", "기록입력위원"));
-
-            for (int j = 1; j <= itemCnt; j++) {
-                if (itemCnt < 2) continue;
-                else colModels.add(new ColModel("score" + (i+1) + j, examDto.get(i).examNm + " 측정기록"));
-            }
-            colModels.add(new ColModel("total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), examDto.get(i).examNm + " 최고기록"));
-            colModels.add(new ColModel("scoreDttm" + (i+1), "채점시간"));
-            /*colModels.add(new ColModel("grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), "변환점수"));*/
-        }
-
-        return colModels;
-    }
-
     public JasperReportBuilder getPhysicalReport() {
         List<ExamDto> examDto = mapper.ericaExamInfo("802%");
 
@@ -399,7 +471,6 @@ public class DataService {
                         col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(15),
                         col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5),
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("시험시간", "examTime", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5),
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -432,23 +503,7 @@ public class DataService {
         return report;
     }
 
-    @Data
-    private class ColModel {
-        private String name;
-        private String label;
-        private boolean sortable = true;
-
-        public ColModel(String name, String label) {
-            this.name = name;
-            this.label = label;
-        }
-
-        public ColModel(String name, String label, boolean sortable) {
-            this(name, label);
-            this.sortable = sortable;
-        }
-    }
-
+    // TODO: 기본형, 결시생을 'F' 버튼을 눌러 처리하는 경우
    /* public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.examMap(param, pageable);
         return fillMap(page);
@@ -491,7 +546,7 @@ public class DataService {
         return page;
     }*/
 
-    // 경북대용, '결시' 버튼이 있는 경우
+   // TODO: 경북대용, 결시생을 '결시' 버튼을 눌러 처리하는 경우
     private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
@@ -533,65 +588,7 @@ public class DataService {
         return mapper.scoredH(param, pageable);
     }
 
-    public List<ColModel> getScorerHModel() {
-        // 기본 생성
-        List<ColModel> colModels = new ArrayList<>();
-        colModels.add(new ColModel("admissionNm", "전형"));
-        colModels.add(new ColModel("typeNm", "계열"));
-        colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("deptNm", "모집단위"));
-        colModels.add(new ColModel("majorNm", "전공"));
-        /*colModels.add(new ColModel("headNm", "고사본부"));
-        colModels.add(new ColModel("bldgNm", "고사건물"));
-        colModels.add(new ColModel("hallNm", "고사실"));*/
-        colModels.add(new ColModel("examineeCd", "수험번호"));
-        colModels.add(new ColModel("examineeNm", "수험생명"));
-        colModels.add(new ColModel("virtNo", "가번호"));
-        colModels.add(new ColModel("groupNm", "조"));
-
-        long scorerCnt = mapper.getScorerCnt(); // 채점자수
-        long itemCnt = mapper.getItemCnt(); // 항목수
-
-        colModels.add(new ColModel("total", "전체 총점"));
-        for (int i = 1; i <= scorerCnt; i++) {
-            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i));
-            for (int j = 1; j <= itemCnt; j++)
-                colModels.add(new ColModel("score" + i + "s" + j, "항목" + i + "." + j));
-
-            colModels.add(new ColModel("totalScore" + i, "총점" + i));
-            /*colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));*/
-        }
-        return colModels;
-    }
-
-    public List<ColModel> getDrawModel() {
-        // 기본 생성
-        List<ColModel> colModels = new ArrayList<>();
-        colModels.add(new ColModel("admissionNm", "전형"));
-        colModels.add(new ColModel("typeNm", "계열"));
-        colModels.add(new ColModel("examDate", "시험일자"));
-        colModels.add(new ColModel("deptNm", "모집단위"));
-        colModels.add(new ColModel("majorNm", "전공"));
-        colModels.add(new ColModel("examineeCd", "수험번호"));
-        colModels.add(new ColModel("examineeNm", "수험생명"));
-        colModels.add(new ColModel("virtNo", "가번호"));
-        /*colModels.add(new ColModel("evalCd", "답안지번호"));*/
-        colModels.add(new ColModel("total", "전체 총점"));
-        colModels.add(new ColModel("rank", "순위"));
-        colModels.add(new ColModel("cnt", "동점자"));
-
-        long scorerCnt = mapper.getScorerCnt(); // 채점자수
-        long itemCnt = mapper.getItemCnt(); // 항목수
-
-        for (int i = 1; i <= scorerCnt; i++) {
-            colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
-            for (int j = 1; j <= itemCnt; j++) colModels.add(new ColModel("score" + i + "S" + j, "항목" + j, false));
-
-            colModels.add(new ColModel("totalScore" + i, "총점" + i, false));
-        }
-        return colModels;
-    }
-
+    // 동점자 현황
     public Page<Map<String, Object>> getDrawData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.drawData(param, pageable);
         return fillMap(page);

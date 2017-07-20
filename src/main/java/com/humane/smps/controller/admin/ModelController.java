@@ -1,5 +1,6 @@
 package com.humane.smps.controller.admin;
 
+import com.humane.smps.dto.ExamInfoDto;
 import com.humane.smps.dto.StatusDto;
 import com.humane.smps.mapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "model", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -29,5 +32,12 @@ public class ModelController {
     @RequestMapping(value = "reportToolbar.json")
     public ResponseEntity reportToolbar(StatusDto statusDto){
         return ResponseEntity.ok(mapper.reportToolbar(statusDto));
+    }
+
+    @RequestMapping(value = "getExamInfoToolbar.json")
+    public ResponseEntity getExamInfoToolbar(ExamInfoDto examInfoDto) {
+        List<ExamInfoDto> list = mapper.getExamInfoToolbar(examInfoDto);
+        log.debug("{}", list);
+        return ResponseEntity.ok(list);
     }
 }

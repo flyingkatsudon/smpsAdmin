@@ -108,19 +108,6 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="290" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="5a45dbc5-246d-4c0a-a7c8-f18a79687b5d"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[시험시간]]></text>
-			</staticText>
-			<staticText>
 				<reportElement mode="Opaque" x="370" y="0" width="149" height="15" backcolor="#D3D3D3" uuid="653c968b-7bcf-424a-8ebd-4844a0f29be0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
