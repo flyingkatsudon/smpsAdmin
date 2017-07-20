@@ -129,7 +129,7 @@ define(function (require) {
                                  * @type {string}
                                  */
                                     // 세부정보 설정값
-                                //TODO: 확인 필요!
+                                    //TODO: 확인 필요!
                                 var detail1Html = '<div style="margin:3% 0 0 3%;">조정&nbsp;&nbsp;&nbsp;&nbsp;점수<input type="text" id="adjust" class="set-short" value="' + rowData.adjust + '"/></div>';
                                 detail1Html += '<div style="margin:3% 0 0 3%;">키패드 타입<input type="number" min="0" id="keypadType" class="set-short" value="' + rowData.keypadType + '"/></div>';
                                 detail1Html += '<div style="margin:3% 0 0 3%;">바코드&nbsp;종류<input type="text" id="barcodeType" class="set-mid" value="' + rowData.barcodeType + '"/></div>';

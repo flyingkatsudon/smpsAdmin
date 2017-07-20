@@ -1,9 +1,18 @@
 define(function (require) {
     "use strict";
+
     var GridBase = require('../dist/jqgrid.js');
+    var GetUrl = require('./../getUrl.js');
+
+    var JSON = '.json';
+    var XLSX = '.xlsx';
 
     return GridBase.extend({
         initialize: function (options) {
+            this.parent = options.parent;
+            this.param = options.param;
+            this.baseName = options.baseName;
+
             var colModel = [];
 
             $.ajax({
@@ -22,7 +31,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'check/scoredCnt.json',
+                    url: new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl(),
                     colModel: colModel/*,
                     loadComplete: function (data) {
                         var ids = $(this).getDataIDs(data);
@@ -43,7 +52,7 @@ define(function (require) {
         render: function () {
             this.constructor.__super__.render.call(this);
             //this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
-            this.addExcel('check/scoredCnt.xlsx');
+            this.addExcel(new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl());
             return this;
         }
     });
