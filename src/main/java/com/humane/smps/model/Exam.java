@@ -30,8 +30,6 @@ public class Exam implements Serializable{
     @Column(columnDefinition = "int default 100") private int totScore; // 총점
 
     @Column(columnDefinition = "int default 0") private int scorerCnt; // 채점자 수. 검증 및 통계에 쓰임.
-    @Column(columnDefinition = "int default 1") private int virtNoStart; // 가번호 시작점. 헤더값과는 상관없음.
-    @Column(columnDefinition = "int default 100") private int virtNoEnd; // 가번호 종료점.
     private int virtNoDigits; // 가번호 표시 자릿수
     private String virtNoType; // 가번호 타입. 수험번호? 답안지번호? 순차번호?
     // TODO: virtNoAssignType 임시 사용
