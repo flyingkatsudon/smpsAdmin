@@ -94,4 +94,97 @@
     <select id="idCheck" resultType="com.humane.smps.dto.AccountDto">
         select user_id from user
     </select>
+
+
+    <select id="getExamInfo" resultType="com.humane.smps.dto.ExamInfoDto">
+        SELECT exam.exam_cd
+        , exam.adjust
+        , exam.barcode_type
+        , exam.exam_nm
+        , exam.examinee_len
+        , exam.is_absence
+        , exam.is_closed_view
+        , exam.is_horizontal
+        , exam.is_mgr_auto
+        , exam.is_move
+        , exam.item_cnt
+        , exam.keypad_type
+        , exam.period
+        , exam.print_content1
+        , exam.print_content2
+        , exam.print_sign
+        , exam.print_title1
+        , exam.print_title2
+        , exam.scorer_cnt
+        , exam.tot_score
+        , exam.type_nm
+        , exam.virt_no_digits
+        , exam.virt_no_type
+        , exam.fk_exam_cd
+        , exam.admission_cd
+
+        , admission.admission_nm
+
+        , exam_hall_date.hall_date
+        , exam_hall_date.virt_no_end
+        , exam_hall_date.virt_no_start
+        , exam_hall_date.hall_cd
+
+        , hall.head_nm
+        , hall.bldg_nm
+        , hall.hall_nm
+        FROM exam
+        INNER JOIN admission ON admission.admission_cd = exam.admission_cd
+        INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd
+        INNER JOIN hall ON hall.hall_cd = exam_hall_date.hall_cd
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.examCd">AND exam.exam_cd = #{param.examCd}</if>
+                <if test="param.examNm">AND exam.exam_nm = #{param.examNm}</if>
+            </if>
+        </where>
+    </select>
+
+    <update id="modifyExamInfo">
+        <if test="param != null">
+            UPDATE exam
+            <set>
+                <if test="param.typeNm != null">type_nm = #{param.typeNm},</if>
+                <if test="param.examNm != null">exam_nm = #{param.examNm},</if>
+                <if test="param.period != null">period = #{param.period},</if>
+                <if test="param.adjust != null">adjust = #{param.adjust},</if>
+                <if test="param.barcodeType != null">barcode_type = #{param.barcodeType},</if>
+                <if test="param.examineeLen != null">examinee_len = #{param.examineeLen},</if>
+                <if test="param.isAbsence != null">is_absence = #{param.isAbsence},</if>
+                <if test="param.isClosedView != null">is_closed_view = #{param.isClosedView},</if>
+                <if test="param.isHorizontal != null">is_horizontal = #{param.isHorizontal},</if>
+                <if test="param.isMgrAuto != null">is_mgr_auto = #{param.isMgrAuto},</if>
+                <if test="param.isMove != null">is_move = #{param.isMove},</if>
+                <if test="param.itemCnt != null">item_cnt = #{param.itemCnt},</if>
+                <if test="param.keypadType != null">keypad_type = #{param.keypadType},</if>
+                <if test="param.printTitle1 != null">print_title1 = #{param.printTitle1},</if>
+                <if test="param.printContent1 != null">print_content1 = #{param.printContent1},</if>
+                <if test="param.printTitle2 != null">print_title2 = #{param.printTitle2},</if>
+                <if test="param.printContent2 != null">print_content2 = #{param.printContent2},</if>
+                <if test="param.scorerCnt != null">scorer_cnt = #{param.scorerCnt},</if>
+                <if test="param.totScore != null">tot_score = #{param.totScore},</if>
+                <if test="param.virtNoDigits != null">virt_no_digits = #{param.virtNoDigits},</if>
+                <if test="param.virtNoType != null">virt_no_type = #{param.virtNoType}</if>
+            </set>
+            WHERE exam_cd = #{param.examCd}
+        </if>
+    </update>
+
+    <update id="modifyExamHallDateOfExamInfo">
+        <if test="param != null">
+            UPDATE exam_hall_date
+            <set>
+                <if test="param.hallDate">hall_date = #{param.hallDate},</if>
+                <if test="param.virtNoStart != null">virt_no_start = #{param.virtNoStart},</if>
+                <if test="param.virtNoEnd != null">virt_no_end = #{param.virtNoEnd}</if>
+            </set>
+            WHERE exam_cd = #{param.examCd}
+        </if>
+    </update>
 </mapper>

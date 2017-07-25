@@ -1,6 +1,7 @@
 package com.humane.smps.mapper;
 
 import com.humane.smps.dto.AccountDto;
+import com.humane.smps.dto.ExamInfoDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
@@ -22,4 +23,8 @@ public interface SystemMapper {
     void modifyRole(@Param("userId") String userId, @Param("roleName") String roleName);
 
     Page<AccountDto> idCheck(@Param("pageable") Pageable pageable);
+
+    Page<ExamInfoDto> getExamInfo(@Param("param") ExamInfoDto param, @Param("pageable") Pageable pageable);
+    void modifyExamInfo(@Param("param") ExamInfoDto param);
+    void modifyExamHallDateOfExamInfo(@Param("param") ExamInfoDto param);
 }

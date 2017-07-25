@@ -1,7 +1,6 @@
 package com.humane.smps.controller.admin;
 
 import com.humane.smps.dto.*;
-import com.humane.smps.mapper.ModelMapper;
 import com.humane.smps.mapper.StatusMapper;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "status")
@@ -78,17 +77,5 @@ public class StatusController {
                         , format
                         , mapper.group(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
-    }
-
-    @RequestMapping(value = "getExamInfo")
-    public ResponseEntity getExamInfo(ExamInfoDto param, Pageable pageable) {
-        return ResponseEntity.ok(mapper.getExamInfo(param, pageable).getContent());
-    }
-
-    @RequestMapping(value = "modifyExamInfo")
-    @Transactional(propagation= Propagation.REQUIRED, rollbackFor={Throwable.class})
-    public void modifyExamInfo(@RequestBody ExamInfoDto param) {
-        mapper.modifyExamInfo(param);
-        mapper.modifyExamHallDateOfExamInfo(param);
     }
 }

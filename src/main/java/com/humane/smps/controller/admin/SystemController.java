@@ -2,6 +2,7 @@ package com.humane.smps.controller.admin;
 
 import com.humane.smps.dto.AccountDto;
 import com.humane.smps.dto.DownloadWrapper;
+import com.humane.smps.dto.ExamInfoDto;
 import com.humane.smps.mapper.SystemMapper;
 import com.humane.smps.model.*;
 import com.humane.smps.repository.UserAdmissionRepository;
@@ -20,13 +21,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping(value = "system", method = RequestMethod.GET)
+@RequestMapping(value = "system")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemController {
@@ -180,5 +183,17 @@ public class SystemController {
     @RequestMapping(value = "idCheck")
     public ResponseEntity idCheck(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
+    }
+
+    @RequestMapping(value = "getExamInfo")
+    public ResponseEntity getExamInfo(ExamInfoDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.getExamInfo(param, pageable).getContent());
+    }
+
+    @RequestMapping(value = "modifyExamInfo")
+    @Transactional(propagation= Propagation.REQUIRED, rollbackFor={Throwable.class})
+    public void modifyExamInfo(@RequestBody ExamInfoDto param) {
+        systemMapper.modifyExamInfo(param);
+        systemMapper.modifyExamHallDateOfExamInfo(param);
     }
 }
