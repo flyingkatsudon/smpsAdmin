@@ -62,7 +62,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/getExamInfo',
+                    url: 'system/getExamInfo',
                     colModel: colModel,
                     onCellSelect: function (rowId, index, contents, event) {
                         var colModel = $(this).jqGrid('getGridParam', 'colModel');
@@ -239,10 +239,9 @@ define(function (require) {
                                         }
                                     }
 
-
                                     if (validated) {
                                         $.ajax({
-                                            url: 'status/modifyExamInfo',
+                                            url: 'system/modifyExamInfo',
                                             type: 'POST',
                                             contentType: 'application/json; charset=utf-8',
                                             data: JSON.stringify(param),
