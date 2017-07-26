@@ -203,6 +203,7 @@ public class SystemService {
                             hallRepository.save(examMap.getHall());
                             examRepository.save(examMap.getExam());
 
+/*
                             ExamHall findExamHall = examHallRepository.findOne(new BooleanBuilder()
                                     .and((QExamHall.examHall.exam.examCd.eq(exam.getExamCd())))
                                     .and(QExamHall.examHall.hall.hallCd.eq(hall.getHallCd()))
@@ -214,6 +215,7 @@ public class SystemService {
                                 examHall.setHall(hall);
                                 examHallRepository.save(examHall);
                             }
+*/
 
                             ExamHallDate findExamHallDate = hallDateRepository.findOne(new BooleanBuilder()
                                     .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
