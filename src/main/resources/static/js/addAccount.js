@@ -64,7 +64,7 @@ define(function (require) {
                                                 check = false;
                                             }
                                             else if (tmp == 'api' || tmp == 'admin') {
-                                                $('#msg').html('<h4 style="margin-top: 1%; color:crimson">사용할 수 없는 아이디입니다</h4>');
+                                                $('#msg').html('<h4 style="margin-top: 1%; color:crimson">사용할 수 없는 아이디 입니다</h4>');
                                                 check = false;
                                             }
                                             else{
