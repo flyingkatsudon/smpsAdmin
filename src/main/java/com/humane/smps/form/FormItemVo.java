@@ -35,16 +35,16 @@ public class FormItemVo {
     @Column(name = "평가표서명") private String printSign;
 
     @Column(name = "항목수") private String itemCnt;
-    @Column(name = "항목1 코드") private String itemNo1;   @Column(name = "항목1 명") private String itemNm1;   @Column(name = "항목1 편차코드") private String deviCd1;     @Column(name = "항목1 키패드") private String keypadType1;
-    @Column(name = "항목2 코드") private String itemNo2;   @Column(name = "항목2 명") private String itemNm2;   @Column(name = "항목2 편차코드") private String deviCd2;     @Column(name = "항목2 키패드") private String keypadType2;
-    @Column(name = "항목3 코드") private String itemNo3;   @Column(name = "항목3 명") private String itemNm3;   @Column(name = "항목3 편차코드") private String deviCd3;     @Column(name = "항목3 키패드") private String keypadType3;
-    @Column(name = "항목4 코드") private String itemNo4;   @Column(name = "항목4 명") private String itemNm4;   @Column(name = "항목4 편차코드") private String deviCd4;     @Column(name = "항목4 키패드") private String keypadType4;
-    @Column(name = "항목5 코드") private String itemNo5;   @Column(name = "항목5 명") private String itemNm5;   @Column(name = "항목5 편차코드") private String deviCd5;     @Column(name = "항목5 키패드") private String keypadType5;
-    @Column(name = "항목6 코드") private String itemNo6;   @Column(name = "항목6 명") private String itemNm6;   @Column(name = "항목6 편차코드") private String deviCd6;     @Column(name = "항목6 키패드") private String keypadType6;
-    @Column(name = "항목7 코드") private String itemNo7;   @Column(name = "항목7 명") private String itemNm7;   @Column(name = "항목7 편차코드") private String deviCd7;     @Column(name = "항목7 키패드") private String keypadType7;
-    @Column(name = "항목8 코드") private String itemNo8;   @Column(name = "항목8 명") private String itemNm8;   @Column(name = "항목8 편차코드") private String deviCd8;     @Column(name = "항목8 키패드") private String keypadType8;
-    @Column(name = "항목9 코드") private String itemNo9;   @Column(name = "항목9 명") private String itemNm9;   @Column(name = "항목9 편차코드") private String deviCd9;     @Column(name = "항목9 키패드") private String keypadType9;
-    @Column(name = "항목10 코드") private String itemNo10; @Column(name = "항목10 명") private String itemNm10; @Column(name = "항목10 편차코드") private String deviCd10;   @Column(name = "항목10 키패드") private String keypadType10;
+    @Column(name = "항목1 코드") private String itemNo1;   @Column(name = "항목1 명") private String itemNm1;   @Column(name = "항목1 키패드") private String keypadType1;
+    @Column(name = "항목2 코드") private String itemNo2;   @Column(name = "항목2 명") private String itemNm2;   @Column(name = "항목2 키패드") private String keypadType2;
+    @Column(name = "항목3 코드") private String itemNo3;   @Column(name = "항목3 명") private String itemNm3;   @Column(name = "항목3 키패드") private String keypadType3;
+    @Column(name = "항목4 코드") private String itemNo4;   @Column(name = "항목4 명") private String itemNm4;   @Column(name = "항목4 키패드") private String keypadType4;
+    @Column(name = "항목5 코드") private String itemNo5;   @Column(name = "항목5 명") private String itemNm5;   @Column(name = "항목5 키패드") private String keypadType5;
+    @Column(name = "항목6 코드") private String itemNo6;   @Column(name = "항목6 명") private String itemNm6;   @Column(name = "항목6 키패드") private String keypadType6;
+    @Column(name = "항목7 코드") private String itemNo7;   @Column(name = "항목7 명") private String itemNm7;   @Column(name = "항목7 키패드") private String keypadType7;
+    @Column(name = "항목8 코드") private String itemNo8;   @Column(name = "항목8 명") private String itemNm8;   @Column(name = "항목8 키패드") private String keypadType8;
+    @Column(name = "항목9 코드") private String itemNo9;   @Column(name = "항목9 명") private String itemNm9;   @Column(name = "항목9 키패드") private String keypadType9;
+    @Column(name = "항목10 코드") private String itemNo10; @Column(name = "항목10 명") private String itemNm10; @Column(name = "항목10 키패드") private String keypadType10;
 
     @Column(name = "항목1 최대점") private String maxScore1; @Column(name = "항목1 최소점") private String minScore1;
     @Column(name = "항목2 최대점") private String maxScore2; @Column(name = "항목2 최소점") private String minScore2;

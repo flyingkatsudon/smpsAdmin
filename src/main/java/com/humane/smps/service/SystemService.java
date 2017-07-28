@@ -30,11 +30,9 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemService {
-    private final DeviRepository deviRepository;
     private final AdmissionRepository admissionRepository;
     private final ExamRepository examRepository;
     private final HallRepository hallRepository;
-    private final ExamHallRepository examHallRepository;
     private final ExamineeRepository examineeRepository;
     private final ExamMapRepository examMapRepository;
     private final ItemRepository itemRepository;
@@ -55,7 +53,6 @@ public class SystemService {
         queryFactory.delete(QScore.score).execute();
         queryFactory.delete(QScoreLog.scoreLog).execute();
         queryFactory.delete(QExamHallDate.examHallDate).execute();
-        queryFactory.delete(QExamHall.examHall).execute();
 
         QExaminee examinee = QExaminee.examinee;
         QExamMap examMap = QExamMap.examMap;
@@ -83,10 +80,6 @@ public class SystemService {
         } catch (Exception ignored) {
         }
         queryFactory.delete(QItem.item).execute();
-        queryFactory.delete(QDevi.devi).where(QDevi.devi.fkDevi.isNotNull()).execute(); // added
-        queryFactory.delete(QDevi.devi).where(QDevi.devi.isNotNull()).execute();
-        queryFactory.delete(QDevi.devi).execute();
-
 
         QExam exam = QExam.exam;
 
@@ -98,12 +91,12 @@ public class SystemService {
                 .setFetchSize(Integer.MIN_VALUE)
                 .scroll(ScrollMode.FORWARD_ONLY);
 
-        while (scrollableResults.next()){
+        while (scrollableResults.next()) {
 
             String admissionCd = scrollableResults.getString(0);
             queryFactory.delete(exam).where(
                     exam.admission.admissionCd.eq(admissionCd)
-                    .and(exam.fkExam.examCd.isNotNull())
+                            .and(exam.fkExam.examCd.isNotNull())
             ).execute();
         }
 
@@ -154,9 +147,13 @@ public class SystemService {
                     .setNull(examMap.photoNm)
                     .setNull(examMap.memo)
                     .setNull(examMap.evalCd)
+                    .setNull(examMap.groupNm)
+                    .setNull(examMap.groupOrder)
+                    .setNull(examMap.debateNm)
+                    .setNull(examMap.debateOrder)
                     .where(examMap.exam.examCd.eq(examCd))
                     .execute();
-        }else{
+        } else {
             queryFactory.delete(QSheet.sheet).execute();
             queryFactory.delete(QScoreLog.scoreLog).execute();
             queryFactory.delete(QScore.score).execute();
@@ -168,6 +165,10 @@ public class SystemService {
                     .setNull(examMap.photoNm)
                     .setNull(examMap.memo)
                     .setNull(examMap.evalCd)
+                    .setNull(examMap.groupNm)
+                    .setNull(examMap.groupOrder)
+                    .setNull(examMap.debateNm)
+                    .setNull(examMap.debateOrder)
                     .execute();
         }
 
@@ -202,18 +203,6 @@ public class SystemService {
 
                             hallRepository.save(examMap.getHall());
                             examRepository.save(examMap.getExam());
-
-                            ExamHall findExamHall = examHallRepository.findOne(new BooleanBuilder()
-                                    .and((QExamHall.examHall.exam.examCd.eq(exam.getExamCd())))
-                                    .and(QExamHall.examHall.hall.hallCd.eq(hall.getHallCd()))
-                            );
-
-                            if (findExamHall == null) {
-                                ExamHall examHall = new ExamHall();
-                                examHall.setExam(exam);
-                                examHall.setHall(hall);
-                                examHallRepository.save(examHall);
-                            }
 
                             ExamHallDate findExamHallDate = hallDateRepository.findOne(new BooleanBuilder()
                                     .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
@@ -278,15 +267,12 @@ public class SystemService {
                 examCds.add(examHallWrapper.getExamCd());
         });
 
-        List<String> deviList = new ArrayList<>();
-
         examCds.forEach(examCd -> {
             Observable.range(0, Integer.MAX_VALUE)
                     .concatMap(page -> apiService.item(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE, null))
                     .takeUntil(page -> page.last)
                     .map(page -> {
                         page.content.forEach(item -> {
-                            deviRepository.save(item.getDevi());
                             examRepository.save(item.getExam());
 
                             Item findItem = itemRepository.findOne(new BooleanBuilder()
@@ -297,24 +283,45 @@ public class SystemService {
                             if (findItem != null) item.set_id(findItem.get_id());
 
                             itemRepository.save(item);
-
-                            if (!deviList.contains(item.getDevi().getDeviCd()))
-                                deviList.add(item.getDevi().getDeviCd());
                         });
                         return null;
                     })
                     .toBlocking().first();
         });
+    }
 
-        deviList.forEach(deviCd -> {
-            Observable.range(0, Integer.MAX_VALUE)
-                    .concatMap(page -> apiService.devi(new QueryBuilder().add("devi.deviCd", deviCd).getMap(), page, Integer.MAX_VALUE, null))
-                    .takeUntil(page -> page.last)
-                    .map(page -> {
-                        deviRepository.save(page.content);
-                        return null;
-                    })
-                    .toBlocking().first();
-        });
+    public void saveOrder(ApiService apiService, String admissionCd) {
+
+        Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.admission.admissionCd", admissionCd).getMap(), page, Integer.MAX_VALUE))
+                .takeUntil(page -> page.last)
+                .flatMap(page -> {
+
+                    for (ExamMap examMap : page.content) {
+
+                        Exam exam = examMap.getExam();
+                        Examinee examinee = examMap.getExaminee();
+
+                        // 일반면접 검사
+                        ExamMap findExamMap = examMapRepository.findOne(new BooleanBuilder()
+                                .and(QExamMap.examMap.examinee.examineeCd.eq(examinee.getExamineeCd()))
+                                .and(QExamMap.examMap.exam.examCd.eq(exam.getExamCd()))
+                        );
+
+                        examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
+
+                        if(findExamMap != null) {
+                            findExamMap.setGroupNm(examMap.getGroupNm());
+                            findExamMap.setGroupOrder(examMap.getGroupOrder());
+                            findExamMap.setDebateNm(examMap.getDebateNm());
+                            findExamMap.setDebateOrder(examMap.getDebateOrder());
+
+                            examMapRepository.save(findExamMap);
+                        }
+                    }
+
+                    return Observable.from(page.content);
+                })
+                .toBlocking().first();
     }
 }

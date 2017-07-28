@@ -11,6 +11,9 @@ define(function (require) {
     var dlgUniv = require('text!tpl/dlg-univ.html');
     var examList = [];
 
+    var ResponseDialog = require('../responseDialog.js');
+    var responseDialog = new ResponseDialog();
+
     var SettingExamInfo = require('./../grid/setting-data.js');
     var ExamInfoDataToolbar = require('./../toolbar/setting-data.js');
 
@@ -21,7 +24,6 @@ define(function (require) {
 
         }, render: function () {
             this.$el.html(Template);
-            this.uploadForm('#frmUploadDevi');
             this.uploadForm('#frmUploadItem');
             this.uploadForm('#frmUploadHall');
             this.uploadForm('#frmUploadExaminee');
@@ -35,34 +37,22 @@ define(function (require) {
         }, search: function (o) {
             this.list.search(o);
         }, uploadForm: function (id) {
-            var _this = this;
-
             this.$(id).ajaxForm({
                 beforeSubmit: function (arr) {
                     for (var i in arr) {
                         if (arr[i].name == 'file' && arr[i].value == '') {
-                            _this.completeDialog('파일을 선택하세요');
+                            responseDialog.complete('파일을 선택하세요');
                             return false;
                         }
                     }
-
-                    var dialog = new BootstrapDialog({
-                        message: '<div style="cursor: wait"><h5 style="margin-left: 20%; font-weight:normal">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</h5></div>'
-                    });
-
-                    dialog.realize();
-                    dialog.getModalDialog().css('margin-top', '20%');
-                    dialog.getModalHeader().hide();
-                    dialog.getModalFooter().hide();
-                    dialog.open();
+                    responseDialog.complete('<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>');
 
                 },
                 error: function (response) {
-                    console.log(response);
-                    _this.errorDialog(response.responseJSON);
+                    responseDialog.error(response.responseJSON);
                 },
                 success: function (response) {
-                    _this.completeDialog(response);
+                    responseDialog.complete(response);
                 }
             });
         }, events: {
@@ -71,7 +61,6 @@ define(function (require) {
             'click #init': 'initClicked',
             'click #fill': 'fillClicked'
         }, downloadClicked: function (e) {
-            var _this = this;
             var dialog = new BootstrapDialog({
                 title: '',
                 message: '',
@@ -131,14 +120,14 @@ define(function (require) {
                                     data: JSON.stringify(param),
                                     contentType: 'application/json',
                                     success: function (response) {
-                                        _this.completeDialog(response);
+                                        responseDialog.complete(response);
                                     },
                                     error: function (response, status, error) {
-                                        _this.completeDialog(response.responseJSON);
+                                        responseDialog.complete(response.responseJSON);
                                     }
                                 });
                             } else {
-                                _this.completeDialog('<h5 style="margin-left:10%">데이터를 선택해주세요</h5>');
+                                responseDialog.complete('<h5 style="margin-left:10%">데이터를 선택해주세요</h5>');
                             }
                         }
                     },
@@ -202,9 +191,9 @@ define(function (require) {
                     photo: o
                 },
                 success: function (response) {
-                    _this.completeDialog(response);
+                    responseDialog.complete(response);
                 }, error: function (response){
-                    _this.completeDialog(response.responseJSON);
+                    responseDialog.complete(response.responseJSON);
                 }
             });
         },
@@ -237,7 +226,7 @@ define(function (require) {
                                             $.ajax({
                                                 url: 'system/init?examCd=' + examCd,
                                                 success: function (response) {
-                                                    _this.completeDialog(response);
+                                                    responseDialog.complete(response);
                                                 }
                                             });
                                         }
@@ -272,7 +261,6 @@ define(function (require) {
 
         }, fillClicked: function (e) {
             var text = '<select id="examCd"><option value="">선택하세요</option>';
-            var _this = this;
 
             var dialog = new BootstrapDialog({
                 title: '<h4>가번호 / 답안지 번호 / 점수</h4>',
@@ -287,14 +275,14 @@ define(function (require) {
                             var examCd = $('#examCd').val();
 
                             if (examCd == '') {
-                                _this.completeDialog('시험을 선택하세요');
+                                responseDialog.complete('시험을 선택하세요');
                                 return false;
                             }
 
                             $.ajax({
                                 url: 'data/fillVirtNo.json?examCd=' + examCd,
                                 success: function (response) {
-                                    _this.completeDialog(response);
+                                    responseDialog.complete(response);
                                 }
                             });
                         }
@@ -307,17 +295,17 @@ define(function (require) {
                             var examCd = $('#examCd').val();
 
                             if (examCd == '') {
-                                _this.completeDialog('시험을 선택하세요');
+                                responseDialog.complete('시험을 선택하세요');
                                 return false;
                             }
 
                             $.ajax({
                                 url: 'data/fillEvalCd.json?examCd=' + examCd,
                                 success: function (response) {
-                                    _this.completeDialog(response);
+                                    responseDialog.complete(response);
                                 },
                                 error: function (response) {
-                                    _this.completeDialog(response.responseJSON);
+                                    responseDialog.complete(response.responseJSON);
                                 }
                             });
                         }
@@ -366,10 +354,10 @@ define(function (require) {
                                         $.ajax({
                                             url: 'data/fillScore.json?examCd=' + examCd + '&score=' + score,
                                             success: function (response) {
-                                                _this.completeDialog(response);
+                                                responseDialog.complete(response);
                                             },
                                             error: function (response) {
-                                                _this.completeDialog(response.responseJSON);
+                                                responseDialog.complete(response.responseJSON);
                                             }
                                         });
                                     }
@@ -423,34 +411,6 @@ define(function (require) {
 
             return examNm;
 
-        }, completeDialog: function (msg) {
-            BootstrapDialog.closeAll();
-
-            var dialog = new BootstrapDialog({
-                title: '',
-                message: '<h5 style="margin-left:20%">' + msg + '</h5>',
-                closable: true
-            });
-
-            dialog.realize();
-            dialog.getModalDialog().css('margin-top', '20%');
-            dialog.getModalHeader().hide();
-            dialog.getModalFooter().hide();
-            dialog.open();
-        }, errorDialog: function(msg){
-            BootstrapDialog.closeAll();
-
-            var dialog = new BootstrapDialog({
-                title: '',
-                message: '<h5 style="margin-left:5%">' + msg + '</h5>',
-                closable: true
-            });
-
-            dialog.realize();
-            dialog.getModalDialog().css('margin-top', '20%');
-            dialog.getModalHeader().hide();
-            dialog.getModalFooter().hide();
-            dialog.open();
         }
     });
 });

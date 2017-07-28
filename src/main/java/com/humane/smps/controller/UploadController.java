@@ -42,51 +42,65 @@ import java.util.List;
 public class UploadController {
     private final UploadService uploadService;
     private final AdmissionRepository admissionRepository;
-    private final DeviRepository deviRepository;
     private final ExamRepository examRepository;
     private final HallRepository hallRepository;
-    private final ExamHallRepository examHallRepository;
     private final HallDateRepository hallDateRepository;
     private final ExamineeRepository examineeRepository;
     private final ExamMapRepository examMapRepository;
     private final SheetRepository sheetRepository;
     private final ScoreRepository scoreRepository;
     private final ScoreLogRepository scoreLogRepository;
-    private final GroupInfoRepository groupInfoRepository;
 
     // Windows
-    @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    //@Value("${path.image.examinee:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
-    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
+    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
 
-    @RequestMapping(value = "devi", method = RequestMethod.POST)
-    public ResponseEntity<String> devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
+    @RequestMapping(value = "order", method = RequestMethod.POST)
+    public ResponseEntity<String> order(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        // 파일이 없울경우 에러 리턴.
+        if (multipartFile.isEmpty()) return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
+
         File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
-            // 1 엑셀 파징
-            List<FormDeviVo> deviList = ExOM.mapFromExcel(file).to(FormDeviVo.class).map(1);
+            // 1. excel 변환
+           /* List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormItemVo.class).map(1);
+            log.debug("{}", itemList);
+            for (FormItemVo vo : itemList) {
+                // 2. admission 변환, 저장
 
-            log.debug("{}", deviList);
-            // 2. 편차 생성
-            deviList.forEach(vo -> {
-                        // 2.1 편차 변환
-                        Devi devi = mapper.convertValue(vo, Devi.class);
+                Admission admission = mapper.convertValue(vo, Admission.class);
+                admission = admissionRepository.save(admission);
 
-                        // 2.2 fk 설정
-                        Devi fkDevi = deviRepository.findOne(vo.getFkDeviCd());
-                        if (fkDevi != null) devi.setFkDevi(fkDevi);
+                // 3. exam 변환, 저장
+                Exam exam = mapper.convertValue(vo, Exam.class);
 
-                        // 2.3 편차 저장
-                        devi = deviRepository.save(devi);
-                    }
-            );
+                log.debug("{}", vo);
+
+                if (!vo.getFkExamCd().equals("") && vo.getFkExamCd() != null) {
+                    Exam tmp = examRepository.findOne(new BooleanBuilder()
+                            .and(QExam.exam.examCd.eq(vo.getFkExamCd()))
+                    );
+                    exam.setFkExam(tmp);
+                }
+
+                exam.setAdmission(admission);
+
+                examRepository.save(exam);
+
+                // 4. item 변환, 저장, 갯수비교
+                if (Long.parseLong(vo.getItemCnt()) != uploadService.saveItems(vo)) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("항목 개수가 일치하지 않습니다!");
+                }
+            }*/
             return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
-            log.debug("{}", throwable.getMessage());
+            throwable.printStackTrace();
+            log.error("{}", throwable.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }
@@ -167,24 +181,7 @@ public class UploadController {
                 Hall hall = mapper.convertValue(vo, Hall.class);
                 hall = hallRepository.save(hall);
 
-                // 3. 응시고사실 생성
-                ExamHall examHall = new ExamHall();
-                examHall.setExam(exam);
-                examHall.setHall(hall);
-
-
-                // 4. 응시고사실 확인
-                ExamHall tmp2 = examHallRepository.findOne(new BooleanBuilder()
-                        .and(QExamHall.examHall.hall.hallCd.eq(examHall.getHall().getHallCd()))
-                        .and(QExamHall.examHall.exam.examCd.eq(examHall.getExam().getExamCd()))
-                );
-
-                if (tmp2 != null) examHall.set_id(tmp2.get_id());
-
-                // 5. 응시고사실 저장
-                examHallRepository.save(examHall);
-
-                // exam_hall_date 채우기
+                // 3. 응시고사실(exam_hall_date) 채우기
                 ExamHallDate hallDate = new ExamHallDate();
                 hallDate.setExam(exam);
                 hallDate.setHall(hall);
@@ -199,7 +196,7 @@ public class UploadController {
 
                 // 가번호 정보가 없거나 공백이면 null로 저장
                 if ((vo.getVirtNoEnd() == null && vo.getVirtNoStart() == null) ||
-                        (vo.getVirtNoEnd() == "" && vo.getVirtNoStart() == "")) {
+                        (vo.getVirtNoEnd().equals("") && vo.getVirtNoStart().equals(""))) {
 
                     hallDate.setVirtNoStart(null);
                     hallDate.setVirtNoEnd(null);
@@ -218,6 +215,8 @@ public class UploadController {
                 if (tmp != null) hallDate.set_id(tmp.get_id());
 
                 hallDateRepository.save(hallDate);
+
+                // TODO: 대기실 당 고사실 정보 업로드 추가해주어야함
 
                 /*GroupInfo find = groupInfoRepository.findOne(new BooleanBuilder()
                         .and(QGroupInfo.groupInfo.groupNm.eq(vo.getGroupNm()))
@@ -256,45 +255,22 @@ public class UploadController {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
             log.debug("{}", examineeList);
             examineeList.forEach(vo -> {
-                // 1. ExamHall 에서 고사실 및 시험정보를 가져온다.
-                /*QExam exam = QExamHall.examHall.exam;
-                QHall hall = QExamHall.examHall.hall;
-
-                ExamHall examHall = examHallRepository.findOne(new BooleanBuilder()
-                        .and(exam.examDate.eq(dtf.parseLocalDateTime(vo.getExamDate()).toDate()))
-                        // .and(hall.hallCd.eq(vo.getHallCd()))
-                        .and(hall.headNm.eq(vo.getHeadNm()))
-                        .and(hall.bldgNm.eq(vo.getBldgNm()))
-                        .and(hall.hallNm.eq(vo.getHallNm()))
-                        .and(exam.examCd.eq(vo.getExamCd())) // 위 5개 조건이 모두 같을 때, 시험코드로 구분하도록
-                );*/
-
                 // 시험정보
                 Exam exam = examRepository.findOne(new BooleanBuilder()
                         .and(QExam.exam.examCd.eq(vo.getExamCd()))
                 );
 
-                // 1. ExamHallDate에서 시험 및 고사실 정보를 가져옴
-                ExamHallDate hallDate = hallDateRepository.findOne(new BooleanBuilder()
-                        .and(QExamHallDate.examHallDate.exam.examCd.eq(vo.getExamCd()))
-                        .and(QExamHallDate.examHallDate.hallDate.eq(dtf.parseLocalDateTime(vo.getExamDate()).toDate()))
-                        .and(QExamHallDate.examHallDate.hall.headNm.eq(vo.getHeadNm()))
-                        .and(QExamHallDate.examHallDate.hall.bldgNm.eq(vo.getBldgNm()))
-                        .and(QExamHallDate.examHallDate.hall.hallNm.eq(vo.getHallNm()))
-                );
+                // 고사실 정보는 사전에 주어지지 않아 기초데이터로 업로드가 불가능
 
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
                 examineeRepository.save(examinee);
 
-                if (vo.getGroupNm().length() == 0) vo.setGroupNm(null); // 조 정보가 없으면 null로 처리
-
-                //ExamMap examMap = new ExamMap();
                 ExamMap examMap = mapper.convertValue(vo, ExamMap.class);
-                examMap.setExam(hallDate.getExam());
-                examMap.setHall(hallDate.getHall());
                 examMap.setExam(exam);
                 examMap.setExaminee(examinee);
+
+                if (vo.getGroupNm().equals("")) examMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
 
                 ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()
                         .and(QExamMap.examMap.exam.examCd.eq(examMap.getExam().getExamCd()))

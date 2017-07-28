@@ -101,7 +101,7 @@ public class SystemController {
     public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
         try{
             systemService.resetData(photo);
-            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
+            return ResponseEntity.ok("삭제가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
         }catch(Exception e){
             log.debug("{}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
@@ -195,5 +195,30 @@ public class SystemController {
     public void modifyExamInfo(@RequestBody ExamInfoDto param) {
         systemMapper.modifyExamInfo(param);
         systemMapper.modifyExamHallDateOfExamInfo(param);
+    }
+
+    /**
+     * 고려대 면접고사용
+     */
+
+    @RequestMapping(value = "order")
+    //public ResponseEntity order(@RequestBody DownloadWrapper wrapper) {
+    public ResponseEntity order(String admissionCd, String url) {
+
+        try {
+            // 1. validate wrapper
+            if (StringUtils.isEmpty(url))
+                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("url이 올바르지 않습니다.");
+
+            // 2. create http service
+            ApiService apiService = ServiceBuilder.INSTANCE.createService(url, ApiService.class);
+
+            // 3. getData(iterator)
+            systemService.saveOrder(apiService, admissionCd);
+
+            return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
+        }
     }
 }

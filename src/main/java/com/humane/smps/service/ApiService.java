@@ -20,9 +20,6 @@ public interface ApiService {
     @GET("api/exam")
     Observable<Page<Exam>> exam(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size, @Query("sort") String sort);
 
-    @GET("api/devi")
-    Observable<Page<Devi>> devi(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size, @Query("sort") String sort);
-
     @GET("api/item")
     Observable<Page<Item>> item(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size, @Query("sort") String sort);
 

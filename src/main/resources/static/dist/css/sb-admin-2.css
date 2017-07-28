@@ -593,3 +593,66 @@ h4 {
     margin-left: 10%;
     color: #727272
 }
+
+.sys-group {
+    margin-top: 1%;
+    margin-bottom: 3%;
+}
+
+.sys-group .sys-group-title {
+    margin-top: 3%;
+    margin-bottom: 3%;
+    text-align: center;
+}
+
+.sys-group .sys-group-content {
+    text-align: center;
+    margin: 3%;
+}
+
+.btn-normal {
+    background-color: #f9cbb8;
+    border-color: #f9cbb8;
+    color: black;
+    padding: 3% 13% 3% 10%;
+    font-size: xx-large;
+    border-radius: 15px;
+}
+
+.btn-debate {
+    background-color: #afd5de;
+    border-color: #afd5de;
+    color: black;
+    padding: 3% 13% 3% 10%;
+    font-size: xx-large;
+    border-radius: 15px;
+}
+
+.btn-order {
+    background-color: #d7de88;
+    border-color: #d7de88;
+    color: black;
+    padding: 3% 13% 3% 10%;
+    font-size: xx-large;
+    border-radius: 15px;
+}
+
+.btn-normal.btn-outline:hover,
+.btn-debate.btn-outline:hover {
+    color: #fff;
+}
+
+.m1 {
+    background: red;
+}
+
+.m2 {
+    background: blue;
+    position: relative;
+    top: -50px;
+    left: 50px;
+}
+
+.m3 {
+    background: yellow;
+}
