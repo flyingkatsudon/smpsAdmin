@@ -101,7 +101,7 @@ public class SystemController {
     public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
         try{
             systemService.resetData(photo);
-            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
+            return ResponseEntity.ok("삭제가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
         }catch(Exception e){
             log.debug("{}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");

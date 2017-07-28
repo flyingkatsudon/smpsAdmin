@@ -10,7 +10,8 @@ define(function (require) {
                 {name: 'examCd', label: '시험코드', hidden:true},
                 {name: 'examNm', label: '시험명'},
                 {name: 'examDate', label: '시험일자'},
-                /*{name: 'hall.hallCd', label: '고사실코드', hidden:true},
+                {name: 'examTime', label: '시험시간'}/*,
+                {name: 'hall.hallCd', label: '고사실코드', hidden:true},
                 {name: 'hall.headNm', label: '고사본부'},
                 {name: 'hall.bldgNm', label: '고사건물'},
                 {name: 'hall.hallNm', label: '고사실'}*/

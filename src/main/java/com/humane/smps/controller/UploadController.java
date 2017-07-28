@@ -198,7 +198,7 @@ public class UploadController {
 
                 // 가번호 정보가 없거나 공백이면 null로 저장
                 if ((vo.getVirtNoEnd() == null && vo.getVirtNoStart() == null) ||
-                        (vo.getVirtNoEnd() == "" && vo.getVirtNoStart() == "")) {
+                        (vo.getVirtNoEnd().equals("") && vo.getVirtNoStart().equals(""))) {
 
                     hallDate.setVirtNoStart(null);
                     hallDate.setVirtNoEnd(null);
@@ -255,19 +255,6 @@ public class UploadController {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
             log.debug("{}", examineeList);
             examineeList.forEach(vo -> {
-                // 1. ExamHall 에서 고사실 및 시험정보를 가져온다.
-                /*QExam exam = QExamHall.examHall.exam;
-                QHall hall = QExamHall.examHall.hall;
-
-                ExamHall examHall = examHallRepository.findOne(new BooleanBuilder()
-                        .and(exam.examDate.eq(dtf.parseLocalDateTime(vo.getExamDate()).toDate()))
-                        // .and(hall.hallCd.eq(vo.getHallCd()))
-                        .and(hall.headNm.eq(vo.getHeadNm()))
-                        .and(hall.bldgNm.eq(vo.getBldgNm()))
-                        .and(hall.hallNm.eq(vo.getHallNm()))
-                        .and(exam.examCd.eq(vo.getExamCd())) // 위 5개 조건이 모두 같을 때, 시험코드로 구분하도록
-                );*/
-
                 // 시험정보
                 Exam exam = examRepository.findOne(new BooleanBuilder()
                         .and(QExam.exam.examCd.eq(vo.getExamCd()))
@@ -286,14 +273,11 @@ public class UploadController {
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
                 examineeRepository.save(examinee);
 
-                if (vo.getGroupNm().length() == 0) vo.setGroupNm(null); // 조 정보가 없으면 null로 처리
-
-                //ExamMap examMap = new ExamMap();
                 ExamMap examMap = mapper.convertValue(vo, ExamMap.class);
-                examMap.setExam(hallDate.getExam());
-                examMap.setHall(hallDate.getHall());
                 examMap.setExam(exam);
                 examMap.setExaminee(examinee);
+
+                if (vo.getGroupNm().equals("")) examMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
 
                 ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()
                         .and(QExamMap.examMap.exam.examCd.eq(examMap.getExam().getExamCd()))

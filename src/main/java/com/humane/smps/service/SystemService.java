@@ -98,12 +98,12 @@ public class SystemService {
                 .setFetchSize(Integer.MIN_VALUE)
                 .scroll(ScrollMode.FORWARD_ONLY);
 
-        while (scrollableResults.next()){
+        while (scrollableResults.next()) {
 
             String admissionCd = scrollableResults.getString(0);
             queryFactory.delete(exam).where(
                     exam.admission.admissionCd.eq(admissionCd)
-                    .and(exam.fkExam.examCd.isNotNull())
+                            .and(exam.fkExam.examCd.isNotNull())
             ).execute();
         }
 
@@ -156,7 +156,7 @@ public class SystemService {
                     .setNull(examMap.evalCd)
                     .where(examMap.exam.examCd.eq(examCd))
                     .execute();
-        }else{
+        } else {
             queryFactory.delete(QSheet.sheet).execute();
             queryFactory.delete(QScoreLog.scoreLog).execute();
             queryFactory.delete(QScore.score).execute();
@@ -202,20 +202,6 @@ public class SystemService {
 
                             hallRepository.save(examMap.getHall());
                             examRepository.save(examMap.getExam());
-
-/*
-                            ExamHall findExamHall = examHallRepository.findOne(new BooleanBuilder()
-                                    .and((QExamHall.examHall.exam.examCd.eq(exam.getExamCd())))
-                                    .and(QExamHall.examHall.hall.hallCd.eq(hall.getHallCd()))
-                            );
-
-                            if (findExamHall == null) {
-                                ExamHall examHall = new ExamHall();
-                                examHall.setExam(exam);
-                                examHall.setHall(hall);
-                                examHallRepository.save(examHall);
-                            }
-*/
 
                             ExamHallDate findExamHallDate = hallDateRepository.findOne(new BooleanBuilder()
                                     .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
