@@ -39,6 +39,7 @@ public class Exam implements Serializable{
     @Column(columnDefinition = "bit default 0") private boolean isMove; // 지정이동? 순차이동? => uplus 기준 문제별 채점, 학생별 채점
     @Column(columnDefinition = "bit default 1") private boolean isClosedView;  // 타 사용자가 이전 채점자의 마감데이터를 볼지 여부 결정.
     @Column(columnDefinition = "bit default 1") private boolean isMgrAuto; // 가번호 자동 or 수동
+    @Column(columnDefinition = "bit default 0") private boolean isTimer; // 타이머 사용여부
 
     @Column(columnDefinition = "int default 0") private int examineeLen; // 수험번호 자릿수
 

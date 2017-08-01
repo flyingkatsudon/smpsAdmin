@@ -23,9 +23,10 @@ public class Item implements Serializable {
     private String keypadType;
 
     private String scoreMap;
+    private String minWarning;
+    private String maxWarning;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
-    @ManyToOne @JoinColumn(name = "deviCd", nullable = false) private Devi devi;
 
     @Column(columnDefinition = "int default 0") private long orderby;
 

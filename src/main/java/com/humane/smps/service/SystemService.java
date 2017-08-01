@@ -30,7 +30,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemService {
-    private final DeviRepository deviRepository;
     private final AdmissionRepository admissionRepository;
     private final ExamRepository examRepository;
     private final HallRepository hallRepository;
@@ -83,10 +82,6 @@ public class SystemService {
         } catch (Exception ignored) {
         }
         queryFactory.delete(QItem.item).execute();
-        queryFactory.delete(QDevi.devi).where(QDevi.devi.fkDevi.isNotNull()).execute(); // added
-        queryFactory.delete(QDevi.devi).where(QDevi.devi.isNotNull()).execute();
-        queryFactory.delete(QDevi.devi).execute();
-
 
         QExam exam = QExam.exam;
 
@@ -266,15 +261,12 @@ public class SystemService {
                 examCds.add(examHallWrapper.getExamCd());
         });
 
-        List<String> deviList = new ArrayList<>();
-
         examCds.forEach(examCd -> {
             Observable.range(0, Integer.MAX_VALUE)
                     .concatMap(page -> apiService.item(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE, null))
                     .takeUntil(page -> page.last)
                     .map(page -> {
                         page.content.forEach(item -> {
-                            deviRepository.save(item.getDevi());
                             examRepository.save(item.getExam());
 
                             Item findItem = itemRepository.findOne(new BooleanBuilder()
@@ -285,21 +277,7 @@ public class SystemService {
                             if (findItem != null) item.set_id(findItem.get_id());
 
                             itemRepository.save(item);
-
-                            if (!deviList.contains(item.getDevi().getDeviCd()))
-                                deviList.add(item.getDevi().getDeviCd());
                         });
-                        return null;
-                    })
-                    .toBlocking().first();
-        });
-
-        deviList.forEach(deviCd -> {
-            Observable.range(0, Integer.MAX_VALUE)
-                    .concatMap(page -> apiService.devi(new QueryBuilder().add("devi.deviCd", deviCd).getMap(), page, Integer.MAX_VALUE, null))
-                    .takeUntil(page -> page.last)
-                    .map(page -> {
-                        deviRepository.save(page.content);
                         return null;
                     })
                     .toBlocking().first();

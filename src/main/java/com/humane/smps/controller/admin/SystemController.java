@@ -1,8 +1,6 @@
 package com.humane.smps.controller.admin;
 
-import com.humane.smps.dto.AccountDto;
-import com.humane.smps.dto.DownloadWrapper;
-import com.humane.smps.dto.ExamInfoDto;
+import com.humane.smps.dto.*;
 import com.humane.smps.mapper.SystemMapper;
 import com.humane.smps.model.*;
 import com.humane.smps.repository.UserAdmissionRepository;

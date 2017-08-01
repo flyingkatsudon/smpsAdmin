@@ -4,7 +4,6 @@ import com.blogspot.na5cent.exom.ExOM;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.reflect.TypeToken;
-import com.humane.smps.form.FormDeviVo;
 import com.humane.smps.form.FormExamineeVo;
 import com.humane.smps.form.FormHallVo;
 import com.humane.smps.form.FormItemVo;
@@ -42,7 +41,6 @@ import java.util.List;
 public class UploadController {
     private final UploadService uploadService;
     private final AdmissionRepository admissionRepository;
-    private final DeviRepository deviRepository;
     private final ExamRepository examRepository;
     private final HallRepository hallRepository;
     private final ExamHallRepository examHallRepository;
@@ -57,38 +55,6 @@ public class UploadController {
     @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
     //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
-
-    @RequestMapping(value = "devi", method = RequestMethod.POST)
-    public ResponseEntity<String> devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
-        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        try {
-            // 1 엑셀 파징
-            List<FormDeviVo> deviList = ExOM.mapFromExcel(file).to(FormDeviVo.class).map(1);
-
-            log.debug("{}", deviList);
-            // 2. 편차 생성
-            deviList.forEach(vo -> {
-                        // 2.1 편차 변환
-                        Devi devi = mapper.convertValue(vo, Devi.class);
-
-                        // 2.2 fk 설정
-                        Devi fkDevi = deviRepository.findOne(vo.getFkDeviCd());
-                        if (fkDevi != null) devi.setFkDevi(fkDevi);
-
-                        // 2.3 편차 저장
-                        devi = deviRepository.save(devi);
-                    }
-            );
-            return ResponseEntity.ok("업로드가 완료되었습니다");
-        } catch (Throwable throwable) {
-            log.debug("{}", throwable.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
-        }
-    }
 
     @RequestMapping(value = "item", method = RequestMethod.POST)
     public ResponseEntity<String> item(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -183,7 +149,7 @@ public class UploadController {
                 // 5. 응시고사실 저장
                 examHallRepository.save(examHall);
 
-                // exam_hall_date 채우기
+                // 3. 응시고사실(exam_hall_date) 채우기
                 ExamHallDate hallDate = new ExamHallDate();
                 hallDate.setExam(exam);
                 hallDate.setHall(hall);
@@ -217,22 +183,6 @@ public class UploadController {
                 if (tmp != null) hallDate.set_id(tmp.get_id());
 
                 hallDateRepository.save(hallDate);
-
-                /*GroupInfo find = groupInfoRepository.findOne(new BooleanBuilder()
-                        .and(QGroupInfo.groupInfo.groupNm.eq(vo.getGroupNm()))
-                        .and(QGroupInfo.groupInfo.deptNm.eq(vo.getDeptNm()))
-                        .and(QGroupInfo.groupInfo.hallCd.eq(hall.getHallCd()))
-                );
-
-                if (find == null) {
-
-                    GroupInfo groupInfo = new GroupInfo();
-                    groupInfo.setDeptNm(vo.getDeptNm());
-                    groupInfo.setGroupNm(vo.getGroupNm());
-                    groupInfo.setHallCd(hall.getHallCd());
-
-                    groupInfoRepository.save(groupInfo);
-                }*/
 
             });
             return ResponseEntity.ok("업로드가 완료되었습니다");
@@ -276,6 +226,7 @@ public class UploadController {
                 ExamMap examMap = mapper.convertValue(vo, ExamMap.class);
                 examMap.setExam(exam);
                 examMap.setExaminee(examinee);
+                examMap.setHall(hallDate.getHall());
 
                 if (vo.getGroupNm().equals("")) examMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
 

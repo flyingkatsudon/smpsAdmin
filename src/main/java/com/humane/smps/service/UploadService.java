@@ -40,20 +40,10 @@ public class UploadService {
         for (long i = 1; i <= itemCnt; i++) {
             String itemNo = (String) new PropertyDescriptor("itemNo" + i, FormItemVo.class).getReadMethod().invoke(dto);
             String itemNm = (String) new PropertyDescriptor("itemNm" + i, FormItemVo.class).getReadMethod().invoke(dto);
-            String deviCd = (String) new PropertyDescriptor("deviCd" + i, FormItemVo.class).getReadMethod().invoke(dto);
 
             String maxScore = (String) new PropertyDescriptor("maxScore" + i, FormItemVo.class).getReadMethod().invoke(dto);
             String minScore = (String) new PropertyDescriptor("minScore" + i, FormItemVo.class).getReadMethod().invoke(dto);
             String keypadType = (String) new PropertyDescriptor("keypadType" + i, FormItemVo.class).getReadMethod().invoke(dto);
-
-            // Long 타입이라 기본값이 필요함
-            if(maxScore.equals("")) maxScore = "0";
-            if(minScore.equals("")) minScore = "0";
-
-            if(keypadType.equals("")) keypadType = null;
-
-            Devi devi = new Devi();
-            devi.setDeviCd(deviCd);
 
             BooleanBuilder predicate = new BooleanBuilder()
                     .and(qItem.exam.examCd.eq(exam.getExamCd()))
@@ -65,25 +55,37 @@ public class UploadService {
                 item = new Item();
                 item.setItemNo(itemNo);
                 item.setItemNm(itemNm);
-                item.setDevi(devi);
                 item.setExam(exam);
                 item.setOrderby(i);
 
-                item.setMaxScore(Long.parseLong(maxScore));
-                item.setMinScore(Long.parseLong(minScore));
-                item.setKeypadType(keypadType);
+                // min, max 값이 반드시 존재하면 Long으로 변환 후 저장
+                item.setMaxScore(validate(maxScore));
+                item.setMinScore(validate(minScore));
+
+                // keypadType이 0이면 기본값으로 min: 0, max: 100을 입력
+                if (keypadType != null) item.setKeypadType(keypadType);
+                else if(keypadType.equals("0")) {
+                    item.setMaxScore(validate("100"));
+                    item.setMinScore(validate("0"));
+                }
 
             } else { // update
                 item.setItemNm(itemNm);
-                item.setDevi(devi);
                 item.setOrderby(i);
 
-                item.setMaxScore(Long.parseLong(maxScore));
-                item.setMinScore(Long.parseLong(minScore));
+                item.setMaxScore(validate(maxScore));
+                item.setMinScore(validate(minScore));
                 item.setKeypadType(keypadType);
             }
             itemRepository.save(item);
         }
         return itemRepository.count(new BooleanBuilder().and(qItem.exam.examCd.eq(dto.getExamCd())));
+    }
+
+    public Long validate(String val){
+        if(val != null){
+            if(!val.equals("")) return Long.parseLong(val);
+        }
+        return null;
     }
 }
