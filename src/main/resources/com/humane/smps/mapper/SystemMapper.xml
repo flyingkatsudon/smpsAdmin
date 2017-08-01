@@ -187,4 +187,16 @@
             WHERE exam_cd = #{param.examCd}
         </if>
     </update>
+
+    <select id="check" resultType="java.lang.Long">
+        select count(*)
+            from exam_map
+            where group_nm is not null
+    </select>
+
+    <select id="order" resultType="com.humane.smps.dto.ExamineeDto">
+select group_nm, group_order, debate_nm, debate_order
+from exam_map
+where group_nm is not null
+    </select>
 </mapper>

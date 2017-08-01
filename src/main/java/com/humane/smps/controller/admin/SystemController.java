@@ -1,8 +1,6 @@
 package com.humane.smps.controller.admin;
 
-import com.humane.smps.dto.AccountDto;
-import com.humane.smps.dto.DownloadWrapper;
-import com.humane.smps.dto.ExamInfoDto;
+import com.humane.smps.dto.*;
 import com.humane.smps.mapper.SystemMapper;
 import com.humane.smps.model.*;
 import com.humane.smps.repository.UserAdmissionRepository;
@@ -10,6 +8,7 @@ import com.humane.smps.repository.UserRepository;
 import com.humane.smps.repository.UserRoleRepository;
 import com.humane.smps.service.ApiService;
 import com.humane.smps.service.SystemService;
+import com.humane.util.jasperreports.JasperReportsExportHelper;
 import com.humane.util.retrofit.ServiceBuilder;
 import com.humane.util.spring.Page;
 import com.querydsl.core.BooleanBuilder;
@@ -17,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +39,8 @@ public class SystemController {
 
     private final SystemService systemService;
     private final SystemMapper systemMapper;
+
+    private static final String JSON = "json";
 
     @RequestMapping(value = "server.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listServer() {
@@ -200,10 +202,25 @@ public class SystemController {
     /**
      * 고려대 면접고사용
      */
+    @RequestMapping(value = "check/order")
+    public boolean check(){
 
-    @RequestMapping(value = "order")
-    //public ResponseEntity order(@RequestBody DownloadWrapper wrapper) {
-    public ResponseEntity order(String admissionCd, String url) {
+        try {
+            long check = systemMapper.check();
+
+            if(check <= 0)
+                return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @RequestMapping(value = "saveOrder")
+    public ResponseEntity saveOrder(String admissionCd, String url) {
 
         try {
             // 1. validate wrapper
@@ -219,6 +236,19 @@ public class SystemController {
             return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
+        }
+    }
+
+    @RequestMapping(value = "order.{format:json|pdf|xls|xlsx}")
+    public ResponseEntity order(@PathVariable String format, ExamineeDto param, Pageable pageable) {
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(systemMapper.order(param, pageable));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/status-dept.jrxml"
+                        , format
+                        , systemMapper.order(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 }

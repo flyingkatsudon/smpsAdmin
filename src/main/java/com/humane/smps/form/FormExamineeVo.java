@@ -26,4 +26,10 @@ public class FormExamineeVo {
     @Column(name = "고사본부") private String headNm;
     @Column(name = "고사건물") private String bldgNm;
     @Column(name = "고사실") private String hallNm;
+
+    // 토론 업로드 전용
+    @Column(name = "응시여부") private Boolean isAttend;
+    @Column(name = "면접순서") private String groupOrder;
+    @Column(name = "토론 조") private String debateNm;
+    @Column(name = "발언순서") private String debateOrder;
 }

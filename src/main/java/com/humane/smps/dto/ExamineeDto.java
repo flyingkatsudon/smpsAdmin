@@ -105,4 +105,9 @@ public class ExamineeDto {
 
     private String exmAdmNm;
     private String attendance;
+
+    // 고려대 면접고사용
+    private String groupOrder;
+    private String debateNm;
+    private String debateOrder;
 }

@@ -45,6 +45,7 @@ public class UploadController {
     private final ExamRepository examRepository;
     private final HallRepository hallRepository;
     private final HallDateRepository hallDateRepository;
+    private final DebateHallRepository debateHallRepository;
     private final ExamineeRepository examineeRepository;
     private final ExamMapRepository examMapRepository;
     private final SheetRepository sheetRepository;
@@ -54,7 +55,8 @@ public class UploadController {
     // Windows
     //@Value("${path.image.examinee:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
-    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
+    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}")
+    String pathRoot;
 
     @RequestMapping(value = "order", method = RequestMethod.POST)
     public ResponseEntity<String> order(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -68,35 +70,34 @@ public class UploadController {
 
         try {
             // 1. excel 변환
-           /* List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormItemVo.class).map(1);
-            log.debug("{}", itemList);
-            for (FormItemVo vo : itemList) {
-                // 2. admission 변환, 저장
+            List<FormExamineeVo> orderList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
+            log.debug("{}", orderList);
 
-                Admission admission = mapper.convertValue(vo, Admission.class);
-                admission = admissionRepository.save(admission);
+            // 2. 각 수험생 별 순번 저장
+            for (FormExamineeVo vo : orderList) {
 
-                // 3. exam 변환, 저장
-                Exam exam = mapper.convertValue(vo, Exam.class);
+                ExamMap examMap = examMapRepository.findOne(new BooleanBuilder()
+                        .and(QExamMap.examMap.exam.admission.admissionCd.eq(vo.getAdmissionCd()))
+                        .and(QExamMap.examMap.exam.examCd.eq(vo.getExamCd()))
+                        .and(QExamMap.examMap.examinee.examineeCd.eq(vo.getExamineeCd()))
+                );
 
-                log.debug("{}", vo);
-
-                if (!vo.getFkExamCd().equals("") && vo.getFkExamCd() != null) {
-                    Exam tmp = examRepository.findOne(new BooleanBuilder()
-                            .and(QExam.exam.examCd.eq(vo.getFkExamCd()))
-                    );
-                    exam.setFkExam(tmp);
+                if (examMap != null) {
+                    if (vo.getIsAttend()) {
+                        examMap.setGroupNm(vo.getGroupNm());
+                        examMap.setGroupOrder(vo.getGroupOrder());
+                        examMap.setDebateNm(vo.getDebateNm());
+                        examMap.setDebateOrder(vo.getDebateOrder());
+                    } else {
+                        examMap.setGroupNm(null);
+                        examMap.setGroupOrder(null);
+                        examMap.setDebateNm(null);
+                        examMap.setDebateOrder(null);
+                    }
+                    examMapRepository.save(examMap);
                 }
+            }
 
-                exam.setAdmission(admission);
-
-                examRepository.save(exam);
-
-                // 4. item 변환, 저장, 갯수비교
-                if (Long.parseLong(vo.getItemCnt()) != uploadService.saveItems(vo)) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("항목 개수가 일치하지 않습니다!");
-                }
-            }*/
             return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -216,23 +217,22 @@ public class UploadController {
 
                 hallDateRepository.save(hallDate);
 
-                // TODO: 대기실 당 고사실 정보 업로드 추가해주어야함
+                // TODO: 대기실 당 고사실 정보 업로드 추가해주어야
+                ExamDebateHall examDebateHall = new ExamDebateHall();
 
-                /*GroupInfo find = groupInfoRepository.findOne(new BooleanBuilder()
-                        .and(QGroupInfo.groupInfo.groupNm.eq(vo.getGroupNm()))
-                        .and(QGroupInfo.groupInfo.deptNm.eq(vo.getDeptNm()))
-                        .and(QGroupInfo.groupInfo.hallCd.eq(hall.getHallCd()))
+                ExamDebateHall t = debateHallRepository.findOne(new BooleanBuilder()
+                        .and(QExamDebateHall.examDebateHall.hallCd.eq(vo.getHallCd()))
+                        .and(QExamDebateHall.examDebateHall.groupNm.eq(vo.getGroupNm()))
                 );
 
-                if (find == null) {
+                if (t != null) {
+                    examDebateHall.set_id(t.get_id());
+                }
 
-                    GroupInfo groupInfo = new GroupInfo();
-                    groupInfo.setDeptNm(vo.getDeptNm());
-                    groupInfo.setGroupNm(vo.getGroupNm());
-                    groupInfo.setHallCd(hall.getHallCd());
+                examDebateHall.setGroupNm(vo.getGroupNm());
+                examDebateHall.setHallCd(vo.getHallCd());
 
-                    groupInfoRepository.save(groupInfo);
-                }*/
+                debateHallRepository.save(examDebateHall);
 
             });
             return ResponseEntity.ok("업로드가 완료되었습니다");

@@ -20,6 +20,6 @@ public class FormHallVo {
     @Column(name = "고사본부") private String headNm;
     @Column(name = "고사건물") private String bldgNm;
     @Column(name = "고사실") private String hallNm;
-    //@Column(name = "조") private String groupNm;
+    @Column(name = "조") private String groupNm;
     //@Column(name = "모집단위") private String deptNm;
 }
