@@ -25,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'system/examList.json',
+                    url: 'system/examHall.json',
                     colModel: colModel,
                     multiselect : true,
                     rowNum : 10

@@ -43,7 +43,7 @@ public class SystemController {
     private static final String JSON = "json";
 
     @RequestMapping(value = "server.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity serverList() {
+    public ResponseEntity listServer() {
         ApiService apiService = ServiceBuilder.INSTANCE.createService("http://update.humanesystem.com:10000", ApiService.class);
         try {
             return ResponseEntity.ok(apiService.checkUrl().toBlocking().first());
@@ -53,8 +53,8 @@ public class SystemController {
         }
     }
 
-    @RequestMapping(value = "examList.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity examList(
+    @RequestMapping(value = "examHall.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity listExamHall(
             @RequestParam(required = false, defaultValue = "") String url,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
