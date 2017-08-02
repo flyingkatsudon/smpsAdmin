@@ -40,4 +40,15 @@ public class FileService {
         }
         return null;
     }
+
+    public void deleteFiles(String... path) throws IOException {
+        for (String p : path) {
+            File folder = new File(p);
+            File[] files = folder.listFiles();
+            if (files != null)
+                for (File file : files) {
+                    file.delete();
+                }
+        }
+    }
 }

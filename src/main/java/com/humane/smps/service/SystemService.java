@@ -38,6 +38,7 @@ public class SystemService {
     private final ExamMapRepository examMapRepository;
     private final ItemRepository itemRepository;
     private final HallDateRepository hallDateRepository;
+    private final FileService fileService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -128,8 +129,7 @@ public class SystemService {
 
         scrollableResults.close();
 
-        deleteFiles(pathJpg, pathPdf);
-
+        fileService.deleteFiles(pathJpg, pathPdf);
     }
 
     @Transactional
@@ -166,26 +166,15 @@ public class SystemService {
                     .execute();
         }
 
-        deleteFiles(pathJpg, pathPdf);
+        fileService.deleteFiles(pathJpg, pathPdf);
     }
 
-    public void deleteFiles(String... path) throws IOException {
-        for (String p : path) {
-            File folder = new File(p);
-            File[] files = folder.listFiles();
-            if (files != null)
-                for (File file : files) {
-                    file.delete();
-                }
-        }
-    }
-
-    public void saveExamMap(ApiService apiService, DownloadWrapper wrapper) {
-        for (DownloadWrapper.ExamHallWrapper examHallWrapper : wrapper.getList()) {
-            String newExamCd = examHallWrapper.getExamCd();
+    public void saveExamMap(ApiService apiService, DownloadWrapper downloadWrapper) {
+        for (DownloadWrapper.Wrapper wrapper : downloadWrapper.getList()) {
+            String examCd = wrapper.getExamCd();
 
             Observable.range(0, Integer.MAX_VALUE)
-                    .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", newExamCd).getMap(), page, Integer.MAX_VALUE))
+                    .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE))
                     .takeUntil(page -> page.last)
                     .flatMap(page -> {
                         for (ExamMap examMap : page.content) {
@@ -209,6 +198,7 @@ public class SystemService {
                                 examHallDate.setExam(exam);
                                 examHallDate.setHall(hall);
                                 examHallDate.setHallDate(examMap.getHallDate());
+
                                 hallDateRepository.save(examHallDate);
                             }
 
@@ -230,27 +220,6 @@ public class SystemService {
                     .flatMap(fileName -> imageExaminee(apiService, fileName))
                     .reduce(new ArrayList<>(), (list, file) -> list)
                     .toBlocking().first();
-        }
-    }
-
-    private Observable<File> imageExaminee(ApiService apiService, String fileName) {
-        File path = new File(pathExaminee);
-
-        if (!path.exists()) path.mkdirs();
-        File file = new File(path, fileName);
-
-        if (file.exists()) {
-            return Observable.just(file);
-        } else {
-            return apiService.imageExaminee(fileName)
-                    .flatMap(responseBody -> {
-                        try (FileOutputStream fos = new FileOutputStream(file)) {
-                            IOUtils.write(responseBody.bytes(), fos);
-                            return Observable.just(file);
-                        } catch (IOException e) {
-                            return Observable.error(e);
-                        }
-                    });
         }
     }
 
@@ -282,5 +251,26 @@ public class SystemService {
                     })
                     .toBlocking().first();
         });
+    }
+
+    private Observable<File> imageExaminee(ApiService apiService, String fileName) {
+        File path = new File(pathExaminee);
+
+        if (!path.exists()) path.mkdirs();
+        File file = new File(path, fileName);
+
+        if (file.exists()) {
+            return Observable.just(file);
+        } else {
+            return apiService.imageExaminee(fileName)
+                    .flatMap(responseBody -> {
+                        try (FileOutputStream fos = new FileOutputStream(file)) {
+                            IOUtils.write(responseBody.bytes(), fos);
+                            return Observable.just(file);
+                        } catch (IOException e) {
+                            return Observable.error(e);
+                        }
+                    });
+        }
     }
 }

@@ -71,23 +71,23 @@ public class SystemController {
     }
 
     @RequestMapping(value = "download", method = RequestMethod.POST)
-    public ResponseEntity download(@RequestBody DownloadWrapper wrapper) {
+    public ResponseEntity download(@RequestBody DownloadWrapper downloadWrapper) {
         try {
             // 1. validate wrapper
-            if (StringUtils.isEmpty(wrapper.getUrl()))
+            if (StringUtils.isEmpty(downloadWrapper.getUrl()))
                 return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("url이 올바르지 않습니다.");
 
-            for (DownloadWrapper.ExamHallWrapper examHall : wrapper.getList()) {
-                if (StringUtils.isEmpty(examHall.getExamCd()))
+            for (DownloadWrapper.Wrapper wrapper : downloadWrapper.getList()) {
+                if (StringUtils.isEmpty(wrapper.getExamCd()))
                     return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("시험코드 및 고사실이 올바르지 않습니다.");
             }
 
             // 2. create http service
-            ApiService apiService = ServiceBuilder.INSTANCE.createService(wrapper.getUrl(), ApiService.class);
+            ApiService apiService = ServiceBuilder.INSTANCE.createService(downloadWrapper.getUrl(), ApiService.class);
 
             // 3. getData(iterator)
-            systemService.saveExamMap(apiService, wrapper);
-            systemService.saveItem(apiService, wrapper);
+            systemService.saveExamMap(apiService, downloadWrapper);
+            systemService.saveItem(apiService, downloadWrapper);
 
             return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
         }catch(Exception e){

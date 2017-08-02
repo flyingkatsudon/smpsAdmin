@@ -13,10 +13,8 @@ import java.io.InputStream;
 @Slf4j
 public class ImageService {
 
-    @Value("${path.image.examinee:C:/api/image/examinee}")
-    String pathExaminee;
-    @Value("${path.image.univLogo:C:/api/image/univLogo}")
-    String pathUnivLogo;
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
+    @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
 
     public InputStream getExaminee(String fileName) {
         return getFile(pathExaminee, fileName);
@@ -38,16 +36,5 @@ public class ImageService {
 
         }
         return null;
-    }
-
-    public void deleteImage(String... path) throws IOException {
-        for (String p : path) {
-            File examineePath = new File(p);
-            File[] a = examineePath.listFiles();
-            if (a != null)
-                for (File file : a) {
-                    file.delete();
-                }
-        }
     }
 }
