@@ -190,8 +190,15 @@
 
     <select id="check" resultType="java.lang.Long">
         select count(*)
-            from exam_map
-            where group_nm is not null
+        from exam_map
+        inner join exam on exam.exam_cd = exam_map.exam_cd
+        inner join admission on admission.admission_cd = exam.admission_cd
+        <where>
+            AND group_nm is not null
+            <if test="param != null">
+                AND admission.admission_cd = #{param}
+            </if>
+        </where>
     </select>
 
     <select id="order" resultType="com.humane.smps.dto.ExamineeDto">

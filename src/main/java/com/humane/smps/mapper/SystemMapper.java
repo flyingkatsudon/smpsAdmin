@@ -30,6 +30,6 @@ public interface SystemMapper {
     void modifyExamInfo(@Param("param") ExamInfoDto param);
     void modifyExamHallDateOfExamInfo(@Param("param") ExamInfoDto param);
 
-    long check();
+    long check(@Param("param") String admissionCd);
     Page<ExamineeDto> order(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 }

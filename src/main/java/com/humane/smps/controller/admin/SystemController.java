@@ -43,7 +43,7 @@ public class SystemController {
     private static final String JSON = "json";
 
     @RequestMapping(value = "server.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity listServer() {
+    public ResponseEntity serverList() {
         ApiService apiService = ServiceBuilder.INSTANCE.createService("http://update.humanesystem.com:10000", ApiService.class);
         try {
             return ResponseEntity.ok(apiService.checkUrl().toBlocking().first());
@@ -53,8 +53,8 @@ public class SystemController {
         }
     }
 
-    @RequestMapping(value = "examHall.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity listExamHall(
+    @RequestMapping(value = "examList.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity examList(
             @RequestParam(required = false, defaultValue = "") String url,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
@@ -204,10 +204,10 @@ public class SystemController {
      * 고려대 면접고사용
      */
     @RequestMapping(value = "check/order")
-    public boolean check(){
+    public boolean check(String admissionCd){
 
         try {
-            long check = systemMapper.check();
+            long check = systemMapper.check(admissionCd);
 
             if(check <= 0)
                 return false;
@@ -246,6 +246,7 @@ public class SystemController {
             case JSON:
                 return ResponseEntity.ok(systemMapper.order(param, pageable));
             default:
+                // TODO: 순번 jrxml 수정해야
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-dept.jrxml"
                         , format

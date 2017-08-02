@@ -189,7 +189,6 @@ public class SystemService {
                     .flatMap(page -> {
 
                         for (ExamHallDate examHallDate : page.content) {
-                            log.debug("{}", examHallDate);
                             admissionRepository.save(examHallDate.getExam().getAdmission());
 
                             Hall hall = examHallDate.getHall();
@@ -198,19 +197,20 @@ public class SystemService {
                             hallRepository.save(examHallDate.getHall());
                             examRepository.save(examHallDate.getExam());
 
-                            ExamHallDate findExamHallDate = hallDateRepository.findOne(new BooleanBuilder()
+                            ExamHallDate find = hallDateRepository.findOne(new BooleanBuilder()
                                     .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
                                     .and(QExamHallDate.examHallDate.hall.hallCd.eq(hall.getHallCd()))
                                     .and(QExamHallDate.examHallDate.hallDate.eq(examHallDate.getHallDate()))
                             );
 
-                            if (findExamHallDate == null) {
-                                ExamHallDate tmp = new ExamHallDate();
-                                tmp.setExam(exam);
-                                tmp.setHall(hall);
-                                tmp.setHallDate(tmp.getHallDate());
+                            examHallDate.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
 
-                                hallDateRepository.save(examHallDate);
+                            if (find == null) hallDateRepository.save(examHallDate);
+                            else if (find != null) {
+                                find.setVirtNoStart(examHallDate.getVirtNoStart());
+                                find.setVirtNoEnd(examHallDate.getVirtNoEnd());
+
+                                hallDateRepository.save(find);
                             }
                         }
                         return Observable.from(page.content);
@@ -230,21 +230,19 @@ public class SystemService {
                     .flatMap(page -> {
 
                         for (ExamMap examMap : page.content) {
-                            log.debug("{}", examMap);
-
                             Exam exam = examMap.getExam();
                             Examinee examinee = examMap.getExaminee();
 
                             examineeRepository.save(examinee);
 
-                            ExamMap findExamMap = examMapRepository.findOne(new BooleanBuilder()
+                            ExamMap find = examMapRepository.findOne(new BooleanBuilder()
                                     .and(QExamMap.examMap.examinee.examineeCd.eq(examinee.getExamineeCd()))
                                     .and(QExamMap.examMap.exam.examCd.eq(exam.getExamCd()))
                             );
 
-                            examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
-                            if (findExamMap == null) examMapRepository.save(examMap);
-
+                           // examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
+                            if (find == null) examMapRepository.save(examMap);
+                            else setExamMapOrder(examMap, find);
                         }
                         return Observable.from(page.content);
                     })
@@ -321,25 +319,28 @@ public class SystemService {
                         Examinee examinee = examMap.getExaminee();
 
                         // 일반면접 검사
-                        ExamMap findExamMap = examMapRepository.findOne(new BooleanBuilder()
+                        ExamMap find = examMapRepository.findOne(new BooleanBuilder()
                                 .and(QExamMap.examMap.examinee.examineeCd.eq(examinee.getExamineeCd()))
                                 .and(QExamMap.examMap.exam.examCd.eq(exam.getExamCd()))
                         );
 
                         examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
 
-                        if(findExamMap != null) {
-                            findExamMap.setGroupNm(examMap.getGroupNm());
-                            findExamMap.setGroupOrder(examMap.getGroupOrder());
-                            findExamMap.setDebateNm(examMap.getDebateNm());
-                            findExamMap.setDebateOrder(examMap.getDebateOrder());
-
-                            examMapRepository.save(findExamMap);
-                        }
+                        if (find != null) setExamMapOrder(examMap, find);
                     }
 
                     return Observable.from(page.content);
                 })
                 .toBlocking().first();
+    }
+
+    public void setExamMapOrder(ExamMap examMap, ExamMap find){
+
+        find.setGroupNm(examMap.getGroupNm());
+        find.setGroupOrder(examMap.getGroupOrder());
+        find.setDebateNm(examMap.getDebateNm());
+        find.setDebateOrder(examMap.getDebateOrder());
+
+        examMapRepository.save(find);
     }
 }
