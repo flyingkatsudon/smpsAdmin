@@ -24,16 +24,16 @@ define(function (require) {
             this.el = o.el;
             this.parent = o.parent;
 
+            this.onStart();
             new Common().render();
 
         }, render: function () {
-
             var _this = this;
 
-            $('#assign, #refresh').click(function(){
+            $('#refresh').click(function(){
                _this.onStart();
-
             });
+
         }, search: function (o) {
             this.list.search(o);
 

@@ -31,4 +31,7 @@ public interface ApiService {
 
     @GET("file/document")
     Observable<ResponseBody> document();
+
+    @GET("api/hallDate")
+    Observable<Page<ExamHallDate>> hallDate(@QueryMap Map<String, Object> queryMap, @Query("page") int page, @Query("size") int size);
 }

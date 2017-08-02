@@ -50,10 +50,6 @@ define(function (require) {
 
             var _this = this;
 
-            console.log({
-                admissionNm: _this.$('#admissionNm').val(),
-                roleName: _this.$('#roleName').val()
-            });
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),

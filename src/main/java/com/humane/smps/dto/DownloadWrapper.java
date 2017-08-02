@@ -9,10 +9,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DownloadWrapper {
     private String url;
-    private List<ExamHallWrapper> list;
+    private List<Wrapper> list;
 
     @Data
-    public static class ExamHallWrapper {
+    public static class Wrapper {
         private String examCd;
         private String hallCd;
     }

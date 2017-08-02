@@ -4,7 +4,6 @@ import com.blogspot.na5cent.exom.ExOM;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.reflect.TypeToken;
-import com.humane.smps.form.FormDeviVo;
 import com.humane.smps.form.FormExamineeVo;
 import com.humane.smps.form.FormHallVo;
 import com.humane.smps.form.FormItemVo;
@@ -53,11 +52,17 @@ public class UploadController {
     private final ScoreLogRepository scoreLogRepository;
 
     // Windows
-    //@Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
-    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}")
-    String pathRoot;
+    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
 
+    // 고려대 면접고사용
+    public String validate(String str){
+        if(str.equals("") || str == null) return null;
+        else return str;
+    }
+
+    // 고려대 면접고사용
     @RequestMapping(value = "order", method = RequestMethod.POST)
     public ResponseEntity<String> order(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         // 파일이 없울경우 에러 리턴.
@@ -84,10 +89,10 @@ public class UploadController {
 
                 if (examMap != null) {
                     if (vo.getIsAttend()) {
-                        examMap.setGroupNm(vo.getGroupNm());
-                        examMap.setGroupOrder(vo.getGroupOrder());
-                        examMap.setDebateNm(vo.getDebateNm());
-                        examMap.setDebateOrder(vo.getDebateOrder());
+                        examMap.setGroupNm(validate(vo.getGroupNm()));
+                        examMap.setGroupOrder(validate(vo.getGroupOrder()));
+                        examMap.setDebateNm(validate(vo.getDebateNm()));
+                        examMap.setDebateOrder(validate(vo.getDebateOrder()));
                     } else {
                         examMap.setGroupNm(null);
                         examMap.setGroupOrder(null);
@@ -217,7 +222,7 @@ public class UploadController {
 
                 hallDateRepository.save(hallDate);
 
-                // TODO: 대기실 당 고사실 정보 업로드 추가해주어야
+                // 고려대 면접고사용
                 ExamDebateHall examDebateHall = new ExamDebateHall();
 
                 ExamDebateHall t = debateHallRepository.findOne(new BooleanBuilder()
@@ -259,8 +264,6 @@ public class UploadController {
                 Exam exam = examRepository.findOne(new BooleanBuilder()
                         .and(QExam.exam.examCd.eq(vo.getExamCd()))
                 );
-
-                // 고사실 정보는 사전에 주어지지 않아 기초데이터로 업로드가 불가능
 
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
