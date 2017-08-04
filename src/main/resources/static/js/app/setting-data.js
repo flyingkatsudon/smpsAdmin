@@ -41,7 +41,7 @@ define(function (require) {
                 beforeSubmit: function (arr) {
                     for (var i in arr) {
                         if (arr[i].name == 'file' && arr[i].value == '') {
-                            responseDialog.notify('파일을 선택하세요');
+                            responseDialog.notify({msg: '파일을 선택하세요'});
                             return false;
                         }
                     }
