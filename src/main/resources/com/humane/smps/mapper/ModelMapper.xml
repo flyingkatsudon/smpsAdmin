@@ -13,7 +13,8 @@
         hall.bldg_nm,
         hall.hall_nm,
         examinee.dept_nm,
-        examinee.major_nm
+        examinee.major_nm,
+        exam_map.group_nm
         FROM exam_map
         INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
         INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd

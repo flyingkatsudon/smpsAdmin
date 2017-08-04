@@ -79,6 +79,10 @@ define(function (require) {
             if (o.headNm == undefined) o.headNm = '';
             if (o.bldgNm == undefined) o.bldgNm = '';
             if (o.hallNm == undefined) o.hallNm = '';
+            if (o.groupNm == undefined) o.groupNm = '';
+            if (o.groupOrder == undefined) o.groupOrder = '';
+            if (o.debateNm == undefined) o.debateNm = '';
+            if (o.debateOrder == undefined) o.debateOrder = '';
 
             var _param = {
                 deptNm: o.deptNm,
@@ -86,6 +90,10 @@ define(function (require) {
                 headNm: o.headNm,
                 bldgNm: o.bldgNm,
                 hallNm: o.hallNm,
+                groupNm: o.groupNm,
+                groupOrder: o.groupOrder,
+                debateNm: o.debateNm,
+                debateOrder: o.debateOrder,
                 filter: window.param.filter
             };
 
@@ -98,6 +106,10 @@ define(function (require) {
                 _param.headNm = $('#headNm').val();
                 _param.bldgNm = $('#bldgNm').val();
                 _param.hallNm = $('#hallNm').val();
+                _param.groupNm = $('#groupNm').val();
+                _param.groupOrder = $('#groupOrder').val();
+                _param.debateNm = $('#debateNm').val();
+                _param.debateOrder = $('#debateOrder').val();
             }
 /*
             if (this.when == 'after') {

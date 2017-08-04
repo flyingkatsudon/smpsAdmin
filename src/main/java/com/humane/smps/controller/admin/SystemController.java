@@ -203,8 +203,8 @@ public class SystemController {
     /**
      * 고려대 면접고사용
      */
-    @RequestMapping(value = "check/order")
-    public boolean check(String admissionCd){
+    @RequestMapping(value = "local/orderCnt")
+    public boolean fromLocal(String admissionCd){
 
         try {
             long check = systemMapper.check(admissionCd);
@@ -218,6 +218,20 @@ public class SystemController {
         }
 
         return true;
+    }
+
+    @RequestMapping(value = "server/orderCnt")
+    public boolean fromServer(String admissionCd, String url) {
+
+        try {
+            // 2. create http service
+            ApiService apiService = ServiceBuilder.INSTANCE.createService(url, ApiService.class);
+
+            // 3. getData(iterator)
+            return systemService.orderCnt(apiService, admissionCd);
+        }catch(Exception e){
+            return false;
+        }
     }
 
     @RequestMapping(value = "saveOrder")
@@ -248,7 +262,7 @@ public class SystemController {
             default:
                 // TODO: 순번 jrxml 수정해야
                 return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/status-dept.jrxml"
+                        "jrxml/system-order.jrxml"
                         , format
                         , systemMapper.order(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }

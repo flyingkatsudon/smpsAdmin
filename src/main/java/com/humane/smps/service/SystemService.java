@@ -42,9 +42,12 @@ public class SystemService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
-    @Value("${path.smps.jpg:C:/api/smps/jpg}") String pathJpg;
-    @Value("${path.smps.pdf:C:/api/smps/pdf}") String pathPdf;
+    @Value("${path.image.examinee:C:/api/image/examinee}")
+    String pathExaminee;
+    @Value("${path.smps.jpg:C:/api/smps/jpg}")
+    String pathJpg;
+    @Value("${path.smps.pdf:C:/api/smps/pdf}")
+    String pathPdf;
 
     @Transactional
     public void resetData(boolean photo) throws IOException {
@@ -240,7 +243,7 @@ public class SystemService {
                                     .and(QExamMap.examMap.exam.examCd.eq(exam.getExamCd()))
                             );
 
-                           // examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
+                            // examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
                             if (find == null) examMapRepository.save(examMap);
                             else setExamMapOrder(examMap, find);
                         }
@@ -334,13 +337,39 @@ public class SystemService {
                 .toBlocking().first();
     }
 
-    public void setExamMapOrder(ExamMap examMap, ExamMap find){
+    public void setExamMapOrder(ExamMap examMap, ExamMap find) {
 
+        find.setHall(examMap.getHall());
         find.setGroupNm(examMap.getGroupNm());
         find.setGroupOrder(examMap.getGroupOrder());
         find.setDebateNm(examMap.getDebateNm());
         find.setDebateOrder(examMap.getDebateOrder());
 
         examMapRepository.save(find);
+    }
+
+
+    int cnt = 0;
+
+    public boolean orderCnt(ApiService apiService, String admissionCd) {
+        cnt = 0;
+
+        Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.admission.admissionCd", admissionCd).getMap(), page, Integer.MAX_VALUE))
+                .takeUntil(page -> page.last)
+                .flatMap(page -> {
+                    for (ExamMap examMap : page.content) {
+                        if (examMap.getGroupNm() != null) {
+                            cnt += 1;
+                            log.debug("{}", examMap);
+                        }
+                    }
+                    return Observable.from(page.content);
+                })
+                .toBlocking().first();
+
+        log.debug("{}", cnt);
+        if (cnt > 0) return true;
+        else return false;
     }
 }

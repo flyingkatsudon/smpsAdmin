@@ -27,7 +27,7 @@ define(function (require) {
                     examDate: this.$('#examDate').val()
                 };
 
-                this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(tmp)));
+                this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(tmp)));
 
                 this.disableFilter();
             } else {
@@ -82,14 +82,13 @@ define(function (require) {
                 }
 
             }
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm()));
         },
         events: {
             'click #search': 'searchClicked',
             'change #admissionNm': 'admissionNmChanged',
             'change #typeNm': 'typeNmChanged',
-            'change #examDate': 'examDateChanged',
-            'change #deptNm': 'deptNmChanged'
+            'change #examDate': 'examDateChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -99,7 +98,10 @@ define(function (require) {
                     admissionNm: this.$('#admissionNm').val(),
                     typeNm: this.$('#typeNm').val(),
                     examDate: this.$('#examDate').val(),
-                    deptNm: this.$('#deptNm').val()
+                    groupNm: this.$('#groupNm').val(),
+                    groupOrder: this.$('#groupOrder').val(),
+                    debateNm: this.$('#debateNm').val(),
+                    debateOrder: this.$('#debateOrder').val()
                 });
             }
         },
@@ -109,7 +111,7 @@ define(function (require) {
             };
             this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
             this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         },
         typeNmChanged: function (e) {
             var param = {
@@ -117,7 +119,7 @@ define(function (require) {
                 typeNm: e.currentTarget.value
             };
             this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         },
         examDateChanged: function (e) {
             var param = {
@@ -125,7 +127,7 @@ define(function (require) {
                 typeNm: this.$('#typeNm').val(),
                 examDate: e.currentTarget.value
             };
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         }
     });
 });

@@ -43,7 +43,7 @@ define(function (require) {
 
             // TODO: 토론면접 조가 있는지 여부 확인한 후 그것이 있다면 바로 뷰, 없다면 입력 창 띄우기
             $.ajax({
-                url: 'system/check/order',
+                url: 'system/local/orderCnt',
                 success: function (response) {
                     // 순번이 저장되어 있으면
                     if (response) {
@@ -127,9 +127,9 @@ define(function (require) {
                                         return false;
 
                                     } else {
-                                        // 전형을 선택하고 진행하면 순번 데이터가 있는지 확인
+                                        // 전형을 선택하고 진행하면 서버 내에 순번 데이터가 있는지 확인
                                         $.ajax({
-                                            url: 'system/check/order?admissionCd=' + param.admissionCd,
+                                            url: 'system/server/orderCnt?admissionCd=' + param.admissionCd + '&url=' + param.url,
                                             success: function (response) {
                                                 // 순번 데이터가 없다면 알림창 띄우기
                                                 if (!response) $('#msg').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp순번 데이터가 존재하지 않습니다!');
@@ -173,24 +173,22 @@ define(function (require) {
             var _this = this;
 
             var html = '<form id="uploadOrder" action="upload/order" method="post" enctype="multipart/form-data">' +
-                '<input type="file" name="file" style="width: 70%; padding: 1%" class="pull-left chosen"/>' +
-                '<input type="submit" style="width: 20%; padding: 2%" class="btn btn-regist pull-right" value="등록"/>' +
+                '<input type="file" name="file" style="width: 70%;" class="pull-left chosen"/>' +
+                '<input type="submit" style="width: 12%; padding: 2%" class="btn btn-success" value="등록"/>' +
+                '<input type="button" id="close" style="width: 12%; padding: 2%" class="btn pull-right" value="닫기"/>' +
                 '</form>';
 
             var dialog = new BootstrapDialog({
-                title: '<h5><div style="font-weight: normal; font-size: medium">엑셀 파일로 업로드합니다. 파일을 선택하세요</div></h5>',
+                title: '<h5><div id="alert" style="font-weight: bold; font-size: medium; color: crimson"><span style="color: black">엑셀 파일로 업로드합니다</span></div></h5>',
                 message: html,
                 onshown: function () {
+
+                    $('#close').click(function(){
+                        BootstrapDialog.closeAll();
+                    });
+
                     _this.uploadForm('#uploadOrder');
-                },
-                buttons: [
-                    {
-                        label: '닫기',
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }
-                ]
+                }
             });
 
             dialog.realize();
@@ -258,15 +256,14 @@ define(function (require) {
 
         },
         uploadForm: function (id) {
-            this.$(id).ajaxForm({
+            $(id).ajaxForm({
                 beforeSubmit: function (arr) {
                     for (var i in arr) {
                         if (arr[i].name == 'file' && arr[i].value == '') {
-                            responseDialog.notify('파일을 선택하세요');
+                            $('#alert').html('파일을 선택하세요!');
                             return false;
                         }
                     }
-                    console.log(arr);
                     responseDialog.notify({
                         msg: '<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>',
                         closable: false
