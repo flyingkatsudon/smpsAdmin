@@ -11,7 +11,7 @@ define(function (require) {
 
     var admissionList = [];
 
-    var updateFrame = require('text!tpl/system-updateOrder.html');
+    var InnerTemplate = require('text!tpl/system-updateOrder.html');
     var Common = require('./common.js');
 
     require('../grid/system-order.js');
@@ -234,7 +234,7 @@ define(function (require) {
                 onshown: function (dialog) {
 
                     var body = dialog.$modalBody;
-                    body.append(updateFrame);
+                    body.append(InnerTemplate);
 
                     // 1. 서버에서 내려받기
                     $('#server').click(function () {

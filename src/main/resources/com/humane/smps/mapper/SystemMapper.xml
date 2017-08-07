@@ -188,7 +188,7 @@
         </if>
     </update>
 
-    <select id="check" resultType="java.lang.Long">
+    <select id="orderCnt" resultType="java.lang.Long">
         select count(*)
         from exam_map
         inner join exam on exam.exam_cd = exam_map.exam_cd

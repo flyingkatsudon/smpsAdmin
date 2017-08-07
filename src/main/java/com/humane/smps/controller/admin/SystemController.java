@@ -207,7 +207,7 @@ public class SystemController {
     public boolean fromLocal(String admissionCd){
 
         try {
-            long check = systemMapper.check(admissionCd);
+            long check = systemMapper.orderCnt(admissionCd);
 
             if(check <= 0)
                 return false;
