@@ -146,13 +146,13 @@ public class SystemService {
             queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();
 
             QExamMap examMap = QExamMap.examMap;
-
             queryFactory.update(examMap)
                     .setNull(examMap.virtNo)
                     .setNull(examMap.scanDttm)
                     .setNull(examMap.photoNm)
                     .setNull(examMap.memo)
                     .setNull(examMap.evalCd)
+                    .setNull(examMap.hall.hallCd)
                     .setNull(examMap.groupNm)
                     .setNull(examMap.groupOrder)
                     .setNull(examMap.debateNm)
@@ -171,6 +171,7 @@ public class SystemService {
                     .setNull(examMap.photoNm)
                     .setNull(examMap.memo)
                     .setNull(examMap.evalCd)
+                    .setNull(examMap.hall.hallCd)
                     .setNull(examMap.groupNm)
                     .setNull(examMap.groupOrder)
                     .setNull(examMap.debateNm)
