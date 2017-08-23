@@ -82,7 +82,7 @@
         FROM exam_map
         INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd AND exam.fk_exam_cd IS NULL
         INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
-        INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd
+        INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd and exam_hall_date.hall_date = exam_map.hall_date
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
         INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
         <where>
