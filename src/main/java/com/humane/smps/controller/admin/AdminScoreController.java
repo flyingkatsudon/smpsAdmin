@@ -73,13 +73,12 @@ public class AdminScoreController {
                         , mapper.fix(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
-    //@Value("${path.smps.pdf:C:/api/smps/pdf}") String pathRoot;
-    @Value("${path.smps.pdf:/Users/Jeremy/Humane/api/smps/pdf}") String pathRoot;
+    @Value("${path.smps.pdf:C:/api/smps/pdf}") String path;
 
     @RequestMapping(value = "detail.pdf")
     public ResponseEntity detail(SheetDto param) throws FileNotFoundException {
         String fileName = param.getExamCd() + "_" + param.getHallCd() + "_" + param.getScorerNm() + ".pdf";
-        File file = new File(pathRoot, fileName);
+        File file = new File(path, fileName);
         return ResponseEntity.ok(new InputStreamResource(new FileInputStream(file)));
     }
 

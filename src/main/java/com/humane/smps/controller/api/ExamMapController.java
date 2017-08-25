@@ -54,14 +54,25 @@ public class ExamMapController {
             String fkExamCd = examMap.getExam().getExamCd();
             String virtNo = examMap.getVirtNo();
 
-            repository.findAll(new BooleanBuilder()
-                    .and(qExamMap.examinee.eq(examMap.getExaminee()))
-                    .and(qExamMap.exam.fkExam.examCd.eq(fkExamCd))
-                    .and(qExamMap.hall.eq(examMap.getHall()))
-            ).forEach(examMap1 -> {
-                examMap1.setVirtNo(virtNo);
-                repository.save(examMap1);
-            });
+            if(fkExamCd != null) {
+                repository.findAll(new BooleanBuilder()
+                        .and(qExamMap.examinee.eq(examMap.getExaminee()))
+                        .and(qExamMap.exam.fkExam.examCd.eq(fkExamCd))
+                        .and(qExamMap.hall.eq(examMap.getHall()))
+                ).forEach(examMap1 -> {
+                    examMap1.setVirtNo(virtNo);
+                    repository.save(examMap1);
+                });
+            }else{
+                repository.findAll(new BooleanBuilder()
+                        .and(qExamMap.examinee.eq(examMap.getExaminee()))
+                        .and(qExamMap.exam.fkExam.examCd.isNull())
+                        .and(qExamMap.hall.eq(examMap.getHall()))
+                ).forEach(examMap1 -> {
+                    examMap1.setVirtNo(virtNo);
+                    repository.save(examMap1);
+                });
+            }
 
             return new ResponseEntity<>(rtn, HttpStatus.OK);
 

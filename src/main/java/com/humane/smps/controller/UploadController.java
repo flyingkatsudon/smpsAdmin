@@ -52,9 +52,9 @@ public class UploadController {
     private final ScoreLogRepository scoreLogRepository;
 
     // Windows
-    @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    //@Value("${path.smps:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
-    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
+    @Value("${path.smps:/Users/Jeremy/Humane/api/smps}") String pathRoot;
 
     @RequestMapping(value = "item", method = RequestMethod.POST)
     public ResponseEntity<String> item(@RequestParam("file") MultipartFile multipartFile) throws IOException {
