@@ -44,9 +44,16 @@ public class DataController {
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto param, Pageable pageable) {
         List<ExamineeDto> list = mapper.examinee(param, pageable).getContent();
+
         list.forEach(item -> {
             try (InputStream is = imageService.getExaminee(item.getExamineeCd() + ".jpg")) {
-                BufferedImage image = ImageIO.read(is);
+                BufferedImage image;
+
+                if (is == null) {
+                    InputStream tmp = imageService.getExaminee("default.jpg");
+                    image = ImageIO.read(tmp);
+                } else image = ImageIO.read(is);
+
                 item.setExamineeImage(image);
             } catch (IOException e) {
                 log.error("{}", e.getMessage());
@@ -354,7 +361,7 @@ public class DataController {
                 long cnt = examDto.getExamineeCnt();
 
                 int virtNo = 0;
-                if(examDto.getLastVirtNo() == null) virtNo = 1;
+                if (examDto.getLastVirtNo() == null) virtNo = 1;
                 else virtNo = Integer.parseInt(examDto.getLastVirtNo()) + 1;
 
                 for (int j = virtNo; j <= cnt; j++) {
