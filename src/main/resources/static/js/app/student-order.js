@@ -11,13 +11,13 @@ define(function (require) {
 
     var admissionList = [];
 
-    var InnerTemplate = require('text!tpl/system-updateOrder.html');
+    var InnerTemplate = require('text!tpl/student-updateOrder.html');
     var Common = require('./common.js');
 
-    require('../grid/system-order.js');
+    require('../grid/student-order.js');
     // 미완성
-    require('../toolbar/system-order.js');
-    require('text!/tpl/system-order.html');
+    require('../toolbar/student-order.js');
+    require('text!/tpl/student-order.html');
 
     return Backbone.View.extend({
         initialize: function (o) {
@@ -43,7 +43,7 @@ define(function (require) {
 
             // TODO: 토론면접 조가 있는지 여부 확인한 후 그것이 있다면 바로 뷰, 없다면 입력 창 띄우기
             $.ajax({
-                url: 'system/local/orderCnt',
+                url: 'student/local/orderCnt',
                 success: function (response) {
                     // 순번이 저장되어 있으면
                     if (response) {
@@ -129,7 +129,7 @@ define(function (require) {
                                     } else {
                                         // 전형을 선택하고 진행하면 서버 내에 순번 데이터가 있는지 확인
                                         $.ajax({
-                                            url: 'system/server/orderCnt?admissionCd=' + param.admissionCd + '&url=' + param.url,
+                                            url: 'student/server/orderCnt?admissionCd=' + param.admissionCd + '&url=' + param.url,
                                             success: function (response) {
                                                 // 순번 데이터가 없다면 알림창 띄우기
                                                 if (!response) $('#msg').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp순번 데이터가 존재하지 않습니다!');
@@ -142,7 +142,7 @@ define(function (require) {
                                                     });
 
                                                     $.ajax({
-                                                        url: 'system/saveOrder?admissionCd=' + param.admissionCd + '&url=' + param.url,
+                                                        url: 'student/saveOrder?admissionCd=' + param.admissionCd + '&url=' + param.url,
                                                         success: function (response) {
                                                             $('#search').trigger('click');
                                                             responseDialog.notify({msg: response, closeAll: true});

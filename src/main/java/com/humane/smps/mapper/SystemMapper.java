@@ -2,8 +2,6 @@ package com.humane.smps.mapper;
 
 import com.humane.smps.dto.AccountDto;
 import com.humane.smps.dto.ExamInfoDto;
-import com.humane.smps.dto.ExamineeDto;
-import com.humane.smps.dto.StatusDeptDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
@@ -29,7 +27,4 @@ public interface SystemMapper {
     Page<ExamInfoDto> getExamInfo(@Param("param") ExamInfoDto param, @Param("pageable") Pageable pageable);
     void modifyExamInfo(@Param("param") ExamInfoDto param);
     void modifyExamHallDateOfExamInfo(@Param("param") ExamInfoDto param);
-
-    long orderCnt(@Param("param") String admissionCd);
-    Page<ExamineeDto> order(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 }
