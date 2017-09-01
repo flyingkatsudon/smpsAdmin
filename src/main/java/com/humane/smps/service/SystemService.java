@@ -142,45 +142,72 @@ public class SystemService {
     public void initData(String examCd) throws IOException {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
+        QExamMap examMap = QExamMap.examMap;
+
         if (examCd != null) {
+            Exam exam = examRepository.findOne(new BooleanBuilder().and(QExam.exam.examCd.eq(examCd)));
+            String virtNoAssignType = exam.getVirtNoAssignType();
+
             queryFactory.delete(QSheet.sheet).where(QSheet.sheet.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();
 
-            QExamMap examMap = QExamMap.examMap;
-            queryFactory.update(examMap)
-                    .setNull(examMap.virtNo)
-                    .setNull(examMap.scanDttm)
-                    .setNull(examMap.photoNm)
-                    .setNull(examMap.memo)
-                    .setNull(examMap.evalCd)
-                    .setNull(examMap.hall.hallCd)
-                    .setNull(examMap.groupNm)
-                    .setNull(examMap.groupOrder)
-                    .setNull(examMap.debateNm)
-                    .setNull(examMap.debateOrder)
-                    .where(examMap.exam.examCd.eq(examCd))
-                    .execute();
-        } else {
+            log.debug("{}", examMap.exam.virtNoAssignType);
+
+            // 가번호 할당 방식이 '수험번호'라면 -> 가번호를 초기화시키지 않는다
+            if (virtNoAssignType.equals("examineeCd") || virtNoAssignType.equals("manageNo")) {
+                queryFactory.update(examMap)
+                        .setNull(examMap.scanDttm)
+                        .setNull(examMap.photoNm)
+                        .setNull(examMap.memo)
+                        .setNull(examMap.evalCd)
+                        .where(examMap.exam.examCd.eq(examCd))
+                        .execute();
+            } else {
+                queryFactory.update(examMap)
+                        .setNull(examMap.virtNo)
+                        .setNull(examMap.scanDttm)
+                        .setNull(examMap.photoNm)
+                        .setNull(examMap.memo)
+                        .setNull(examMap.evalCd)
+                        .where(examMap.exam.examCd.eq(examCd))
+                        .execute();
+            }
+        }
+        // 시험 전체를 삭제하는 경우
+        else {
+            // 시험 리스트 전체를 가져와서
+            List<Exam> examList = examRepository.findAll();
+
+            // for문으로 반복하며 가번호 할당 방식이 '수험번호' 혹은 '관리번호'인 시험은 가번호 제거하지 않음
+            for (int i = 0; i < examList.size(); i++) {
+                Exam exam = examList.get(i);
+                String virtNoAssignType = exam.getVirtNoAssignType();
+
+                if (virtNoAssignType.equals("examineeCd") || virtNoAssignType.equals("manageNo")) {
+                    queryFactory.update(examMap)
+                            .setNull(examMap.scanDttm)
+                            .setNull(examMap.photoNm)
+                            .setNull(examMap.memo)
+                            .setNull(examMap.evalCd)
+                            .where(examMap.exam.examCd.eq(exam.getExamCd()))
+                            .execute();
+                } else {
+                    queryFactory.update(examMap)
+                            .setNull(examMap.virtNo)
+                            .setNull(examMap.scanDttm)
+                            .setNull(examMap.photoNm)
+                            .setNull(examMap.memo)
+                            .setNull(examMap.evalCd)
+                            .where(examMap.exam.examCd.eq(exam.getExamCd()))
+                            .execute();
+                }
+            }
+
             queryFactory.delete(QSheet.sheet).execute();
             queryFactory.delete(QScoreLog.scoreLog).execute();
             queryFactory.delete(QScore.score).execute();
-
-            QExamMap examMap = QExamMap.examMap;
-            queryFactory.update(examMap)
-                    .setNull(examMap.virtNo)
-                    .setNull(examMap.scanDttm)
-                    .setNull(examMap.photoNm)
-                    .setNull(examMap.memo)
-                    .setNull(examMap.evalCd)
-                    .setNull(examMap.hall.hallCd)
-                    .setNull(examMap.groupNm)
-                    .setNull(examMap.groupOrder)
-                    .setNull(examMap.debateNm)
-                    .setNull(examMap.debateOrder)
-                    .execute();
         }
-
         fileService.deleteFiles(pathJpg, pathPdf);
     }
 
@@ -234,7 +261,6 @@ public class SystemService {
                     .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE))
                     .takeUntil(page -> page.last)
                     .flatMap(page -> {
-
                         for (ExamMap examMap : page.content) {
                             Exam exam = examMap.getExam();
                             Examinee examinee = examMap.getExaminee();

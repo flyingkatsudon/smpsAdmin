@@ -273,6 +273,11 @@ public class UploadController {
                 examMap.setExam(exam);
                 examMap.setExaminee(examinee);
 
+                // exam.virt_no_assign_type에 따라 virtNo를 자동으로 채워넣어야함
+                if (exam.getVirtNoAssignType().equals("examineeCd")) {
+                    examMap.setVirtNo(examinee.getExamineeCd());
+                }
+
                 if (vo.getGroupNm().equals("")) examMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
 
                 ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()
@@ -280,7 +285,14 @@ public class UploadController {
                         .and(QExamMap.examMap.examinee.examineeCd.eq(examMap.getExaminee().getExamineeCd()))
                 );
 
-                if (tmp != null) examMap.set_id(tmp.get_id());
+                if (tmp != null) {
+                    examMap.set_id(tmp.get_id());
+
+                    // exam.virt_no_assign_type에 따라 virtNo를 자동으로 채워넣어야함
+                    if (tmp.getExam().getVirtNoAssignType().equals("examineeCd")) {
+                        tmp.setVirtNo(examinee.getExamineeCd());
+                    }
+                }
 
                 // 3.1 수험생정보 저장
                 examMapRepository.save(examMap);
@@ -312,56 +324,68 @@ public class UploadController {
                     FileWrapper<Sheet> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Sheet>>() {
                     }, charset);
 
-                    QSheet qSheet = QSheet.sheet;
-
                     wrapper.getContent().forEach(sheet -> {
-                        Sheet tmp = null;
-                        tmp = sheetRepository.findOne(
-                                new BooleanBuilder()
-                                        .and(qSheet.scorerNm.eq(sheet.getScorerNm()))
-                                        .and(qSheet.sheetNo.eq(sheet.getSheetNo()))
-                                        .and(qSheet.exam.examCd.eq(sheet.getExam().getExamCd()))
-                        );
+                        try {
+                            Sheet tmp = sheetRepository.findOne(new BooleanBuilder()
+                                    .and(QSheet.sheet.scorerNm.eq(sheet.getScorerNm()))
+                                    .and(QSheet.sheet.sheetNo.eq(sheet.getSheetNo()))
+                                    .and(QSheet.sheet.exam.examCd.eq(sheet.getExam().getExamCd()))
+                            );
 
-                        if (tmp != null) sheet.set_id(tmp.get_id());
+                            if (tmp != null) sheet.set_id(tmp.get_id());
 
-                        sheetRepository.save(sheet);
-
+                            sheetRepository.save(sheet);
+                        } catch (Exception e) {
+                            log.error("{}", e.getMessage());
+                        }
                     });
 
                 } else if (fileName.endsWith("_score.txt")) {
                     FileWrapper<Score> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<Score>>() {
                     }, charset);
 
-                    QScore qScore = QScore.score;
-
                     wrapper.getContent().forEach(score -> {
+                        try {
+                            // 기존에 입력된 점수가 있는지 검사
+                            Score tmp = scoreRepository.findOne(new BooleanBuilder()
+                                    .and(QScore.score.exam.examCd.eq(score.getExam().getExamCd()))
+                                    .and(QScore.score.virtNo.eq(score.getVirtNo()))
+                                    .and(QScore.score.scorerNm.eq(score.getScorerNm()))
+                            );
 
-                        Score tmp = scoreRepository.findOne(
-                                new BooleanBuilder()
-                                        .and(qScore.exam.examCd.eq(score.getExam().getExamCd()))
-                                        .and(qScore.virtNo.eq(score.getVirtNo()))
-                                        .and(qScore.scorerNm.eq(score.getScorerNm()))
-                        );
+                            // score에 입력될 데이터에 수험생 정보가 있는지 검사
+                            ExamMap examMap = examMapRepository.findOne(new BooleanBuilder()
+                                    .and(QExamMap.examMap.exam.examCd.eq(score.getExam().getExamCd()))
+                                    .and(QExamMap.examMap.examinee.examineeCd.eq(score.getVirtNo()))
+                            );
 
-                        if (tmp != null) score.set_id(tmp.get_id());
+                            String virtNoAssignType = score.getExam().getVirtNoAssignType();
 
-                        scoreRepository.save(score);
+                            // 가번호 할당 방식이 '수험번호'라면 가번호 자리에 수험번호를 채움
+                            if (virtNoAssignType.equals("examineeCd")) {
+                                examMap.setVirtNo(score.getVirtNo());
+                                examMapRepository.save(examMap);
+                            }
+
+                            if (tmp != null) score.set_id(tmp.get_id());
+
+                            scoreRepository.save(score);
+                        } catch (Exception e) {
+                            log.error("{}", e.getMessage());
+                        }
                     });
                 } else if (fileName.endsWith("_scoreLog.txt")) {
                     FileWrapper<ScoreLog> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<ScoreLog>>() {
                     }, charset);
-                    QScoreLog qScoreLog = QScoreLog.scoreLog;
 
                     wrapper.getContent().forEach(scoreLog -> {
                         try {
-                            ScoreLog tmp = scoreLogRepository.findOne(
-                                    new BooleanBuilder()
-                                            .and(qScoreLog.exam.examCd.eq(scoreLog.getExam().getExamCd()))
-                                            .and(qScoreLog.hall.hallCd.eq(scoreLog.getHall().getHallCd()))
-                                            .and(qScoreLog.scorerNm.eq(scoreLog.getScorerNm()))
-                                            .and(qScoreLog.logDttm.eq(scoreLog.getLogDttm()))
-                                            .and(qScoreLog.virtNo.eq(scoreLog.getVirtNo()))
+                            ScoreLog tmp = scoreLogRepository.findOne(new BooleanBuilder()
+                                    .and(QScoreLog.scoreLog.exam.examCd.eq(scoreLog.getExam().getExamCd()))
+                                    .and(QScoreLog.scoreLog.hall.hallCd.eq(scoreLog.getHall().getHallCd()))
+                                    .and(QScoreLog.scoreLog.scorerNm.eq(scoreLog.getScorerNm()))
+                                    .and(QScoreLog.scoreLog.logDttm.eq(scoreLog.getLogDttm()))
+                                    .and(QScoreLog.scoreLog.virtNo.eq(scoreLog.getVirtNo()))
                             );
 
                             if (tmp == null) {
@@ -404,13 +428,11 @@ public class UploadController {
                     FileWrapper<ExamMap> wrapper = zipFile.parseObject(fileHeader, new TypeToken<FileWrapper<ExamMap>>() {
                     }, charset);
 
-                    QExamMap qExamMap = QExamMap.examMap;
-
                     wrapper.getContent().forEach(examMap -> {
                         ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()
-                                .and(qExamMap.examinee.examineeCd.eq(examMap.getExaminee().getExamineeCd()))
+                                .and(QExamMap.examMap.examinee.examineeCd.eq(examMap.getExaminee().getExamineeCd()))
                                 //.and(qExamMap.hall.hallCd.eq(examMap.getHall().getHallCd())) // 고사실이 의미가 없는 경우 주석처리함
-                                .and(qExamMap.exam.examCd.eq(examMap.getExam().getExamCd()))
+                                .and(QExamMap.examMap.exam.examCd.eq(examMap.getExam().getExamCd()))
                         );
 
                         if (tmp != null) examMap.set_id(tmp.get_id());
