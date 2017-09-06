@@ -16,10 +16,11 @@ public class FormItemVo {
     @Column(name = "시험일자") private String examDate;
 
     @Column(name = "평가위원수") private String scorerCnt;
-    @Column(name = "키패드") private String keypadType;
     @Column(name = "가번호 표시") private String virtNoType; // 가번호를 가번호 앱에서 뭐라고 나타낼지, 가번호? 실기번호?
     @Column(name = "가번호 관리") private String virtNoAssignType;
     @Column(name = "총점") private String totScore;
+    @Column(name = "채점방향가로") private Boolean isHorizontal;
+    @Column(name = "지정이동방식 사용") private Boolean isMove;
     @Column(name = "결시버튼 사용") private Boolean isAbsence;
     @Column(name = "마감데이터 사용") private Boolean isClosedView;
     @Column(name = "가번호 자동") private Boolean isMgrAuto;
