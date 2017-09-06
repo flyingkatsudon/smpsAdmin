@@ -230,7 +230,7 @@ public class DataController {
         report.setDataSource(mapper.absentList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("경북대학교 채점자별 상세(세로)");
+        jasperPrint.setName("경북대학교 결시자 리스트)");
 
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }

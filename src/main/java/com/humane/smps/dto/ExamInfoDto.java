@@ -11,52 +11,77 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ExamInfoDto {
+public class ExamInfoDto{
     // exam
-    public String examCd;
-    public BigDecimal adjust;
-    public String barcodeType;
-    public String examNm;
-    public Long examineeLen;
+    private String id;
+    private String userAdmissions;
+    private String admissionCd;
+    private String admissionNm;
 
-    public boolean isAbsence;
-    public boolean isClosedView;
-    public boolean isHorizontal;
-    public boolean isMgrAuto;
-    public boolean isMove;
+    private String typeNm;
 
-    public Long itemCnt;
-    public String keypadType;
-    public String period;
+    private String examCd;
+    private String examNm;
 
-    public String printContent1;
-    public String printContent2;
-    public String printSign;
-    public String printTitle1;
-    public String printTitle2;
+    private BigDecimal adjust;
+    private String barcodeType;
+    private Long examineeLen;
 
-    public Long scorerCnt;
-    public Long totScore;
-    public String typeNm;
+    private boolean isAbsence;
+    private boolean isClosedView;
+    private boolean isHorizontal;
+    private boolean isMgrAuto;
+    private boolean isMove;
 
-    public Long virtNoDigits;
-    public String virtNoType;
+    private Long itemCnt;
+    private String period;
 
-    public String fkExamCd;
+    private String printContent1;
+    private String printContent2;
+    private String printSign;
+    private String printTitle1;
+    private String printTitle2;
 
-    // admission
-    public String admissionNm;
+    private Long scorerCnt;
+    private Long totScore;
+
+    private Long virtNoDigits;
+    private String virtNoType;
+    private String virtNoAssignType;
+
+    private String fkExamCd;
 
     // exam_hall_date
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    public String hallDate;
-    public String virtNoEnd;
-    public String virtNoStart;
-    public String hallCd;
+    private String hallDate;
 
-    // hall
-    public String headNm;
-    public String bldgNm;
-    public String hallNm;
+    private String virtNoEnd;
+    private String virtNoStart;
+
+    private String hallCd;
+    private String headNm;
+    private String bldgNm;
+    private String hallNm;
+
+    // 수정 시 비교용 (기존 데이터)
+    private String _virtNoStart;
+    private String _virtNoEnd;
+    private String _hallCd;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private String _hallDate;
+
+    private String itemNm;
+    private String itemNo;
+    private String maxScore;
+    private String minScore;
+    private String maxWarning;
+    private String minWarning;
+    private String keypadType;
+    private String scoreMap;
+
+    private String _itemNm;
+    private String _itemNo;
 }

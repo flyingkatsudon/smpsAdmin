@@ -198,18 +198,20 @@ public class DownloadController {
             }
         }
         else jpgFolder.mkdirs();
-/*
+
         String pdfPath = pathRoot + "/pdf";
         // 2. pdf 폴더 생성
         File pdfFolder = new File(pdfPath);
         // 2.1 pdf 가져옴
         File[] pdfList = pdfFolder.listFiles();
-        // 2.2 pdf 저장
-        for (File f : pdfList) {
-            if (f.isFile())
-                zipFile.addFile("평가위원 평가표", f);
+
+        if(pdfList != null) {
+            // 2.2 pdf 저장
+            for (File f : pdfList) {
+                if (f.isFile())
+                    zipFile.addFile("평가위원 평가표", f);
+            }
         }
-*/
 
         byte[] ba = FileUtils.getByteArray(zipFile.getFile());
 

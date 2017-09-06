@@ -24,7 +24,10 @@ public interface SystemMapper {
 
     Page<AccountDto> idCheck(@Param("pageable") Pageable pageable);
 
-    Page<ExamInfoDto> getExamInfo(@Param("param") ExamInfoDto param, @Param("pageable") Pageable pageable);
-    void modifyExamInfo(@Param("param") ExamInfoDto param);
-    void modifyExamHallDateOfExamInfo(@Param("param") ExamInfoDto param);
+    Page<ExamInfoDto> getStep1(@Param("param") ExamInfoDto param, @Param("pageable") Pageable pageable);
+    Page<ExamInfoDto> getStep2(@Param("examCd") String examCd, @Param("pageable") Pageable pageable);
+    Page<ExamInfoDto> getStep3(@Param("examCd") String examCd, @Param("pageable") Pageable pageable);
+    void modifyStep1(@Param("param") ExamInfoDto param);
+    void modifyStep2(@Param("param") ExamInfoDto param);
+    void modifyStep3(@Param("param") ExamInfoDto param);
 }

@@ -14,8 +14,8 @@ define(function (require) {
     var ResponseDialog = require('../responseDialog.js');
     var responseDialog = new ResponseDialog();
 
-    var SettingExamInfo = require('./../grid/setting-data.js');
-    var ExamInfoDataToolbar = require('./../toolbar/setting-data.js');
+    var ExamInfo = require('./../grid/setting-data.js');
+    var ExamToolbar = require('./../toolbar/setting-data.js');
 
     return Backbone.View.extend({
         initialize: function (o) {
@@ -31,12 +31,13 @@ define(function (require) {
             this.uploadForm('#frmUploadScore');
 
             // 평가(시험) 정보 관리 메뉴
-            this.toolbar = new ExamInfoDataToolbar({el: '.hm-ui-search', parent: this}).render();
-            this.list = new SettingExamInfo({el: '#examInfo', parent: this}).render();
+            this.list = new ExamInfo({el: '#examInfo', parent: this}).render();
+            this.toolbar = new ExamToolbar({el: '.hm-ui-search', parent: this}).render();
 
         }, search: function (o) {
             this.list.search(o);
-        }, uploadForm: function (id) {
+        },
+        uploadForm: function (id) {
             this.$(id).ajaxForm({
                 beforeSubmit: function (arr) {
                     for (var i in arr) {
@@ -45,22 +46,28 @@ define(function (require) {
                             return false;
                         }
                     }
-                    responseDialog.notify({msg:'<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>', closable: false});
+                    responseDialog.notify({
+                        msg: '<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>',
+                        closable: false
+                    });
 
                 },
                 error: function (response) {
                     responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
+                    $('#search').trigger('click');
                     responseDialog.notify({msg: response});
                 }
             });
-        }, events: {
+        },
+        events: {
             'click #download': 'downloadClicked',
             'click #reset': 'resetClicked',
             'click #init': 'initClicked',
             'click #fill': 'fillClicked'
-        }, downloadClicked: function (e) {
+        },
+        downloadClicked: function (e) {
             var dialog = new BootstrapDialog({
                 title: '',
                 message: '',
@@ -120,7 +127,7 @@ define(function (require) {
                                     data: JSON.stringify(param),
                                     contentType: 'application/json',
                                     success: function (response) {
-                                        responseDialog.notify({msg:response});
+                                        responseDialog.notify({msg: response});
                                     },
                                     error: function (response, status, error) {
                                         responseDialog.notify({msg: response.responseJSON});
@@ -144,7 +151,8 @@ define(function (require) {
             dialog.getModalDialog().css('margin-top', '15%');
             dialog.open();
 
-        }, resetClicked: function (e) {
+        },
+        resetClicked: function (e) {
             var _this = this;
             var dialog = new BootstrapDialog({
                 message: '<h5 style="margin-left:10%">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
@@ -192,7 +200,7 @@ define(function (require) {
                 },
                 success: function (response) {
                     responseDialog.notify({msg: response});
-                }, error: function (response){
+                }, error: function (response) {
                     responseDialog.notify({msg: response.responseJSON});
                 }
             });
@@ -259,7 +267,8 @@ define(function (require) {
             dialog.getModalHeader().hide();
             dialog.open();
 
-        }, fillClicked: function (e) {
+        },
+        fillClicked: function (e) {
             var text = '<select id="examCd"><option value="">선택하세요</option>';
 
             var dialog = new BootstrapDialog({
@@ -387,7 +396,8 @@ define(function (require) {
             dialog.getModalDialog().css('margin-top', '20%');
             dialog.open();
 
-        }, getExamList: function (text) {
+        },
+        getExamList: function (text) {
             $.ajax({
                 url: 'data/examInfo.json',
                 async: false,
@@ -400,7 +410,8 @@ define(function (require) {
                 }
             });
             return text;
-        }, getExamNm: function (examCd) {
+        },
+        getExamNm: function (examCd) {
 
             var examNm = '데이터 초기화';
 
