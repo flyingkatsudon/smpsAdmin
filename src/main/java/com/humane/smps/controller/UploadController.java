@@ -79,13 +79,26 @@ public class UploadController {
                 // 3. exam 변환, 저장
                 Exam exam = mapper.convertValue(vo, Exam.class);
 
-                log.debug("{}", vo);
-
                 if (!vo.getFkExamCd().equals("") && vo.getFkExamCd() != null) {
                     Exam tmp = examRepository.findOne(new BooleanBuilder()
                             .and(QExam.exam.examCd.eq(vo.getFkExamCd()))
                     );
                     exam.setFkExam(tmp);
+                }
+
+                switch(vo.getVirtNoAssignType()){
+                    case "가번호":
+                        exam.setVirtNoAssignType("virtNo");
+                        break;
+                    case "관리번호":
+                        exam.setVirtNoAssignType("manageNo");
+                        break;
+                    case "수험번호":
+                        exam.setVirtNoAssignType("examineeCd");
+                        break;
+                    default:
+                        exam.setVirtNoAssignType("virtNo");
+                        break;
                 }
 
                 exam.setAdmission(admission);
@@ -100,7 +113,6 @@ public class UploadController {
             return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            log.error("{}", throwable.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }
@@ -132,7 +144,7 @@ public class UploadController {
                 Hall hall = mapper.convertValue(vo, Hall.class);
                 hall = hallRepository.save(hall);
 
-                // 3. 응시고사실 생성
+                // 3. 응시고사실 생성 TODO: 나중에 삭제해야함
                 ExamHall examHall = new ExamHall();
                 examHall.setExam(exam);
                 examHall.setHall(hall);

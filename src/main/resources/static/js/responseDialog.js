@@ -27,7 +27,40 @@ define(function (require) {
             if (param.closeAll || param.closeAll == undefined) BootstrapDialog.closeAll();
 
             dialog.open();
+        },
+        dialogFormat: function (message, label, url) {
+            var _this = this;
+            var dialog = new BootstrapDialog({
+                message: '<div style="text-align:center"><h5>' + message + '</h5></div>',
+                closable: true,
+                buttons: [
+                    {
+                        label: label,
+                        cssClass: 'btn-delete',
+                        action: function () {
+                            $.ajax({
+                                url: url,
+                                success: function (response) {
+                                    _this.notify({msg: response, closable: true});
+                                }
+                            });
+                        }
+                    }, {
+                        label: '닫기',
+                        cssClass: 'btn-normal',
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
 
+            dialog.realize();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalDialog().css('text-align', 'center');
+            dialog.getModalHeader().hide();
+            dialog.getModalFooter().css('padding', '1%');
+            dialog.open();
         }
     });
 });

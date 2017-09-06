@@ -3,6 +3,7 @@ package com.humane.smps.controller.admin;
 import com.humane.smps.dto.*;
 import com.humane.smps.mapper.SystemMapper;
 import com.humane.smps.model.*;
+import com.humane.smps.repository.HallRepository;
 import com.humane.smps.repository.UserAdmissionRepository;
 import com.humane.smps.repository.UserRepository;
 import com.humane.smps.repository.UserRoleRepository;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "system")
@@ -34,6 +36,7 @@ public class SystemController {
     private final UserRepository userRepository;
     private final UserAdmissionRepository userAdmissionRepository;
     private final UserRoleRepository userRoleRepository;
+    private final HallRepository hallRepository;
 
     private final SystemService systemService;
     private final SystemMapper systemMapper;
@@ -90,17 +93,17 @@ public class SystemController {
             systemService.saveItem(apiService, downloadWrapper);
 
             return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
         }
     }
 
     @RequestMapping(value = "reset")
     public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
-        try{
+        try {
             systemService.resetData(photo);
             return ResponseEntity.ok("삭제가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
-        }catch(Exception e){
+        } catch (Exception e) {
             log.debug("{}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
         }
@@ -108,10 +111,10 @@ public class SystemController {
 
     @RequestMapping(value = "init")
     public ResponseEntity init(String examCd) throws IOException {
-        try{
+        try {
             systemService.initData(examCd);
             return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
-        }catch(Exception e){
+        } catch (Exception e) {
             log.debug("{}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
         }
@@ -147,7 +150,7 @@ public class SystemController {
                     .and(QUserAdmission.userAdmission.admission.admissionCd.eq(admissionCd)));
 
             if (find == null) systemMapper.insertAdmission(userId, admissionCd);
-        }else {
+        } else {
             // 계정 정보 수정
             if (roleName != null) systemMapper.modifyRole(userId, roleName);
         }
@@ -183,15 +186,72 @@ public class SystemController {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
     }
 
-    @RequestMapping(value = "getExamInfo")
-    public ResponseEntity getExamInfo(ExamInfoDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.getExamInfo(param, pageable).getContent());
+    @RequestMapping(value = "getStep1")
+    public ResponseEntity getStep1(ExamInfoDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.getStep1(param, pageable).getContent());
     }
 
-    @RequestMapping(value = "modifyExamInfo")
-    @Transactional(propagation= Propagation.REQUIRED, rollbackFor={Throwable.class})
-    public void modifyExamInfo(@RequestBody ExamInfoDto param) {
-        systemMapper.modifyExamInfo(param);
-        systemMapper.modifyExamHallDateOfExamInfo(param);
+    @RequestMapping(value = "getStep2")
+    public ResponseEntity getStep2(String examCd, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.getStep2(examCd, pageable).getContent());
+    }
+
+    @RequestMapping(value = "getStep3")
+    public ResponseEntity getStep3(String examCd, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.getStep3(examCd, pageable).getContent());
+    }
+
+    @RequestMapping(value = "modifyStep1")
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Throwable.class})
+    public ResponseEntity modifyStep1(@RequestBody ExamInfoDto param) {
+        try {
+            systemMapper.modifyStep1(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok("관리자에게 문의하세요<br><br>" + e.getMessage());
+        }
+        return ResponseEntity.ok("변경되었습니다");
+    }
+
+    @RequestMapping(value = "modifyStep2")
+    public ResponseEntity modifyStep2(@RequestBody List<ExamInfoDto> list) {
+        for (int i = 0; i < list.size(); i++) {
+            try {
+/*              ExamInfoDto param = list.get(i);
+
+                Hall hall = hallRepository.findOne(new BooleanBuilder()
+                        .and(QHall.hall.headNm.eq(param.getHeadNm()))
+                        .and(QHall.hall.bldgNm.eq(param.getBldgNm()))
+                        .and(QHall.hall.hallNm.eq(param.getHallNm()))
+                );
+
+                log.debug("{}", hall);
+
+                if(hall != null) param.setHallCd(hall.getHallCd());
+                else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("존재하지 않는 고사실입니다");
+*/
+
+                systemMapper.modifyStep2(list.get(i));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
+            }
+        }
+        return ResponseEntity.ok("변경되었습니다");
+    }
+
+    @RequestMapping(value = "modifyStep3")
+    public ResponseEntity modifyStep3(@RequestBody List<ExamInfoDto> list) {
+        for (int i = 0; i < list.size(); i++) {
+            try {
+                log.debug("{}", list.get(i).getItemNm());
+                log.debug("{}", list.get(i).get_itemNm());
+                systemMapper.modifyStep3(list.get(i));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
+            }
+        }
+        return ResponseEntity.ok("변경되었습니다");
     }
 }

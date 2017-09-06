@@ -22,9 +22,11 @@ public class Item implements Serializable {
     private Long maxScore;
     private String keypadType;
 
+    private String deviCd; // 필요없음, 나중에 지워야함
+
     private String scoreMap;
-    private String minWarning;
-    private String maxWarning;
+    private Long minWarning;
+    private Long maxWarning;
 
     @ManyToOne @JoinColumn(name = "examCd", nullable = false) private Exam exam;
 

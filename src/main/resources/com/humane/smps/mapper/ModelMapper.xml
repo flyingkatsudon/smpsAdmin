@@ -75,7 +75,6 @@
             , exam.is_mgr_auto
             , exam.is_move
             , exam.item_cnt
-            , exam.keypad_type
             , exam.period
             , exam.print_content1
             , exam.print_content2

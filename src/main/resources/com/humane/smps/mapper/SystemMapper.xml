@@ -95,9 +95,8 @@
         select user_id from user
     </select>
 
-
-    <select id="getExamInfo" resultType="com.humane.smps.dto.ExamInfoDto">
-        SELECT exam.exam_cd
+    <select id="getStep1" resultType="com.humane.smps.dto.ExamInfoDto">
+        SELECT distinct exam.exam_cd
         , exam.adjust
         , exam.barcode_type
         , exam.exam_nm
@@ -108,7 +107,6 @@
         , exam.is_mgr_auto
         , exam.is_move
         , exam.item_cnt
-        , exam.keypad_type
         , exam.period
         , exam.print_content1
         , exam.print_content2
@@ -120,33 +118,44 @@
         , exam.type_nm
         , exam.virt_no_digits
         , exam.virt_no_type
+        , exam.virt_no_assign_type
         , exam.fk_exam_cd
         , exam.admission_cd
-
         , admission.admission_nm
-
-        , exam_hall_date.hall_date
-        , exam_hall_date.virt_no_end
-        , exam_hall_date.virt_no_start
-        , exam_hall_date.hall_cd
-
-        , hall.head_nm
-        , hall.bldg_nm
-        , hall.hall_nm
         FROM exam
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
         INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd
-        INNER JOIN hall ON hall.hall_cd = exam_hall_date.hall_cd
         <where>
             <if test="param != null">
-                <if test="param.admissionNm">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.examCd">AND exam.exam_cd = #{param.examCd}</if>
-                <if test="param.examNm">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.examCd != null">AND exam.exam_cd = #{param.examCd}</if>
+                <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
             </if>
         </where>
     </select>
 
-    <update id="modifyExamInfo">
+    <select id="getStep2" resultType="com.humane.smps.dto.ExamInfoDto">
+        select distinct ehd._id, ehd.hall_date, ehd.virt_no_start, ehd.virt_no_end, ehd.hall_cd
+              , hall.head_nm, hall.bldg_nm, hall.hall_nm
+        from exam
+        inner join admission on admission.admission_cd = exam.admission_cd
+        inner join exam_hall_date ehd on ehd.exam_cd = exam.exam_cd
+        inner join hall on hall.hall_cd = ehd.hall_cd
+        <where>
+           <if test="examCd != null">AND exam.exam_cd = #{examCd}</if>
+        </where>
+        order by ehd.hall_date
+    </select>
+
+    <select id="getStep3" resultType="com.humane.smps.dto.ExamInfoDto">
+        select * from item
+        <where>
+            <if test="examCd != null">AND item.exam_cd = #{examCd}</if>
+        </where>
+        order by item_no
+    </select>
+
+    <update id="modifyStep1">
         <if test="param != null">
             UPDATE exam
             <set>
@@ -170,21 +179,48 @@
                 <if test="param.scorerCnt != null">scorer_cnt = #{param.scorerCnt},</if>
                 <if test="param.totScore != null">tot_score = #{param.totScore},</if>
                 <if test="param.virtNoDigits != null">virt_no_digits = #{param.virtNoDigits},</if>
-                <if test="param.virtNoType != null">virt_no_type = #{param.virtNoType}</if>
+                <if test="param.virtNoType != null">virt_no_type = #{param.virtNoType},</if>
+                <if test="param.virtNoAssignType != null">virt_no_assign_type = #{param.virtNoAssignType}</if>
             </set>
             WHERE exam_cd = #{param.examCd}
         </if>
     </update>
 
-    <update id="modifyExamHallDateOfExamInfo">
+    <update id="modifyStep2">
         <if test="param != null">
             UPDATE exam_hall_date
             <set>
                 <if test="param.hallDate">hall_date = #{param.hallDate},</if>
+                <if test="param.hallCd">hall_cd = #{param.hallCd},</if>
                 <if test="param.virtNoStart != null">virt_no_start = #{param.virtNoStart},</if>
                 <if test="param.virtNoEnd != null">virt_no_end = #{param.virtNoEnd}</if>
             </set>
             WHERE exam_cd = #{param.examCd}
+            and _id = #{param.id}
+            and hall_cd = #{param._hallCd}
+            and virt_no_start = #{param._virtNoStart}
+            and virt_no_end = #{param._virtNoEnd}
+            and hall_date = #{param._hallDate}
+        </if>
+    </update>
+
+    <update id="modifyStep3">
+        <if test="param != null">
+            UPDATE item
+            <set>
+                <if test="param.itemNm">item_nm = #{param.itemNm},</if>
+                <if test="param.itemNo">item_no = #{param.itemNo},</if>
+                <if test="param.maxScore != null">max_score = #{param.maxScore},</if>
+                <if test="param.minScore != null">min_score = #{param.minScore},</if>
+                <if test="param.maxWarning != null">max_warning = #{param.maxWarning},</if>
+                <if test="param.minWarning != null">min_warning = #{param.minWarning},</if>
+                <if test="param.keypadType != null">keypad_type = #{param.keypadType},</if>
+                <if test="param.scoreMap != null">score_map = #{param.scoreMap}</if>
+            </set>
+            WHERE exam_cd = #{param.examCd}
+            and _id = #{param.id}
+            and item_nm = #{param._itemNm}
+            and item_no = #{param._itemNo}
         </if>
     </update>
 </mapper>

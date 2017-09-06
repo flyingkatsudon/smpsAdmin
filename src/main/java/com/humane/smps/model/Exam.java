@@ -28,12 +28,12 @@ public class Exam implements Serializable{
     private Date examDate; // 시험일자
 
     @Column(columnDefinition = "int default 100") private int totScore; // 총점
-
     @Column(columnDefinition = "int default 0") private int scorerCnt; // 채점자 수. 검증 및 통계에 쓰임.
+
     private int virtNoDigits; // 가번호 표시 자릿수
-    private String virtNoType; // 가번호 타입. 수험번호? 답안지번호? 순차번호?
-    // TODO: virtNoAssignType 임시 사용
+    private String virtNoType; // 가번호 표시 타입
     private String virtNoAssignType; // 가번호 할당 방식.
+
     @Column(columnDefinition = "bit default 1") private boolean isAbsence; // 결시버튼 사용여부
     @Column(columnDefinition = "bit default 1") private boolean isHorizontal; // 채점방식. 가로, 세로
     @Column(columnDefinition = "bit default 0") private boolean isMove; // 지정이동? 순차이동? => uplus 기준 문제별 채점, 학생별 채점
@@ -42,8 +42,6 @@ public class Exam implements Serializable{
     @Column(columnDefinition = "bit default 0") private boolean isTimer; // 타이머 사용여부
 
     @Column(columnDefinition = "int default 0") private int examineeLen; // 수험번호 자릿수
-
-    private String keypadType;
 
     private String period; // 단계
 

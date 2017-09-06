@@ -43,13 +43,14 @@ public class UploadService {
 
             String maxScore = (String) new PropertyDescriptor("maxScore" + i, FormItemVo.class).getReadMethod().invoke(dto);
             String minScore = (String) new PropertyDescriptor("minScore" + i, FormItemVo.class).getReadMethod().invoke(dto);
+
             String keypadType = (String) new PropertyDescriptor("keypadType" + i, FormItemVo.class).getReadMethod().invoke(dto);
+            String scoreMap = (String) new PropertyDescriptor("scoreMap" + i, FormItemVo.class).getReadMethod().invoke(dto);
 
-            BooleanBuilder predicate = new BooleanBuilder()
+            Item item = itemRepository.findOne(new BooleanBuilder()
                     .and(qItem.exam.examCd.eq(exam.getExamCd()))
-                    .and(qItem.itemNo.eq(itemNo));
-
-            Item item = itemRepository.findOne(predicate);
+                    .and(qItem.itemNo.eq(itemNo))
+            );
 
             if (item == null) { // insert
                 item = new Item();
@@ -62,12 +63,22 @@ public class UploadService {
                 item.setMaxScore(validate(maxScore));
                 item.setMinScore(validate(minScore));
 
+                // keypadType이 null이면 기본값으로 0
+                if (keypadType == null) item.setKeypadType("0");
+
                 // keypadType이 0이면 기본값으로 min: 0, max: 100을 입력
-                if (keypadType != null) item.setKeypadType(keypadType);
-                else if(keypadType.equals("0")) {
+                item.setKeypadType(keypadType);
+                if (keypadType.equals("0")) {
                     item.setMaxScore(validate("100"));
                     item.setMinScore(validate("0"));
+                    item.setMaxWarning(validate("10"));
+                    item.setMinWarning(validate("0"));
                 }
+
+                item.setScoreMap(scoreMap);
+                if (scoreMap.equals("")) item.setScoreMap(null);
+
+                item.setDeviCd("D100"); // 필요없음, 기존 평가앱을 다시 안쓴다면 지워야
 
             } else { // update
                 item.setItemNm(itemNm);
@@ -76,15 +87,18 @@ public class UploadService {
                 item.setMaxScore(validate(maxScore));
                 item.setMinScore(validate(minScore));
                 item.setKeypadType(keypadType);
+
+                item.setScoreMap(scoreMap);
+                if (scoreMap.equals("")) item.setScoreMap(null);
             }
             itemRepository.save(item);
         }
         return itemRepository.count(new BooleanBuilder().and(qItem.exam.examCd.eq(dto.getExamCd())));
     }
 
-    public Long validate(String val){
-        if(val != null){
-            if(!val.equals("")) return Long.parseLong(val);
+    public Long validate(String val) {
+        if (val != null) {
+            if (!val.equals("")) return Long.parseLong(val);
         }
         return null;
     }
