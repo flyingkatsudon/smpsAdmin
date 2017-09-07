@@ -52,7 +52,7 @@ define(function (require) {
         render: function () {
             this.constructor.__super__.render.call(this);
             this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
-            this.addExcel(new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl());
+            this.addExcel(new GetUrl({baseName: this.baseName, suffix: XLSX, param: this.param}).getUrl());
             return this;
         }
     });

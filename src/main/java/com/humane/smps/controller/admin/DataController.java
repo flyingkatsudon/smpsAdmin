@@ -108,19 +108,24 @@ public class DataController {
 
     @RequestMapping(value = "scorerH.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scorerH(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
-        switch (format) {
-            case COLMODEL:
-                return ResponseEntity.ok(dataService.getScorerHModel());
-            case JSON:
-                return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
-            default:
-                JasperReportBuilder report = dataService.getScorerHReport();
-                report.setDataSource(dataService.getScorerHData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        try {
+            switch (format) {
+                case COLMODEL:
+                    return ResponseEntity.ok(dataService.getScorerHModel());
+                case JSON:
+                    return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
+                default:
+                    JasperReportBuilder report = dataService.getScorerHReport();
+                    report.setDataSource(dataService.getScorerHData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
-                JasperPrint jasperPrint = report.toJasperPrint();
-                jasperPrint.setName("채점자별 상세(가로)");
+                    JasperPrint jasperPrint = report.toJasperPrint();
+                    jasperPrint.setName("채점자별 상세(가로)");
 
-                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+                    return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -230,7 +235,7 @@ public class DataController {
         report.setDataSource(mapper.absentList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("경북대학교 결시자 리스트)");
+        jasperPrint.setName("경북대학교 결시자 리스트");
 
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }

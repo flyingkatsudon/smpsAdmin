@@ -36,11 +36,12 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl(),
-                    colModel: colModel,
+                    colModel: colModel
+                    /*,
                      onSelectRow : function(rowid, status, e){
                      var param = $(this).jqGrid('getRowData', rowid);
                      new DlgPdf().setUrl('score/detail.pdf?' + $.param(param)).render();
-                     }
+                     }*/
                 }
             }, options);
 

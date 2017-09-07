@@ -77,5 +77,6 @@ public class ScoreDto {
     private String grade02;
     private String grade03;
     private String grade04;
+    private String grade05;
     private String exmAdmNm;
 }
