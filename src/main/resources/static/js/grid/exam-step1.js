@@ -231,6 +231,7 @@ define(function (require) {
                 , isMove: $('input:radio[name="isMove"]:checked').val()
                 , isTimer: $('input:radio[name="isTimer"]:checked').val()
                 , itemCnt: $('#itemCnt').val()
+                , totScore: $('#totScore').val()
                 , printTitle1: $('#printTitle1').val()
                 , printContent1: $('#printContent1').val()
                 , printTitle2: $('#printTitle2').val()
