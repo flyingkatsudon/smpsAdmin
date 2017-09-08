@@ -329,7 +329,7 @@ public class UploadController {
                             String virtNoAssignType = score.getExam().getVirtNoAssignType();
 
                             // 가번호 할당 방식이 '수험번호'라면 가번호 자리에 수험번호를 채움
-                            if (virtNoAssignType.equals("examineeCd")) {
+                            if (virtNoAssignType != null && virtNoAssignType.equals("examineeCd")) {
                                 examMap.setVirtNo(score.getVirtNo());
                                 examMapRepository.save(examMap);
                             }
@@ -338,6 +338,7 @@ public class UploadController {
 
                             scoreRepository.save(score);
                         } catch (Exception e) {
+                            e.printStackTrace();
                             log.error("{}", e.getMessage());
                         }
                     });

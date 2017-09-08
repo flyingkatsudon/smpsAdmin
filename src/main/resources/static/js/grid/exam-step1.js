@@ -39,8 +39,7 @@ define(function (require) {
 
                     var basic2Html = '<div style="margin:3% 0 0 3%;">계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;열<input type="text" id="typeNm" class="set-basic" value="' + rowData.typeNm + '"/></div>';   // 계열 (typeNm)
                     basic2Html += '<div style="margin:3% 0 0 3%;">평가항목<input type="number" min="0" id="itemCnt" class="set-short" value="' + rowData.itemCnt + '"/>&nbsp;개</div>';
-                    //   basic2Html += '<div style="margin:3% 0 0 3%;">시험일자<input type="text" id="hallDate" class="set-basic" value="' + rowData.hallDate + '"/></div>';   // 시험일자 (hallDate)
-                    //   basic2Html += '<div style="margin:3% 0 0 3%;">총&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점<input type="number" min="0" id="totSccore" class="set-short" value="' + rowData.totScore + '"/>&nbsp;점</div>';
+                    basic2Html += '<div style="margin:3% 0 0 3%;">총&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점<input type="number" min="0" id="totScore" class="set-short" value="' + rowData.totScore + '"/></div>';
 
                     var basic3Html = '<div style="margin:3% 0 0 3%;">단&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;계<input type="text" id="period" class="set-basic" value="' + rowData.period + '"/></div>';   // 단계 (period)
                     basic3Html += '<div style="margin:3% 0 0 3%;">평가위원<input type="number" min="0" id="scorerCnt" class="set-short" value="' + rowData.scorerCnt + '"/>&nbsp;명</div>';
@@ -103,9 +102,6 @@ define(function (require) {
                     detail1Html += '<div style="margin:3% 0 0 3%;">가번호 관리<input type="text" id="virtNoAssignType" class="set-lg" value="' + virtNoAssignType + '"/></div>';
                     detail1Html += '<div style="margin:3% 0 0 3%;">가번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="0" id="virtNoDigits" class="set-short" value="' + rowData.virtNoDigits + '"/>&nbsp;&nbsp;자리</div>';
 
-                    // detail2Html += '<div style="margin:3% 0 0 3%;">가번호 시작<input type="number" min="1" id="virtNoStart" class="set-mid" value="' + rowData.virtNoStart + '"/></div>';
-                    // detail2Html += '<div style="margin:3% 0 0 3%;">가번호 종료<input type="number" min="1" id="virtNoEnd" class="set-mid" value="' + rowData.virtNoEnd + '"/></div>';
-
                     $('#detailPart1').append(detail1Html);
 
                     //TODO: select 박스 도입 필요
@@ -134,6 +130,11 @@ define(function (require) {
                         + '<input type="radio" name="isMove" id="isMoveFalse" class="set-radioBtn" value=false />&nbsp;미사용'
                         + '</div>';
 
+                    detail2Html += '<div style="margin:3% 0 0 3%; padding-bottom: 2%">타이머&nbsp;사용'
+                        + '<input type="radio" name="isTimer" id="isTimerTrue" class="set-radioBtn" value=true />&nbsp;사용'
+                        + '<input type="radio" name="isTimer" id="isTimerFalse" class="set-radioBtn" value=false />&nbsp;미사용'
+                        + '</div>';
+
                     $('#detailPart2').append(detail2Html);
 
                     // 평가표 설정값
@@ -158,6 +159,7 @@ define(function (require) {
                     $('input:radio[name="isHorizontal"][value="' + rowData.isHorizontal + '"]').prop('checked', true);
                     $('input:radio[name="isMgrAuto"][value="' + rowData.isMgrAuto + '"]').prop('checked', true);
                     $('input:radio[name="isMove"][value="' + rowData.isMove + '"]').prop('checked', true);
+                    $('input:radio[name="isTimer"][value="' + rowData.isTimer + '"]').prop('checked', true);
                 }, // onShown
                 buttons: [{
                     label: '변경 내용 저장',
@@ -227,8 +229,8 @@ define(function (require) {
                 , isHorizontal: $('input:radio[name="isHorizontal"]:checked').val()
                 , isMgrAuto: $('input:radio[name="isMgrAuto"]:checked').val()
                 , isMove: $('input:radio[name="isMove"]:checked').val()
+                , isTimer: $('input:radio[name="isTimer"]:checked').val()
                 , itemCnt: $('#itemCnt').val()
-                // , keypadType: $('#keypadType').val()
                 , printTitle1: $('#printTitle1').val()
                 , printContent1: $('#printContent1').val()
                 , printTitle2: $('#printTitle2').val()
@@ -238,8 +240,6 @@ define(function (require) {
                 , virtNoDigits: $('#virtNoDigits').val()
                 , virtNoType: $('#virtNoType').val()
                 , virtNoAssignType: str
-                //, virtNoStart: $('#virtNoStart').val()
-                //, virtNoEnd: $('#virtNoEnd').val()
             };
 
             /*//TODO: 빈 항목 체크, 개선 필요!

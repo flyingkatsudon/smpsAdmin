@@ -106,6 +106,7 @@
         , exam.is_horizontal
         , exam.is_mgr_auto
         , exam.is_move
+        , exam.is_timer
         , exam.item_cnt
         , exam.period
         , exam.print_content1
@@ -170,6 +171,7 @@
                 <if test="param.isHorizontal != null">is_horizontal = #{param.isHorizontal},</if>
                 <if test="param.isMgrAuto != null">is_mgr_auto = #{param.isMgrAuto},</if>
                 <if test="param.isMove != null">is_move = #{param.isMove},</if>
+                <if test="param.isTimer != null">is_timer = #{param.isTimer},</if>
                 <if test="param.itemCnt != null">item_cnt = #{param.itemCnt},</if>
                 <if test="param.keypadType != null">keypad_type = #{param.keypadType},</if>
                 <if test="param.printTitle1 != null">print_title1 = #{param.printTitle1},</if>
