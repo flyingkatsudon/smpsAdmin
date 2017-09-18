@@ -156,7 +156,6 @@
         FROM (
         SELECT
         admission.admission_nm,
-        --  exam.exam_nm,
         exam.type_nm,
         exam_hall_date.hall_date AS exam_date,
         hall.head_nm,
@@ -172,7 +171,7 @@
         INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
         INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.hall_date = exam_map.hall_date
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
-        INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
+        INNER JOIN examinee a ON a.examinee_cd = exam_map.examinee_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
@@ -182,6 +181,8 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.deptNm != null">AND a.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND a.major_nm = #{param.majorNm} </if>
                 <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
             </if>
         </where>
@@ -189,7 +190,6 @@
         admission.admission_nm,
         exam.type_nm,
         exam_hall_date.hall_date,
-        --     exam.exam_nm,
         hall.head_nm,
         hall.bldg_nm,
         hall.hall_nm

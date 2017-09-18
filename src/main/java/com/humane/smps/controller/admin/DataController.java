@@ -323,6 +323,29 @@ public class DataController {
         }
     }
 
+    @RequestMapping(value = "skku.{format:colmodel|json|xls|xlsx}")
+    public ResponseEntity skkuPeriod1(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+        try {
+            switch (format) {
+                case COLMODEL:
+                    return ResponseEntity.ok(dataService.getScorerHModel());
+                case JSON:
+                    return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
+                default:
+                    JasperReportBuilder report = dataService.getScorerHReport();
+                    report.setDataSource(dataService.getSkkuPeriod1(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+                    JasperPrint jasperPrint = report.toJasperPrint();
+                    jasperPrint.setName("채점자별 상세(가로)");
+
+                    return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     // 초기에 시험이름, 시험코드를 불러옴
     @RequestMapping(value = "examInfo.json")
     public ResponseEntity examInfo() {

@@ -588,6 +588,11 @@ public class DataService {
         return mapper.scoredH(param, pageable);
     }
 
+    // 가로버전
+    public Page<Map<String, Object>> getSkkuPeriod1(ScoreDto param, Pageable pageable) {
+        return mapper.skkuPeriod1(param, pageable);
+    }
+
     // 동점자 현황
     public Page<Map<String, Object>> getDrawData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.drawData(param, pageable);

@@ -313,13 +313,6 @@ public class UploadController {
 
                     wrapper.getContent().forEach(score -> {
                         try {
-                            // 기존에 입력된 점수가 있는지 검사
-                            Score tmp = scoreRepository.findOne(new BooleanBuilder()
-                                    .and(QScore.score.exam.examCd.eq(score.getExam().getExamCd()))
-                                    .and(QScore.score.virtNo.eq(score.getVirtNo()))
-                                    .and(QScore.score.scorerNm.eq(score.getScorerNm()))
-                            );
-
                             // score에 입력될 데이터에 수험생 정보가 있는지 검사
                             ExamMap examMap = examMapRepository.findOne(new BooleanBuilder()
                                     .and(QExamMap.examMap.exam.examCd.eq(score.getExam().getExamCd()))
@@ -334,6 +327,12 @@ public class UploadController {
                                 examMapRepository.save(examMap);
                             }
 
+                            // 기존에 입력된 점수가 있는지 검사
+                            Score tmp = scoreRepository.findOne(new BooleanBuilder()
+                                    .and(QScore.score.exam.examCd.eq(score.getExam().getExamCd()))
+                                    .and(QScore.score.virtNo.eq(score.getVirtNo()))
+                                    .and(QScore.score.scorerNm.eq(score.getScorerNm()))
+                            );
                             if (tmp != null) score.set_id(tmp.get_id());
 
                             scoreRepository.save(score);

@@ -255,8 +255,8 @@ public class SystemService {
                         }
                         return Observable.from(page.content);
                     })
-                    .flatMap(examMap -> Observable.just(examMap.getExaminee().getExamineeCd() + ".jpg"))
-                    .flatMap(fileName -> imageExaminee(apiService, fileName))
+                   // .flatMap(examMap -> Observable.just(examMap.getExaminee().getExamineeCd() + ".jpg"))
+                   // .flatMap(fileName -> imageExaminee(apiService, fileName))
                     .reduce(new ArrayList<>(), (list, file) -> list)
                     .toBlocking().first();
         }

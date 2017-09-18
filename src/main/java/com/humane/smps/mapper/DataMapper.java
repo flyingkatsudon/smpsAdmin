@@ -37,6 +37,9 @@ public interface DataMapper {
     // 채점자별 상세(가로)
     Page<Map<String, Object>> scoredH(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 
+    // 성균관대 연기 1단게
+    Page<Map<String, Object>> skkuPeriod1(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
+
     List<EvalDto> paperToSmps(@Param("param") EvalDto param);
 
     void fillEvalCd(@Param("param") EvalDto param);

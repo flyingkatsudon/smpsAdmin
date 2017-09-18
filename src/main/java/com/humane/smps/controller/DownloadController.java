@@ -109,7 +109,7 @@ public class DownloadController {
         scoreDto.setAdmissionNm(statusDto.getAdmissionNm());
         scoreDto.setExamDate(statusDto.getExamDate());
         scoreDto.setDeptNm(statusDto.getDeptNm());
-        scoreDto.setDeptNm(statusDto.getDeptNm());
+        scoreDto.setMajorNm(statusDto.getMajorNm());
 
         ExamineeDto examineeDto = new ExamineeDto();
         examineeDto.setAdmissionNm(statusDto.getAdmissionNm());

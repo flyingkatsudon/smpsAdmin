@@ -205,7 +205,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="220" y="0" width="80" height="15" uuid="212bbecd-2253-40e2-a49e-d3995a0633e5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
