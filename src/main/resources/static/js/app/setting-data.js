@@ -45,18 +45,14 @@ define(function (require) {
                             return false;
                         }
                     }
-                    responseDialog.notify({
-                        msg: '<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>',
-                        closable: false
-                    });
-
+                    responseDialog.progress('업로드');
                 },
                 error: function (response) {
                     responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
                     $('#search').trigger('click');
-                    responseDialog.notify({msg: response});
+                    responseDialog.move(response);
                 }
             });
         },
@@ -102,6 +98,7 @@ define(function (require) {
                         label: '다운로드',
                         cssClass: 'btn-primary',
                         action: function (dialogRef) {
+
                             // 화면상에 선택된 줄 가져오기
                             var $grid = dialogRef.list.$grid;
 
@@ -120,13 +117,18 @@ define(function (require) {
 
                             // 데이터 전송
                             if (param && param.list.length > 0) {
+
                                 $.ajax({
+                                    beforeSend: function () {
+                                        responseDialog.progress('다운로드');
+                                    },
                                     url: 'system/download',
                                     type: 'POST',
+                                    //async: false,
                                     data: JSON.stringify(param),
                                     contentType: 'application/json',
                                     success: function (response) {
-                                        responseDialog.notify({msg: response});
+                                        responseDialog.move(response);
                                     },
                                     error: function (response, status, error) {
                                         responseDialog.notify({msg: response.responseJSON});
@@ -190,16 +192,18 @@ define(function (require) {
             dialog.open();
         },
         reset: function (o) {
-            var _this = this;
-
             $.ajax({
+                beforeSend: function () {
+                    responseDialog.progress('삭제');
+                },
                 url: 'system/reset',
                 data: {
                     photo: o
                 },
                 success: function (response) {
-                    responseDialog.notify({msg: response});
-                }, error: function (response) {
+                    responseDialog.move(response);
+                },
+                error: function (response) {
                     responseDialog.notify({msg: response.responseJSON});
                 }
             });
@@ -231,9 +235,12 @@ define(function (require) {
                                         cssClass: 'btn-primary',
                                         action: function () {
                                             $.ajax({
+                                                beforeSend: function () {
+                                                    responseDialog.progress('초기화');
+                                                },
                                                 url: 'system/init?examCd=' + examCd,
                                                 success: function (response) {
-                                                    responseDialog.notify({msg: response});
+                                                    responseDialog.move(response);
                                                 }
                                             });
                                         }
@@ -288,15 +295,18 @@ define(function (require) {
                             }
 
                             $.ajax({
+                                beforeSend: function () {
+                                    responseDialog.progress('처리');
+                                },
                                 url: 'data/fillVirtNo.json?examCd=' + examCd,
                                 success: function (response) {
-                                    responseDialog.notify({msg: response});
+                                    responseDialog.move(response);
                                 }
                             });
                         }
                     },
                     {
-                        label: '답안지 번호',
+                        label: '캔버스 번호',
                         cssClass: 'btn-primary',
                         action: function () {
 
@@ -308,9 +318,12 @@ define(function (require) {
                             }
 
                             $.ajax({
+                                beforeSend: function () {
+                                    responseDialog.progress('처리');
+                                },
                                 url: 'data/fillEvalCd.json?examCd=' + examCd,
                                 success: function (response) {
-                                    responseDialog.notify({msg: response});
+                                    responseDialog.move(response);
                                 },
                                 error: function (response) {
                                     responseDialog.notify({msg: response.responseJSON});
@@ -360,9 +373,12 @@ define(function (require) {
                                             return false;
                                         }
                                         $.ajax({
+                                            beforeSend: function () {
+                                                responseDialog.progress('처리');
+                                            },
                                             url: 'data/fillScore.json?examCd=' + examCd + '&score=' + score,
                                             success: function (response) {
-                                                responseDialog.notify({msg: response});
+                                                responseDialog.move(response);
                                             },
                                             error: function (response) {
                                                 responseDialog.notify({msg: response.responseJSON});

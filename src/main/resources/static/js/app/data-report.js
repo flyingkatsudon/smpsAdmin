@@ -13,6 +13,9 @@ define(function (require) {
 
     var toolbar = new Toolbar();
 
+    var ResponseDialog = require('../responseDialog.js');
+    var responseDialog = new ResponseDialog();
+
     return Backbone.View.extend({
         initialize: function (o) {
             // this.el = o.el;
@@ -71,7 +74,7 @@ define(function (require) {
                 $('#' + univCd).show(); // 해당 전형의 학교 전용이라는 것을 표시한다
                 $('#' + admissionCd).show(); // 있다면 보여주고
             }
-            else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김*/
+            else $('#' + univCd).hide(); // 없다면 'OO대학교 전용' 이란 표시도 숨김
         },
         events: {
             'click .btn': 'buttonClicked',
@@ -109,12 +112,13 @@ define(function (require) {
         txtDownloadClicked: function (e) {
             BootstrapDialog.show({
                 title: '텍스트파일 다운로드',
-                message: '다운로드가 완료되었습니다.',
+                message: '다운로드 중입니다',
                 closable: true,
                 onshow: function (dialog) {
                     $.ajax({
                         url: 'data/physical.txt',
-                        success: function (data) {
+                        success: function (response) {
+                            responseDialog.notify({msg: response});
                         }
                     });
                 }

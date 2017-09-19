@@ -376,13 +376,13 @@
     <select id="paperToSmps" resultType="com.humane.smps.dto.EvalDto">
         SELECT DISTINCT attend_map.examinee_cd,
         (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd
-        AND attend_paper.examinee_cd = attend_map.examinee_cd AND attend_paper.paper_no = 1
+        AND attend_paper.examinee_cd = attend_map.examinee_cd -- AND attend_paper.paper_no = 1
         ORDER BY reg_dttm DESC LIMIT 1
         ) AS eval_cd,
         (SELECT exam_cd FROM exam_map WHERE attend_paper.examinee_cd = exam_map.examinee_cd) AS exam_cd
         FROM attend_map
         INNER JOIN attend_paper ON attend_paper.attend_cd = attend_map.attend_cd
-        AND attend_paper.examinee_cd = attend_map.examinee_cd AND attend_paper.paper_no = 1
+        AND attend_paper.examinee_cd = attend_map.examinee_cd -- AND attend_paper.paper_no = 1
         <where>
             <if test="param.examCd != null">AND attend_map.attend_cd = #{param.examCd}</if>
         </where>

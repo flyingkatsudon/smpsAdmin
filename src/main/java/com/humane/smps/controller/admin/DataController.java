@@ -311,7 +311,7 @@ public class DataController {
                     } catch (IOException e) {
                     }
                 }
-                return ResponseEntity.ok("완료되었습니다");
+                return ResponseEntity.ok("텍스트파일 다운로드가 완료되었습니다");
             default:
                 JasperReportBuilder report = dataService.getPhysicalReport();
                 report.setDataSource(mapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
