@@ -607,6 +607,18 @@ h4 {
     width: 60%;
     margin-left: 10%;
 }
+
+.myProgress {
+    width: 100%;
+    background-color: #ddd;
+}
+
+.myBar {
+    width: 1%;
+    height: 30px;
+    background-color: #4CAF50;
+}
+
 .sys-group {
     margin-top: 1%;
     margin-bottom: 3%;

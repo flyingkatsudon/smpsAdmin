@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.exception.ZipException;
 import net.sf.dynamicreports.report.exception.DRException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,7 @@ import java.util.Date;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DownloadController {
     @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    //@Value("${path.smps:/Users/Jeremy/Humane/api/smps}") String pathRoot;
     private final StatusMapper statusMapper;
     private final DataMapper dataMapper;
     private final DataService dataService;
@@ -107,7 +109,7 @@ public class DownloadController {
         scoreDto.setAdmissionNm(statusDto.getAdmissionNm());
         scoreDto.setExamDate(statusDto.getExamDate());
         scoreDto.setDeptNm(statusDto.getDeptNm());
-        scoreDto.setDeptNm(statusDto.getDeptNm());
+        scoreDto.setMajorNm(statusDto.getMajorNm());
 
         ExamineeDto examineeDto = new ExamineeDto();
         examineeDto.setAdmissionNm(statusDto.getAdmissionNm());
@@ -186,18 +188,17 @@ public class DownloadController {
         // 1. 사진 폴더 생성
         File jpgFolder = new File(jpgPath);
 
-        if(jpgFolder.exists()) {
+        if (jpgFolder.exists()) {
             // 1.1 사진 가져옴
             File[] jpgList = jpgFolder.listFiles();
-            if(jpgList != null) {
+            if (jpgList != null) {
                 // 1.2 사진 저장
                 for (File f : jpgList) {
                     if (f.isFile())
                         zipFile.addFile("수험생서명", f);
                 }
             }
-        }
-        else jpgFolder.mkdirs();
+        } else jpgFolder.mkdirs();
 
         String pdfPath = pathRoot + "/pdf";
         // 2. pdf 폴더 생성
@@ -205,11 +206,24 @@ public class DownloadController {
         // 2.1 pdf 가져옴
         File[] pdfList = pdfFolder.listFiles();
 
-        if(pdfList != null) {
+        if (pdfList != null) {
             // 2.2 pdf 저장
-            for (File f : pdfList) {
-                if (f.isFile())
-                    zipFile.addFile("평가위원 평가표", f);
+            if (statusDto.getDeptNm() != null) {
+                for (int i = 0; i < pdfList.length; i++) {
+
+                    String str = pdfList[i].getName().trim();
+                    String deptNm = statusDto.getDeptNm().trim();
+
+                    if (str.contains(deptNm)) {
+                        File f = new File(pdfPath + "/" + pdfList[i].getName());
+                        zipFile.addFile("평가위원 평가표", f);
+                    }
+                }
+            } else {
+                for (File f : pdfList) {
+                    if (f.isFile())
+                        zipFile.addFile("평가위원 평가표", f);
+                }
             }
         }
 
@@ -303,8 +317,8 @@ public class DownloadController {
         if (!path.exists()) path.mkdirs();
 
         File[] files = path.listFiles((dir, name) -> name.endsWith(".jpg"));
-        if(files != null && files.length > 0){
-            for(File f : files){
+        if (files != null && files.length > 0) {
+            for (File f : files) {
                 if (f.isFile())
                     zipFile.addFile(f);
             }

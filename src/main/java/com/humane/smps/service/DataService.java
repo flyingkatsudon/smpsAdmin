@@ -107,8 +107,6 @@ public class DataService {
             colModels.add(new ColModel("score" + (i < 10 ? "0" + i : i), "항목" + i));
 
         colModels.add(new ColModel("totalScore", "총점"));
-        /*colModels.add(new ColModel("memo", "메모"));
-        colModels.add(new ColModel("isPhoto", "사진"));*/
         colModels.add(new ColModel("scoreDttm", "채점시간"));
 
         return colModels;
@@ -371,8 +369,6 @@ public class DataService {
 
         //report.addColumn(col.column("총점", "totalScore", type.bigDecimalType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));// 법대용
         report.addColumn(col.column("총점", "totalScore", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        /*report.addColumn(col.column("메모", "memo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        report.addColumn(col.column("사진", "isPhoto", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));*/
         report.addColumn(col.column("채점시간", "scoreDttm", type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
         return report;
 
@@ -503,8 +499,9 @@ public class DataService {
         return report;
     }
 
-    // TODO: 기본형, 결시생을 'F' 버튼을 눌러 처리하는 경우
-   /* public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+    // TODO: 기본형, 결시생을 'F' 버튼을 눌러 처리하는 경우, ex) 한양대 의대 서류평가
+    /*
+    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.examMap(param, pageable);
         return fillMap(page);
     }
@@ -586,6 +583,11 @@ public class DataService {
     // 가로버전
     public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         return mapper.scoredH(param, pageable);
+    }
+
+    // 가로버전
+    public Page<Map<String, Object>> getSkkuPeriod1(ScoreDto param, Pageable pageable) {
+        return mapper.skkuPeriod1(param, pageable);
     }
 
     // 동점자 현황

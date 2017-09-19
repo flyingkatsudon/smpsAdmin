@@ -39,8 +39,7 @@ define(function (require) {
 
                     var basic2Html = '<div style="margin:3% 0 0 3%;">계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;열<input type="text" id="typeNm" class="set-basic" value="' + rowData.typeNm + '"/></div>';   // 계열 (typeNm)
                     basic2Html += '<div style="margin:3% 0 0 3%;">평가항목<input type="number" min="0" id="itemCnt" class="set-short" value="' + rowData.itemCnt + '"/>&nbsp;개</div>';
-                    //   basic2Html += '<div style="margin:3% 0 0 3%;">시험일자<input type="text" id="hallDate" class="set-basic" value="' + rowData.hallDate + '"/></div>';   // 시험일자 (hallDate)
-                    //   basic2Html += '<div style="margin:3% 0 0 3%;">총&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점<input type="number" min="0" id="totSccore" class="set-short" value="' + rowData.totScore + '"/>&nbsp;점</div>';
+                    basic2Html += '<div style="margin:3% 0 0 3%;">총&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점<input type="number" min="0" id="totScore" class="set-short" value="' + rowData.totScore + '"/></div>';
 
                     var basic3Html = '<div style="margin:3% 0 0 3%;">단&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;계<input type="text" id="period" class="set-basic" value="' + rowData.period + '"/></div>';   // 단계 (period)
                     basic3Html += '<div style="margin:3% 0 0 3%;">평가위원<input type="number" min="0" id="scorerCnt" class="set-short" value="' + rowData.scorerCnt + '"/>&nbsp;명</div>';

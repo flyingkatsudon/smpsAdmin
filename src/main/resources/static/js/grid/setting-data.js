@@ -33,6 +33,8 @@ define(function (require) {
                 {name: 'isMgrAuto', hidden: true},      // 가번호 자동 여부
                 {name: 'isMove', hidden: true},         // 지정이동 사용 여부 (점수 입력 시, 지정이동 될 수 있음)
                 {name: 'itemCnt', hidden: true},        // 항목 갯수
+                {name: 'totScore', hidden: true},        // 총점
+                {name: 'isTimer', hidden: true},        // 타이머 사용 여부
 
                 {name: 'printContent1', hidden: true},
                 {name: 'printContent2', hidden: true},
