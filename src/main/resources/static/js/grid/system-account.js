@@ -19,7 +19,7 @@ define(function (require) {
                 {name: 'userId', label: '계정'},
                 {name: 'password', label: '비밀번호'},
                 {name: 'admissions', label: '전형'},
-                {name: 'role', label: '권한'},
+                {name: 'role', label: '구분'},
                 {name: 'roleName', hidden: true}
             ];
 

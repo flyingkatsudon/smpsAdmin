@@ -153,6 +153,10 @@ define(function (require) {
                             //step1.getModalDialog().hide();
 
                             for (var i = 0; i < response.length; i++) {
+
+                                if (response[i]['virtNoStart'] == undefined) response[i].virtNoStart = '';
+                                if (response[i]['virtNoEnd'] == undefined) response[i].virtNoEnd = '';
+
                                 var html =
                                     '<h5><div id="' + response[i].id + '" class="col-lg-12">' +
                                     '<div class="col-lg-6">' +
@@ -287,12 +291,12 @@ define(function (require) {
                     _hallCd: param[i]._hallCd
                 };
 
-                for (var obj in tmp) {
+              /*  for (var obj in tmp) {
                     if (tmp[obj] == '') {
                         responseDialog.notify({msg: '빈 값을 확인하세요', closeAll: false});
                         return false;
                     }
-                }
+                }*/
             }
 
             // 빈 값이 없다면

@@ -71,7 +71,7 @@ public class UploadService {
                 if (keypadType.equals("0")) {
                     item.setMaxScore(validate("100"));
                     item.setMinScore(validate("0"));
-                    item.setMaxWarning(validate("10"));
+                    item.setMaxWarning(validate("9"));
                     item.setMinWarning(validate("0"));
                 }
 

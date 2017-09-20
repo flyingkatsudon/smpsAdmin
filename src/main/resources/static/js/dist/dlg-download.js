@@ -16,14 +16,14 @@ define(function (require) {
         render: function (options) {
             options = options ? options : this.options;
             $.fileDownload(options.url, {
-                data : options.data ? options.data: null,
+                data: options.data ? options.data : null,
                 preparingMessageHtml: responseDialog.progress('생성'),
                 failMessageHtml: "관리자에게 문의하세요."
             });
 
             this.move();
         },
-        move: function(){
+        move: function () {
             var width = 1;
 
             var id = setInterval(frame, 150);

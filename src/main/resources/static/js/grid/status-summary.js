@@ -12,6 +12,9 @@ define(function (require) {
         render: function (e) {
 
             if (this.param != undefined) {
+                this.param.admissionNm = $('#admissionNm').val();
+                this.param.typeNm = $('#typeNm').val();
+                this.param.examDate = $('#examDate').val();
                 this.param.deptNm = $('#deptNm').val();
                 this.param.majorNm = $('#majorNm').val();
                 this.param.headNm = $('#headNm').val();
