@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.smps.mapper.StatusMapper">
     <!-- TODO: 기존 all, 가번호 갯수만큼 응시인원 체크함-->
-    <!--<select id="all" resultType="com.humane.smps.dto.StatusDto">
+    <select id="all" resultType="com.humane.smps.dto.StatusDto">
         SELECT
         COUNT(*)                                                AS examinee_cnt,
         COUNT(exam_map.scan_dttm)                               AS attend_cnt,
@@ -31,9 +31,9 @@
                 <if test="param.groupNm != null">AND exam_map.group_nm LIKE '%' #{param.groupNm} '%' </if>
             </if>
         </where>
-    </select>-->
+    </select>
     <!-- TODO: 점수가 있어야 응시한 것으로 인정 -->
-    <select id="all" resultType="com.humane.smps.dto.StatusDto">
+    <!--<select id="all" resultType="com.humane.smps.dto.StatusDto">
         select examinee_cnt, examinee_cnt - absent_cnt as attend_cnt
                 , absent_cnt
                 , (examinee_cnt - absent_cnt) * 100 / examinee_cnt as attend_per
@@ -64,7 +64,7 @@
                     </if>
                 </where>
         ) as result
-    </select>
+    </select>-->
 
     <!-- TODO: 가번호가 사전에 배정된 경우 응시율 요약, 점수가 있어야 응시한 것으로 인정 -->
     <!-- <select id="all" resultType="com.humane.smps.dto.StatusDto">
