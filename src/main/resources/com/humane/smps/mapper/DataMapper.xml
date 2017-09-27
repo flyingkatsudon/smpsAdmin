@@ -344,16 +344,6 @@
         ORDER BY score.scorer_nm
     </select>
 
-    <select id="examInfo" resultType="com.humane.smps.dto.ExamDto">
-        SELECT exam.exam_cd, exam.exam_nm
-        FROM exam
-        <where>
-            <if test="param!=null">
-                AND exam_cd = #{examCd}
-            </if>
-        </where>
-    </select>
-
     <select id="examDetail" resultType="com.humane.smps.dto.ExamDto">
         SELECT exam.exam_cd, exam.exam_nm, exam_map.hall_cd,
 		  MAX(exam_map.virt_no) AS last_virt_no

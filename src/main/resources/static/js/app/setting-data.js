@@ -9,7 +9,7 @@ define(function (require) {
     var BootstrapDialog = require('bootstrap-dialog');
     var List = require('../grid/system-download.js');
     var dlgUniv = require('text!tpl/dlg-univ.html');
-    var examList = [];
+    var examList = [], admissionList = [];
 
     var ResponseDialog = require('../responseDialog.js');
     var responseDialog = new ResponseDialog();
@@ -154,27 +154,66 @@ define(function (require) {
 
         },
         resetClicked: function (e) {
+            var text = '<select id="admissionCd"><option value="">전체</option>';
+
             var _this = this;
             var dialog = new BootstrapDialog({
-                message: '<h5 style="margin-left:10%">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
+                message: '<h5 style="margin-left:10%">삭제할 전형을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + _this.getAdmissionList(text) + '</h5>',
+                closable: true,
                 buttons: [
-                    /*{
-                     label: '사진포함',
-                     cssClass: 'btn-primary',
-                     action: function () {
-                     BootstrapDialog.closeAll();
-                     BootstrapDialog.show({
-                     title: '서버 데이터 관리',
-                     message: '진행 중입니다. 잠시만 기다려주세요.',
-                     closable: false
-                     });
-                     _this.reset(true);
-                     }
-                     },*/
                     {
-                        label: '사진 미포함',
+                        label: '계속',
+                        cssClass: 'btn-primary',
                         action: function () {
-                            _this.reset(false);
+
+                            var admissionCd = $('#admissionCd').val();
+                            var admissionNm = _this.getAdmissionNm(admissionCd);
+
+                            // 전형을 선택하였으면 시험을 선택하는 창이 나옴
+                            if (admissionCd != '') {
+                                _this.drawDialog(admissionCd);
+                            }
+                            // 전형을 선택하지 않으면 삭제 여부를 묻는 창이 나옴
+                            else {
+                                var innerDialog = new BootstrapDialog({
+                                    title: '<h4>' + admissionNm + '&nbsp;삭제</h4>',
+                                    message: '<h5 style="text-align: center">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
+                                    buttons: [
+                                        /*{
+                                         label: '사진포함',
+                                         cssClass: 'btn-primary',
+                                         action: function () {
+                                         BootstrapDialog.closeAll();
+                                         BootstrapDialog.show({
+                                         title: '서버 데이터 관리',
+                                         message: '진행 중입니다. 잠시만 기다려주세요.',
+                                         closable: false
+                                         });
+                                         _this.reset(true);
+                                         }
+                                         },*/
+                                        {
+                                            label: '사진 미포함',
+                                            action: function () {
+
+                                                console.log(admissionCd);
+                                                if (admissionCd == undefined) admissionCd = '';
+                                                _this.reset(admissionCd, null, false);
+                                            }
+                                        },
+                                        {
+                                            label: '닫기',
+                                            action: function (innerDialog) {
+                                                innerDialog.close();
+                                            }
+                                        }
+                                    ]
+                                });
+
+                                innerDialog.realize();
+                                innerDialog.getModalDialog().css('margin-top', '20%');
+                                innerDialog.open();
+                            }
                         }
                     },
                     {
@@ -190,17 +229,21 @@ define(function (require) {
             dialog.getModalDialog().css('margin-top', '20%');
             dialog.getModalHeader().hide();
             dialog.open();
+
         },
-        reset: function (o) {
+        reset: function (admissionCd, examCd, o) {
             $.ajax({
                 beforeSend: function () {
                     responseDialog.progress('삭제');
                 },
                 url: 'system/reset',
                 data: {
+                    admissionCd: admissionCd,
+                    examCd: examCd,
                     photo: o
                 },
                 success: function (response) {
+                    $('#search').trigger('click');
                     responseDialog.move(response);
                 },
                 error: function (response) {
@@ -241,6 +284,7 @@ define(function (require) {
                                                 url: 'system/init?examCd=' + examCd,
                                                 success: function (response) {
                                                     responseDialog.move(response);
+                                                    $('#search').trigger('click');
                                                 }
                                             });
                                         }
@@ -412,14 +456,133 @@ define(function (require) {
             dialog.open();
 
         },
-        getExamList: function (text) {
+        drawDialog: function (admissionCd) {
+            var _this = this;
+
+            var text = '<select id="examCd"><option value="">전체</option>';
+            var dialog = new BootstrapDialog({
+                message: '<h5 style="margin-left:10%">삭제할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getExamList(admissionCd, text) + '</h5>',
+                closable: true,
+                buttons: [
+                    {
+                        label: '계속',
+                        cssClass: 'btn-primary',
+                        action: function () {
+
+                            var examCd = $('#examCd').val();
+                            var examNm = _this.getExamNm(examCd);
+
+                            var innerDialog = new BootstrapDialog({
+                                title: '<h4>' + _this.getAdmissionNm(admissionCd) + '&nbsp;/&nbsp;' + examNm + '&nbsp;삭제</h4>',
+                                message: '<h5 style="text-align: center">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
+                                buttons: [
+                                    /*{
+                                     label: '사진포함',
+                                     cssClass: 'btn-primary',
+                                     action: function () {
+                                     BootstrapDialog.closeAll();
+                                     BootstrapDialog.show({
+                                     title: '서버 데이터 관리',
+                                     message: '진행 중입니다. 잠시만 기다려주세요.',
+                                     closable: false
+                                     });
+                                     _this.reset(true);
+                                     }
+                                     },*/
+                                    {
+                                        label: '사진 미포함',
+                                        action: function () {
+
+                                            if (admissionCd == undefined) admissionCd = '';
+                                            if (examCd == undefined) examCd = '';
+
+                                            if (examCd == '') _this.reset(admissionCd, null, false);
+                                            else _this.reset(null, examCd, false);
+                                        }
+                                    },
+                                    {
+                                        label: '닫기',
+                                        action: function (innerDialog) {
+                                            innerDialog.close();
+                                        }
+                                    }
+                                ]
+                            });
+
+                            innerDialog.realize();
+                            innerDialog.getModalDialog().css('margin-top', '20%');
+                            innerDialog.open();
+                        }
+                    },
+                    {
+                        label: '닫기',
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
+
+            dialog.realize();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalHeader().hide();
+            dialog.open();
+        },
+        getAdmissionList: function (text){
             $.ajax({
-                url: 'data/examInfo.json',
+                url: 'system/examInfo',
+                async: false,
+                success: function (response) {
+
+                    var tmp = [];
+
+                    for (var i = 0; i < response.length; i++) {
+                        var flag = true;
+
+                        for (var j = 0; j < i; j++) {
+                            if (response[i].admissionCd == response[j].admissionCd) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (flag) tmp.push({
+                            admissionCd: response[i].admissionCd,
+                            admissionNm: response[i].admissionNm
+                        });
+                    }
+
+                    for (var i = 0; i < tmp.length; i++) {
+                        text += '<option value="' + tmp[i].admissionCd + '">' + tmp[i].admissionNm + '</option>';
+                        admissionList.push({admissionCd: tmp[i].admissionCd, admissionNm: tmp[i].admissionNm});
+                    }
+                    text += '</select>';
+                }
+            });
+
+            return text;
+        },
+        getAdmissionNm: function (admissionCd) {
+
+            var admissionNm = '전형 전체';
+
+            for (var i = 0; i < admissionList.length; i++) {
+                if (admissionList[i].admissionCd == admissionCd)
+                    admissionNm = admissionList[i].admissionNm;
+            }
+
+            return admissionNm;
+
+        },
+        getExamList: function (admissionCd, text) {
+            $.ajax({
+                url: 'system/examInfo',
                 async: false,
                 success: function (response) {
                     for (var i = 0; i < response.length; i++) {
-                        text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>';
-                        examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
+                        if (response[i].admissionCd == admissionCd) {
+                            text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>';
+                            examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
+                        }
                     }
                     text += '</select>';
                 }
@@ -428,7 +591,7 @@ define(function (require) {
         },
         getExamNm: function (examCd) {
 
-            var examNm = '데이터 초기화';
+            var examNm = '시험 전체';
 
             for (var i = 0; i < examList.length; i++) {
                 if (examList[i].examCd == examCd)

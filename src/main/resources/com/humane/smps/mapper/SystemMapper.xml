@@ -3,6 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.smps.mapper.SystemMapper">
+    <select id="examInfo" resultType="com.humane.smps.dto.ExamDto">
+        SELECT admission.admission_cd, admission.admission_nm, exam.exam_cd, exam.exam_nm
+        FROM exam
+        inner join admission on admission.admission_cd = exam.admission_cd
+        <where>
+            <if test="param!=null">
+                AND exam.exam_cd = #{examCd}
+            </if>
+        </where>
+    </select>
+
     <select id="account" resultType="com.humane.smps.dto.AccountDto">
         select *
         from (select user.user_id, user.password,
