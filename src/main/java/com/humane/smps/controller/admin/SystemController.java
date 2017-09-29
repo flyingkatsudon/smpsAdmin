@@ -3,18 +3,17 @@ package com.humane.smps.controller.admin;
 import com.humane.smps.dto.*;
 import com.humane.smps.mapper.SystemMapper;
 import com.humane.smps.model.*;
-import com.humane.smps.repository.HallRepository;
-import com.humane.smps.repository.UserAdmissionRepository;
-import com.humane.smps.repository.UserRepository;
-import com.humane.smps.repository.UserRoleRepository;
+import com.humane.smps.repository.*;
 import com.humane.smps.service.ApiService;
 import com.humane.smps.service.SystemService;
 import com.humane.util.retrofit.ServiceBuilder;
 import com.humane.util.spring.Page;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +34,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemController {
+
+    @PersistenceContext
+    private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final UserAdmissionRepository userAdmissionRepository;
+    private final ExamRepository examRepository;
     private final UserRoleRepository userRoleRepository;
     private final HallRepository hallRepository;
 
@@ -100,9 +105,40 @@ public class SystemController {
     }
 
     @RequestMapping(value = "reset")
-    public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
+    public ResponseEntity reset(@RequestParam("admissionCd") String admissionCd, @RequestParam("examCd") String examCd, @RequestParam(defaultValue = "false") boolean photo) throws IOException {
         try {
-            systemService.resetData(photo);
+            // 전형별 삭제 시
+            if (admissionCd != null) {
+                // 1. 시험코드를 갖지 않는 row는 미리 삭제
+                HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
+                queryFactory.delete(QUserAdmission.userAdmission).where(QUserAdmission.userAdmission.admission.admissionCd.eq(admissionCd)).execute();
+
+                // 2. 전형이 가지는 시험코드 리스트 불러옴
+                // 2-1. 상위시험코드가 있는 시험부터 불러옴
+                Iterable<Exam> fkList = examRepository.findAll(new BooleanBuilder()
+                        .and(QExam.exam.admission.admissionCd.eq(admissionCd))
+                        .and(QExam.exam.fkExam.examCd.isNotNull())
+                );
+
+                fkList.forEach(vo -> {
+                    String tmp = vo.getExamCd();
+                    systemService.resetData(tmp, photo);
+                });
+
+                // 2-2. 나머지 시험 불러옴
+                Iterable<Exam> list = examRepository.findAll(new BooleanBuilder()
+                        .and(QExam.exam.admission.admissionCd.eq(admissionCd))
+                );
+
+                list.forEach(vo -> {
+                    String tmp = vo.getExamCd();
+                    systemService.resetData(tmp, photo);
+                });
+            }
+            // 시험별 삭제 시
+            else systemService.resetData(examCd, photo);
+
+
             return ResponseEntity.ok("삭제가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
         } catch (Exception e) {
             log.debug("{}", e.getMessage());
@@ -118,6 +154,20 @@ public class SystemController {
         } catch (Exception e) {
             log.debug("{}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
+        }
+    }
+
+    // 초기에 시험이름, 시험코드를 불러옴
+    @RequestMapping(value = "examInfo")
+    public ResponseEntity examInfo() {
+        try {
+            List<ExamDto> examInfo = systemMapper.examInfo();
+            log.debug("examInfo: {}", examInfo);
+
+            return ResponseEntity.ok(systemMapper.examInfo());
+        } catch (Exception e) {
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

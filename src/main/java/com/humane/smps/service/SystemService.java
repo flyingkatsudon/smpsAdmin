@@ -52,90 +52,182 @@ public class SystemService {
     String pathPdf;
 
     @Transactional
-    public void resetData(boolean photo) throws IOException {
+    public void resetData(String examCd, boolean photo) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        queryFactory.delete(QSheet.sheet).execute();
-        queryFactory.delete(QScore.score).execute();
-        queryFactory.delete(QScoreLog.scoreLog).execute();
-        queryFactory.delete(QExamHallDate.examHallDate).execute();
+        if (examCd != null) {
+            queryFactory.delete(QSheet.sheet).where(QSheet.sheet.exam.examCd.eq(examCd)).execute();
+            queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();
+            queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
+            queryFactory.delete(QExamHallDate.examHallDate).where(QExamHallDate.examHallDate.exam.examCd.eq(examCd)).execute();
 
-        // 고려대 면접고사용
-        queryFactory.delete(QExamDebateHall.examDebateHall).execute();
+            // 고려대 면접고사용
+            queryFactory.delete(QExamDebateHall.examDebateHall).execute();
 
-        QExaminee examinee = QExaminee.examinee;
-        QExamMap examMap = QExamMap.examMap;
+            QExaminee examinee = QExaminee.examinee;
+            QExamMap examMap = QExamMap.examMap;
 
-        ScrollableResults scrollableResults = queryFactory.select(examMap.examinee.examineeCd)
-                .distinct()
-                .from(examMap)
-                .setFetchSize(Integer.MIN_VALUE)
-                .scroll(ScrollMode.FORWARD_ONLY);
+            ScrollableResults scrollableResults = queryFactory.select(examMap.examinee.examineeCd)
+                    .distinct()
+                    .from(examMap)
+                    .where(examMap.exam.examCd.eq(examCd))
+                    .setFetchSize(Integer.MIN_VALUE)
+                    .scroll(ScrollMode.FORWARD_ONLY);
 
-        while (scrollableResults.next()) {
-            String examineeCd = scrollableResults.getString(0);
-            queryFactory.delete(examMap).where(examMap.examinee.examineeCd.eq(examineeCd)).execute();
+            while (scrollableResults.next()) {
+                String examineeCd = scrollableResults.getString(0);
+                queryFactory.delete(examMap)
+                        .where(examMap.examinee.examineeCd.eq(examineeCd))
+                        .where(examMap.exam.examCd.eq(examCd))
+                        .execute();
+                try {
+                    queryFactory.delete(examinee).where(examinee.examineeCd.eq(examineeCd)).execute();
+                    if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
+
+                } catch (Exception ignored) {
+                }
+            }
+            scrollableResults.close();
+
+            // hall 삭제
             try {
-                queryFactory.delete(examinee).where(examinee.examineeCd.eq(examineeCd)).execute();
-                if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
-
+                queryFactory.delete(QHall.hall).execute();
             } catch (Exception ignored) {
             }
-        }
-        scrollableResults.close();
 
-        try {
-            queryFactory.delete(QHall.hall).execute();
-        } catch (Exception ignored) {
-        }
-        queryFactory.delete(QItem.item).execute();
-
-        QExam exam = QExam.exam;
-
-        // fk_exam_cd가 존재하는 시험부터 삭제
-        scrollableResults = queryFactory.select(exam.admission.admissionCd)
-                .distinct()
-                .from(exam)
-                .where(exam.fkExam.examCd.isNotNull())
-                .setFetchSize(Integer.MIN_VALUE)
-                .scroll(ScrollMode.FORWARD_ONLY);
-
-        while (scrollableResults.next()) {
-
-            String admissionCd = scrollableResults.getString(0);
-            queryFactory.delete(exam).where(
-                    exam.admission.admissionCd.eq(admissionCd)
-                            .and(exam.fkExam.examCd.isNotNull())
-            ).execute();
-        }
-
-        scrollableResults.close();
-
-        // 나머지 exam 삭제
-        scrollableResults = queryFactory.select(exam.admission.admissionCd)
-                .distinct()
-                .from(exam)
-                .setFetchSize(Integer.MIN_VALUE)
-                .scroll(ScrollMode.FORWARD_ONLY);
-
-        while (scrollableResults.next()) {
-            String admissionCd = scrollableResults.getString(0);
-            queryFactory.delete(exam)
-                    .where(exam.admission.admissionCd.eq(admissionCd))
+            // item 삭제
+            queryFactory.delete(QItem.item)
+                    .where(QItem.item.exam.examCd.eq(examCd))
                     .execute();
 
-            try {
-                queryFactory.delete(QAdmission.admission)
-                        .where(QAdmission.admission.admissionCd.eq(admissionCd))
-                        .execute();
-            } catch (Exception e) {
-                log.error("{}", e.getMessage());
+            QExam exam = QExam.exam;
+
+            // fk_exam_cd가 존재하는 시험부터 삭제
+            scrollableResults = queryFactory.select(exam.admission.admissionCd)
+                    .distinct()
+                    .from(exam)
+                    .where(exam.fkExam.examCd.isNotNull())
+                    .setFetchSize(Integer.MIN_VALUE)
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollableResults.next()) {
+
+                String admissionCd = scrollableResults.getString(0);
+                queryFactory.delete(exam).where(
+                        exam.admission.admissionCd.eq(admissionCd)
+                                .and(exam.fkExam.examCd.isNotNull())
+                ).execute();
             }
+
+            scrollableResults.close();
+
+            // 나머지 exam 삭제
+            scrollableResults = queryFactory.select(exam.admission.admissionCd)
+                    .distinct()
+                    .from(exam)
+                    .where(exam.examCd.eq(examCd))
+                    .setFetchSize(Integer.MIN_VALUE)
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollableResults.next()) {
+                String admissionCd = scrollableResults.getString(0);
+                queryFactory.delete(exam)
+                        .where(exam.admission.admissionCd.eq(admissionCd))
+                        .where(exam.examCd.eq(examCd))
+                        .execute();
+
+                try {
+                    queryFactory.delete(QAdmission.admission)
+                            .where(QAdmission.admission.admissionCd.eq(admissionCd))
+                            .execute();
+                } catch (Exception e) {
+                    log.error("{}", e.getMessage());
+                }
+            }
+
+            scrollableResults.close();
+
+            fileService.deleteFiles(pathJpg, pathPdf);
+        } else {
+            queryFactory.delete(QSheet.sheet).execute();
+            queryFactory.delete(QScore.score).execute();
+            queryFactory.delete(QScoreLog.scoreLog).execute();
+            queryFactory.delete(QExamHallDate.examHallDate).execute();
+
+            QExaminee examinee = QExaminee.examinee;
+            QExamMap examMap = QExamMap.examMap;
+
+            ScrollableResults scrollableResults = queryFactory.select(examMap.examinee.examineeCd)
+                    .distinct()
+                    .from(examMap)
+                    .setFetchSize(Integer.MIN_VALUE)
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollableResults.next()) {
+                String examineeCd = scrollableResults.getString(0);
+                queryFactory.delete(examMap).where(examMap.examinee.examineeCd.eq(examineeCd)).execute();
+                try {
+                    queryFactory.delete(examinee).where(examinee.examineeCd.eq(examineeCd)).execute();
+                    if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
+
+                } catch (Exception ignored) {
+                }
+            }
+            scrollableResults.close();
+
+            try {
+                queryFactory.delete(QHall.hall).execute();
+            } catch (Exception ignored) {
+            }
+            queryFactory.delete(QItem.item).execute();
+
+            QExam exam = QExam.exam;
+
+            // fk_exam_cd가 존재하는 시험부터 삭제
+            scrollableResults = queryFactory.select(exam.admission.admissionCd)
+                    .distinct()
+                    .from(exam)
+                    .where(exam.fkExam.examCd.isNotNull())
+                    .setFetchSize(Integer.MIN_VALUE)
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollableResults.next()) {
+
+                String admissionCd = scrollableResults.getString(0);
+                queryFactory.delete(exam).where(
+                        exam.admission.admissionCd.eq(admissionCd)
+                                .and(exam.fkExam.examCd.isNotNull())
+                ).execute();
+            }
+
+            scrollableResults.close();
+
+            // 나머지 exam 삭제
+            scrollableResults = queryFactory.select(exam.admission.admissionCd)
+                    .distinct()
+                    .from(exam)
+                    .setFetchSize(Integer.MIN_VALUE)
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollableResults.next()) {
+                String admissionCd = scrollableResults.getString(0);
+                queryFactory.delete(exam)
+                        .where(exam.admission.admissionCd.eq(admissionCd))
+                        .execute();
+
+                try {
+                    queryFactory.delete(QAdmission.admission)
+                            .where(QAdmission.admission.admissionCd.eq(admissionCd))
+                            .execute();
+                } catch (Exception e) {
+                    log.error("{}", e.getMessage());
+                }
+            }
+
+            scrollableResults.close();
+
+            fileService.deleteFiles(pathJpg, pathPdf);
         }
-
-        scrollableResults.close();
-
-        fileService.deleteFiles(pathJpg, pathPdf);
     }
 
     @Transactional

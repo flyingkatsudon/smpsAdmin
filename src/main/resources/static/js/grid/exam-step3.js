@@ -37,8 +37,12 @@ define(function (require) {
                                 var keypadType = response[i]['keypadType'];
 
                                 if (keypadType == 0) {
-                                    response[i].maxWarning = 10;
-                                    response[i].minWarning = 0;
+                                    if(response[i].maxWarning == undefined) response[i].maxWarning = 9;
+                                    if(response[i].minWarning == undefined) response[i].minWarning = 0;
+                                    response[i].scoreMap = '';
+                                } else if (keypadType == 2) {
+                                    response[i].maxWarning = '';
+                                    response[i].minWarning = '';
                                     response[i].scoreMap = '';
                                 } else if (keypadType == 4) {
                                     response[i].maxWarning = '';
@@ -47,29 +51,30 @@ define(function (require) {
                                     response[i].maxWarning = '';
                                     response[i].minWarning = '';
                                 }
-/*
 
-                                var html =
-                                    '<h5>' +
-                                    '<div id="' + response[i].id + '" class="col-lg-12">' +
-                                    '<div class="col-lg-3">' +
-                                    '<div style="text-align:center; font-weight: normal; font-size: medium">' +
-                                    '<div>' +
-                                    '<div style="margin:3% 0 0 3%;">' + '항목명' + '<input type="text" id="itemNm' + i + '" class="set-basic"  value="' + response[i].itemNm + '"></div>' +
-                                    '<div style="margin:3% 0 0 3%;">' + '순&nbsp;&nbsp;&nbsp;&nbsp;서' + '<input type="text" id="itemNo' + i + '" class="set-basic"  value="' + response[i].itemNo + '"></div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '<div class="col-lg-3">' +
-                                    '<div style="text-align:center; font-weight: normal; font-size: medium">' +
-                                    '<div>' +
-                                    '<div style="margin:3% 0 0 3%;">' + '최댓점' + '<input type="text" id="maxScore' + i + '" class="set-mid"  value="' + response[i].maxScore + '"></div>' +
-                                    '<div style="margin:3% 0 0 3%;">' + '최솟점' + '<input type="text" id="minScore' + i + '" class="set-mid"  value="' + response[i].minScore + '"></div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>';
+                                /*
 
-*/
+                                 var html =
+                                 '<h5>' +
+                                 '<div id="' + response[i].id + '" class="col-lg-12">' +
+                                 '<div class="col-lg-3">' +
+                                 '<div style="text-align:center; font-weight: normal; font-size: medium">' +
+                                 '<div>' +
+                                 '<div style="margin:3% 0 0 3%;">' + '항목명' + '<input type="text" id="itemNm' + i + '" class="set-basic"  value="' + response[i].itemNm + '"></div>' +
+                                 '<div style="margin:3% 0 0 3%;">' + '순&nbsp;&nbsp;&nbsp;&nbsp;서' + '<input type="text" id="itemNo' + i + '" class="set-basic"  value="' + response[i].itemNo + '"></div>' +
+                                 '</div>' +
+                                 '</div>' +
+                                 '</div>' +
+                                 '<div class="col-lg-3">' +
+                                 '<div style="text-align:center; font-weight: normal; font-size: medium">' +
+                                 '<div>' +
+                                 '<div style="margin:3% 0 0 3%;">' + '최댓점' + '<input type="text" id="maxScore' + i + '" class="set-mid"  value="' + response[i].maxScore + '"></div>' +
+                                 '<div style="margin:3% 0 0 3%;">' + '최솟점' + '<input type="text" id="minScore' + i + '" class="set-mid"  value="' + response[i].minScore + '"></div>' +
+                                 '</div>' +
+                                 '</div>' +
+                                 '</div>';
+
+                                 */
 
                                 var html = '';
                                 // 경고점수가 필요없는 서류평가 등의 경우

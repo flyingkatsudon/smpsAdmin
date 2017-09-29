@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.smps.mapper.StatusMapper">
+    <!-- TODO: 기존 all, 가번호 갯수만큼 응시인원 체크함-->
     <select id="all" resultType="com.humane.smps.dto.StatusDto">
         SELECT
         COUNT(*)                                                AS examinee_cnt,
@@ -31,7 +32,7 @@
             </if>
         </where>
     </select>
-    <!-- 가번호가 배정된 경우 응시율 요약 -->
+    <!-- TODO: 가번호가 사전에 배정된 경우 응시율 요약, 점수가 있어야 응시한 것으로 인정 -->
     <!-- <select id="all" resultType="com.humane.smps.dto.StatusDto">
          SELECT COUNT(*) AS examinee_cnt
          , COUNT(a.virt_no) AS attend_cnt

@@ -79,7 +79,13 @@ define(function (require) {
             if (o.headNm == undefined) o.headNm = '';
             if (o.bldgNm == undefined) o.bldgNm = '';
             if (o.hallNm == undefined) o.hallNm = '';
-            if (o.groupNm == undefined) o.groupNm = '';
+            if (o.isVirtNo == undefined) o.isVirtNo == '';
+            if (o.groupNm == undefined) o.groupNm == '';
+            if (o.scorerNm == undefined) o.scorerNm == '';
+            if (o.examineeCd == undefined) o.examineeCd == '';
+            if (o.examineeNm == undefined) o.examineeNm == '';
+            if (o.roleName == undefined) o.roleName == '';
+            if (o.examNm == undefined) o.examNm == '';
             if (o.groupOrder == undefined) o.groupOrder = '';
             if (o.debateNm == undefined) o.debateNm = '';
             if (o.debateOrder == undefined) o.debateOrder = '';
@@ -90,7 +96,13 @@ define(function (require) {
                 headNm: o.headNm,
                 bldgNm: o.bldgNm,
                 hallNm: o.hallNm,
+                isVirtNo: o.isVirtNo,
                 groupNm: o.groupNm,
+                scorerNm: o.scorerNm,
+                examineeCd: o.examineeCd,
+                examineeNm: o.examineeNm,
+                roleName: o.roleName,
+                examNm: o.examNm,
                 groupOrder: o.groupOrder,
                 debateNm: o.debateNm,
                 debateOrder: o.debateOrder,
@@ -106,7 +118,13 @@ define(function (require) {
                 _param.headNm = $('#headNm').val();
                 _param.bldgNm = $('#bldgNm').val();
                 _param.hallNm = $('#hallNm').val();
+                _param.isVirtNo = $('#isVirtNo').val();
                 _param.groupNm = $('#groupNm').val();
+                _param.scorerNm = $('#scorerNm').val();
+                _param.examineeCd = $('#examineeCd').val();
+                _param.examineeNm = $('#examineeNm').val();
+                _param.roleName = $('#roleName').val();
+                _param.examNm = $('#examNm').val();
                 _param.groupOrder = $('#groupOrder').val();
                 _param.debateNm = $('#debateNm').val();
                 _param.debateOrder = $('#debateOrder').val();

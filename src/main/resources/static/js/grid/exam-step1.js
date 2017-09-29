@@ -102,9 +102,6 @@ define(function (require) {
                     detail1Html += '<div style="margin:3% 0 0 3%;">가번호 관리<input type="text" id="virtNoAssignType" class="set-lg" value="' + virtNoAssignType + '"/></div>';
                     detail1Html += '<div style="margin:3% 0 0 3%;">가번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="0" id="virtNoDigits" class="set-short" value="' + rowData.virtNoDigits + '"/>&nbsp;&nbsp;자리</div>';
 
-                    // detail2Html += '<div style="margin:3% 0 0 3%;">가번호 시작<input type="number" min="1" id="virtNoStart" class="set-mid" value="' + rowData.virtNoStart + '"/></div>';
-                    // detail2Html += '<div style="margin:3% 0 0 3%;">가번호 종료<input type="number" min="1" id="virtNoEnd" class="set-mid" value="' + rowData.virtNoEnd + '"/></div>';
-
                     $('#detailPart1').append(detail1Html);
 
                     //TODO: select 박스 도입 필요
@@ -133,6 +130,11 @@ define(function (require) {
                         + '<input type="radio" name="isMove" id="isMoveFalse" class="set-radioBtn" value=false />&nbsp;미사용'
                         + '</div>';
 
+                    detail2Html += '<div style="margin:3% 0 0 3%; padding-bottom: 2%">타이머&nbsp;사용'
+                        + '<input type="radio" name="isTimer" id="isTimerTrue" class="set-radioBtn" value=true />&nbsp;사용'
+                        + '<input type="radio" name="isTimer" id="isTimerFalse" class="set-radioBtn" value=false />&nbsp;미사용'
+                        + '</div>';
+
                     $('#detailPart2').append(detail2Html);
 
                     // 평가표 설정값
@@ -157,6 +159,7 @@ define(function (require) {
                     $('input:radio[name="isHorizontal"][value="' + rowData.isHorizontal + '"]').prop('checked', true);
                     $('input:radio[name="isMgrAuto"][value="' + rowData.isMgrAuto + '"]').prop('checked', true);
                     $('input:radio[name="isMove"][value="' + rowData.isMove + '"]').prop('checked', true);
+                    $('input:radio[name="isTimer"][value="' + rowData.isTimer + '"]').prop('checked', true);
                 }, // onShown
                 buttons: [{
                     label: '변경 내용 저장',
@@ -226,8 +229,9 @@ define(function (require) {
                 , isHorizontal: $('input:radio[name="isHorizontal"]:checked').val()
                 , isMgrAuto: $('input:radio[name="isMgrAuto"]:checked').val()
                 , isMove: $('input:radio[name="isMove"]:checked').val()
+                , isTimer: $('input:radio[name="isTimer"]:checked').val()
                 , itemCnt: $('#itemCnt').val()
-                // , keypadType: $('#keypadType').val()
+                , totScore: $('#totScore').val()
                 , printTitle1: $('#printTitle1').val()
                 , printContent1: $('#printContent1').val()
                 , printTitle2: $('#printTitle2').val()
@@ -237,8 +241,6 @@ define(function (require) {
                 , virtNoDigits: $('#virtNoDigits').val()
                 , virtNoType: $('#virtNoType').val()
                 , virtNoAssignType: str
-                //, virtNoStart: $('#virtNoStart').val()
-                //, virtNoEnd: $('#virtNoEnd').val()
             };
 
             /*//TODO: 빈 항목 체크, 개선 필요!

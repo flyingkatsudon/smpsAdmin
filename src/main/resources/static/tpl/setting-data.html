@@ -8,7 +8,7 @@
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="panel panel-heading"><label>데이터 업로드</label></h4>
+                    <h4 class="panel panel-heading"><label>데이터 업로드&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: crimson">(반드시 위에서부터, 파일은 '하나의 시트'로 업로드하세요)</span></label></h4>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -87,8 +87,9 @@
             </div>
         </div>
     </div>
+    <!-- TODO: 구현하지 않음 -->
     <!-- /.row -->
-    <div class="row">
+    <!--<div class="row">
         <div class="col-lg-12">
             <h3 class="page-header">전체 데이터 전송</h3>
         </div>
@@ -126,7 +127,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="row">
         <div class="col-lg-12">
             <h3 class="page-header">특수 기능</h3>
@@ -149,7 +150,7 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <label>중간관리자 데이터</label>
+                    <label>가번호 데이터</label>
                 </div>
                 <div class="panel-body">
                     <div class="col-md-1"></div>
@@ -196,6 +197,7 @@
                         <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
                         <label for="examNm">평가명</label> <select id="examNm"> </select>
                         <button id="search">검색</button>
+                        <label style="padding-right: 1%; float:right; color:crimson">*&nbsp;해당 부분은 상단 필터의 영향을 받지 않습니다&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     </div>
                 </div>
                 <div id="examInfo" class="panel-body">

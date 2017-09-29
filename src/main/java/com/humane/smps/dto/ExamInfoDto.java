@@ -32,6 +32,7 @@ public class ExamInfoDto{
     private boolean isHorizontal;
     private boolean isMgrAuto;
     private boolean isMove;
+    private boolean isTimer;
 
     private Long itemCnt;
     private String period;

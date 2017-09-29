@@ -1,14 +1,18 @@
 package com.humane.smps.mapper;
 
 import com.humane.smps.dto.AccountDto;
+import com.humane.smps.dto.ExamDto;
 import com.humane.smps.dto.ExamInfoDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 @Mapper
 public interface SystemMapper {
+    List<ExamDto> examInfo();
     Page<AccountDto> account(@Param("param") AccountDto param, @Param("pageable") Pageable pageable);
     Page<AccountDto> admission(@Param("pageable") Pageable pageable);
     Page<AccountDto> accountDetail(@Param("userId") String userId, @Param("pageable") Pageable pageable);

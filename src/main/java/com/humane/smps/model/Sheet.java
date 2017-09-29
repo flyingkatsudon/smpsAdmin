@@ -22,6 +22,10 @@ public class Sheet {
     @Column(nullable = true) private String scorerNm2;
     @Column(nullable = false) private Long sheetNo;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @Temporal(TemporalType.DATE)
+    private Date hallDate;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date regDttm;
 

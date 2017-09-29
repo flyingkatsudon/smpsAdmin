@@ -30,6 +30,7 @@ define(function (require) {
             // this.$el.html(Template);
             $('#page-wrapper').html(Template);
 
+            $('.init').hide();
             var _this = this;
 
             _this.innerToolbar(this.param);
@@ -66,11 +67,13 @@ define(function (require) {
             // '전체'를 선택하면 모든 항목을 보여줌
             if (admissionCd == '') {
                 for (var i = 0; i < admissions.length; i++) {
+                //    $('.init').show();
                     $("[id='" + admissions[i].admissionCd.substr(0, 3) + "']").show();
                     $("[id='" + admissions[i].admissionCd + "']").show();
                 }
             }
             else if ($('#' + admissionCd)[0] != undefined && admissionCd != undefined) { // 해당 전형만의 산출물이 존재하는지 검사
+                $('.init').show();
                 $('#' + univCd).show(); // 해당 전형의 학교 전용이라는 것을 표시한다
                 $('#' + admissionCd).show(); // 있다면 보여주고
             }

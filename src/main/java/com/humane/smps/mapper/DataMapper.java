@@ -50,8 +50,6 @@ public interface DataMapper {
 
     List<ScoreDto> scorerList(@Param("param") ScoreDto param);
 
-    List<ExamDto> examInfo();
-
     List<ExamDto> ericaExamInfo(@Param("param") String param);
 
     List<ExamDto> examDetail(@Param("examCd") String examCd);

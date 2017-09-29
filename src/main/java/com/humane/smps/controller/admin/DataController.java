@@ -346,20 +346,6 @@ public class DataController {
         }
     }
 
-    // 초기에 시험이름, 시험코드를 불러옴
-    @RequestMapping(value = "examInfo.json")
-    public ResponseEntity examInfo() {
-        try {
-            List<ExamDto> examInfo = mapper.examInfo();
-            log.debug("examInfo: {}", examInfo);
-
-            return ResponseEntity.ok(mapper.examInfo());
-        } catch (Exception e) {
-            log.debug("{}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
     // 선택한 시험의 정보로 진행
     @RequestMapping(value = "fillVirtNo.json")
     public ResponseEntity fillVirtNo(String examCd) {

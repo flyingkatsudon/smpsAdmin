@@ -21,6 +21,7 @@
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
         INNER JOIN hall ON hall.hall_cd = sheet.hall_cd
         INNER JOIN exam_hall_date ON exam_hall_date.hall_cd = hall.hall_cd AND exam_hall_date.exam_cd = exam.exam_cd
+        AND exam_hall_date.hall_date = sheet.hall_date
         <where>
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
