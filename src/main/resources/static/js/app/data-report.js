@@ -39,7 +39,7 @@ define(function (require) {
         innerToolbar: function (o) {
 
             if (o.empty) {
-                $('.report').hide(); // 모든 버튼을 가린다
+              //  $('.report').hide(); // 모든 버튼을 가린다
 
                 $('#deptNm').html(toolbar.getOptions(ToolbarModel.getDeptNm()));
                 $('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm()));

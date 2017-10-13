@@ -256,7 +256,7 @@ define(function (require) {
 
             var _this = this;
             var dialog = new BootstrapDialog({
-                message: '<h5 style="margin-left:10%">초기화할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getExamList(text) + '</h5>',
+                message: '<h5 style="margin-left:10%">초기화할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + _this.getOnlyExamList(text) + '</h5>',
                 closable: true,
                 buttons: [
                     {
@@ -323,7 +323,7 @@ define(function (require) {
 
             var dialog = new BootstrapDialog({
                 title: '<h4>가번호 / 답안지 번호 / 점수</h4>',
-                message: '<h5 style="margin-left: 10%">입력할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getExamList(text) + '</h5>',
+                message: '<h5 style="margin-left: 10%">입력할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getOnlyExamList(text) + '</h5>',
                 closable: true,
                 buttons: [
                     {
@@ -528,7 +528,7 @@ define(function (require) {
             dialog.getModalHeader().hide();
             dialog.open();
         },
-        getAdmissionList: function (text){
+        getAdmissionList: function (text) {
             $.ajax({
                 url: 'system/examInfo',
                 async: false,
@@ -572,6 +572,20 @@ define(function (require) {
 
             return admissionNm;
 
+        },
+        getOnlyExamList: function (text) {
+            $.ajax({
+                url: 'system/examInfo',
+                async: false,
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>';
+                        examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
+                    }
+                    text += '</select>';
+                }
+            });
+            return text;
         },
         getExamList: function (admissionCd, text) {
             $.ajax({

@@ -721,7 +721,7 @@
         INNER JOIN examinee ON examinee.examinee_cd = e.examinee_cd
         INNER JOIN exam_map ON exam_map.examinee_cd = e.examinee_cd
         INNER JOIN hall ON hall.hall_cd = e.hall_cd
-        where length(examinee.examinee_cd) = 11
+        where length(examinee.examinee_cd) = 11 and exam.period = '1단계'
         <if test="param != null">
             <where>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
