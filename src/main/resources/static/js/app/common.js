@@ -66,6 +66,7 @@ define(function (require) {
             if (o.headNm == undefined) o.headNm = '';
             if (o.bldgNm == undefined) o.bldgNm = '';
             if (o.hallNm == undefined) o.hallNm = '';
+            if (o.isAttend == undefined) o.isAttend = '';
 
             // 직접 타이핑하는 필터
             if (o.groupNm == undefined) o.groupNm = '';
@@ -93,6 +94,7 @@ define(function (require) {
                 examineeCd: o.examineeCd,
                 examineeNm: o.examineeNm,
                 roleName: o.roleName,
+                isAttend: o.isAttend,
                 filter: window.param.filter
             };
 
@@ -113,6 +115,7 @@ define(function (require) {
                 _param.examineeCd = $('#examineeCd').val();
                 _param.examineeNm = $('#examineeNm').val();
                 _param.roleName = $('#roleName').val();
+                _param.isAttend = $('#isAttend').val();
             }
 
             // grid가 '검색' 버튼을 눌러야 로딩되는 경우

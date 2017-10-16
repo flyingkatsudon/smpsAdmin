@@ -767,7 +767,7 @@
         , (select count(*)
             from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no) t
                     where t.total = a.total and a.exam_cd = t.exam_cd
-            ) cnt
+            ) - 1 cnt
         from (select exam_cd, hall_cd, virt_no, sum(total_score) as total from score group by exam_cd, hall_cd, virt_no order by total desc) a
         inner join exam_map on a.exam_cd = exam_map.exam_cd and a.virt_no = exam_map.virt_no
         inner join exam on a.exam_cd = exam.exam_cd

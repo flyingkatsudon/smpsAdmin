@@ -86,6 +86,7 @@ define(function (require) {
             if (o.examineeNm == undefined) o.examineeNm == '';
             if (o.roleName == undefined) o.roleName == '';
             if (o.examNm == undefined) o.examNm == '';
+            if (o.isAttend == undefined) o.isAttend = '';
 
             var _param = {
                 deptNm: o.deptNm,
@@ -100,6 +101,7 @@ define(function (require) {
                 examineeNm: o.examineeNm,
                 roleName: o.roleName,
                 examNm: o.examNm,
+                isAttend: o.isAttend,
                 filter: window.param.filter
             };
 
@@ -119,6 +121,7 @@ define(function (require) {
                 _param.examineeNm = $('#examineeNm').val();
                 _param.roleName = $('#roleName').val();
                 _param.examNm = $('#examNm').val();
+                _param.isAttend = $('#isAttend').val();
             }
 /*
             if (this.when == 'after') {
