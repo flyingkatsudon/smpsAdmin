@@ -107,7 +107,6 @@
        examinee.dept_nm,
        examinee.examinee_nm,
        examinee.birth,
-       exam.exam_time,
        hall.bldg_nm,
        hall.hall_nm,
        c.scorer_nm,
@@ -238,85 +237,6 @@
                  FROM item
                  GROUP BY exam_cd
              ) a
-    </select>
-    <select id="examMap" resultType="com.humane.util.CamelMap">
-        SELECT admission.admission_nm
-            , exam.type_nm
-            , examinee.dept_nm
-            , examinee.major_nm
-            , examinee.examinee_nm
-            , exam_map.exam_cd
-            , exam_map.virt_no
-            , exam_map.eval_cd
-            , exam_map.hall_date as exam_date
-            , date_format(scan_dttm,'%Y-%m-%d %H:%i:%s') as scan_dttm
-            , exam_map.examinee_cd
-            , exam_map.group_nm
-            , hall.head_nm
-            , hall.bldg_nm
-            , hall.hall_nm
-            , (
-                SELECT ROUND(SUM(
-                        if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) +
-                        if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) +
-                        if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) +
-                        if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04) +
-                        if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05) +
-                        if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06) +
-                        if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07) +
-                        if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08) +
-                        if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09) +
-                        if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10)
-                        ), 1)
-                    FROM score
-                   INNER JOIN exam on score.exam_cd = exam.exam_cd
-                   WHERE score.virt_no = exam_map.virt_no
-              ) AS total
-            , (SELECT
-                    SUM(
-                    IF(score01 IS NOT NULL, 1, 0)
-                    + IF(score02 IS NOT NULL, 1, 0)
-                    + IF(score03 IS NOT NULL, 1, 0)
-                    + IF(score04 IS NOT NULL, 1, 0)
-                    + IF(score05 IS NOT NULL, 1, 0)
-                    + IF(score06 IS NOT NULL, 1, 0)
-                    + IF(score07 IS NOT NULL, 1, 0)
-                    )
-                    FROM score
-                    WHERE exam_map.virt_no = score.virt_no
-            ) AS scored_cnt -- 평가자별 채점항목 수 검증용
-        FROM exam_map
-            INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd AND exam.fk_exam_cd IS NULL
-            INNER JOIN admission ON exam.admission_cd = admission.admission_cd
-            INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
-            INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
-        <if test="param != null">
-            <where>
-                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
-                <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
-                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
-                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
-                <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
-                <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
-                <if test="param.virtNo != null">AND exam_map.virt_no LIKE '%' #{param.virtNo} '%'</if>
-                <if test="param.examineeCd != null">AND exam_map.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
-                <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
-                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
-                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
-                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.isVirtNo != null">
-                    <if test="param.isVirtNo == true">AND exam_map.virt_no IS NOT NULL</if>
-                    <if test="param.isVirtNo == false">AND exam_map.virt_no IS NULL</if>
-                </if>
-                <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
-                <if test="param.scorerNm != null">
-                    AND exam_map.virt_no IN (
-                      SELECT DISTINCT score.virt_no FROM score WHERE score.exam_cd = exam_map.exam_cd AND score.hall_cd = exam_map.hall_cd AND score.scorer_nm LIKE CONCAT('%', #{param.scorerNm}, '%')
-                    )
-                </if>
-            </where>
-        </if>
     </select>
 
     <select id="scorerH" resultType="com.humane.util.CamelMap">
@@ -631,7 +551,6 @@
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND e.hall_date = #{param.examDate}</if>
-                <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
@@ -727,7 +646,6 @@
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examDate != null">AND e.hall_date = #{param.examDate}</if>
-                <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.examCd != null">AND exam_map.exam_cd = #{param.examCd}</if>
@@ -897,7 +815,13 @@
                     union all select 'A043704', '이광걸'
                     ) b
                     on a.scorer_nm = b.scorer_nm
-        where admission.admission_cd = 'HYU005'
+        inner join admission on admission.admission_cd = exam.admission_cd
+        <where>
+            <if test="param != null">
+                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
+            </if>
+        </where>
 
        <!-- inner join exam on exam.exam_cd = exam_map.exam_cd
         inner join admission on admission.admission_cd = exam.admission_cd
@@ -918,7 +842,15 @@
         FROM exam_map
         INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
         INNER JOIN score ON score.exam_cd = exam_map.exam_cd AND score.virt_no = exam_map.virt_no
-        WHERE score.total_score = 'F'
+        inner join exam on exam.exam_cd = exam_map.exam_cd
+        inner join admission on admission.admission_cd = exam.admission_cd
+        <where>
+            and score.total_score = 'F'
+            <if test="param != null">
+                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
+            </if>
+        </where>
     </select>
 
     <select id="medScoreUpload" resultType="com.humane.smps.dto.ScoreUploadDto">
@@ -966,7 +898,14 @@
                                 union all select 'A007731', '강영종'
                                 union all select 'A042707', '김태욱'
                ) b on a.scorer_nm = b.scorer_nm
-               where admission.admission_cd = 'HYU006'
+        inner join exam on exam.exam_cd = exam_map.exam_cd
+        inner join admission on admission.admission_cd = exam.admission_cd
+        <where>
+            <if test="param != null">
+                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
+            </if>
+        </where>
         order by examinee_cd, scorer_cd, i
     </select>
 <!--
@@ -1072,7 +1011,6 @@
                             <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                             <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                             <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
-                            <if test="param.examTime != null">AND exam.exam_time = #{param.examTime}</if>
                             <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                             <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                             <if test="param.groupNm != null">AND exam_map.group_nm LIKE '%' #{param.groupNm} '%' </if>

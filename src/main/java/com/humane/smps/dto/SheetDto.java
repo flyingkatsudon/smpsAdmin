@@ -11,25 +11,8 @@ import java.util.Date;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class SheetDto {
-    private String userAdmissions;
-    private String admissionNm;
-    private String typeNm;
-    private String examCd;
-    private String examNm;
+public class SheetDto extends BasicDto{
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date examDate;
-
-    @DateTimeFormat(pattern = "HH:mm")
-    @JsonSerialize(using = TimeSerializer.class)
-    private Date examTime;
-
-    private String headNm;
-    private String bldgNm;
-    private String hallCd;
-    private String hallNm;
     private String scorerNm;
     private Long sheetNo;
 

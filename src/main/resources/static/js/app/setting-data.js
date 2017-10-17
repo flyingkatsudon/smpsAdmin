@@ -552,7 +552,7 @@ define(function (require) {
                     }
 
                     for (var i = 0; i < tmp.length; i++) {
-                        text += '<option value="' + tmp[i].admissionCd + '">' + tmp[i].admissionNm + '</option>';
+                        text += '<option value="' + tmp[i].admissionCd + '">[' + tmp[i].admissionCd + ']&nbsp;&nbsp;' + tmp[i].admissionNm + '</option>';
                         admissionList.push({admissionCd: tmp[i].admissionCd, admissionNm: tmp[i].admissionNm});
                     }
                     text += '</select>';
@@ -579,7 +579,7 @@ define(function (require) {
                 async: false,
                 success: function (response) {
                     for (var i = 0; i < response.length; i++) {
-                        text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>';
+                        text += '<option value="' + response[i].examCd + '">[' + response[i].examCd + ']&nbsp;&nbsp;' + response[i].examNm + '</option>';
                         examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
                     }
                     text += '</select>';
@@ -594,7 +594,7 @@ define(function (require) {
                 success: function (response) {
                     for (var i = 0; i < response.length; i++) {
                         if (response[i].admissionCd == admissionCd) {
-                            text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>';
+                            text += '<option value="' + response[i].examCd + '">[' + response[i].examCd + ']&nbsp;&nbsp;' + response[i].examNm + '</option>';
                             examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
                         }
                     }

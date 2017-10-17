@@ -24,6 +24,7 @@ define(function (require) {
                 };
 
                 window.$('#tNm').html(toolbar.getOptions(ToolbarModel.getTypeNm(param)));
+                window.$('#period').html(toolbar.getOptions(ToolbarModel.getPeriod(param)));
                 window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate(param)));
             });
 
@@ -33,9 +34,19 @@ define(function (require) {
                     typeNm: window.$('#tNm').val()
                 };
 
+                window.$('#period').html(toolbar.getOptions(ToolbarModel.getPeriod(param)));
                 window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate(param)));
             });
 
+            window.$('#period').change(function () {
+                var param = {
+                    admissionNm: getAdmissionNm(window.$('#admNm').val()),
+                    typeNm: window.$('#tNm').val(),
+                    period: window.$('#period').val()
+                };
+
+                window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate(param)));
+            });
             // $('#admissionNm).val()가 가지는 admissionCd로 실제 admissionNm을 구함
             var getAdmissionNm = function (e) {
                 var admissionNm = window.$('#admNm').val();
@@ -86,6 +97,7 @@ define(function (require) {
 
                         window.$('#admNm').html(admissionNm);
                         window.$('#tNm').html(toolbar.getOptions(ToolbarModel.getTypeNm()));
+                        window.$('#period').html(toolbar.getOptions(ToolbarModel.getPeriod()));
                         window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate()));
 
                     }
@@ -97,24 +109,26 @@ define(function (require) {
                 admissionCd: '',
                 admissionNm: '',
                 typeNm: '',
+                period: '',
                 examDate: '',
                 filter: 'with', // header: 상단만, with: 상, 하단 동시에
                 empty: true // 상단 필터 값이 비어있는지 여부, true: 비어있음
             };
 
             // 상단 필터 선택하면 window.param의 값을 업데이트 한다 -> 각 페이지에서 필터로 쓰임
-            $(window.$('#admNm, #tNm, #exDate')).change(function () {
+            $(window.$('#admNm, #tNm, #period, #exDate')).change(function () {
 
                 window.param = {
                     admissionCd: window.$('#admNm').val(),
                     admissionNm: getAdmissionNm(window.$('#admNm').val()),
                     typeNm: window.$('#tNm').val(),
+                    period: window.$('#period').val(),
                     examDate: window.$('#exDate').val(),
                     filter: 'header',
                     empty: false
                 };
 
-                if (param.admissionNm == '' && param.examDate == '' && param.typeNm == '') {
+                if (param.admissionNm == '' && param.examDate == '' && param.typeNm == '' && param.period == '') {
                     window.param.filter = 'with';
                     window.param.empty = true;
                 }
@@ -128,8 +142,7 @@ define(function (require) {
                 }
                 else {
                     var LoadPage = require('./loadPage.js');
-                    // when: grid가 로딩되는 때, 'before'이면 페이지 로딩 시 함께 로딩 - default
-                    new LoadPage({param: window.param, baseName: baseName, when: 'before'}).render();
+                    new LoadPage({param: window.param, baseName: baseName}).render();
                 }
             });
         }

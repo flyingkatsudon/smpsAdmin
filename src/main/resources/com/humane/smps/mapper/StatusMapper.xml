@@ -98,7 +98,7 @@
          </where>
      </select>-->
 
-    <select id="dept" resultType="com.humane.smps.dto.StatusDeptDto">
+    <select id="dept" resultType="com.humane.smps.dto.StatusDto">
         SELECT *,
         examinee_cnt - absent_cnt                        AS attend_cnt,
         absent_cnt * 100 / examinee_cnt                  AS absent_per,
@@ -106,7 +106,7 @@
         FROM (
         SELECT
         admission.admission_nm,
-        exam.type_nm,
+        exam.type_nm, exam.period,
         exam_hall_date.hall_date AS exam_date,
         examinee.dept_nm,
         COUNT(*) AS examinee_cnt,
@@ -125,6 +125,7 @@
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.period != null">AND exam.period = #{param.period}</if>
                 <if test="param.examDate != null">AND exam_hall_date.hall_date = #{param.examDate}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
@@ -138,7 +139,7 @@
         ) AS result
     </select>
 
-    <select id="major" resultType="com.humane.smps.dto.StatusMajorDto">
+    <select id="major" resultType="com.humane.smps.dto.StatusDto">
         SELECT *,
         examinee_cnt - absent_cnt                        AS attend_cnt,
         absent_cnt * 100 / examinee_cnt                  AS absent_per,
@@ -146,8 +147,7 @@
         FROM (
         SELECT
         admission.admission_nm,
-        exam.exam_nm,
-        exam.type_nm,
+        exam.exam_nm, exam.type_nm, exam.period,
         exam_hall_date.hall_date AS exam_date,
         examinee.dept_nm,
         examinee.major_nm,
@@ -167,6 +167,7 @@
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.period != null">AND exam.period = #{param.period}</if>
                 <if test="param.examDate != null">AND exam_hall_date.hall_date = #{param.examDate}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
@@ -183,7 +184,7 @@
         ) AS result
     </select>
 
-    <select id="hall" resultType="com.humane.smps.dto.StatusHallDto">
+    <select id="hall" resultType="com.humane.smps.dto.StatusDto">
         SELECT *,
         examinee_cnt - absent_cnt                        AS attend_cnt,
         absent_cnt * 100 / examinee_cnt                  AS absent_per,
@@ -191,7 +192,7 @@
         FROM (
         SELECT
         admission.admission_nm,
-        exam.type_nm,
+        exam.type_nm, exam.period,
         exam_hall_date.hall_date AS exam_date,
         hall.head_nm,
         hall.bldg_nm,
@@ -231,7 +232,7 @@
         ) AS result
     </select>
 
-    <select id="group" resultType="com.humane.smps.dto.StatusGroupDto">
+    <select id="group" resultType="com.humane.smps.dto.StatusDto">
         SELECT *,
         examinee_cnt - absent_cnt                        AS attend_cnt,
         absent_cnt * 100 / examinee_cnt                  AS absent_per,
@@ -239,8 +240,7 @@
         FROM (
         SELECT
         admission.admission_nm,
-        exam.exam_nm,
-        exam.type_nm,
+        exam.exam_nm, exam.type_nm, exam.period,
         exam_hall_date.hall_date AS exam_date,
         hall.head_nm,
         hall.bldg_nm,

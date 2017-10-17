@@ -80,29 +80,31 @@ public class UploadController {
                 // 3. exam 변환, 저장
                 Exam exam = mapper.convertValue(vo, Exam.class);
 
-                if (!vo.getFkExamCd().equals("") && vo.getFkExamCd() != null) {
+                if (vo.getFkExamCd() != null && !vo.getFkExamCd().equals("")) {
                     Exam tmp = examRepository.findOne(new BooleanBuilder()
                             .and(QExam.exam.examCd.eq(vo.getFkExamCd()))
                     );
                     exam.setFkExam(tmp);
                 }
 
-                switch(vo.getVirtNoAssignType()){
-                    case "가번호":
-                        exam.setVirtNoAssignType("virtNo");
-                        break;
-                    case "관리번호":
-                        exam.setVirtNoAssignType("manageNo");
-                        break;
-                    case "수험번호":
-                        exam.setVirtNoAssignType("examineeCd");
-                        break;
-                    default:
-                        exam.setVirtNoAssignType("virtNo");
-                        break;
-                }
+                if (vo.getVirtNoAssignType() != null) {
+                    switch (vo.getVirtNoAssignType()) {
+                        case "가번호":
+                            exam.setVirtNoAssignType("virtNo");
+                            break;
+                        case "관리번호":
+                            exam.setVirtNoAssignType("manageNo");
+                            break;
+                        case "수험번호":
+                            exam.setVirtNoAssignType("examineeCd");
+                            break;
+                        default:
+                            exam.setVirtNoAssignType("virtNo");
+                            break;
+                    }
+                } else exam.setVirtNoAssignType("virtNo");
 
-                if(vo.getBarcodeType().equals("")) exam.setBarcodeType(null);
+                if (vo.getBarcodeType() != null && vo.getBarcodeType().equals("")) exam.setBarcodeType(null);
 
                 exam.setAdmission(admission);
 
@@ -111,13 +113,13 @@ public class UploadController {
                 // 4. item 변환, 저장, 갯수비교
                 if (Long.parseLong(vo.getItemCnt()) != uploadService.saveItems(vo)) {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body("항목 개수가 일치하지 않습니다<br><br>시험코드: " + vo.getExamCd() + " / 시험명: " + vo.getExamNm());
+                            .body("평가항목을 올바르게 입력하세요<br><br>시험코드: " + vo.getExamCd() + " / 시험명: " + vo.getExamNm());
                 }
             }
             return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일이 올바른지 확인하세요<br><br>" + throwable.getMessage());
         }
     }
 
@@ -130,7 +132,7 @@ public class UploadController {
 
         try {
             List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
-            for(FormHallVo vo : hallList){
+            for (FormHallVo vo : hallList) {
                 log.debug("{}", vo.getAdmissionCd() + "/" + vo.getExamCd());
                 if (vo != null && StringUtils.isNotEmpty(vo.getAdmissionCd())) {
                     /**
@@ -138,6 +140,9 @@ public class UploadController {
                      */
                     // 1. 시험정보 생성
                     Exam exam = mapper.convertValue(vo, Exam.class);
+
+                    if(exam.getExamCd() == null || exam.getExamNm() == null || exam.getExamDate() == null)
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("시험을 찾지 못했습니다. 평가항목 양식을 확인하세요");
 
                     exam = examRepository.findOne(new BooleanBuilder()
                             .and(QExam.exam.examCd.eq(exam.getExamCd()))
@@ -241,7 +246,7 @@ public class UploadController {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
             log.debug("{}", examineeList);
 
-            for(FormExamineeVo vo : examineeList){
+            for (FormExamineeVo vo : examineeList) {
                 // 시험정보
                 Exam exam = examRepository.findOne(new BooleanBuilder()
                         .and(QExam.exam.examCd.eq(vo.getExamCd()))
@@ -273,8 +278,8 @@ public class UploadController {
                     }
 
                     if (vo.getGroupNm() != null && vo.getGroupNm().equals("")) {
-                            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("올바른 조 정보가 아닙니다. '조' 열을 삭제하거나 다시 만드신 후 재시도하세요");
-                            examMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
+                        //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("올바른 조 정보가 아닙니다. '조' 열을 삭제하거나 다시 만드신 후 재시도하세요");
+                        examMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
                     }
 
                     ExamMap tmp = examMapRepository.findOne(new BooleanBuilder()

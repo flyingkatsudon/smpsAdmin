@@ -19,63 +19,63 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StatusController {
     private static final String JSON = "json";
-    private final StatusMapper mapper;
+    private final StatusMapper statusMapper;
 
     @RequestMapping(value = "all")
     public ResponseEntity all(StatusDto param) {
         log.debug("{}", param);
-        return ResponseEntity.ok(mapper.all(param));
+        return ResponseEntity.ok(statusMapper.all(param));
     }
 
     @RequestMapping(value = "dept.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity dept(@PathVariable String format, StatusDeptDto param, Pageable pageable) {
+    public ResponseEntity dept(@PathVariable String format, StatusDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.dept(param, pageable));
+                return ResponseEntity.ok(statusMapper.dept(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-dept.jrxml"
                         , format
-                        , mapper.dept(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , statusMapper.dept(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
     @RequestMapping(value = "major.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity major(@PathVariable String format, StatusMajorDto param, Pageable pageable) {
+    public ResponseEntity major(@PathVariable String format, StatusDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.major(param, pageable));
+                return ResponseEntity.ok(statusMapper.major(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-major.jrxml"
                         , format
-                        , mapper.major(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , statusMapper.major(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
     @RequestMapping(value = "hall.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity hall(@PathVariable String format, StatusHallDto param, Pageable pageable) {
+    public ResponseEntity hall(@PathVariable String format, StatusDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.hall(param, pageable));
+                return ResponseEntity.ok(statusMapper.hall(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-hall.jrxml"
                         , format
-                        , mapper.hall(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , statusMapper.hall(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
     @RequestMapping(value = "group.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity group(@PathVariable String format, StatusGroupDto param, Pageable pageable) {
+    public ResponseEntity group(@PathVariable String format, StatusDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.group(param, pageable));
+                return ResponseEntity.ok(statusMapper.group(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-group.jrxml"
                         , format
-                        , mapper.group(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , statusMapper.group(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 }

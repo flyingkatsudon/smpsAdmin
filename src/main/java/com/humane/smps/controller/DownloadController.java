@@ -78,44 +78,17 @@ public class DownloadController {
     }
 
     @RequestMapping(value = "allData.zip", method = RequestMethod.GET)
-    public ResponseEntity allData(StatusDto statusDto) throws IOException, ZipException, DRException {
+    public ResponseEntity allData(BasicDto basicDto) throws IOException, ZipException, DRException {
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
 
-        StatusDeptDto statusDeptDto = new StatusDeptDto();
-        statusDeptDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusDeptDto.setExamDate(statusDto.getExamDate());
-        statusDeptDto.setDeptNm(statusDto.getDeptNm());
-        statusDeptDto.setMajorNm(statusDto.getMajorNm());
-
-        StatusMajorDto statusMajorDto = new StatusMajorDto();
-        statusMajorDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusMajorDto.setExamDate(statusDto.getExamDate());
-        statusMajorDto.setDeptNm(statusDto.getDeptNm());
-        statusMajorDto.setMajorNm(statusDto.getMajorNm());
-
-        StatusHallDto statusHallDto = new StatusHallDto();
-        statusHallDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusHallDto.setExamDate(statusDto.getExamDate());
-        statusHallDto.setDeptNm(statusDto.getDeptNm());
-        statusHallDto.setMajorNm(statusDto.getMajorNm());
-
-        StatusGroupDto statusGroupDto = new StatusGroupDto();
-        statusGroupDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusGroupDto.setExamDate(statusDto.getExamDate());
-        statusGroupDto.setDeptNm(statusDto.getDeptNm());
-        statusGroupDto.setMajorNm(statusDto.getMajorNm());
+        StatusDto statusDto = new StatusDto();
+        statusDto.setBasicDto(basicDto);
 
         ScoreDto scoreDto = new ScoreDto();
-        scoreDto.setAdmissionNm(statusDto.getAdmissionNm());
-        scoreDto.setExamDate(statusDto.getExamDate());
-        scoreDto.setDeptNm(statusDto.getDeptNm());
-        scoreDto.setMajorNm(statusDto.getMajorNm());
+        scoreDto.setBasicDto(basicDto);
 
         ExamineeDto examineeDto = new ExamineeDto();
-        examineeDto.setAdmissionNm(statusDto.getAdmissionNm());
-        examineeDto.setExamDate(statusDto.getExamDate());
-        examineeDto.setDeptNm(statusDto.getDeptNm());
-        examineeDto.setMajorNm(statusDto.getMajorNm());
+        examineeDto.setBasicDto(basicDto);
 
         // 압축파일 생성
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -124,21 +97,21 @@ public class DownloadController {
         zipFile.setFileNameCharset("EUC-KR");
 
         // entry 생성
-        File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(statusDeptDto, pageable).getContent());
+        File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(statusDto, pageable).getContent());
         zipFile.addFile(fileDept);
         fileDept.delete();
 
-        File fileMajor = JasperReportsExportHelper.toXlsxFile("jrxml/status-major.jrxml", statusMapper.major(statusMajorDto, pageable).getContent());
+        File fileMajor = JasperReportsExportHelper.toXlsxFile("jrxml/status-major.jrxml", statusMapper.major(statusDto, pageable).getContent());
         zipFile.addFile(fileMajor);
         fileMajor.delete();
 
         //1. xlsx 파일 생성
-        File fileHall = JasperReportsExportHelper.toXlsxFile("jrxml/status-hall.jrxml", statusMapper.hall(statusHallDto, pageable).getContent());
+        File fileHall = JasperReportsExportHelper.toXlsxFile("jrxml/status-hall.jrxml", statusMapper.hall(statusDto, pageable).getContent());
         zipFile.addFile(fileHall);
         fileHall.delete();
 
         // 1. xlsx 파일 생성
-        File fileGroup = JasperReportsExportHelper.toXlsxFile("jrxml/status-group.jrxml", statusMapper.group(statusGroupDto, pageable).getContent());
+        File fileGroup = JasperReportsExportHelper.toXlsxFile("jrxml/status-group.jrxml", statusMapper.group(statusDto, pageable).getContent());
         zipFile.addFile(fileGroup);
         fileGroup.delete();
 
@@ -146,7 +119,7 @@ public class DownloadController {
         zipFile.addFile(fileExamineeReport);
         fileExamineeReport.delete();*/
 
-        File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examMap(scoreDto, pageable).getContent());
+        File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examinee(examineeDto, pageable).getContent());
         zipFile.addFile(fileVirtNoReport);
         fileVirtNoReport.delete();
 

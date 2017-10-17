@@ -39,10 +39,11 @@ define(function (require) {
         innerToolbar: function (o) {
 
             if (o.empty) {
-              //  $('.report').hide(); // 모든 버튼을 가린다
+                  $('.report').hide(); // 모든 버튼을 가린다
 
                 $('#deptNm').html(toolbar.getOptions(ToolbarModel.getDeptNm()));
                 $('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm()));
+                $('#period').html(toolbar.getOptions(ToolbarModel.getPeriod()));
             } else {
                 var param = {
                     admissionNm: o.admissionNm,
@@ -52,6 +53,7 @@ define(function (require) {
 
                 $('#deptNm').html(toolbar.getOptions(ToolbarModel.getDeptNm(param)));
                 $('#majorNm').html(toolbar.getOptions(ToolbarModel.getMajorNm(param)));
+                $('#period').html(toolbar.getOptions(ToolbarModel.getPeriod()));
             }
         },
         viewButton: function (o) {
@@ -67,7 +69,7 @@ define(function (require) {
             // '전체'를 선택하면 모든 항목을 보여줌
             if (admissionCd == '') {
                 for (var i = 0; i < admissions.length; i++) {
-                //    $('.init').show();
+                    //    $('.init').show();
                     $("[id='" + admissions[i].admissionCd.substr(0, 3) + "']").show();
                     $("[id='" + admissions[i].admissionCd + "']").show();
                 }
@@ -97,18 +99,30 @@ define(function (require) {
         buttonClicked: function (e) {
             e.preventDefault();
 
+            var url = e.currentTarget.form.action;
+            var tmp = '';
+
             var param = {
                 admissionNm: window.param.admissionNm,
                 typeNm: $('#tNm').val(),
                 examDate: $('#exDate').val(),
                 deptNm: $('#deptNm').val(),
-                majorNm: $('#majorNm').val()
+                majorNm: $('#majorNm').val(),
+                period: $('#period').val()
             };
 
-            console.log(param);
+            // url 생성
+            for (var obj in param) {
 
-            var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&typeNm=" + param.typeNm + "&examDate=" + param.examDate + '&deptNm=' + param.deptNm + '&majorNm=' + param.majorNm});
+                if (obj != 'admissionNm') tmp += '&';
+                else tmp += '?';
+
+                tmp += obj + '=' + param[obj];
+            }
+
+            this.dlgDownload.render({
+                url: url + tmp
+            });
 
             return false;
         },

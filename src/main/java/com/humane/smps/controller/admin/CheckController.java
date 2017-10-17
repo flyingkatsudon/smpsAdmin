@@ -1,8 +1,6 @@
 package com.humane.smps.controller.admin;
 
-import com.humane.smps.dto.CheckItemDto;
-import com.humane.smps.dto.CheckScorerDto;
-import com.humane.smps.dto.CheckSendDto;
+import com.humane.smps.dto.CheckDto;
 import com.humane.smps.dto.ScoreDto;
 import com.humane.smps.mapper.CheckMapper;
 import com.humane.smps.service.CheckService;
@@ -30,44 +28,31 @@ public class CheckController {
     private static final String JSON = "json";
     private static final String COLMODEL = "colmodel";
     private final CheckService checkService;
-    private final CheckMapper mapper;
-
-    @RequestMapping(value = "send.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity send(@PathVariable String format, CheckSendDto param, Pageable pageable) {
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.send(param, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/check-send.jrxml"
-                        , format
-                        , mapper.send(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
-        }
-    }
+    private final CheckMapper checkMapper;
 
     @RequestMapping(value = "item.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity item(@PathVariable String format, CheckItemDto param, Pageable pageable) {
+    public ResponseEntity item(@PathVariable String format, CheckDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.item(param, pageable));
+                return ResponseEntity.ok(checkMapper.item(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-item.jrxml"
                         , format
-                        , mapper.item(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , checkMapper.item(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
     @RequestMapping(value = "scorer.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity scorer(@PathVariable String format, CheckScorerDto param, Pageable pageable) {
+    public ResponseEntity scorer(@PathVariable String format, CheckDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.scorer(param, pageable));
+                return ResponseEntity.ok(checkMapper.scorer(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-scorer.jrxml"
                         , format
-                        , mapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , checkMapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 

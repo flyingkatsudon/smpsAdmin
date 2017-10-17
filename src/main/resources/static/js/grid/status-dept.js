@@ -16,6 +16,7 @@ define(function (require) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
+                {name: 'period', hidden: true},
                 {name: 'examDate', label: '시험일자'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'examineeCnt', label: '지원자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},

@@ -8,6 +8,7 @@
         admission.admission_nm,
         exam.type_nm,
         exam.exam_nm,
+        exam.period,
         exam_hall_date.hall_date AS exam_date,
         hall.head_nm,
         hall.bldg_nm,
@@ -24,6 +25,7 @@
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.period != null">AND exam.period = #{param.period}</if>
                 <if test="param.examDate != null">AND exam_hall_date.hall_date = #{param.examDate}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
@@ -46,6 +48,7 @@
         admission.admission_cd,
         admission.admission_nm,
         exam.type_nm,
+        exam.period,
         exam_hall_date.hall_date AS exam_date
         FROM exam_map
         INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd

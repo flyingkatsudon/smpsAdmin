@@ -30,8 +30,6 @@ public interface DataMapper {
 
     long ericaItemCnt(@Param("param") String param);
 
-    Page<Map<String, Object>> examMap(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
-
     List<Map<String, Object>> scorerH(@Param("param") Map map);
 
     // 채점자별 상세(가로)

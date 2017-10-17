@@ -26,7 +26,7 @@ define(function (require) {
         move: function () {
             var width = 1;
 
-            var id = setInterval(frame, 150);
+            var id = setInterval(frame, 10);
 
             function frame() {
                 if (width >= 100) {

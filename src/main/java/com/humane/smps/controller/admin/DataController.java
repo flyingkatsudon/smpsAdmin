@@ -38,12 +38,12 @@ public class DataController {
     private static final String COLMODEL = "colmodel";
     private static final String TXT = "txt";
     private final DataService dataService;
-    private final DataMapper mapper;
+    private final DataMapper dataMapper;
     private final ImageService imageService;
 
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto param, Pageable pageable) {
-        List<ExamineeDto> list = mapper.examinee(param, pageable).getContent();
+        List<ExamineeDto> list = dataMapper.examinee(param, pageable).getContent();
 
         list.forEach(item -> {
             try (InputStream is = imageService.getExaminee(item.getExamineeCd() + ".jpg")) {
@@ -78,10 +78,10 @@ public class DataController {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getExamineeModel());
             case JSON:
-                return ResponseEntity.ok(mapper.examinee(param, pageable));
+                return ResponseEntity.ok(dataMapper.examinee(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getExamineeReport();
-                report.setDataSource(mapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()); // 원인
+                report.setDataSource(dataMapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()); // 원인
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("수험생별 종합");
@@ -91,13 +91,13 @@ public class DataController {
     }
 
     @RequestMapping(value = "virtNo.{format:json|xls|xlsx}")
-    public ResponseEntity virtNo(@PathVariable String format, ScoreDto param, Pageable pageable) throws ClassNotFoundException, JRException, DRException {
+    public ResponseEntity virtNo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws ClassNotFoundException, JRException, DRException {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.examMap(param, pageable));
+                return ResponseEntity.ok(dataMapper.examinee(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getVirtNoReport();
-                report.setDataSource(mapper.examMap(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                report.setDataSource(dataMapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("가번호 배정 현황");
@@ -154,10 +154,10 @@ public class DataController {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getScorerModel());
             case JSON:
-                return ResponseEntity.ok(mapper.scorer(param, pageable));
+                return ResponseEntity.ok(dataMapper.scorer(param, pageable));
             default:
                 JasperReportBuilder report = dataService.getScorerReport();
-                report.setDataSource(mapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                report.setDataSource(dataMapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("채점자별 상세(세로)");
@@ -169,7 +169,7 @@ public class DataController {
     @RequestMapping(value = "attendance.{format:xlsx}")
     public ResponseEntity attendance(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.attendanceReport();
-        report.setDataSource(mapper.attendance(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        report.setDataSource(dataMapper.attendance(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
         jasperPrint.setName("출결현황 리스트");
@@ -180,7 +180,7 @@ public class DataController {
     @RequestMapping(value = "scoreUpload.{format:xlsx}")
     public ResponseEntity scoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getScoreUploadReport();
-        report.setDataSource(mapper.scoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        report.setDataSource(dataMapper.scoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
         jasperPrint.setName("글로벌인재 성적업로드양식");
@@ -193,13 +193,13 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/data-failList.jrxml"
                 , JasperReportsExportHelper.EXT_XLSX
-                , mapper.failList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                , dataMapper.failList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
     }
 
     @RequestMapping(value = "lawScoreUpload.{format:xlsx}")
     public ResponseEntity lawScoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getScoreUploadReport();
-        report.setDataSource(mapper.lawScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        report.setDataSource(dataMapper.lawScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
         jasperPrint.setName("법학서류평가 성적업로드양식");
@@ -210,7 +210,7 @@ public class DataController {
     @RequestMapping(value = "medScoreUpload.{format:xlsx}")
     public ResponseEntity medScoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getScoreUploadReport();
-        report.setDataSource(mapper.medScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        report.setDataSource(dataMapper.medScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
         jasperPrint.setName("의대서류평가 성적업로드양식");
@@ -221,7 +221,7 @@ public class DataController {
     @RequestMapping(value = "knuScorer.{format:xlsx}")
     public ResponseEntity knuScorer(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getKnuScorer();
-        report.setDataSource(mapper.knuScorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        report.setDataSource(dataMapper.knuScorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
         jasperPrint.setName("경북대학교 채점자별 상세(세로)");
@@ -232,7 +232,7 @@ public class DataController {
     @RequestMapping(value = "absentList.{format:xlsx}")
     public ResponseEntity absentList(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getAbsentList();
-        report.setDataSource(mapper.absentList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        report.setDataSource(dataMapper.absentList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
         jasperPrint.setName("경북대학교 결시자 리스트");
@@ -246,11 +246,11 @@ public class DataController {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getPhysicalModel());
             case JSON:
-                return ResponseEntity.ok(mapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                return ResponseEntity.ok(dataMapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
             case TXT:
                 String userprofile = System.getenv("USERPROFILE");
 
-                List<Map<String, String>> runningResult = mapper.runningResult();
+                List<Map<String, String>> runningResult = dataMapper.runningResult();
 
                 File file = new File(userprofile + "/Downloads/10m X 2회 왕복달리기_기록.txt");
                 int increase = 1;
@@ -314,7 +314,7 @@ public class DataController {
                 return ResponseEntity.ok("텍스트파일 다운로드가 완료되었습니다");
             default:
                 JasperReportBuilder report = dataService.getPhysicalReport();
-                report.setDataSource(mapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                report.setDataSource(dataMapper.physical(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
                 jasperPrint.setName("한양대 에리카 체육 산출물");
@@ -351,7 +351,7 @@ public class DataController {
     public ResponseEntity fillVirtNo(String examCd) {
         try {
             // 1. 현재 마지막 가번호, 입력된 가번호 수, 선택한 시험의 학생 수 가져옴
-         /*   ExamDto examDto = mapper.examDetail(examCd);
+         /*   ExamDto examDto = dataMapper.examDetail(examCd);
             log.debug("examDetail: {}", examDto);
 
             if (examDto.getAttendCnt() - examDto.getVirtNoCnt() == 0) {
@@ -361,13 +361,13 @@ public class DataController {
                 long cnt = examDto.getAttendCnt() - examDto.getVirtNoCnt();
                 for (int i = 0; i < cnt; i++) {
                     examDto.setLastVirtNo(String.valueOf(Integer.parseInt(examDto.getLastVirtNo()) + 1));
-                    mapper.fillVirtNo(examDto);
+                    dataMapper.fillVirtNo(examDto);
                 }
                 return ResponseEntity.ok("가번호가 입력되었습니다.");
             }*/
 
             // 임시 가번호 입력
-            List<ExamDto> examDtoList = mapper.examDetail(examCd);
+            List<ExamDto> examDtoList = dataMapper.examDetail(examCd);
 
             // 고사실 갯수만큼 반복
             for (int i = 0; i < examDtoList.size(); i++) {
@@ -380,7 +380,7 @@ public class DataController {
 
                 for (int j = virtNo; j <= cnt; j++) {
                     examDto.setLastVirtNo(String.valueOf(j));
-                    mapper.fillVirtNo(examDto);
+                    dataMapper.fillVirtNo(examDto);
                 }
             }
             return ResponseEntity.ok("가번호가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
@@ -396,11 +396,11 @@ public class DataController {
             // 1. paper_cd 정보 가져옴(수험번호, 답안지번호, 시험코드)
             EvalDto evalDto = new EvalDto();
             evalDto.setExamCd(examCd);
-            List<EvalDto> evalList = mapper.paperToSmps(evalDto);
+            List<EvalDto> evalList = dataMapper.paperToSmps(evalDto);
 
             // 2. eval_cd에 입력
             for (int i = 0; i < evalList.size(); i++)
-                mapper.fillEvalCd(evalList.get(i));
+                dataMapper.fillEvalCd(evalList.get(i));
 
             return ResponseEntity.ok("캔버스 번호가 저장되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
         } catch (Exception e) {
@@ -415,11 +415,11 @@ public class DataController {
             // 1. 점수 채울 답안지 리스트 가져오기
             EvalDto evalDto = new EvalDto();
             evalDto.setExamCd(examCd);
-            List<EvalDto> fillList = mapper.fillList(evalDto);
+            List<EvalDto> fillList = dataMapper.fillList(evalDto);
 
             // 2. 채점자 리스트 가져오기
             ScoreDto scoreDto = new ScoreDto();
-            List<ScoreDto> scorerList = mapper.scorerList(scoreDto);
+            List<ScoreDto> scorerList = dataMapper.scorerList(scoreDto);
 
             // 3. 답안지 1개 당 X 채점자 수 만큼 점수 입력
 
@@ -432,7 +432,7 @@ public class DataController {
                         // 3-1. 팝업에서 입력한 점수를 저장, 이미 저장되어 있으면 패스
                         fillList.get(j).setScore01(score);
                         fillList.get(j).setScorerNm(scorerList.get(i).getScorerNm());
-                        mapper.fillScore(fillList.get(j));
+                        dataMapper.fillScore(fillList.get(j));
                     }
                 }
                 return ResponseEntity.ok("점수가 입력되었습니다");
@@ -447,9 +447,9 @@ public class DataController {
     public ResponseEntity sqlEdit(@PathVariable String format, @RequestParam(value = "sql") String sql) throws DRException {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.sqlEdit(sql));
+                return ResponseEntity.ok(dataMapper.sqlEdit(sql));
             default:
-                List<Map<String, String>> list = mapper.sqlEdit(sql);
+                List<Map<String, String>> list = dataMapper.sqlEdit(sql);
 
                 for (Map<String, String> map : list) {
                     Set<String> keyset = map.keySet();

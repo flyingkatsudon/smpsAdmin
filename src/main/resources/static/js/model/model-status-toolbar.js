@@ -60,6 +60,8 @@ define(function (require) {
             return this.getObjectList(obj, 'examTime', 'examTime');
         }, getScorerNm: function (obj) {
             return this.getObjectList(obj, 'scorerNm', 'scorerNm');
+        }, getPeriod: function(obj) {
+            return this.getObjectList(obj, 'period', 'period');
         }
     });
     return new Collection();

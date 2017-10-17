@@ -1,7 +1,6 @@
 package com.humane.smps.controller.admin;
 
 import com.humane.smps.dto.ScoreDto;
-import com.humane.smps.dto.ScoreFixDto;
 import com.humane.smps.dto.SheetDto;
 import com.humane.smps.mapper.AdminScoreMapper;
 import com.humane.smps.service.AdminScoreService;
@@ -31,19 +30,19 @@ public class AdminScoreController {
     private static final String COLMODEL = "colmodel";
     private static final String JSON = "json";
     private static final String PDF = "pdf";
-    private final AdminScoreMapper mapper;
+    private final AdminScoreMapper adminScoreMapper;
     private final AdminScoreService adminScoreService;
 
     @RequestMapping(value = "print.{format:json|pdf|xls|xlsx}")
     public ResponseEntity print(@PathVariable String format, SheetDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.sheet(param, pageable));
+                return ResponseEntity.ok(adminScoreMapper.sheet(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-print.jrxml"
                         , format
-                        , mapper.sheet(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , adminScoreMapper.sheet(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -52,25 +51,25 @@ public class AdminScoreController {
         param.setIsCancel(true);
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.sheet(param, pageable));
+                return ResponseEntity.ok(adminScoreMapper.sheet(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-cancel.jrxml"
                         , format
-                        , mapper.sheet(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , adminScoreMapper.sheet(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
     @RequestMapping(value = "fix.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity fix(@PathVariable String format, ScoreFixDto param, Pageable pageable) {
+    public ResponseEntity fix(@PathVariable String format, ScoreDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.fix(param, pageable));
+                return ResponseEntity.ok(adminScoreMapper.fix(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/score-fix.jrxml"
                         , format
-                        , mapper.fix(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , adminScoreMapper.fix(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
     @Value("${path.smps.pdf:C:/api/smps/pdf}") String path;
@@ -88,7 +87,7 @@ public class AdminScoreController {
             case COLMODEL:
                 return ResponseEntity.ok(adminScoreService.getFixListModel());
             case JSON:
-                return ResponseEntity.ok(mapper.fixList(param, pageable));
+                return ResponseEntity.ok(adminScoreMapper.fixList(param, pageable));
             default:
                 return null;
         }
