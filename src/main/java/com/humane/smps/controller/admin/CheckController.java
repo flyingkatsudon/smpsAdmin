@@ -76,6 +76,10 @@ public class CheckController {
 
     @RequestMapping(value = "scoredF.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scoredF(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+
+        // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
+        param.setAbsentValue("F");
+
         switch (format) {
             case COLMODEL:
                 return ResponseEntity.ok(checkService.getScoredFModel());
@@ -86,7 +90,7 @@ public class CheckController {
                 report.setDataSource(checkService.getScoredFData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
-                jasperPrint.setName("F 항목 불일치 리스트");
+                jasperPrint.setName("결시 항목 불일치 리스트");
 
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }

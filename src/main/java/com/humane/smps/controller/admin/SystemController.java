@@ -267,20 +267,6 @@ public class SystemController {
     public ResponseEntity modifyStep2(@RequestBody List<ExamInfoDto> list) {
         for (int i = 0; i < list.size(); i++) {
             try {
-/*              ExamInfoDto param = list.get(i);
-
-                Hall hall = hallRepository.findOne(new BooleanBuilder()
-                        .and(QHall.hall.headNm.eq(param.getHeadNm()))
-                        .and(QHall.hall.bldgNm.eq(param.getBldgNm()))
-                        .and(QHall.hall.hallNm.eq(param.getHallNm()))
-                );
-
-                log.debug("{}", hall);
-
-                if(hall != null) param.setHallCd(hall.getHallCd());
-                else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("존재하지 않는 고사실입니다");
-*/
-
                 systemMapper.modifyStep2(list.get(i));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -294,8 +280,6 @@ public class SystemController {
     public ResponseEntity modifyStep3(@RequestBody List<ExamInfoDto> list) {
         for (int i = 0; i < list.size(); i++) {
             try {
-                log.debug("{}", list.get(i).getItemNm());
-                log.debug("{}", list.get(i).get_itemNm());
                 systemMapper.modifyStep3(list.get(i));
             } catch (Exception e) {
                 e.printStackTrace();

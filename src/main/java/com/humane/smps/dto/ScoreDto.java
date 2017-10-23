@@ -32,6 +32,8 @@ public class ScoreDto extends BasicDto{
     private String score09;
     private String score10;
 
+    private String absentValue;
+
     private String avgScore;
    // private BigDecimal totalScore; // 법대용
     private String totalScore;

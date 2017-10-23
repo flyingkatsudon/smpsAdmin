@@ -135,7 +135,7 @@ public class DataService {
         for (int i = 1; i <= scorerCnt; i++) {
             colModels.add(new ColModel("scorerNm" + i, "평가위원" + i));
             for (int j = 1; j <= itemCnt; j++)
-                colModels.add(new ColModel("score" + i + "s" + j, "항목" + i + "." + j));
+                colModels.add(new ColModel("score" + i + "S" + j, "항목" + i + "." + j));
 
             colModels.add(new ColModel("totalScore" + i, "총점" + i));
             /*colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));*/
@@ -310,9 +310,6 @@ public class DataService {
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
-                        /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -330,10 +327,12 @@ public class DataService {
         for (int i = 1; i <= scorerCnt; i++) {
             report.addColumn(col.column("평가위원" + i, "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             for (int j = 1; j <= itemCnt; j++)
-                report.addColumn(col.column("항목" + i + "." + j, "score" + i + "s" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-            //report.addColumn(col.column("총점" + i, "totalScore" + i, type.doubleType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)); // 법대용
+                report.addColumn(col.column("항목" + i + "." + j, "score" + i + "S" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            // TODO: 법전과 타 전형 간 '총점' 컬럼 구분 필요
+            // 1. 법전
+            //report.addColumn(col.column("총점" + i, "totalScore" + i, type.doubleType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            // 2. 그 외
             report.addColumn(col.column("총점" + i, "totalScore" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-            /*report.addColumn(col.column("채점시간", "scoreDttm" + i, type.stringType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));*/
         }
         return report;
     }
@@ -349,9 +348,6 @@ public class DataService {
                         col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
                         col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
                         col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
-                        /*col.column("고사본부", "headNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
                         col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
                         col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
@@ -369,7 +365,6 @@ public class DataService {
 
         //report.addColumn(col.column("총점", "totalScore", type.bigDecimalType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));// 법대용
         report.addColumn(col.column("총점", "totalScore", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        report.addColumn(col.column("채점시간", "scoreDttm", type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
         return report;
 
     }
@@ -499,8 +494,7 @@ public class DataService {
         return report;
     }
 
-    // TODO: 기본형, 결시생을 'F' 버튼을 눌러 처리하는 경우, ex) 한양대 의대 서류평가
-    /*
+    // TODO: 기본형, 결시생을 'F' 버튼을 눌러 처리하는 경우, ex) 한양대 법대 서류평가
     public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.examMap(param, pageable);
         return fillMap(page);
@@ -512,7 +506,7 @@ public class DataService {
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
             if (examCd != null && virtNo != null) {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
-                long total = 0;
+                String total = null;
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);
                     if (score != null) {
@@ -530,10 +524,7 @@ public class DataService {
                         map.put("TOTAL_SCORE" + i, score.get("totalScore"));
                         map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
 
-                        String tmp = String.valueOf((score.get("totalScore")));
-                        if(!tmp.equals("F")) {
-                            total += Long.parseLong(tmp);
-                        }
+                        total = String.valueOf((score.get("totalScore")));
                     }
                 }
                 map.put("TOTAL", total);
@@ -541,10 +532,10 @@ public class DataService {
         });
 
         return page;
-    }*/
+    }
 
    // TODO: 경북대용, 결시생을 '결시' 버튼을 눌러 처리하는 경우
-    private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
+   /* private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
@@ -578,12 +569,12 @@ public class DataService {
             }
         });
         return page;
-    }
+    }*/
 
-    // 가로버전
-    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
-        return mapper.scoredH(param, pageable);
-    }
+    // 일반 가로버전, fillMap 없이 하나의 쿼리로
+    //public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+    //    return mapper.scoredH(param, pageable);
+    //}
 
     // 가로버전
     public Page<Map<String, Object>> getSkkuPeriod1(ScoreDto param, Pageable pageable) {

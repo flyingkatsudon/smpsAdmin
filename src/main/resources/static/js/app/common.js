@@ -10,7 +10,6 @@ define(function (require) {
             if (baseName == 'data-virtNo') this.baseName = baseName;
             else this.baseName = location.hash.substring(1, location.hash.length);
             this.param = window.param;
-            this.when = 'before';
         },
         render: function () {
             var Template = require('text!/tpl/' + this.baseName + '.html');
@@ -25,28 +24,6 @@ define(function (require) {
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this, param: this.param}).render();
             this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: this.param});
             this.summary.render();
-
-            var afterUrlList = [
-                'data-scorerH', 'data-scorer', 'data-draw', 'data-physical',
-                'check-item', 'check-scoredCnt', 'check-scorer', 'check-scoredF'
-            ];
-
-            for (var i = 0; i < afterUrlList.length; i++) {
-                if (this.baseName == afterUrlList[i]) {
-                    this.when = 'after';
-                    break;
-                }
-            }
-
-            // TODO: 필터링 후 로딩 페이지 완성해야
-            /*if (this.when == 'before')
-                this.list = new List({
-                    el: '.hm-ui-grid',
-                    parent: this,
-                    param: this.param,
-                    baseName: this.baseName
-                }).render();
-            else $('.hm-ui-grid').html("<div align='center'><h3>" + "필터를 설정하고 '검색' 버튼을 눌러서 실행하세요" + "</h3></div>");*/
 
             this.list = new List({
                 el: '.hm-ui-grid',
@@ -117,18 +94,6 @@ define(function (require) {
                 _param.roleName = $('#roleName').val();
                 _param.isAttend = $('#isAttend').val();
             }
-
-            // grid가 '검색' 버튼을 눌러야 로딩되는 경우
-            /*if (this.when == 'after') {
-                var List = require('../grid/' + this.baseName + '.js');
-
-                this.list = new List({
-                    el: '.hm-ui-grid',
-                    parent: this,
-                    param: _param,
-                    baseName: this.baseName
-                }).render();
-            }*/
 
             this.summary.render(_param);
             this.list.search(_param);

@@ -108,6 +108,10 @@ public class DataController {
 
     @RequestMapping(value = "scorerH.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scorerH(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+
+        // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
+        param.setAbsentValue("F");
+
         try {
             switch (format) {
                 case COLMODEL:
@@ -150,6 +154,10 @@ public class DataController {
 
     @RequestMapping(value = "scorer.{format:colmodel|json|pdf|xls|xlsx}")
     public ResponseEntity scorer(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+
+        // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
+        param.setAbsentValue("F");
+
         switch (format) {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getScorerModel());
@@ -177,15 +185,21 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
+    /* 산출물 출력 함수 */
+    public JasperPrint jasperPrint(String admissionNm, JasperReportBuilder report) throws DRException {
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName(admissionNm + " 성적 업로드 양식");
+
+        return jasperPrint;
+    }
+
     @RequestMapping(value = "scoreUpload.{format:xlsx}")
-    public ResponseEntity scoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+    public ResponseEntity scoreUpload(@PathVariable String format, @RequestParam("admissionNm") String admissionNm, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getScoreUploadReport();
         report.setDataSource(dataMapper.scoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
-        JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("글로벌인재 성적업로드양식");
-
-        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint(admissionNm, report), format);
     }
 
     @RequestMapping(value = "failList.xlsx")
@@ -197,25 +211,18 @@ public class DataController {
     }
 
     @RequestMapping(value = "lawScoreUpload.{format:xlsx}")
-    public ResponseEntity lawScoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+    public ResponseEntity lawScoreUpload(@PathVariable String format, @RequestParam("admissionNm") String admissionNm, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getScoreUploadReport();
         report.setDataSource(dataMapper.lawScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
-
-        JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("법학서류평가 성적업로드양식");
-
-        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint(admissionNm, report), format);
     }
 
     @RequestMapping(value = "medScoreUpload.{format:xlsx}")
-    public ResponseEntity medScoreUpload(@PathVariable String format, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+    public ResponseEntity medScoreUpload(@PathVariable String format, @RequestParam("admissionNm") String admissionNm, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
         JasperReportBuilder report = dataService.getScoreUploadReport();
         report.setDataSource(dataMapper.medScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
-        JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("의대서류평가 성적업로드양식");
-
-        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint(admissionNm, report), format);
     }
 
     @RequestMapping(value = "knuScorer.{format:xlsx}")

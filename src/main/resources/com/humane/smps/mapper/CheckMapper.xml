@@ -213,85 +213,6 @@
          </where>
     </select>
 
-    <!-- 'F'버튼이 '결시'인 경우 -->
-    <!--<select id="scoredF" resultType="com.humane.util.CamelMap">
-            SELECT result.*
-            FROM(SELECT  admission.admission_nm
-                        , exam.type_nm, exam.exam_date, hall_date
-                        , hall.head_nm, hall.bldg_nm, hall.hall_nm, e.virt_no
-                        , e.scorer_nm1, e.total_score1, e.scorer_nm2, e.total_score2, e.scorer_nm3, e.total_score3, e.scorer_nm4, e.total_score4, e.scorer_nm5, e.total_score5
-                        , e.scorer_nm6, e.total_score6, e.scorer_nm7, e.total_score7, e.scorer_nm8, e.total_score8, e.scorer_nm9, e.total_score9, e.scorer_nm10, e.total_score10
-                        , e.scored_cnt
-                        , SUM( if(e.total_score1 ='F', 1, 0) + if(e.total_score2 ='F', 1, 0) + if(e.total_score3 ='F', 1, 0) + if(e.total_score4 ='F', 1, 0) + if(e.total_score5 ='F', 1, 0) +
-                               if(e.total_score6 ='F', 1, 0) + if(e.total_score7 ='F', 1, 0) + if(e.total_score8 ='F', 1, 0) + if(e.total_score9 ='F', 1, 0) + if(e.total_score10 ='F', 1, 0)
-                          ) AS cnt
-                FROM ( SELECT exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date, d.virt_no
-                            , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) + if(scored_cnt3 != 0, 1, 0) + if(scored_cnt4 != 0, 1, 0) + if(scored_cnt5 != 0, 1, 0)
-                            + if(scored_cnt6 != 0, 1, 0) + if(scored_cnt7 != 0, 1, 0) + if(scored_cnt8 != 0, 1, 0) + if(scored_cnt9 != 0, 1, 0) + if(scored_cnt10 != 0, 1, 0) AS scored_cnt
-                            , scorer_nm1, total_score1, scorer_nm2, total_score2, scorer_nm3, total_score3, scorer_nm4, total_score4, scorer_nm5, total_score5
-                            , scorer_nm6, total_score6, scorer_nm7, total_score7, scorer_nm8, total_score8, scorer_nm9, total_score9, scorer_nm10, total_score10
-                        FROM exam_hall_date
-                        INNER JOIN exam on exam.exam_cd = exam_hall_date.exam_cd
-                        LEFT JOIN (SELECT exam_cd, hall_cd, hall_date, virt_no
-                                    , MIN(if(rn = 1, scorer_nm, NULL)) AS scorer_nm1, MIN(if(rn = 1, total_score, NULL)) AS total_score1
-                                    , MIN(if(rn = 2, scorer_nm, NULL)) AS scorer_nm2, MIN(if(rn = 2, total_score, NULL)) AS total_score2
-                                    , MIN(if(rn = 3, scorer_nm, NULL)) AS scorer_nm3, MIN(if(rn = 3, total_score, NULL)) AS total_score3
-                                    , MIN(if(rn = 4, scorer_nm, NULL)) AS scorer_nm4, MIN(if(rn = 4, total_score, NULL)) AS total_score4
-                                    , MIN(if(rn = 5, scorer_nm, NULL)) AS scorer_nm5, MIN(if(rn = 5, total_score, NULL)) AS total_score5
-                                    , MIN(if(rn = 6, scorer_nm, NULL)) AS scorer_nm6, MIN(if(rn = 5, total_score, NULL)) AS total_score6
-                                    , MIN(if(rn = 7, scorer_nm, NULL)) AS scorer_nm7, MIN(if(rn = 5, total_score, NULL)) AS total_score7
-                                    , MIN(if(rn = 8, scorer_nm, NULL)) AS scorer_nm8, MIN(if(rn = 5, total_score, NULL)) AS total_score8
-                                    , MIN(if(rn = 9, scorer_nm, NULL)) AS scorer_nm9, MIN(if(rn = 5, total_score, NULL)) AS total_score9
-                                    , MIN(if(rn = 10, scorer_nm, NULL)) AS scorer_nm10, MIN(if(rn = 5, total_score, NULL)) AS total_score10
-
-                                    , MIN(if(rn = 1, cnt, NULL)) AS scored_cnt1, MIN(if(rn = 2, cnt, NULL)) AS scored_cnt2
-                                    , MIN(if(rn = 3, cnt, NULL)) AS scored_cnt3, MIN(if(rn = 4, cnt, NULL)) AS scored_cnt4
-                                    , MIN(if(rn = 5, cnt, NULL)) AS scored_cnt5, MIN(if(rn = 6, cnt, NULL)) AS scored_cnt6
-                                    , MIN(if(rn = 7, cnt, NULL)) AS scored_cnt7, MIN(if(rn = 8, cnt, NULL)) AS scored_cnt8
-                                    , MIN(if(rn = 9, cnt, NULL)) AS scored_cnt9, MIN(if(rn = 10, cnt, NULL)) AS scored_cnt10
-                                    FROM ( SELECT a.*
-                                            , CASE WHEN @prev_exam_cd = exam_cd AND @prev_hall_cd = hall_cd AND @prev_hall_date = hall_date AND @prev_virt_no = virt_no then @rownum := @rownum + 1 else @rownum := 1 end AS rn
-                                            , @prev_exam_cd := exam_cd
-                                            , @prev_hall_cd := hall_cd
-                                            , @prev_hall_date := hall_date
-                                            , @prev_virt_no := virt_no
-                                            FROM (SELECT exam_map.hall_date, score.exam_cd, score.hall_cd, exam.scorer_cnt, score.virt_no, score.scorer_nm, score.total_score
-                                                , (SELECT count(*) FROM score f WHERE f.virt_no = score.virt_no GROUP BY virt_no) AS cnt
-                                                    FROM score
-                                                    INNER JOIN exam ON exam.exam_cd = score.exam_cd
-                                                    INNER JOIN exam_map ON exam_map.exam_cd = score.exam_cd AND exam_map.hall_cd = score.hall_cd AND exam_map.virt_no = score.virt_no
-                                                    GROUP BY exam_map.hall_date,  score.exam_cd, score.hall_cd, score.virt_no, score.scorer_nm, score.total_score
-                                                    ORDER BY exam_map.hall_date, exam_cd, hall_cd, virt_no, scorer_nm) a
-                                                    , (SELECT @rownum := 1, @prev_exam_cd := '', @prev_hall_cd := '', @prev_hall_date := '', @prev_virt_no := '') b
-                                                  )c
-                                            GROUP BY exam_cd, hall_cd, hall_date, virt_no) d on exam_hall_date.exam_cd = d.exam_cd AND exam_hall_date.hall_cd = d.hall_cd AND exam_hall_date.hall_date = d.hall_date
-                                    ) e
-            INNER JOIN exam ON e.exam_cd = exam.exam_cd
-            INNER JOIN admission ON exam.admission_cd  = admission.admission_cd
-            INNER JOIN hall ON e.hall_cd = hall.hall_cd
-            GROUP BY admission.admission_nm
-                    , exam.type_nm, exam.exam_date, hall_date
-                    , hall.head_nm, hall.bldg_nm, hall.hall_nm, e.virt_no
-            ) result
-        <where>
-            AND virt_no IS NOT NULL
-            AND (    total_score1 = 'F' OR total_score2 = 'F' OR total_score3 = 'F' OR total_score4 = 'F' OR total_score5 = 'F'
-                    OR total_score6 = 'F' OR total_score7 = 'F' OR total_score8 = 'F' OR total_score9 = 'F' OR total_score10 = 'F'
-                )
-            AND scored_cnt != cnt
-            <if test="param != null">
-                <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
-                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
-                <if test="param.examDate != null">AND exam.exam_date = #{param.examDate}</if>
-                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
-                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
-                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-            </if>
-        </where>
-    </select>-->
-
-    <!-- '결시'버튼이 '결시'인 경우 -->
     <select id="scoredF" resultType="com.humane.util.CamelMap">
             SELECT result.*
             FROM(SELECT  admission.admission_nm, admission.admission_cd
@@ -300,8 +221,8 @@
                         , e.scorer_nm1, e.total_score1, e.scorer_nm2, e.total_score2, e.scorer_nm3, e.total_score3, e.scorer_nm4, e.total_score4, e.scorer_nm5, e.total_score5
                         , e.scorer_nm6, e.total_score6, e.scorer_nm7, e.total_score7, e.scorer_nm8, e.total_score8, e.scorer_nm9, e.total_score9, e.scorer_nm10, e.total_score10
                         , e.scored_cnt
-                        , SUM( if(e.total_score1 ='결시', 1, 0) + if(e.total_score2 ='결시', 1, 0) + if(e.total_score3 ='결시', 1, 0) + if(e.total_score4 ='결시', 1, 0) + if(e.total_score5 ='결시', 1, 0) +
-                               if(e.total_score6 ='결시', 1, 0) + if(e.total_score7 ='결시', 1, 0) + if(e.total_score8 ='결시', 1, 0) + if(e.total_score9 ='결시', 1, 0) + if(e.total_score10 ='결시', 1, 0)
+                        , SUM( if(e.total_score1 =#{param.absentValue}, 1, 0) + if(e.total_score2 =#{param.absentValue}, 1, 0) + if(e.total_score3 =#{param.absentValue}, 1, 0) + if(e.total_score4 =#{param.absentValue}, 1, 0) + if(e.total_score5 =#{param.absentValue}, 1, 0) +
+                               if(e.total_score6 =#{param.absentValue}, 1, 0) + if(e.total_score7 =#{param.absentValue}, 1, 0) + if(e.total_score8 =#{param.absentValue}, 1, 0) + if(e.total_score9 =#{param.absentValue}, 1, 0) + if(e.total_score10 =#{param.absentValue}, 1, 0)
                           ) AS cnt
                 FROM ( SELECT exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date, d.virt_no
                             , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) + if(scored_cnt3 != 0, 1, 0) + if(scored_cnt4 != 0, 1, 0) + if(scored_cnt5 != 0, 1, 0)
@@ -353,8 +274,8 @@
             ) result
         <where>
             AND virt_no IS NOT NULL
-            AND (    total_score1 = '결시' OR total_score2 = '결시' OR total_score3 = '결시' OR total_score4 = '결시' OR total_score5 = '결시'
-                    OR total_score6 = '결시' OR total_score7 = '결시' OR total_score8 = '결시' OR total_score9 = '결시' OR total_score10 = '결시'
+            AND (    total_score1 = #{param.absentValue} OR total_score2 = #{param.absentValue} OR total_score3 = #{param.absentValue} OR total_score4 = #{param.absentValue} OR total_score5 = #{param.absentValue}
+                    OR total_score6 = #{param.absentValue} OR total_score7 = #{param.absentValue} OR total_score8 = #{param.absentValue} OR total_score9 = #{param.absentValue} OR total_score10 = #{param.absentValue}
                 )
             AND scored_cnt != cnt
             <if test="param != null">

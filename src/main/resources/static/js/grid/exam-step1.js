@@ -168,7 +168,7 @@ define(function (require) {
 
                         var str = $('#virtNoAssignType').val();
 
-                        if(str != '가번호' && str != '관리번호' && str != '수험번호'){
+                        if (str != '가번호' && str != '관리번호' && str != '수험번호') {
                             responseDialog.notify({msg: "'가번호 관리'를 확인하세요", closeAll: false});
                             return false;
                         }
@@ -199,19 +199,19 @@ define(function (require) {
         },
         validate: function (examCd) {
 
-            var str;
+            var virtNoAssignType;
             switch ($('#virtNoAssignType').val()) {
                 case '가번호':
-                    str = 'virtNo';
+                    virtNoAssignType = 'virtNo';
                     break;
                 case '관리번호':
-                    str = 'manageNo';
+                    virtNoAssignType = 'manageNo';
                     break;
                 case '수험번호':
-                    str = 'examineeCd';
+                    virtNoAssignType = 'examineeCd';
                     break;
                 default:
-                    str = null;
+                    virtNoAssignType = null;
             }
 
             var tmp = {
@@ -240,7 +240,7 @@ define(function (require) {
                 //, totScore: $('#totScore').val()
                 , virtNoDigits: $('#virtNoDigits').val()
                 , virtNoType: $('#virtNoType').val()
-                , virtNoAssignType: str
+                , virtNoAssignType: virtNoAssignType
             };
 
             /*//TODO: 빈 항목 체크, 개선 필요!
