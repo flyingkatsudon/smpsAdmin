@@ -1,29 +1,9 @@
 define(function (require) {
     "use strict";
     var Backbone = require('backbone');
+    var LoadPage = require('../loadPage.js');
 
-    /*var List = require('../grid/system-account.js');
-     var Toolbar = require('../toolbar/system-account.js');
-     var Template = require('text!/tpl/system-account.html');
-     var AddAcount = require('../addAccount.js');
-
-     return Backbone.View.extend({
-     render: function () {
-     this.$el.html(Template);
-     this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
-     this.list = new List({el: '.hm-ui-grid', parent: this}).render();
-
-     $('#add').click(function(){
-     new AddAcount().render();
-     });
-
-     }, search: function (o) {
-     this.list.search(o);
-     }
-     });*/
-
-    var Common = require('./common.js');
-
+    // 초기에 그릴 때 필요, loadPage.js의 같은 부분은 필터 시 다시 그릴 때 require 된다
     require('../grid/system-account.js');
     require('../grid/system-account.js');
     require('../toolbar/system-account.js');
@@ -33,7 +13,7 @@ define(function (require) {
 
     return Backbone.View.extend({
         initialize: function () {
-            new Common().render();
+            new LoadPage({baseName: location.hash.substring(1, location.hash.length), param: window.param}).render();
 
             $('#add').click(function(){
                 new AddAcount().render();

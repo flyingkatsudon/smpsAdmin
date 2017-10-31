@@ -60,8 +60,6 @@ define(function (require) {
     var router = new Router();
     Backbone.history.start();
 
-    // TODO: header.html에 툴바있는 버전
-
     var Header = require('./header.js');
     new Header().render();
 });

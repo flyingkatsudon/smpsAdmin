@@ -8,30 +8,34 @@ define(function (require) {
 
     return Backbone.View.extend({
         initialize: function (o) {
-            var _this = this;
             this.param = o.param;
             this.baseName = o.baseName;
 
             var Template = require('text!/tpl/' + this.baseName + '.html');
-            var InnerTemplate = require('text!/tpl/status-summary.html');
 
             $('#page-wrapper').html(Template);
-            $('#hm-ui-summary').html(InnerTemplate);
 
-            var param = this.param;
-
-            _this.viewGrid(param);
+            this.viewGrid(this.param);
 
         }, viewGrid: function (o) {
 
             var List = require('./grid/' + this.baseName + '.js');
-            var Summary = require('./grid/status-summary.js');
             var Toolbar = require('./toolbar/' + this.baseName + '.js');
 
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this, param: o}).render();
-            this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: o});
-            this.summary.render();
             this.list = new List({el: '.hm-ui-grid', parent: this, param: o, baseName: this.baseName}).render();
+
+            // '응시율 통계' 메뉴 혹은 '가번호 배정 현황' 페이지의 경우 summary를 표시한다
+            if (this.baseName.includes('status-') || this.baseName.includes('data-virtNo')) {
+
+                var Summary = require('./grid/status-summary.js');
+                var InnerTemplate = require('text!/tpl/status-summary.html');
+
+                $('#hm-ui-summary').html(InnerTemplate);
+
+                this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: o});
+                this.summary.render();
+            }
 
         }, search: function (o) {
 
@@ -86,7 +90,9 @@ define(function (require) {
             }
 
             this.list.search(_param);
-            this.summary.render(_param);
+
+            if (this.baseName.includes('status-') || this.baseName.includes('data-virtNo')) this.summary.render(_param);
+
         }
     });
 });

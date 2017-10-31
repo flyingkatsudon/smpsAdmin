@@ -40,6 +40,8 @@ define(function (require) {
             return this.toArray(rtn, 'value');
         }, getAdmissionNm: function (obj) {
             return this.getObjectList(obj, 'admissionNm', 'admissionNm');
+        }, getExamNm: function (obj) {
+            return this.getObjectList(obj, 'examNm', 'examNm');
         }, getTypeNm: function (obj) {
             return this.getObjectList(obj, 'typeNm', 'typeNm');
         }, getDeptNm: function (obj) {

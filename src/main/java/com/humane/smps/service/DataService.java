@@ -494,19 +494,19 @@ public class DataService {
         return report;
     }
 
-    // TODO: 기본형, 결시생을 'F' 버튼을 눌러 처리하는 경우, ex) 한양대 법대 서류평가
-    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+    // TODO: 기본형, 결시생은 param.getAbsentValue()로 처리하는 경우, ex) 한양대 법대: 'F', 경북대: '결시' 등
+    /*public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.examMap(param, pageable);
-        return fillMap(page);
-    }
+        return fillMap(param.getAbsentValue(), page);
+    }*/
 
-    private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
+    private Page<Map<String, Object>> fillMap(String absentValue, Page<Map<String, Object>> page) {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
             if (examCd != null && virtNo != null) {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
-                String total = null;
+                double total = 0;
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);
                     if (score != null) {
@@ -524,57 +524,26 @@ public class DataService {
                         map.put("TOTAL_SCORE" + i, score.get("totalScore"));
                         map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
 
-                        total = String.valueOf((score.get("totalScore")));
-                    }
-                }
-                map.put("TOTAL", total);
-            }
-        });
+                        String tmp = String.valueOf(score.get("totalScore"));
 
-        return page;
-    }
-
-   // TODO: 경북대용, 결시생을 '결시' 버튼을 눌러 처리하는 경우
-   /* private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
-        page.forEach(map -> {
-            String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
-            String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
-            if (examCd != null && virtNo != null) {
-                List<Map<String, Object>> scoreList = mapper.scorerH(map);
-                long total = 0;
-                for (int i = 1; i <= scoreList.size(); i++) {
-                    Map<String, Object> score = scoreList.get(i - 1);
-                    if (score != null) {
-                        map.put("SCORER_NM" + i, score.get("scorerNm"));
-                        map.put("SCORE" + i + "_S1", score.get("score01"));
-                        map.put("SCORE" + i + "_S2", score.get("score02"));
-                        map.put("SCORE" + i + "_S3", score.get("score03"));
-                        map.put("SCORE" + i + "_S4", score.get("score04"));
-                        map.put("SCORE" + i + "_S5", score.get("score05"));
-                        map.put("SCORE" + i + "_S6", score.get("score06"));
-                        map.put("SCORE" + i + "_S7", score.get("score07"));
-                        map.put("SCORE" + i + "_S8", score.get("score08"));
-                        map.put("SCORE" + i + "_S9", score.get("score09"));
-                        map.put("SCORE" + i + "_S10", score.get("score10"));
-                        map.put("TOTAL_SCORE" + i, score.get("totalScore"));
-                        map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
-
-                        String tmp = String.valueOf((score.get("totalScore")));
-                        if (!tmp.equals("결시")) {
-                            total += Long.parseLong(tmp);
+                        if(!tmp.equals(absentValue)){
+                            total += Double.parseDouble(tmp);
                         }
                     }
                 }
-                map.put("TOTAL", total);
+
+                if(absentValue.equals("F")) map.put("TOTAL", String.format("%.1f", total));
+                else map.put("TOTAL", total);
             }
         });
-        return page;
-    }*/
 
-    // 일반 가로버전, fillMap 없이 하나의 쿼리로
-    //public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
-    //    return mapper.scoredH(param, pageable);
-    //}
+        return page;
+    }
+
+    // TODO: 일반 가로버전, fillMap 없이 하나의 쿼리로
+    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+        return mapper.scoredH(param, pageable);
+    }
 
     // 가로버전
     public Page<Map<String, Object>> getSkkuPeriod1(ScoreDto param, Pageable pageable) {
@@ -584,7 +553,7 @@ public class DataService {
     // 동점자 현황
     public Page<Map<String, Object>> getDrawData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.drawData(param, pageable);
-        return fillMap(page);
+        return fillMap(param.getAbsentValue(), page);
         // return mapper.drawData(param, pageable);
     }
 }

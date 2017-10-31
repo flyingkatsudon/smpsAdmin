@@ -29,8 +29,9 @@ define(function (require) {
 
                 this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(tmp)));
 
-                this.disableFilter();
+                this.disableFilter(); // 하단 툴바를 쓰지 못하도록 잠금
             } else {
+                // 상단 필터가 비어있다면 기존 툴바를 사용한다
                 this.makeToolbar(this.param);
             }
 
@@ -57,7 +58,7 @@ define(function (require) {
             this.$('#examDate').css('cursor', 'not-allowed');
         },
         makeToolbar: function (o) {
-            // 상단필터 사용 안할 시
+            // 상단필터 사용 안할 시 하단 필터를 그려준다
             if (o.empty) {
                 this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
                 this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));

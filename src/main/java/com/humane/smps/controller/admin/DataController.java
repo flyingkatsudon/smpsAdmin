@@ -43,12 +43,16 @@ public class DataController {
 
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto param, Pageable pageable) {
+        // 1. 수험생의 목록을 가져온다
         List<ExamineeDto> list = dataMapper.examinee(param, pageable).getContent();
 
+        // 2. 각 수험생에 대하여 다음을 진행한다
         list.forEach(item -> {
+            // 2-1. '수험번호'.jpg 파일을 찾아 읽어온다
             try (InputStream is = imageService.getExaminee(item.getExamineeCd() + ".jpg")) {
                 BufferedImage image;
 
+                // 2-1-1. 파일이 없다면 default.jpg를 찾아 읽어온다
                 if (is == null) {
                     InputStream tmp = imageService.getExaminee("default.jpg");
                     image = ImageIO.read(tmp);
@@ -59,6 +63,7 @@ public class DataController {
                 log.error("{}", e.getMessage());
             }
 
+            // 2-2. 학교 로고 파일을 찾아 읽어온다
             try (InputStream is = imageService.getUnivLogo("univLogo.png")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setUnivLogo(image);
@@ -66,6 +71,7 @@ public class DataController {
                 e.printStackTrace();
             }
         });
+        // 3. 'jrxml' 양식 파일에 가져온 데이터를 입혀 pdf파일로 return 한다
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/examinee-id-card.jrxml"
                 , JasperReportsExportHelper.EXT_PDF
@@ -74,13 +80,19 @@ public class DataController {
 
     @RequestMapping(value = "examinee.{format:colmodel|json|pdf|xls|xlsx}")
     public ResponseEntity examinee(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
+        // 1. format에 따라 나뉜다
         switch (format) {
+            // 1-1. grid의 열을 만든다
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getExamineeModel());
+            // 1-2. grid에 데이터를 가져와서 채운다
             case JSON:
                 return ResponseEntity.ok(dataMapper.examinee(param, pageable));
+            // 1-3. 정해진 타입이 없다면 산출물로 내려보낸다
             default:
+                // 1-3-1. xlsx 양식을 그린다
                 JasperReportBuilder report = dataService.getExamineeReport();
+                // 1-3-2. 양식에 데이터를 입혀 내보낸다.
                 report.setDataSource(dataMapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()); // 원인
 
                 JasperPrint jasperPrint = report.toJasperPrint();
@@ -110,7 +122,8 @@ public class DataController {
     public ResponseEntity scorerH(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
         // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
-        param.setAbsentValue("F");
+        //param.setAbsentValue("F");
+        param.setAbsentValue("");
 
         try {
             switch (format) {
@@ -156,7 +169,8 @@ public class DataController {
     public ResponseEntity scorer(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
         // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
-        param.setAbsentValue("F");
+        //param.setAbsentValue("F");
+        param.setAbsentValue("");
 
         switch (format) {
             case COLMODEL:

@@ -18,6 +18,7 @@ public class ExamineeDto extends BasicDto{
 
     private String virtNo;
 
+    private Boolean isVirtNo;
     private Boolean isAttend;
 
     private String collegeNm;
@@ -25,7 +26,11 @@ public class ExamineeDto extends BasicDto{
     @DateTimeFormat(pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초", timezone = "Asia/Seoul")
     private Date printDttm;
-    private String attendance;
 
+    @DateTimeFormat(pattern = "HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date scanDttm;
+
+    private String attendance;
     private String exmAdmNm;
 }

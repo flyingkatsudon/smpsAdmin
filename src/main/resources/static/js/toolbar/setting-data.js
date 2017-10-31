@@ -1,15 +1,11 @@
 /**
  * Created by eugene on 2017-07-05.
  */
-/**
- *
- */
 define(function (require) {
     "use strict";
 
     var Toolbar = require('../dist/toolbar.js');
-    var ToolbarModel = require('../model/model-exam-toolbar.js');
-
+    var ToolbarModel = require('../model/model-status-toolbar.js');
 
     return Toolbar.extend({
         initialize: function (o) {

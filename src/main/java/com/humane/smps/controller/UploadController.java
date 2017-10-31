@@ -133,7 +133,6 @@ public class UploadController {
         try {
             List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
             for (FormHallVo vo : hallList) {
-                log.debug("{}", vo.getAdmissionCd() + "/" + vo.getExamCd());
                 if (vo != null && StringUtils.isNotEmpty(vo.getAdmissionCd())) {
                     /**
                      * 제약조건 : 시험정보는 반드시 업로드 되어 있어야 한다.

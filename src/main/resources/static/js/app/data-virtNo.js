@@ -1,9 +1,9 @@
 define(function (require) {
     "use strict";
     var Backbone = require('backbone');
+    var LoadPage = require('../loadPage.js');
 
-    var Common = require('./common.js');
-
+    // 초기에 그릴 때 필요, loadPage.js의 같은 부분은 필터 시 다시 그릴 때 require 된다
     require('../grid/data-virtNo.js');
     require('../grid/status-summary.js');
     require('../toolbar/data-virtNo.js');
@@ -12,7 +12,7 @@ define(function (require) {
 
     return Backbone.View.extend({
         initialize: function () {
-            new Common().render();
+            new LoadPage({baseName: location.hash.substring(1, location.hash.length), param: window.param}).render();
         }
     });
 });
