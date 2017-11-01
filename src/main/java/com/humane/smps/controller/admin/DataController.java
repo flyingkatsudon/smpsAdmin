@@ -121,10 +121,11 @@ public class DataController {
     @RequestMapping(value = "scorerH.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scorerH(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
-        // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
-        //param.setAbsentValue("F");
-        param.setAbsentValue("");
+        // 1. '결시'를 어떤 값으로 할 것 인지 사전에 설정
+        param.setAbsentValue("F");
+        //param.setAbsentValue("");
 
+        // 2. 위에서 작성한 주석과 동일
         try {
             switch (format) {
                 case COLMODEL:

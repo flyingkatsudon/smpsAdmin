@@ -12,6 +12,7 @@ define(function (require) {
 
     return Backbone.View.extend({
         initialize: function () {
+            // require로 그림을 그린 후 grid는 다음으로 로딩한다 (모든 페이지가 같은 형식으로 만들어져 있다)
             new LoadPage({baseName: location.hash.substring(1, location.hash.length), param: window.param}).render();
         }
     });

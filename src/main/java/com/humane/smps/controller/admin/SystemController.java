@@ -46,6 +46,7 @@ public class SystemController {
     private final SystemService systemService;
     private final SystemMapper systemMapper;
 
+    // 데이터를 내려받을 서버리스트를 표시
     @RequestMapping(value = "server.json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listServer() {
         ApiService apiService = ServiceBuilder.INSTANCE.createService("http://update.humanesystem.com:10000", ApiService.class);
@@ -180,16 +181,19 @@ public class SystemController {
         return ResponseEntity.ok(systemMapper.admission(pageable).getContent());
     }
 
+    // 계정 상세정보
     @RequestMapping(value = "accountDetail")
     public ResponseEntity accountDetail(String userId, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.accountDetail(userId, pageable).getContent());
     }
 
+    // 전형 삭제
     @RequestMapping(value = "delAdm")
     public void deleteAdmission(String userId) {
         systemMapper.deleteAdmission(userId);
     }
 
+    // 계정 권한 수정
     @RequestMapping(value = "mod")
     public void modify(String userId, String roleName, String admissionCd, String password) {
 
@@ -208,6 +212,7 @@ public class SystemController {
         systemMapper.modifyUser(userId, password);
     }
 
+    // 계정 추가
     @RequestMapping(value = "addAccount")
     public void addAccount(String userId, String password, String roleName) {
         try {
@@ -224,6 +229,7 @@ public class SystemController {
         }
     }
 
+    // 계정 삭제
     @RequestMapping(value = "delAccount")
     public void deleteAccount(String userId) {
         systemMapper.deleteAdmission(userId);
@@ -231,21 +237,25 @@ public class SystemController {
         systemMapper.deleteAccount(userId);
     }
 
+    // 계정 추가 시 id 중복 체크
     @RequestMapping(value = "idCheck")
     public ResponseEntity idCheck(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
     }
 
+    // 시험정보 설정 1/3 페이지
     @RequestMapping(value = "getStep1")
     public ResponseEntity getStep1(ExamInfoDto param, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.getStep1(param, pageable).getContent());
     }
 
+    // 시험정보 설정 2/3 페이지
     @RequestMapping(value = "getStep2")
     public ResponseEntity getStep2(String examCd, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.getStep2(examCd, pageable).getContent());
     }
 
+    // 시험정보 설정 3/3 페이지
     @RequestMapping(value = "getStep3")
     public ResponseEntity getStep3(String examCd, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.getStep3(examCd, pageable).getContent());

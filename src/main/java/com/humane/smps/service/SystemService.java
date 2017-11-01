@@ -309,6 +309,7 @@ public class SystemService {
                     .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE))
                     .takeUntil(page -> page.last)
                     .flatMap(page -> {
+                        // 각 수험생에 대해 반복
                         for (ExamMap examMap : page.content) {
                             admissionRepository.save(examMap.getExam().getAdmission());
 
@@ -319,18 +320,24 @@ public class SystemService {
                             hallRepository.save(examMap.getHall());
                             examRepository.save(examMap.getExam());
 
+                            // exam_hall_date 테이블에서 값을 찾는다
                             ExamHallDate findExamHallDate = hallDateRepository.findOne(new BooleanBuilder()
                                     .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
                                     .and(QExamHallDate.examHallDate.hall.hallCd.eq(hall.getHallCd()))
                                     .and(QExamHallDate.examHallDate.hallDate.eq(examMap.getHallDate()))
                             );
 
+                            // 찾는 값이 없다면
                             if (findExamHallDate == null) {
+                                // 각 필드에 대해 값을 입력
                                 ExamHallDate examHallDate = new ExamHallDate();
                                 examHallDate.setExam(exam);
                                 examHallDate.setHall(hall);
+                                examHallDate.setVirtNoStart(findExamHallDate.getVirtNoStart());
+                                examHallDate.setVirtNoEnd(findExamHallDate.getVirtNoEnd());
                                 examHallDate.setHallDate(examMap.getHallDate());
 
+                                // 입력한 객체를 repository에 저장
                                 hallDateRepository.save(examHallDate);
                             }
 
@@ -355,6 +362,7 @@ public class SystemService {
         }
     }
 
+    // saveExamMap 참고
     public void saveItem(ApiService apiService, DownloadWrapper wrapper) {
         List<String> examCds = new ArrayList<>();
         wrapper.getList().forEach(examHallWrapper -> {

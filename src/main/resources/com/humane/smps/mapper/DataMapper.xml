@@ -8,7 +8,7 @@
             admission.admission_nm,
             exam.type_nm,
             exam_map.hall_date AS exam_date,
-            examinee.college_nm,
+            examinee.college_nm, examinee.exm_adm_nm,
             examinee.dept_nm, examinee.major_nm, exam_map.group_nm,
             exam.exam_nm,
             hall.head_nm, hall.bldg_nm, hall.hall_nm,
@@ -191,8 +191,8 @@
                 , case when total_score = #{param.absentValue} then total_score
                 else ROUND(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
                       + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1)
-                end AS total_score -- 법대용
-                -- , score.total_score, -- 의대 및 그 외 전형
+                end -- AS total_score -- 법대용
+                 , score.total_score -- 의대 및 그 외 전형
                 , score.score_dttm
             FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
@@ -861,6 +861,7 @@
                        <if test="param != null">
                            <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
                            <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                           <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
                        </if>
                 </where>
         order by examinee_cd, scorer_nm, i
@@ -913,6 +914,7 @@
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
             </if>
         </where>
 
@@ -995,6 +997,7 @@
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
             </if>
         </where>
         order by examinee_cd, scorer_cd, i

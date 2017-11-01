@@ -12,9 +12,9 @@ define(function (require) {
 
     return Backbone.View.extend({
         initialize: function () {
-            /**
-             *  Home에서는 location.bash가 존재하지 않아서
-             *  아래와 같이 location.bast명을 직접 보내줘야 함
+            /*
+             *  Home 화면에서는 location.bash가 존재하지 않아서
+             *  아래와 같이 location.bash명을 직접 보내줘야 함
              */
             new LoadPage({baseName: 'data-virtNo', param: window.param}).render();
         }

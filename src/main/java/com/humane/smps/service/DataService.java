@@ -193,15 +193,15 @@ public class DataService {
         for (int i = 0; i < examDto.size(); i++) {
             long itemCnt = mapper.ericaItemCnt(examDto.get(i).getExamCd());
 
-            colModels.add(new ColModel("scorerNm" + (i+1) + "1", "측정교수"));
-            colModels.add(new ColModel("scorerNm" + (i+1) + "2", "기록입력위원"));
+            colModels.add(new ColModel("scorerNm" + (i + 1) + "1", "측정교수"));
+            colModels.add(new ColModel("scorerNm" + (i + 1) + "2", "기록입력위원"));
 
             for (int j = 1; j <= itemCnt; j++) {
                 if (itemCnt < 2) continue;
-                else colModels.add(new ColModel("score" + (i+1) + j, examDto.get(i).examNm + " 측정기록"));
+                else colModels.add(new ColModel("score" + (i + 1) + j, examDto.get(i).examNm + " 측정기록"));
             }
-            colModels.add(new ColModel("total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), examDto.get(i).examNm + " 최고기록"));
-            colModels.add(new ColModel("scoreDttm" + (i+1), "채점시간"));
+            colModels.add(new ColModel("total" + ((i + 1) < 10 ? "0" + (i + 1) : (i + 1)), examDto.get(i).examNm + " 최고기록"));
+            colModels.add(new ColModel("scoreDttm" + (i + 1), "채점시간"));
             /*colModels.add(new ColModel("grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), "변환점수"));*/
         }
 
@@ -480,25 +480,30 @@ public class DataService {
         for (int i = 0; i < examDto.size(); i++) {
             long itemCnt = mapper.ericaItemCnt(examDto.get(i).getExamCd());
 
-            report.addColumn(col.column("측정교수", "scorerNm" + (i+1) + "1", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5));
-            report.addColumn(col.column("기록입력위원", "scorerNm" + (i+1) + "2", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("측정교수", "scorerNm" + (i + 1) + "1", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5));
+            report.addColumn(col.column("기록입력위원", "scorerNm" + (i + 1) + "2", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
 
             for (int j = 1; j <= itemCnt; j++) {
                 if (itemCnt < 2) continue;
-                else report.addColumn(col.column(examDto.get(i).examNm + " 측정기록" + j, "score" + (i+1) + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(15));
+                else
+                    report.addColumn(col.column(examDto.get(i).examNm + " 측정기록" + j, "score" + (i + 1) + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(15));
             }
-            report.addColumn(col.column(examDto.get(i).examNm + " 최고기록", "total" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(17));
-            report.addColumn(col.column("채점시간", "scoreDttm" + (i+1), type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
+            report.addColumn(col.column(examDto.get(i).examNm + " 최고기록", "total" + ((i + 1) < 10 ? "0" + (i + 1) : (i + 1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(17));
+            report.addColumn(col.column("채점시간", "scoreDttm" + (i + 1), type.dateType()).setPattern("yyyy-MM-dd HH:mm:ss").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));
             /*report.addColumn(col.column("변환점수", "grade" + ((i+1) < 10 ? "0" + (i+1) : (i+1)), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(12));*/
         }
         return report;
     }
 
-    // TODO: 기본형, 결시생은 param.getAbsentValue()로 처리하는 경우, ex) 한양대 법대: 'F', 경북대: '결시' 등
-    /*public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+
+    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
+        // TODO: 결시를 별도로 처리하는 서류평가 혹은 경북대 면접의 경우 ex) 한양대 법대: 'F', 경북대: '결시' 등
         Page<Map<String, Object>> page = mapper.examMap(param, pageable);
         return fillMap(param.getAbsentValue(), page);
-    }*/
+
+        // TODO: 일반 가로버전, fillMap 없이 하나의 쿼리로
+        //return mapper.scoredH(param, pageable);
+    }
 
     private Page<Map<String, Object>> fillMap(String absentValue, Page<Map<String, Object>> page) {
         page.forEach(map -> {
@@ -526,23 +531,18 @@ public class DataService {
 
                         String tmp = String.valueOf(score.get("totalScore"));
 
-                        if(!tmp.equals(absentValue)){
+                        if (!tmp.equals(absentValue)) {
                             total += Double.parseDouble(tmp);
                         }
                     }
                 }
 
-                if(absentValue.equals("F")) map.put("TOTAL", String.format("%.1f", total));
+                if (absentValue.equals("F")) map.put("TOTAL", String.format("%.1f", total));
                 else map.put("TOTAL", total);
             }
         });
 
         return page;
-    }
-
-    // TODO: 일반 가로버전, fillMap 없이 하나의 쿼리로
-    public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
-        return mapper.scoredH(param, pageable);
     }
 
     // 가로버전
