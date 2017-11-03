@@ -100,7 +100,8 @@ public class SystemController {
 
             return ResponseEntity.ok("데이터가 정상적으로 처리되었습니다.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
 
@@ -152,6 +153,7 @@ public class SystemController {
             systemService.initData(examCd);
             return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
         } catch (Exception e) {
+            e.printStackTrace();
             log.debug("{}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
         }

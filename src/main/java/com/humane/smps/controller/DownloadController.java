@@ -96,7 +96,6 @@ public class DownloadController {
         scoreDto.setExamDate(basicDto.getExamDate());
         scoreDto.setDeptNm(basicDto.getDeptNm());
         scoreDto.setMajorNm(basicDto.getMajorNm());
-        scoreDto.setAbsentValue("F");
 
         ExamineeDto examineeDto = new ExamineeDto();
         examineeDto.setAdmissionNm(basicDto.getAdmissionNm());

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class FormExamineeVo {
     @Column(name = "수험번호") private String examineeCd;
+    @Column(name = "가번호") private String virtNo;
     @Column(name = "수험생명") private String examineeNm;
     @Column(name = "생년월일") private String birth;
     @Column(name = "성별") private String gender;

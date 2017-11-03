@@ -135,7 +135,7 @@ public class DataService {
         for (int i = 1; i <= scorerCnt; i++) {
             colModels.add(new ColModel("scorerNm" + i, "평가위원" + i));
             for (int j = 1; j <= itemCnt; j++)
-                colModels.add(new ColModel("score" + i + "S" + j, "항목" + i + "." + j));
+                colModels.add(new ColModel("score" + i + "s" + j, "항목" + i + "." + j));
 
             colModels.add(new ColModel("totalScore" + i, "총점" + i));
             /*colModels.add(new ColModel("scoreDttm" + i, "채점시간" + i, false));*/
@@ -327,7 +327,7 @@ public class DataService {
         for (int i = 1; i <= scorerCnt; i++) {
             report.addColumn(col.column("평가위원" + i, "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             for (int j = 1; j <= itemCnt; j++)
-                report.addColumn(col.column("항목" + i + "." + j, "score" + i + "S" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+                report.addColumn(col.column("항목" + i + "." + j, "score" + i + "s" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             // TODO: 법전과 타 전형 간 '총점' 컬럼 구분 필요
             // 1. 법전
             //report.addColumn(col.column("총점" + i, "totalScore" + i, type.doubleType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
@@ -498,20 +498,21 @@ public class DataService {
 
     public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
         // TODO: 결시를 별도로 처리하는 서류평가 혹은 경북대 면접의 경우 ex) 한양대 법대: 'F', 경북대: '결시' 등
-        Page<Map<String, Object>> page = mapper.examMap(param, pageable);
-        return fillMap(param.getAbsentValue(), page);
+        //Page<Map<String, Object>> page = mapper.examMap(param, pageable);
+        //return fillMap(page);
 
         // TODO: 일반 가로버전, fillMap 없이 하나의 쿼리로
-        //return mapper.scoredH(param, pageable);
+        return mapper.scoredH(param, pageable);
     }
 
-    private Page<Map<String, Object>> fillMap(String absentValue, Page<Map<String, Object>> page) {
+    private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
             if (examCd != null && virtNo != null) {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
-                double total = 0;
+                //String total = null; // 의대
+                double total = 0; // 법대
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);
                     if (score != null) {
@@ -529,16 +530,16 @@ public class DataService {
                         map.put("TOTAL_SCORE" + i, score.get("totalScore"));
                         map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
 
+                        // 법대
                         String tmp = String.valueOf(score.get("totalScore"));
 
-                        if (!tmp.equals(absentValue)) {
+                        if (!tmp.equals('F')) {
                             total += Double.parseDouble(tmp);
                         }
                     }
                 }
 
-                if (absentValue.equals("F")) map.put("TOTAL", String.format("%.1f", total));
-                else map.put("TOTAL", total);
+                map.put("TOTAL", total);
             }
         });
 
@@ -553,7 +554,7 @@ public class DataService {
     // 동점자 현황
     public Page<Map<String, Object>> getDrawData(ScoreDto param, Pageable pageable) {
         Page<Map<String, Object>> page = mapper.drawData(param, pageable);
-        return fillMap(param.getAbsentValue(), page);
+        return fillMap(page);
         // return mapper.drawData(param, pageable);
     }
 }

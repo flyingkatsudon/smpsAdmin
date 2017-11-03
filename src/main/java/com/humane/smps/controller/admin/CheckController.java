@@ -77,8 +77,7 @@ public class CheckController {
     @RequestMapping(value = "scoredF.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scoredF(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
-        // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
-        param.setAbsentValue("F");
+        // '결시'를 어떤 값으로 할 것 인지 사전에 설정 - 예정
 
         switch (format) {
             case COLMODEL:

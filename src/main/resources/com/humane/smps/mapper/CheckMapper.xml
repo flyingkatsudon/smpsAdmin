@@ -221,8 +221,8 @@
                         , e.scorer_nm1, e.total_score1, e.scorer_nm2, e.total_score2, e.scorer_nm3, e.total_score3, e.scorer_nm4, e.total_score4, e.scorer_nm5, e.total_score5
                         , e.scorer_nm6, e.total_score6, e.scorer_nm7, e.total_score7, e.scorer_nm8, e.total_score8, e.scorer_nm9, e.total_score9, e.scorer_nm10, e.total_score10
                         , e.scored_cnt
-                        , SUM( if(e.total_score1 =#{param.absentValue}, 1, 0) + if(e.total_score2 =#{param.absentValue}, 1, 0) + if(e.total_score3 =#{param.absentValue}, 1, 0) + if(e.total_score4 =#{param.absentValue}, 1, 0) + if(e.total_score5 =#{param.absentValue}, 1, 0) +
-                               if(e.total_score6 =#{param.absentValue}, 1, 0) + if(e.total_score7 =#{param.absentValue}, 1, 0) + if(e.total_score8 =#{param.absentValue}, 1, 0) + if(e.total_score9 =#{param.absentValue}, 1, 0) + if(e.total_score10 =#{param.absentValue}, 1, 0)
+                        , SUM( if(e.total_score1 ='F', 1, 0) + if(e.total_score2 ='F', 1, 0) + if(e.total_score3 ='F', 1, 0) + if(e.total_score4 ='F', 1, 0) + if(e.total_score5 ='F', 1, 0) +
+                               if(e.total_score6 ='F', 1, 0) + if(e.total_score7 ='F', 1, 0) + if(e.total_score8 ='F', 1, 0) + if(e.total_score9 ='F', 1, 0) + if(e.total_score10 ='F', 1, 0)
                           ) AS cnt
                 FROM ( SELECT exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date, d.virt_no
                             , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) + if(scored_cnt3 != 0, 1, 0) + if(scored_cnt4 != 0, 1, 0) + if(scored_cnt5 != 0, 1, 0)
@@ -274,8 +274,8 @@
             ) result
         <where>
             AND virt_no IS NOT NULL
-            AND (    total_score1 = #{param.absentValue} OR total_score2 = #{param.absentValue} OR total_score3 = #{param.absentValue} OR total_score4 = #{param.absentValue} OR total_score5 = #{param.absentValue}
-                    OR total_score6 = #{param.absentValue} OR total_score7 = #{param.absentValue} OR total_score8 = #{param.absentValue} OR total_score9 = #{param.absentValue} OR total_score10 = #{param.absentValue}
+            AND (    total_score1 = 'F' OR total_score2 = 'F' OR total_score3 = 'F' OR total_score4 = 'F' OR total_score5 = 'F'
+                    OR total_score6 = 'F' OR total_score7 = 'F' OR total_score8 = 'F' OR total_score9 = 'F' OR total_score10 = 'F'
                 )
             AND scored_cnt != cnt
             <if test="param != null">

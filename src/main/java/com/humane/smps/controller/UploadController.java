@@ -4,6 +4,7 @@ import com.blogspot.na5cent.exom.ExOM;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.reflect.TypeToken;
+import com.humane.smps.form.FormDeviVo;
 import com.humane.smps.form.FormExamineeVo;
 import com.humane.smps.form.FormHallVo;
 import com.humane.smps.form.FormItemVo;
@@ -57,7 +58,7 @@ public class UploadController {
     // Mac (smpsroot is different each)
     //@Value("${path.smps:/Users/Jeremy/Humane/api/smps}") String pathRoot;
 
-    @RequestMapping(value = "item", method = RequestMethod.POST)
+    @RequestMapping(value ="item", method =RequestMethod.POST)
     public ResponseEntity<String> item(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         // 파일이 없울경우 에러 리턴.
         if (multipartFile.isEmpty()) return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
@@ -140,7 +141,7 @@ public class UploadController {
                     // 1. 시험정보 생성
                     Exam exam = mapper.convertValue(vo, Exam.class);
 
-                    if(exam.getExamCd() == null || exam.getExamNm() == null || exam.getExamDate() == null)
+                    if (exam.getExamCd() == null || exam.getExamNm() == null || exam.getExamDate() == null)
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("시험을 찾지 못했습니다. 평가항목 양식을 확인하세요");
 
                     exam = examRepository.findOne(new BooleanBuilder()
@@ -274,6 +275,11 @@ public class UploadController {
                     // exam.virt_no_assign_type에 따라 virtNo를 자동으로 채워넣어야함
                     if (exam.getVirtNoAssignType().equals("examineeCd")) {
                         examMap.setVirtNo(examinee.getExamineeCd());
+                    } else if (exam.getVirtNoAssignType().equals("manageNo")) {
+                        if (vo.getVirtNo().equals("")) {
+                            examMap.setVirtNo(null);
+                        } else
+                            examMap.setVirtNo(vo.getVirtNo());
                     }
 
                     if (vo.getGroupNm() != null && vo.getGroupNm().equals("")) {

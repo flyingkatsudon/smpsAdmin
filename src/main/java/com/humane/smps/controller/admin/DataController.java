@@ -121,9 +121,7 @@ public class DataController {
     @RequestMapping(value = "scorerH.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scorerH(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
-        // 1. '결시'를 어떤 값으로 할 것 인지 사전에 설정
-        param.setAbsentValue("F");
-        //param.setAbsentValue("");
+        // 1. '결시'를 어떤 값으로 할 것 인지 사전에 설정 - 예정
 
         // 2. 위에서 작성한 주석과 동일
         try {
@@ -169,9 +167,7 @@ public class DataController {
     @RequestMapping(value = "scorer.{format:colmodel|json|pdf|xls|xlsx}")
     public ResponseEntity scorer(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
-        // TODO: '결시'를 어떤 값으로 할 것 인지 사전에 설정
-        //param.setAbsentValue("F");
-        param.setAbsentValue("");
+        // '결시'를 어떤 값으로 할 것 인지 사전에 설정 - 예정
 
         switch (format) {
             case COLMODEL:
