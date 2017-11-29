@@ -47,6 +47,8 @@ public class UploadService {
             String keypadType = (String) new PropertyDescriptor("keypadType" + i, FormItemVo.class).getReadMethod().invoke(dto);
             String scoreMap = (String) new PropertyDescriptor("scoreMap" + i, FormItemVo.class).getReadMethod().invoke(dto);
 
+            String deviCd = (String) new PropertyDescriptor("deviCd" + i, FormItemVo.class).getReadMethod().invoke(dto);
+
             try {
                 Item item = itemRepository.findOne(new BooleanBuilder()
                         .and(qItem.exam.examCd.eq(exam.getExamCd()))
@@ -67,6 +69,7 @@ public class UploadService {
                     // keypadType이 null이면 기본값으로 0
                     if (keypadType == null) item.setKeypadType("0");
 
+                    // 키패드에 따라 변환점수를 코드를 입력해준다
                     // keypadType이 0이면 기본값으로 min: 0, max: 100을 입력
                     item.setKeypadType(keypadType);
                     if (keypadType.equals("0")) {
@@ -74,12 +77,15 @@ public class UploadService {
                         item.setMinScore(validate("0"));
                         item.setMaxWarning(validate("9"));
                         item.setMinWarning(validate("0"));
+                        item.setDeviCd(null);
+                    } else if (keypadType.equals("4") || keypadType.equals("5")) {
+                        item.setDeviCd(deviCd);
+                    } else {
+                        item.setDeviCd(null);
                     }
 
                     item.setScoreMap(scoreMap);
                     if (scoreMap.equals("")) item.setScoreMap(null);
-
-                    item.setDeviCd("D100"); // 필요없음, 기존 평가앱을 다시 안쓴다면 지워야
 
                 } else { // update
                     item.setItemNm(itemNm);
@@ -90,6 +96,7 @@ public class UploadService {
                     item.setKeypadType(keypadType);
 
                     item.setScoreMap(scoreMap);
+                    item.setDeviCd(deviCd);
                     if (scoreMap.equals("")) item.setScoreMap(null);
                 }
                 itemRepository.save(item);

@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-10-28T11:46:13 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="편차코드 양식" pageWidth="600" pageHeight="70" orientation="Landscape" columnWidth="600" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dc8b38df-a2ae-4f7a-a1fd-d31fecad4d81">
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-11-28T13:47:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="편차코드 양식" pageWidth="600" pageHeight="45" orientation="Landscape" columnWidth="600" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dc8b38df-a2ae-4f7a-a1fd-d31fecad4d81">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -26,9 +18,9 @@
 			<staticText>
 				<reportElement x="0" y="0" width="600" height="15" uuid="3a4753a0-0767-4c63-86e7-1f2f7b975d84"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[편차코드 양식]]></text>
+				<text><![CDATA[변환점수 양식]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -46,9 +38,9 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[편차코드]]></text>
+				<text><![CDATA[점수코드]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="100" y="0" width="100" height="15" uuid="fd73367f-ee56-44b6-be6f-85113cbaf021"/>
@@ -59,9 +51,9 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[상위편차코드]]></text>
+				<text><![CDATA[상위점수코드]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="200" y="0" width="100" height="15" uuid="03fd86ad-c507-4a27-8104-30fd6abfcf70"/>
@@ -72,9 +64,9 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[편차명]]></text>
+				<text><![CDATA[등급명]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="300" y="0" width="100" height="15" uuid="72227c62-0ae3-4ea5-bd5d-2b011b4c9eac"/>
@@ -85,7 +77,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[최소점수]]></text>
 			</staticText>
@@ -98,7 +90,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[최대점수]]></text>
 			</staticText>
@@ -111,7 +103,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[정렬순서]]></text>
 			</staticText>
@@ -129,7 +121,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{deviCd}]]></textFieldExpression>
 			</textField>
@@ -142,7 +134,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fkDeviCd}]]></textFieldExpression>
 			</textField>
@@ -155,7 +147,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{deviNm}]]></textFieldExpression>
 			</textField>
@@ -168,7 +160,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{minScore}]]></textFieldExpression>
 			</textField>
@@ -181,7 +173,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{maxScore}]]></textFieldExpression>
 			</textField>
@@ -194,7 +186,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{orderby}]]></textFieldExpression>
 			</textField>

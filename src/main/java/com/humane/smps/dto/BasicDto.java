@@ -27,6 +27,7 @@ public class BasicDto implements Serializable {
     public String univCd;
     public String admissionCd;
     public String admissionNm;
+    private String exmAdmNm;
 
     public String typeNm;
 
@@ -52,7 +53,6 @@ public class BasicDto implements Serializable {
 
     private String examineeCd;
     private String examineeNm;
-
 
     /* 수험표 출력 */
     private BufferedImage univLogo;

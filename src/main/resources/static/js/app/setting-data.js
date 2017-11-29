@@ -23,6 +23,7 @@ define(function (require) {
             this.parent = o.parent;
         }, render: function () {
             this.$el.html(Template);
+            this.uploadForm('#frmUploadDevi');
             this.uploadForm('#frmUploadItem');
             this.uploadForm('#frmUploadHall');
             this.uploadForm('#frmUploadExaminee');

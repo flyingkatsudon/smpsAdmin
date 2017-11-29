@@ -22,6 +22,8 @@ public class FormItemVo {
     @Column(name = "채점방향가로") private Boolean isHorizontal;
     @Column(name = "지정이동방식 사용") private Boolean isMove;
     @Column(name = "결시버튼 사용") private Boolean isAbsence;
+    @Column(name = "결시값") private String absentValue;
+
     @Column(name = "마감데이터 사용") private Boolean isClosedView;
     @Column(name = "가번호 자동") private Boolean isMgrAuto;
     @Column(name = "가번호 표시 자릿수") private String virtNoDigits;
@@ -36,6 +38,17 @@ public class FormItemVo {
     @Column(name = "평가표문구1") private String printContent1;
     @Column(name = "평가표문구2") private String printContent2;
     @Column(name = "평가표서명") private String printSign;
+
+    @Column(name = "항목1 점수코드") private String deviCd1;
+    @Column(name = "항목2 점수코드") private String deviCd2;
+    @Column(name = "항목3 점수코드") private String deviCd3;
+    @Column(name = "항목4 점수코드") private String deviCd4;
+    @Column(name = "항목5 점수코드") private String deviCd5;
+    @Column(name = "항목6 점수코드") private String deviCd6;
+    @Column(name = "항목7 점수코드") private String deviCd7;
+    @Column(name = "항목8 점수코드") private String deviCd8;
+    @Column(name = "항목9 점수코드") private String deviCd9;
+    @Column(name = "항목10 점수코드") private String deviCd10;
 
     @Column(name = "항목수") private String itemCnt;
     @Column(name = "항목1 순서") private String itemNo1;        @Column(name = "항목1 명") private String itemNm1;          @Column(name = "항목1 키패드") private String keypadType1;

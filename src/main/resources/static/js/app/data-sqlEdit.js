@@ -105,17 +105,6 @@ define(function (require) {
                 + '\twhere admission.admission_cd = "HYU401"'
                 + '\norder by examinee_cd, scorer_cd, i';
 
-            var lawAbsentList = 'SELECT DISTINCT CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as "입학년도"\n'
-                + '\t\t, exam_map.examinee_cd as "수험번호"\n'
-                + '\t\t, examinee.examinee_nm as "성명"\n'
-                + '\t\t, "" as "비고"\n'
-                + '\tFROM exam_map\n'
-                + '\tINNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd\n'
-                + '\tINNER JOIN score ON score.exam_cd = exam_map.exam_cd AND score.virt_no = exam_map.virt_no\n'
-                + '\tinner join exam on exam.exam_cd = exam_map.exam_cd\n'
-                + '\tinner join admission on admission.admission_cd = exam.admission_cd\n'
-                + '\twhere score.total_score = "F" and admission.admission_cd = "HYU401"';
-
             var medicalTemplate = 'select CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as "입학년도"\n'
                 + '\t\t, exam_map.examinee_cd as "수험번호"\n'
                 + '\t\t, if(a.s is null, 1, 0) as "결시여부"\n'
@@ -160,22 +149,90 @@ define(function (require) {
                 + '\twhere admission.admission_cd = "HYU402"\n'
                 + '\torder by examinee_cd, scorer_cd, i';
 
+            var lawAbsentList = 'SELECT DISTINCT CONVERT(YEAR(CURDATE()) + 1, CHAR(4)) as "입학년도"\n'
+                + '\t\t, exam_map.examinee_cd as "수험번호"\n'
+                + '\t\t, examinee.examinee_nm as "성명"\n'
+                + '\t\t, "" as "비고"\n'
+                + '\tFROM exam_map\n'
+                + '\tINNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd\n'
+                + '\tINNER JOIN score ON score.exam_cd = exam_map.exam_cd AND score.virt_no = exam_map.virt_no\n'
+                + '\tinner join exam on exam.exam_cd = exam_map.exam_cd\n'
+                + '\tinner join admission on admission.admission_cd = exam.admission_cd\n'
+                + '\twhere score.total_score = "F" and admission.admission_cd = "전형코드를 입력하세요"';
+
+            var knuVertical = 'select "면접" as "전형",\n'
+                + '\t\texaminee.examinee_cd,\n'
+                + '\t\texaminee.exm_adm_nm,\n'
+                + '\t\texaminee.dept_nm,\n'
+                + '\t\texaminee.examinee_nm,\n'
+                + '\t\texaminee.birth,\n'
+                + '\t\thall.bldg_nm,\n'
+                + '\t\thall.hall_nm,\n'
+                + '\t\tc.scorer_nm,\n'
+                + '\t\tscore01, if(score01 = "결시", "결시", grade01) as grade01,\n'
+                + '\t\tscore02, if(score01 = "결시", "결시", grade02) as grade02,\n'
+                + '\t\tscore03, if(score01 = "결시", "결시", grade03) as grade03,\n'
+                + '\t\tscore04, if(score01 = "결시", "결시", grade04) as grade04,\n'
+                + '\t\tif(grade01 is null, "결시", grade01 + grade02 + grade03 + grade04) as total_score\n'
+                + '\tfrom ( select exam_cd, virt_no, scorer_nm\n'
+                + '\t\t, min(if(item_no = 1, score, null)) as score01\n'
+                + '\t\t, min(if(item_no = 2, score, null)) as score02\n'
+                + '\t\t, min(if(item_no = 3, score, null)) as score03\n'
+                + '\t\t, min(if(item_no = 4, score, null)) as score04\n'
+                + '\t\t, min(if(item_no = 1, grade, null)) as grade01\n'
+                + '\t\t, min(if(item_no = 2, grade, null)) as grade02\n'
+                + '\t\t, min(if(item_no = 3, grade, null)) as grade03\n'
+                + '\t\t, min(if(item_no = 4, grade, null)) as grade04\n'
+                + '\t\tfrom (\n'
+                + '\t\t\t\t\tselect b.exam_cd, b.virt_no, b.scorer_nm, b.item_no, b.score\n'
+                + '\t\t\t\t\t, (select max_score from devi where devi.fk_devi_cd = b.devi_cd and b.score = devi.devi_nm) as grade\n'
+                + '\t\t\t\t\tfrom (\n'
+                + '\t\t\t\t\t\tselect a.*, devi_cd\n'
+                + '\t\t\t\t\t\tfrom (\n'
+                + '\t\t\t\t\t\t\tselect exam_cd, virt_no, scorer_nm, "1" as item_no, score01 as score from score union all\n'
+                + '\t\t\t\t\t\t\tselect exam_cd, virt_no, scorer_nm, "2" as item_no, score02 as score from score union all\n'
+                + '\t\t\t\t\t\t\tselect exam_cd, virt_no, scorer_nm, "3" as item_no, score03 as score from score union all\n'
+                + '\t\t\t\t\t\t\tselect exam_cd, virt_no, scorer_nm, "4" as item_no, score04 as score from score\n'
+                + '\t\t\t\t\t\t) a\n'
+                + '\t\t\t\t\t\tinner join item on a.exam_cd = item.exam_cd and a.item_no = item.item_no\n'
+                + '\t\t\t\t\t) b) c group by exam_cd, virt_no, scorer_nm) c\n'
+                + '\t\tinner join exam_map on c.exam_cd = exam_map.exam_cd and c.virt_no = exam_map.virt_no\n'
+                + '\t\tinner join examinee on exam_map.examinee_cd = examinee.examinee_cd\n'
+                + '\t\tinner join exam on exam_map.exam_cd = exam.exam_cd\n'
+                + '\t\tinner join hall on exam_map.hall_cd = hall.hall_cd\n'
+                + '\t\torder by exm_adm_nm, examinee_cd\n';
+
+            var knuAbsentList = 'select examinee.dept_nm as "모집단위", examinee.exm_adm_nm as "전형구분", examinee.examinee_cd as "수험번호", examinee.examinee_nm as "수험생명"\n'
+                + 'from exam_map\n'
+                + 'inner join exam on exam.exam_cd = exam_map.exam_cd\n'
+                + 'inner join examinee on examinee.examinee_cd = exam_map.examinee_cd\n'
+                + 'left join score on score.exam_cd = exam.exam_cd AND score.virt_no = exam_map.virt_no\n'
+                + 'where score.total_score = "결시"\n'
+                + 'group by examinee.dept_nm, examinee.exm_adm_nm, examinee.examinee_cd, examinee.examinee_nm';
+
             $('[name=HYU]').click(function () {
                 $('#sql').val(interview1 + $(this)[0].id + interview2);
             });
 
-            $('.lawTemplate').click(function () {
+            $('#lawTemplate').click(function () {
                 $('#sql').val(lawTemplate);
             });
 
-            $('[name=lawAbsentList]').click(function () {
+            $('#lawAbsentList').click(function () {
                 $('#sql').val(lawAbsentList);
             });
 
-            $('[name=medicalTemplate]').click(function () {
+            $('#medicalTemplate').click(function () {
                 $('#sql').val(medicalTemplate);
             });
 
+            $('#knuVertical').click(function () {
+                $('#sql').val(knuVertical);
+            });
+
+            $('#knuAbsentList').click(function () {
+                $('#sql').val(knuAbsentList);
+            });
 
         }, events: {
             'click .btn-grid': 'search',
@@ -183,7 +240,7 @@ define(function (require) {
         }, excel: function () {
             var _this = this;
 
-            if($('#sql').val() == ''){
+            if ($('#sql').val() == '') {
                 responseDialog.notify({msg: '쿼리가 비어있습니다. 버튼을 눌러 쿼리를 가져와 실행하세요'});
                 return false;
             }
@@ -197,7 +254,7 @@ define(function (require) {
         }, search: function () {
             var _this = this;
 
-            if($('#sql').val() == ''){
+            if ($('#sql').val() == '') {
                 responseDialog.notify({msg: '쿼리가 비어있습니다. 버튼을 눌러 쿼리를 가져오세요'});
                 return false;
             }

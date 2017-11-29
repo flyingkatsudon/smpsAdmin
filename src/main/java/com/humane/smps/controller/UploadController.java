@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +45,7 @@ public class UploadController {
     private final UploadService uploadService;
     private final AdmissionRepository admissionRepository;
     private final ExamRepository examRepository;
+    private final DeviRepository deviRepository;
     private final HallRepository hallRepository;
     private final ExamHallRepository examHallRepository;
     private final HallDateRepository hallDateRepository;
@@ -54,11 +56,40 @@ public class UploadController {
     private final ScoreLogRepository scoreLogRepository;
 
     // Windows
-    @Value("${path.smps:C:/api/smps}") String pathRoot;
+    //@Value("${path.smps:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
-    //@Value("${path.smps:/Users/Jeremy/Humane/api/smps}") String pathRoot;
+    @Value("${path.smps:/Users/Jeremy/Humane/api/smps}")
+    String pathRoot;
 
-    @RequestMapping(value ="item", method =RequestMethod.POST)
+    @RequestMapping(value = "devi", method = RequestMethod.POST)
+    public void devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            // 1 엑셀 파징
+            List<FormDeviVo> deviList = ExOM.mapFromExcel(file).to(FormDeviVo.class).map(1);
+
+            // 2. 편차 생성
+            deviList.forEach(vo -> {
+                        // 2.1 편차 변환
+                        Devi devi = mapper.convertValue(vo, Devi.class);
+                        // 2.2 fk 설정
+                        Devi fkDevi = deviRepository.findOne(vo.getFkDeviCd());
+                        if (fkDevi != null) devi.setFkDevi(fkDevi);
+
+                        // 2.3 편차 저장
+                        deviRepository.save(devi);
+                    }
+            );
+        } catch (Throwable throwable) {
+            log.debug("{}", throwable.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "item", method = RequestMethod.POST)
     public ResponseEntity<String> item(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         // 파일이 없울경우 에러 리턴.
         if (multipartFile.isEmpty()) return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
@@ -73,8 +104,8 @@ public class UploadController {
             List<FormItemVo> itemList = ExOM.mapFromExcel(file).to(FormItemVo.class).map(1);
             log.debug("{}", itemList);
             for (FormItemVo vo : itemList) {
-                // 2. admission 변환, 저장
 
+                // 2. admission 변환, 저장
                 Admission admission = mapper.convertValue(vo, Admission.class);
                 admission = admissionRepository.save(admission);
 
@@ -106,9 +137,10 @@ public class UploadController {
                 } else exam.setVirtNoAssignType("virtNo");
 
                 if (vo.getBarcodeType() != null && vo.getBarcodeType().equals("")) exam.setBarcodeType(null);
+                if (vo.getAdjust() != null) exam.setAdjust(BigDecimal.ZERO);
+                if (vo.getAbsentValue() != null && vo.getAbsentValue().isEmpty()) exam.setAbsentValue(null);
 
                 exam.setAdmission(admission);
-
                 examRepository.save(exam);
 
                 // 4. item 변환, 저장, 갯수비교
@@ -204,6 +236,13 @@ public class UploadController {
                     } else {
                         hallDate.setVirtNoStart(vo.getVirtNoStart());
                         hallDate.setVirtNoEnd(vo.getVirtNoEnd());
+                    }
+
+                    // 평가위원목록이 없거나 공백이면 null로 저장
+                    if ((vo.getScorerList() == null || vo.getScorerList().equals(""))) {
+                        hallDate.setScorerList(null);
+                    } else {
+                        hallDate.setScorerList(vo.getScorerList());
                     }
 
                     // 응시고사실 확인
@@ -367,7 +406,25 @@ public class UploadController {
                             String virtNoAssignType = score.getExam().getVirtNoAssignType();
 
                             // 가번호 할당 방식이 '수험번호'라면 가번호 자리에 수험번호를 채움
-                            if (virtNoAssignType != null && virtNoAssignType.equals("examineeCd")) {
+                            if (virtNoAssignType != null && !virtNoAssignType.equals("virtNo")) {
+
+                                if (virtNoAssignType.equals("examineeCd") || virtNoAssignType.equals("manageNo")) {
+
+                                    // 사전에 등록해놓은 결시값을 가져와서
+                                    String absentValue = examRepository.findOne(new BooleanBuilder()
+                                            .and(QExam.exam.examCd.eq(score.getExam().getExamCd()))).getAbsentValue();
+
+                                    // 1. total_score가 null이 아닌 값에 한하여
+                                    if (score.getTotalScore() != null){
+                                        // 2. absentValue와 비교한다
+                                        if(!score.getTotalScore().equals(absentValue)) {
+                                            // 3. 같으면 결시이므로 scan_dttm에 null, 그렇지 않으면 score_dttm
+                                            examMap.setScanDttm(score.getScoreDttm());
+                                        }
+                                    } else {
+                                        examMap.setScanDttm(null);
+                                    }
+                                }
                                 examMap.setVirtNo(score.getVirtNo());
                                 examMapRepository.save(examMap);
                             }

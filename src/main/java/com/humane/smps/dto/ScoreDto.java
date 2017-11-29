@@ -2,14 +2,10 @@ package com.humane.smps.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.humane.util.jackson.TimeSerializer;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -56,4 +52,8 @@ public class ScoreDto extends BasicDto{
     private String grade05;
 
     private Long updateCnt;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date birth;
 }

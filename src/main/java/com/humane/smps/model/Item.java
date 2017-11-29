@@ -22,7 +22,7 @@ public class Item implements Serializable {
     private Long maxScore;
     private String keypadType;
 
-    private String deviCd; // 필요없음, 나중에 지워야함
+    private String deviCd; // 변환점수 때문에 사용함
 
     private String scoreMap;
     private Long minWarning;

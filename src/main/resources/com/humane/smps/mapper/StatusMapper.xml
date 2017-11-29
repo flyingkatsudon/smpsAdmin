@@ -32,6 +32,7 @@
             </if>
         </where>
     </select>
+
     <!-- TODO: 점수가 있어야 응시한 것으로 인정 -->
     <!--<select id="all" resultType="com.humane.smps.dto.StatusDto">
         select examinee_cnt, examinee_cnt - absent_cnt as attend_cnt
@@ -67,7 +68,7 @@
     </select>-->
 
     <!-- TODO: 가번호가 사전에 배정된 경우 응시율 요약, 점수가 있어야 응시한 것으로 인정 -->
-    <!-- <select id="all" resultType="com.humane.smps.dto.StatusDto">
+     <!--<select id="all" resultType="com.humane.smps.dto.StatusDto">
          SELECT COUNT(*) AS examinee_cnt
          , COUNT(a.virt_no) AS attend_cnt
          , COUNT(*) - COUNT(a.virt_no) AS absent_cnt
