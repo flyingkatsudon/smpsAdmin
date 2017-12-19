@@ -323,7 +323,7 @@ define(function (require) {
             var text = '<select id="examCd"><option value="">선택하세요</option>';
 
             var dialog = new BootstrapDialog({
-                title: '<h4>가번호 / 답안지 번호 / 점수</h4>',
+                title: '<h4>가번호 / 캔버스 번호 / 점수</h4>',
                 message: '<h5 style="margin-left: 10%">입력할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getOnlyExamList(text) + '</h5>',
                 closable: true,
                 buttons: [

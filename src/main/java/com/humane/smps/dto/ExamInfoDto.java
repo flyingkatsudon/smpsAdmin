@@ -69,6 +69,7 @@ public class ExamInfoDto extends BasicDto{
     private String minWarning;
     private String keypadType;
     private String scoreMap;
+    private String absentValue;
 
     private String _itemNm;
     private String _itemNo;

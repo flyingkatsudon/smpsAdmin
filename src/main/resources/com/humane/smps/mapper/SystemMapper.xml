@@ -133,6 +133,7 @@
         , exam.virt_no_assign_type
         , exam.fk_exam_cd
         , exam.admission_cd
+        , exam.absent_value
         , admission.admission_nm
         FROM exam
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
@@ -193,7 +194,8 @@
                 <if test="param.totScore != null">tot_score = #{param.totScore},</if>
                 <if test="param.virtNoDigits != null">virt_no_digits = #{param.virtNoDigits},</if>
                 <if test="param.virtNoType != null">virt_no_type = #{param.virtNoType},</if>
-                <if test="param.virtNoAssignType != null">virt_no_assign_type = #{param.virtNoAssignType}</if>
+                <if test="param.virtNoAssignType != null">virt_no_assign_type = #{param.virtNoAssignType},</if>
+                <if test="param.absentValue != null">absent_value = #{param.absentValue}</if>
             </set>
             WHERE exam_cd = #{param.examCd}
         </if>

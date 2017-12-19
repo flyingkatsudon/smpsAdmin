@@ -2,6 +2,7 @@ package com.humane.smps.controller.admin;
 
 import com.humane.smps.dto.*;
 import com.humane.smps.mapper.DataMapper;
+import com.humane.smps.repository.ExamMapRepository;
 import com.humane.smps.service.DataService;
 import com.humane.smps.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
@@ -13,6 +14,7 @@ import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,10 @@ public class DataController {
     private final DataService dataService;
     private final DataMapper dataMapper;
     private final ImageService imageService;
+    private final ExamMapRepository examMapRepository;
+
+    @Value("${name}")
+    public String name;
 
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto param, Pageable pageable) {
@@ -121,9 +127,6 @@ public class DataController {
     @RequestMapping(value = "scorerH.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scorerH(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
-        // 1. '결시'를 어떤 값으로 할 것 인지 사전에 설정 - 예정
-
-        // 2. 위에서 작성한 주석과 동일
         try {
             switch (format) {
                 case COLMODEL:
@@ -148,6 +151,7 @@ public class DataController {
     // test
     @RequestMapping(value = "draw.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity draw(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+
         switch (format) {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getDrawModel());
@@ -167,26 +171,35 @@ public class DataController {
     @RequestMapping(value = "scorer.{format:colmodel|json|pdf|xls|xlsx}")
     public ResponseEntity scorer(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
-        // '결시'를 어떤 값으로 할 것 인지 사전에 설정 - 예정
-
         switch (format) {
             case COLMODEL:
                 return ResponseEntity.ok(dataService.getScorerModel());
             case JSON:
                 return ResponseEntity.ok(dataMapper.scorer(param, pageable));
             default:
-                JasperReportBuilder report = dataService.getScorerReport();
-                report.setDataSource(dataMapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                if (name.equals("KNU")) {
+                    JasperReportBuilder report = dataService.getScorerReport();
+                    report.setDataSource(dataMapper.knuScorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
-                JasperPrint jasperPrint = report.toJasperPrint();
-                jasperPrint.setName("채점자별 상세(세로)");
+                    JasperPrint jasperPrint = report.toJasperPrint();
+                    jasperPrint.setName("경북대학교 채점자별 상세(세로)");
 
-                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+                    return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+                } else {
+                    JasperReportBuilder report = dataService.getScorerReport();
+                    report.setDataSource(dataMapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+                    JasperPrint jasperPrint = report.toJasperPrint();
+                    jasperPrint.setName("채점자별 상세(세로)");
+
+                    return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+                }
         }
     }
 
     @RequestMapping(value = "attendance.{format:xlsx}")
     public ResponseEntity attendance(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException, JRException {
+
         JasperReportBuilder report = dataService.attendanceReport();
         report.setDataSource(dataMapper.attendance(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
@@ -207,6 +220,7 @@ public class DataController {
 
     @RequestMapping(value = "scoreUpload.{format:xlsx}")
     public ResponseEntity scoreUpload(@PathVariable String format, @RequestParam("admissionNm") String admissionNm, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+
         JasperReportBuilder report = dataService.getScoreUploadReport();
         report.setDataSource(dataMapper.scoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
@@ -215,6 +229,7 @@ public class DataController {
 
     @RequestMapping(value = "failList.xlsx")
     public ResponseEntity failList(ExamineeDto param, Pageable pageable) throws DRException {
+
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/data-failList.jrxml"
                 , JasperReportsExportHelper.EXT_XLSX
@@ -223,32 +238,25 @@ public class DataController {
 
     @RequestMapping(value = "lawScoreUpload.{format:xlsx}")
     public ResponseEntity lawScoreUpload(@PathVariable String format, @RequestParam("admissionNm") String admissionNm, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+
         JasperReportBuilder report = dataService.getScoreUploadReport();
         report.setDataSource(dataMapper.lawScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
         return JasperReportsExportHelper.toResponseEntity(jasperPrint(admissionNm, report), format);
     }
 
     @RequestMapping(value = "medScoreUpload.{format:xlsx}")
     public ResponseEntity medScoreUpload(@PathVariable String format, @RequestParam("admissionNm") String admissionNm, ScoreUploadDto param, Pageable pageable) throws DRException, JRException {
+
         JasperReportBuilder report = dataService.getScoreUploadReport();
         report.setDataSource(dataMapper.medScoreUpload(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         return JasperReportsExportHelper.toResponseEntity(jasperPrint(admissionNm, report), format);
     }
 
-    @RequestMapping(value = "knuScorer.{format:xlsx}")
-    public ResponseEntity knuScorer(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
-        JasperReportBuilder report = dataService.getKnuScorer();
-        report.setDataSource(dataMapper.knuScorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
-
-        JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("경북대학교 채점자별 상세(세로)");
-
-        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
-    }
-
     @RequestMapping(value = "absentList.{format:xlsx}")
     public ResponseEntity absentList(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException, JRException {
+
         JasperReportBuilder report = dataService.getAbsentList();
         report.setDataSource(dataMapper.absentList(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
@@ -259,6 +267,7 @@ public class DataController {
     }
 
     @RequestMapping(value = "physical.{format:json|colmodel|xlsx|txt}")
+
     public ResponseEntity physicalReport(@PathVariable String format, physicalDto param, Pageable pageable) throws DRException, JRException {
         switch (format) {
             case COLMODEL:

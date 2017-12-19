@@ -46,7 +46,9 @@ define(function (require) {
                 {name: 'virtNoDigits', hidden: true},   // 가번호 표시 자릿수
                 {name: 'virtNoType', hidden: true},     // 가번호 표시 내용
                 {name: 'virtNoAssignType', hidden: true},     // 가번호 관리
-                {name: 'fkExamCd', hidden: true}       // 상위 시험 코드
+                {name: 'fkExamCd', hidden: true},       // 상위 시험 코드
+
+                {name: 'absentValue', hidden: true}     // 결시로 사용할 값
             ];
 
             for (var i = 0; i < colModel.length; i++) {

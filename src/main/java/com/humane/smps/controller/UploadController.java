@@ -55,11 +55,11 @@ public class UploadController {
     private final ScoreRepository scoreRepository;
     private final ScoreLogRepository scoreLogRepository;
 
+    // TODO: @Value의 제대로 된 사용법 (경로 포함)
     // Windows
-    //@Value("${path.smps:C:/api/smps}") String pathRoot;
+    @Value("${path.smps:C:/api/smps}") String pathRoot;
     // Mac (smpsroot is different each)
-    @Value("${path.smps:/Users/Jeremy/Humane/api/smps}")
-    String pathRoot;
+    //@Value("${path.smps:/Users/Jeremy/Humane/api/smps}") String pathRoot;
 
     @RequestMapping(value = "devi", method = RequestMethod.POST)
     public void devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
@@ -138,7 +138,7 @@ public class UploadController {
 
                 if (vo.getBarcodeType() != null && vo.getBarcodeType().equals("")) exam.setBarcodeType(null);
                 if (vo.getAdjust() != null) exam.setAdjust(BigDecimal.ZERO);
-                if (vo.getAbsentValue() != null && vo.getAbsentValue().isEmpty()) exam.setAbsentValue(null);
+                if (vo.getAbsentValue() != null && vo.getAbsentValue().isEmpty()) exam.setAbsentValue("0");
 
                 exam.setAdmission(admission);
                 examRepository.save(exam);
@@ -397,16 +397,24 @@ public class UploadController {
 
                     wrapper.getContent().forEach(score -> {
                         try {
-                            // score에 입력될 데이터에 수험생 정보가 있는지 검사
-                            ExamMap examMap = examMapRepository.findOne(new BooleanBuilder()
-                                    .and(QExamMap.examMap.exam.examCd.eq(score.getExam().getExamCd()))
-                                    .and(QExamMap.examMap.examinee.examineeCd.eq(score.getVirtNo()))
-                            );
-
                             String virtNoAssignType = score.getExam().getVirtNoAssignType();
 
-                            // 가번호 할당 방식이 '수험번호'라면 가번호 자리에 수험번호를 채움
+                            // 가번호 할당 방식이 '수험번호' 아닌 경우
                             if (virtNoAssignType != null && !virtNoAssignType.equals("virtNo")) {
+
+                                // 가번호 할당 방식에 따라 examMap을 가져오는 방법이 다름
+                                ExamMap examMap = null;
+
+                                switch (virtNoAssignType) {
+                                    case "examineeCd":
+                                        examMap = examMapRepository.findOne(new BooleanBuilder().and(QExamMap.examMap.examinee.examineeCd.eq(score.getVirtNo())));
+                                        break;
+                                    case "manageNo":
+                                        examMap = examMapRepository.findOne(new BooleanBuilder().and(QExamMap.examMap.virtNo.eq(score.getVirtNo())));
+                                        break;
+                                    default:
+                                        examMap = examMapRepository.findOne(new BooleanBuilder().and(QExamMap.examMap.virtNo.eq(score.getVirtNo())));
+                                }
 
                                 if (virtNoAssignType.equals("examineeCd") || virtNoAssignType.equals("manageNo")) {
 
@@ -415,9 +423,9 @@ public class UploadController {
                                             .and(QExam.exam.examCd.eq(score.getExam().getExamCd()))).getAbsentValue();
 
                                     // 1. total_score가 null이 아닌 값에 한하여
-                                    if (score.getTotalScore() != null){
+                                    if (score.getTotalScore() != null) {
                                         // 2. absentValue와 비교한다
-                                        if(!score.getTotalScore().equals(absentValue)) {
+                                        if (!score.getTotalScore().equals(absentValue)) {
                                             // 3. 같으면 결시이므로 scan_dttm에 null, 그렇지 않으면 score_dttm
                                             examMap.setScanDttm(score.getScoreDttm());
                                         }

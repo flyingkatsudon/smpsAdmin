@@ -188,11 +188,11 @@
                 , score08
                 , score09
                 , score10
-                , case when total_score = 'F' then total_score
-                else ROUND(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
-                      + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1)
-                end -- AS total_score -- 법대용
-                 , score.total_score -- 의대 및 그 외 전형
+                , if(score01 REGEXP '^[A-Z\.]+$' > 0
+                    , total_score
+                    , case when score01 = exam.absent_value then exam.absent_value else round(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
+                    + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1) end
+                    ) as total_score
                 , score.score_dttm
             FROM exam_map
             INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
@@ -200,16 +200,16 @@
             INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
             INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
             LEFT JOIN (select score.exam_cd, virt_no, scorer_nm, total_score, score_dttm
-                            , if(score01 REGEXP '^-?[0-9\.]+$' > 0, case when score01 != 'F' then score01 + exam.adjust else score01 end, score01) as score01
-                            , if(score02 REGEXP '^-?[0-9\.]+$' > 0, case when score02 != 'F' then score02 + exam.adjust else score02 end, score02) as score02
-                            , if(score03 REGEXP '^-?[0-9\.]+$' > 0, case when score03 != 'F' then score03 + exam.adjust else score03 end, score03) as score03
-                            , if(score04 REGEXP '^-?[0-9\.]+$' > 0, case when score04 != 'F' then score04 + exam.adjust else score04 end, score04) as score04
-                            , if(score05 REGEXP '^-?[0-9\.]+$' > 0, case when score05 != 'F' then score05 + exam.adjust else score05 end, score05) as score05
-                            , if(score06 REGEXP '^-?[0-9\.]+$' > 0, case when score06 != 'F' then score06 + exam.adjust else score06 end, score06) as score06
-                            , if(score07 REGEXP '^-?[0-9\.]+$' > 0, case when score07 != 'F' then score07 + exam.adjust else score07 end, score07) as score07
-                            , if(score08 REGEXP '^-?[0-9\.]+$' > 0, case when score08 != 'F' then score08 + exam.adjust else score08 end, score08) as score08
-                            , if(score09 REGEXP '^-?[0-9\.]+$' > 0, case when score09 != 'F' then score09 + exam.adjust else score09 end, score09) as score09
-                            , if(score10 REGEXP '^-?[0-9\.]+$' > 0, case when score10 != 'F' then score10 + exam.adjust else score10 end, score10) as score10
+                            , if(score01 REGEXP '^-?[0-9\.]+$' > 0, case when score01 != exam.absent_value then score01 + exam.adjust else score01 end, score01) as score01
+                            , if(score02 REGEXP '^-?[0-9\.]+$' > 0, case when score02 != exam.absent_value then score02 + exam.adjust else score02 end, score02) as score02
+                            , if(score03 REGEXP '^-?[0-9\.]+$' > 0, case when score03 != exam.absent_value then score03 + exam.adjust else score03 end, score03) as score03
+                            , if(score04 REGEXP '^-?[0-9\.]+$' > 0, case when score04 != exam.absent_value then score04 + exam.adjust else score04 end, score04) as score04
+                            , if(score05 REGEXP '^-?[0-9\.]+$' > 0, case when score05 != exam.absent_value then score05 + exam.adjust else score05 end, score05) as score05
+                            , if(score06 REGEXP '^-?[0-9\.]+$' > 0, case when score06 != exam.absent_value then score06 + exam.adjust else score06 end, score06) as score06
+                            , if(score07 REGEXP '^-?[0-9\.]+$' > 0, case when score07 != exam.absent_value then score07 + exam.adjust else score07 end, score07) as score07
+                            , if(score08 REGEXP '^-?[0-9\.]+$' > 0, case when score08 != exam.absent_value then score08 + exam.adjust else score08 end, score08) as score08
+                            , if(score09 REGEXP '^-?[0-9\.]+$' > 0, case when score09 != exam.absent_value then score09 + exam.adjust else score09 end, score09) as score09
+                            , if(score10 REGEXP '^-?[0-9\.]+$' > 0, case when score10 != exam.absent_value then score10 + exam.adjust else score10 end, score10) as score10
                             from score
                             inner join exam on score.exam_cd = exam.exam_cd) as score
                         ON exam_map.exam_cd = score.exam_cd AND exam_map.virt_no = score.virt_no
@@ -248,6 +248,7 @@
     <select id="examMap" resultType="com.humane.util.CamelMap">
         SELECT admission.admission_nm
         , exam.type_nm
+        , case when exam.absent_value is null then '0' else exam.absent_value end as absent_value
         , examinee.dept_nm
         , examinee.major_nm
         , examinee.examinee_nm
@@ -261,36 +262,18 @@
         , hall.head_nm
         , hall.bldg_nm
         , hall.hall_nm
-        , (
-            SELECT ROUND(SUM(
-                            if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) +
-                            if(score02 REGEXP '^-?[0-9\.]+$' > 0, score02 + exam.adjust, score02) +
-                            if(score03 REGEXP '^-?[0-9\.]+$' > 0, score03 + exam.adjust, score03) +
-                            if(score04 REGEXP '^-?[0-9\.]+$' > 0, score04 + exam.adjust, score04) +
-                            if(score05 REGEXP '^-?[0-9\.]+$' > 0, score05 + exam.adjust, score05) +
-                            if(score06 REGEXP '^-?[0-9\.]+$' > 0, score06 + exam.adjust, score06) +
-                            if(score07 REGEXP '^-?[0-9\.]+$' > 0, score07 + exam.adjust, score07) +
-                            if(score08 REGEXP '^-?[0-9\.]+$' > 0, score08 + exam.adjust, score08) +
-                            if(score09 REGEXP '^-?[0-9\.]+$' > 0, score09 + exam.adjust, score09) +
-                            if(score10 REGEXP '^-?[0-9\.]+$' > 0, score10 + exam.adjust, score10)
-                    ), 1)
+        , (SELECT SUM(
+                    IF(score01 IS NOT NULL, 1, 0)
+                    + IF(score02 IS NOT NULL, 1, 0)
+                    + IF(score03 IS NOT NULL, 1, 0)
+                    + IF(score04 IS NOT NULL, 1, 0)
+                    + IF(score05 IS NOT NULL, 1, 0)
+                    + IF(score06 IS NOT NULL, 1, 0)
+                    + IF(score07 IS NOT NULL, 1, 0)
+                    )
             FROM score
-            INNER JOIN exam on score.exam_cd = exam.exam_cd
-            WHERE score.virt_no = exam_map.virt_no
-            ) AS total
-        , (SELECT
-        SUM(
-        IF(score01 IS NOT NULL, 1, 0)
-        + IF(score02 IS NOT NULL, 1, 0)
-        + IF(score03 IS NOT NULL, 1, 0)
-        + IF(score04 IS NOT NULL, 1, 0)
-        + IF(score05 IS NOT NULL, 1, 0)
-        + IF(score06 IS NOT NULL, 1, 0)
-        + IF(score07 IS NOT NULL, 1, 0)
-        )
-        FROM score
-        WHERE exam_map.virt_no = score.virt_no
-        ) AS scored_cnt -- 평가자별 채점항목 수 검증용
+            WHERE exam_map.virt_no = score.virt_no
+          ) AS scored_cnt -- 평가자별 채점항목 수 검증용
         FROM exam_map
         INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd AND exam.fk_exam_cd IS NULL
         INNER JOIN admission ON exam.admission_cd = admission.admission_cd
@@ -325,14 +308,16 @@
         </if>
     </select>
 
-    <!-- TODO: 법대,의대마다 조정해줘야함 -->
     <select id="scorerH" resultType="com.humane.util.CamelMap">
         SELECT scorer_nm, score01, score02, score03, score04, score05, score06, score07, score08, score09, score10
-              , case when total_score = 'F' then total_score
-              else ROUND(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
-                      + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1)
-              end -- AS total_score -- 법대용
-              , total_score -- 의대용
+           --   , round(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
+           --     + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1) as total_score_law
+           --   , total_score as total_score
+              , if(score01 REGEXP '^[A-Z\.]+$' > 0
+                  , total_score
+                  , round(ifnull(score01, 0) + ifnull(score02, 0) + ifnull(score03, 0) + ifnull(score04, 0) + ifnull(score05, 0)
+                        + ifnull(score06, 0) + ifnull(score07, 0) + ifnull(score08, 0) + ifnull(score09, 0) + ifnull(score10, 0), 1)
+                  ) as total_score
               , date_format(score_dttm,'%Y-%m-%d %H:%i:%s') AS score_dttm
            FROM ( SELECT score.exam_cd, virt_no, scorer_nm, score_dttm, total_score
                       , if(score01 REGEXP '^-?[0-9\.]+$' > 0, score01 + exam.adjust, score01) as score01
@@ -410,69 +395,8 @@
         SELECT DISTINCT score.scorer_nm
         FROM score
     </select>
-    <!-- 채점자별 상세(가로) 1개 쿼리로, '결시' 버튼이 '결시'인 경우 -->
-    <!--
-    <select id="scoredH" resultType="com.humane.util.CamelMap">
-    SELECT result.*
-            FROM(SELECT  admission.admission_nm
-                        , exam.exam_date
-                        , hall.head_nm, hall.bldg_nm, hall.hall_nm, e.virt_no
-                        , e.scorer_nm1, e.total_score1, e.score1s1, e.score1s2, e.score1s3, e.score1s4
-						, e.scorer_nm2, e.total_score2, e.score2s1, e.score2s2, e.score2s3, e.score2s4
-                        , e.total
-                        , e.examinee_cd, e.examinee_nm, e.dept_nm, e.major_nm
-                FROM ( SELECT exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date, d.virt_no
-                            , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) AS scored_cnt
-                            , scorer_nm1, case when total_score1 = '결시' then '결시' else cast(total_score1 AS unsigned) end AS total_score1
-                            , scorer_nm2, case when total_score2 = '결시' then '결시' else cast(total_score2 AS unsigned) end AS total_score2
-                             , case when total_score1 = '결시' or total_score2 = '결시' then '결시'
-                                else(
-                                    (case when total_score1 is not null then cast(total_score1 AS unsigned) else 0 end)
-                                  + (case when total_score2 is not null then cast(total_score2 AS unsigned) else 0 end)
-                                ) end as total
-                            , score1S1, score1S2, score1S3, score1S4, score2S1, score2S2, score2S3, score2S4
-                            , d.examinee_cd, d.examinee_nm, d.dept_nm, d.major_nm
-                        FROM exam_hall_date
-                        INNER JOIN exam on exam.exam_cd = exam_hall_date.exam_cd
-                        LEFT JOIN (SELECT exam_cd, hall_cd, hall_date, virt_no, examinee_cd, examinee_nm, dept_nm, major_nm
-                                    , MIN(if(rn = 1, scorer_nm, NULL)) AS scorer_nm1, MIN(if(rn = 1, total_score, NULL)) AS total_score1
-                                    , MIN(if(rn = 2, scorer_nm, NULL)) AS scorer_nm2, MIN(if(rn = 2, total_score, NULL)) AS total_score2
 
-                                    , MIN(if(rn = 1, cnt, NULL)) AS scored_cnt1, MIN(if(rn = 2, cnt, NULL)) AS scored_cnt2
-
-                                    , MIN(if(rn = 1, score01, NULL)) AS score1S1, MIN(if(rn = 1, score02, NULL)) AS score1S2, MIN(if(rn = 1, score03, NULL)) AS score1S3, MIN(if(rn = 1, score04, NULL)) AS score1S4
-                                    , MIN(if(rn = 2, score01, NULL)) AS score2S1, MIN(if(rn = 2, score02, NULL)) AS score2S2, MIN(if(rn = 2, score03, NULL)) AS score2S3, MIN(if(rn = 2, score04, NULL)) AS score2S4
-                                    FROM ( SELECT a.*
-                                            , CASE WHEN @prev_exam_cd = exam_cd AND @prev_hall_cd = hall_cd AND @prev_hall_date = hall_date AND @prev_virt_no = virt_no then @rownum := @rownum + 1 else @rownum := 1 end AS rn
-                                            , @prev_exam_cd := exam_cd
-                                            , @prev_hall_cd := hall_cd
-                                            , @prev_hall_date := hall_date
-                                            , @prev_virt_no := virt_no
-                                            FROM (SELECT exam_map.hall_date, score.exam_cd, score.hall_cd, score.virt_no, score.scorer_nm, score.total_score
-                                            					, score.score01, score.score02, score.score03, score.score04, examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm
-                                                , (SELECT count(*) FROM score f WHERE f.virt_no = score.virt_no GROUP BY virt_no) AS cnt
-                                                    FROM score
-                                                    INNER JOIN exam ON exam.exam_cd = score.exam_cd
-                                                    INNER JOIN exam_map ON exam_map.exam_cd = score.exam_cd AND exam_map.hall_cd = score.hall_cd AND exam_map.virt_no = score.virt_no
-                                                    INNER JOIN examinee ON examinee.examinee_cd = exam_map.examinee_cd
-                                                    GROUP BY exam_map.hall_date,  score.exam_cd, score.hall_cd, score.virt_no, score.scorer_nm, score.total_score
-                                                    ORDER BY exam_map.hall_date, exam_cd, hall_cd, virt_no, scorer_nm) a
-                                                    , (SELECT @rownum := 1, @prev_exam_cd := '', @prev_hall_cd := '', @prev_hall_date := '', @prev_virt_no := '') b
-                                                  )c
-                                            GROUP BY exam_cd, hall_cd, hall_date, virt_no) d on exam_hall_date.exam_cd = d.exam_cd AND exam_hall_date.hall_cd = d.hall_cd AND exam_hall_date.hall_date = d.hall_date
-                                    ) e
-            INNER JOIN exam ON e.exam_cd = exam.exam_cd
-            INNER JOIN admission ON exam.admission_cd  = admission.admission_cd
-            INNER JOIN hall ON e.hall_cd = hall.hall_cd
-            INNER JOIN examinee ON examinee.examinee_cd = e.virt_no
-            GROUP BY admission.admission_nm
-                    , exam.type_nm, exam.exam_date, hall_date
-                    , hall.head_nm, hall.bldg_nm, hall.hall_nm, e.virt_no
-            ) result
-        where
-            virt_no IS NOT NULL
-    </select>
-    -->
+    <!-- 채점자별 상세(가로) 1개 쿼리로, 결시를 의미하는 값은 exam.absent_value -->
     <select id="scoredH" resultType="com.humane.util.CamelMap">
        SELECT distinct admission.admission_nm, exam.type_nm, e.hall_date as exam_date
                         , e.dept_nm, e.major_nm, e.examinee_cd, e.examinee_nm, e.group_nm
@@ -484,12 +408,12 @@
                         , e.scorer_nm5, e.total_score5, e.score5s1, e.score5s2, e.score5s3, e.score5s4, e.score5s5
 		          FROM ( SELECT exam_hall_date.exam_cd, exam_hall_date.hall_cd, exam.scorer_cnt, exam_hall_date.hall_date, d.virt_no
                             , if(scored_cnt1 != 0, 1, 0) + if(scored_cnt2 != 0, 1, 0) + if(scored_cnt3 != 0, 1, 0) + if(scored_cnt4 != 0, 1, 0) + if(scored_cnt5 != 0, 1, 0) AS scored_cnt
-                            , scorer_nm1, case when total_score1 = 'F' then total_score1 else cast(total_score1 AS unsigned) end AS total_score1
-                            , scorer_nm2, case when total_score2 = 'F' then total_score2 else cast(total_score2 AS unsigned) end AS total_score2
-                            , scorer_nm3, case when total_score3 = 'F' then total_score3 else cast(total_score3 AS unsigned) end AS total_score3
-                            , scorer_nm4, case when total_score4 = 'F' then total_score4 else cast(total_score4 AS unsigned) end AS total_score4
-                            , scorer_nm5, case when total_score5 = 'F' then total_score5 else cast(total_score5 AS unsigned) end AS total_score5
-                             , case when total_score1 = 'F' or total_score2 = 'F' or total_score3 = 'F' or total_score4 = 'F' or total_score5 = 'F'  then 'F'
+                            , scorer_nm1, case when total_score1 = exam.absent_value then total_score1 else cast(total_score1 AS unsigned) end AS total_score1
+                            , scorer_nm2, case when total_score2 = exam.absent_value then total_score2 else cast(total_score2 AS unsigned) end AS total_score2
+                            , scorer_nm3, case when total_score3 = exam.absent_value then total_score3 else cast(total_score3 AS unsigned) end AS total_score3
+                            , scorer_nm4, case when total_score4 = exam.absent_value then total_score4 else cast(total_score4 AS unsigned) end AS total_score4
+                            , scorer_nm5, case when total_score5 = exam.absent_value then total_score5 else cast(total_score5 AS unsigned) end AS total_score5
+                             , case when total_score1 = exam.absent_value or total_score2 = exam.absent_value or total_score3 = exam.absent_value or total_score4 = exam.absent_value or total_score5 = exam.absent_value  then exam.absent_value
                                 else(
                                     (case when total_score1 is not null then cast(total_score1 AS unsigned) else 0 end)
                                   + (case when total_score2 is not null then cast(total_score2 AS unsigned) else 0 end)
@@ -528,11 +452,11 @@
                                             , @prev_hall_date := hall_date
                                             , @prev_virt_no := virt_no
                                             FROM (SELECT exam_map.hall_date, score.exam_cd, score.hall_cd, score.virt_no, score.scorer_nm, score.total_score
-                                            					, case when score.score01 != 'F' then score01 else score01 end as score01
-                                                                , case when score.score02 != 'F' then score02 else score02 end as score02
-                                                                , case when score.score03 != 'F' then score03 else score03 end as score03
-                                                                , case when score.score04 != 'F' then score04 else score04 end as score04
-                                                                , case when score.score05 != 'F' then score05 else score05 end as score05
+                                            					, case when score.score01 != exam.absent_value then score01 else score01 end as score01
+                                                                , case when score.score02 != exam.absent_value then score02 else score02 end as score02
+                                                                , case when score.score03 != exam.absent_value then score03 else score03 end as score03
+                                                                , case when score.score04 != exam.absent_value then score04 else score04 end as score04
+                                                                , case when score.score05 != exam.absent_value then score05 else score05 end as score05
                                                                 , examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, exam_map.group_nm
                                                 , (SELECT count(*) FROM score f WHERE f.virt_no = score.virt_no GROUP BY virt_no) AS cnt
                                                     FROM score

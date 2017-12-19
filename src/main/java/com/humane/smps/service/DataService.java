@@ -12,6 +12,7 @@ import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,9 @@ public class DataService {
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
     private final DataMapper mapper;
 
+    @Value("${name}")
+    public String name;
+
     @Data
     private class ColModel {
         private String name;
@@ -75,10 +79,11 @@ public class DataService {
         colModels.add(new ColModel("virtNo", "가번호"));
 
         long itemCnt = mapper.getItemCnt();
+
         for (int i = 1; i <= itemCnt; i++) {
-            /*colModels.add(new ColModel("avgScore" + (i < 10 ? "0" + i : i), "항목" + i + "평균"));*/
             colModels.add(new ColModel("totScore" + (i < 10 ? "0" + i : i), "항목" + i + "합계"));
         }
+
         colModels.add(new ColModel("scorerCnt", "평가위원수"));
         colModels.add(new ColModel("isAttend", "응시여부"));
         return colModels;
@@ -144,6 +149,7 @@ public class DataService {
     }
 
     public List<ColModel> getDrawModel() {
+
         // 기본 생성
         List<ColModel> colModels = new ArrayList<>();
         colModels.add(new ColModel("admissionNm", "전형"));
@@ -229,10 +235,9 @@ public class DataService {
 
         long itemCnt = mapper.getItemCnt();
 
-        for (int i = 1; i <= itemCnt; i++) {
-            /*report.addColumn(col.column("항목" + i + "평균", "avgScore" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));*/
+        for (int i = 1; i <= itemCnt; i++)
             report.addColumn(col.column("항목" + i + "합계", "totScore" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        }
+
         report.addColumn(col.column("평가위원수", "scorerCnt", type.longType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         report.addColumn(col.column("응시여부", "isAttend", type.booleanType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
 
@@ -300,6 +305,7 @@ public class DataService {
         return report;
     }
 
+    // 채점자별 가로 산출물
     public JasperReportBuilder getScorerHReport() {
         JasperReportBuilder report = report()
                 .title(cmp.text("채점자별 상세(가로)").setStyle(columnTitleStyle))
@@ -327,76 +333,58 @@ public class DataService {
         for (int i = 1; i <= scorerCnt; i++) {
             report.addColumn(col.column("평가위원" + i, "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
             for (int j = 1; j <= itemCnt; j++)
-                report.addColumn(col.column("항목" + i + "." + j, "score" + i + "s" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-            // TODO: 법전과 타 전형 간 '총점' 컬럼 구분 필요
-            // 1. 법전
-            //report.addColumn(col.column("총점" + i, "totalScore" + i, type.doubleType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-            // 2. 그 외
+                report.addColumn(col.column("항목" + i + "." + j, "score" + i + "S" + j, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+
             report.addColumn(col.column("총점" + i, "totalScore" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         }
         return report;
     }
 
-    // TODO: 일반 세로 산출물
+    // 채점자별 세로 산출물
     public JasperReportBuilder getScorerReport() {
         JasperReportBuilder report = report()
-                .title(cmp.text("채점자별 상세(세로)").setStyle(columnTitleStyle))
-                .columns(
-                        col.reportRowNumberColumn("번호").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(13),
-                        col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
-                        col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11),
-                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        /*col.column("답안지번호", "evalCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),*/
-                        col.column("조", "groupNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("평가위원", "scorerNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
-                )
+                .columns(col.reportRowNumberColumn("번호").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7))
                 .setPageMargin(DynamicReports.margin(0))
                 .setIgnorePageWidth(true)
                 .setIgnorePagination(true);
 
-        long itemCnt = mapper.getItemCnt();
-        for (int i = 1; i <= itemCnt; i++)
-            report.addColumn(col.column("항목" + i, "score" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-
-        //report.addColumn(col.column("총점", "totalScore", type.bigDecimalType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));// 법대용
-        report.addColumn(col.column("총점", "totalScore", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-        return report;
-
-    }
-
-    // TODO: 경북대용 세로 산출물
-    public JasperReportBuilder getKnuScorer() {
-        JasperReportBuilder report = report()
-                .title(cmp.text("채점자별 상세(세로)").setStyle(columnTitleStyle))
-                .columns(
-                        col.reportRowNumberColumn("번호").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(3),
-                        col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(4),
-                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("전형구분", "exmAdmNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(16),
-                        col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(16),
-                        col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("생년월일", "birth", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("고사건물", "bldgNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(10),
-                        col.column("고사실", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("평가위원", "scorerNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
-                )
-                .setPageMargin(DynamicReports.margin(0))
-                .setIgnorePageWidth(true)
-                .setIgnorePagination(true);
+        if(name.equals("KNU")){
+            report.addTitle(cmp.text("경북대학교 채점자별 상세(세로)").setStyle(columnTitleStyle));
+            report.addColumn(col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(13));
+            report.addColumn(col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11));
+            report.addColumn(col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("평가위원", "scorerNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        } else {
+            report.addTitle(cmp.text("채점자별 상세(세로)").setStyle(columnTitleStyle));
+            report.addColumn(col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(13));
+            report.addColumn(col.column("계열", "typeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("시험일자", "examDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8));
+            report.addColumn(col.column("모집단위", "deptNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11));
+            report.addColumn(col.column("전공", "majorNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(11));
+            report.addColumn(col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("수험생명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("가번호", "virtNo", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("조", "groupNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("평가위원", "scorerNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        }
 
         long itemCnt = mapper.getItemCnt();
         for (int i = 1; i <= itemCnt; i++) {
             report.addColumn(col.column("항목" + i, "score" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
-            report.addColumn(col.column("점수" + i, "grade" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+
+            // 경북대 세로 산출물은 항목(등급) 당 점수가 따로 표시되어야 한다
+            if (name.equals("KNU"))
+                report.addColumn(col.column("점수" + i, "grade" + (i < 10 ? "0" + i : i), type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
         }
-        report.addColumn(col.column("총점", "totalScore", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+
+        if (name.equals("HYU_LAW"))
+            report.addColumn(col.column("총점", "totalScore", type.bigDecimalType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        else
+            report.addColumn(col.column("총점", "totalScore", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
 
         return report;
+
     }
 
     public JasperReportBuilder attendanceReport() {
@@ -497,22 +485,37 @@ public class DataService {
 
 
     public Page<Map<String, Object>> getScorerHData(ScoreDto param, Pageable pageable) {
-        // TODO: 결시를 별도로 처리하는 서류평가 혹은 경북대 면접의 경우 ex) 한양대 법대: 'F', 경북대: '결시' 등
-        /*Page<Map<String, Object>> page = mapper.examMap(param, pageable);
-        return fillMap(page);
-*/
-        // TODO: 일반 가로버전, fillMap 없이 하나의 쿼리로
-        return mapper.scoredH(param, pageable);
+        // score를 가지는 각 examMap(수험생 리스트)을 가져온다
+        Page<Map<String, Object>> page = mapper.examMap(param, pageable);
+
+        if (name.equals("SKKU"))
+            return mapper.skkuPeriod1(param, pageable);
+        else if (name.equals("TEST"))
+            return fillMap(page);
+        else
+            return fillMap(page);
     }
 
+    // 가져온 examMap(수험생 리스트)에 score를 채워넣는다
     private Page<Map<String, Object>> fillMap(Page<Map<String, Object>> page) {
         page.forEach(map -> {
             String examCd = map.get("examCd") == null ? null : map.get("examCd").toString();
             String virtNo = map.get("virtNo") == null ? null : map.get("virtNo").toString();
+            String absentValue = map.get("absentValue").toString();
+
+            if (absentValue == null) {
+                absentValue = "0";
+            }
+
             if (examCd != null && virtNo != null) {
                 List<Map<String, Object>> scoreList = mapper.scorerH(map);
-                String total = null; // 의대, 경북대
-                //double total = 0; // 법대
+
+                /** 2017.12.06 (Author: Jeremy Kim)
+                 *  총점 계산 일반화
+                 */
+
+                double total_sum = 0;
+
                 for (int i = 1; i <= scoreList.size(); i++) {
                     Map<String, Object> score = scoreList.get(i - 1);
                     if (score != null) {
@@ -527,19 +530,60 @@ public class DataService {
                         map.put("SCORE" + i + "_S8", score.get("score08"));
                         map.put("SCORE" + i + "_S9", score.get("score09"));
                         map.put("SCORE" + i + "_S10", score.get("score10"));
-                        map.put("TOTAL_SCORE" + i, score.get("totalScore"));
                         map.put("SCORE_DTTM" + i, score.get("scoreDttm"));
 
-                        // 법대
-                        /*String tmp = String.valueOf(score.get("totalScore"));
+                        // 1. 법학 서류 평가
+                        if(name.equals("HYU_LAW")) {
+                            // 1-1. 총점으로 결시 구분
+                            String tmp = String.valueOf(score.get("totalScore"));
 
-                        if (!tmp.equals('F')) {
-                            total += Double.parseDouble(tmp);
-                        }*/
+                            // 1-1-1. 총점이 'F'(결시)가 아닐 때
+                            if(!tmp.equals(absentValue)){
+                                Double ts = Double.parseDouble(String.valueOf(score.get("totalScore"))) * 10d / 10d;
+
+                                // 소숫점 한 자리로 계산
+                                map.put("TOTAL_SCORE" + i, String.valueOf(ts));
+                                total_sum += Double.parseDouble(score.get("totalScore").toString());
+                            }
+                            // 1-1-2. 결시 이거나 null인 경우 (총점은 직접 쿼리 내에서 계산해서 내려줘서 null을 사전에 처리한다)
+                            else {
+                                map.put("TOTAL_SCORE" + i, tmp);
+                            }
+                        }
+                        // 2. 그 외 버전
+                        else {
+                            String tmp = String.valueOf(score.get("totalScore"));
+
+                            // 2-1. 총점이 '결시' 가 아닐 떄
+                            if(!tmp.equals(absentValue)){
+                                Double ts = Double.parseDouble(tmp);
+
+                                map.put("TOTAL_SCORE" + i, String.valueOf(Math.round(ts)));
+                                total_sum += ts;
+                            }
+                            // 2-1. 그 외
+                            else {
+                                map.put("TOTAL_SCORE" + i, score.get("totalScore"));
+                                total_sum += 0;
+                            }
+                        }
                     }
                 }
 
-                map.put("TOTAL", total);
+                // 전체 총점 표시할 떄
+                // 1. 법학 서류평가 버전일 때
+                if(name.equals("HYU_LAW")){
+                    // 1-1. 결시일 때
+                    if(total_sum == 0)
+                        map.put("TOTAL", absentValue);
+                    // 1-2. 그 외
+                    else
+                        map.put("TOTAL", String.valueOf(Math.round(total_sum * 10d) / 10d));
+                }
+                // 2. 그 외 버전일 때
+                else {
+                    map.put("TOTAL", String.valueOf(Math.round(total_sum)));
+                }
             }
         });
 

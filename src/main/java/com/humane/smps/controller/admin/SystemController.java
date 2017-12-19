@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -242,13 +243,13 @@ public class SystemController {
     // 계정 추가 시 id 중복 체크
     @RequestMapping(value = "idCheck")
     public ResponseEntity idCheck(Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
+        return ResponseEntity.ok(systemMapper.idCheck(new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
     }
 
     // 시험정보 설정 1/3 페이지
     @RequestMapping(value = "getStep1")
     public ResponseEntity getStep1(ExamInfoDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.getStep1(param, pageable).getContent());
+        return ResponseEntity.ok(systemMapper.getStep1(param, pageable));
     }
 
     // 시험정보 설정 2/3 페이지

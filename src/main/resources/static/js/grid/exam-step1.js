@@ -38,15 +38,22 @@ define(function (require) {
                     basic1Html += '<div style="margin:3% 0 0 3%;">수험번호<input type="number" min="0" id="examineeLen" class="set-short" value="' + rowData.examineeLen + '"/>&nbsp;자리</div>';
 
                     var basic2Html = '<div style="margin:3% 0 0 3%;">계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;열<input type="text" id="typeNm" class="set-basic" value="' + rowData.typeNm + '"/></div>';   // 계열 (typeNm)
-                    basic2Html += '<div style="margin:3% 0 0 3%;">평가항목<input type="number" min="0" id="itemCnt" class="set-short" value="' + rowData.itemCnt + '"/>&nbsp;개</div>';
+                    basic2Html += '<div style="margin:3% 0 0 3%;">평가항목<input type="number" min="0" id="itemCnt" class="set-short" value="' + rowData.itemCnt + '" disabled/>&nbsp;개</div>';
                     basic2Html += '<div style="margin:3% 0 0 3%;">총&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점<input type="number" min="0" id="totScore" class="set-short" value="' + rowData.totScore + '"/></div>';
 
                     var basic3Html = '<div style="margin:3% 0 0 3%;">단&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;계<input type="text" id="period" class="set-basic" value="' + rowData.period + '"/></div>';   // 단계 (period)
-                    basic3Html += '<div style="margin:3% 0 0 3%;">평가위원<input type="number" min="0" id="scorerCnt" class="set-short" value="' + rowData.scorerCnt + '"/>&nbsp;명</div>';
+                    basic3Html += '<div style="margin:3% 0 0 3%;">평가위원<input type="number" min="0" id="scorerCnt" class="set-short" value="' + rowData.scorerCnt + '"/>&nbsp;명</div>' ;
+                    basic3Html += '<div style="margin:3% 0 0 3%;">결시점수<input type="text" id="absentValue" class="set-short" value="' + rowData.absentValue + '"/></div>';
 
                     $('#basicPart1').append(basic1Html);
                     $('#basicPart2').append(basic2Html);
                     $('#basicPart3').append(basic3Html);
+
+                    // 평가항목 갯수 수정은 추후로 미룸 - exam-step3.js와 함께 유동적으로 고쳐져야함
+                    $('#itemCnt').attr('disabled', true);
+                    $('#itemCnt').css('background', '#fbf7f7');
+                    $('#itemCnt').css('color', 'graytext');
+                    $('#itemCnt').css('cursor', 'not-allowed');
 
                     // 세부정보 설정값
                     //TODO: 확인 필요!
@@ -241,6 +248,7 @@ define(function (require) {
                 , virtNoDigits: $('#virtNoDigits').val()
                 , virtNoType: $('#virtNoType').val()
                 , virtNoAssignType: virtNoAssignType
+                , absentValue: $('#absentValue').val()
             };
 
             /*//TODO: 빈 항목 체크, 개선 필요!
