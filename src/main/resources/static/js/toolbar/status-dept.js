@@ -41,6 +41,7 @@ define(function (require) {
             if (o == '') return '<option value="">전체</option>';
             else return '<option value="' + o + '" selected>' + o + '</option>';
         },
+        // 상단 필터를 사용한 항목은 toolbar의 필터를 사용할 수 없도록 함
         disableFilter: function () {
             this.$('#admissionNm').attr('disabled', true);
             this.$('#admissionNm').css('background', '#fbf7f7');

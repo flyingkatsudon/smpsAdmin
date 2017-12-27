@@ -9,6 +9,7 @@ define(function (require) {
     return Backbone.View.extend({
         render: function (o) {
 
+            // 초기에 툴바 나타냄
             $(window.document).ready(function () {
                 headerToolbar('');
             });
@@ -121,10 +122,12 @@ define(function (require) {
                 if(location.hash != '') var baseName = location.hash.substring(1, location.hash.length);
                 else var baseName = 'data-virtNo';
 
+                // '산출물 다운로드' 페이지는 grid/data-report.js 가 존재하지 않기 때문에 강제로 require
                 if (baseName == 'data-report') {
                     var Report = require('./app/data-report.js');
                     new Report({param: window.param, baseName: baseName}).render();
                 }
+                // 일반적인 경우 각 파일의 baseName을 가지고 loadPage.js를 호출함
                 else {
                     var LoadPage = require('./loadPage.js');
                     new LoadPage({param: window.param, baseName: baseName}).render();

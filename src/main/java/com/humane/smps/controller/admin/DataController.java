@@ -44,6 +44,7 @@ public class DataController {
     private final ImageService imageService;
     private final ExamMapRepository examMapRepository;
 
+    // application.properties에서 어떤 학교 버전으로 선택했는지 가져옴
     @Value("${name}")
     public String name;
 
@@ -84,6 +85,7 @@ public class DataController {
                 , list);
     }
 
+    // 수험생별 종합
     @RequestMapping(value = "examinee.{format:colmodel|json|pdf|xls|xlsx}")
     public ResponseEntity examinee(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
         // 1. format에 따라 나뉜다
@@ -108,6 +110,7 @@ public class DataController {
         }
     }
 
+    // 가번호 배정 현황
     @RequestMapping(value = "virtNo.{format:json|xls|xlsx}")
     public ResponseEntity virtNo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws ClassNotFoundException, JRException, DRException {
         switch (format) {
@@ -124,17 +127,24 @@ public class DataController {
         }
     }
 
+    // 채점자별 가로
     @RequestMapping(value = "scorerH.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scorerH(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
         try {
+            // 1. format에 따라 나뉜다
             switch (format) {
+                // 1-1. grid의 열을 만든다
                 case COLMODEL:
                     return ResponseEntity.ok(dataService.getScorerHModel());
+                // 1-2. grid에 데이터를 가져와서 채운
                 case JSON:
                     return ResponseEntity.ok(dataService.getScorerHData(param, pageable));
+                // 1-3. 정해진 타입이 없다면 산출물로 내려보낸다
                 default:
+                    // 1-3-1. xlsx 양식을 그린다
                     JasperReportBuilder report = dataService.getScorerHReport();
+                    // 1-3-2. 양식에 데이터를 입혀 내보낸다
                     report.setDataSource(dataService.getScorerHData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                     JasperPrint jasperPrint = report.toJasperPrint();
@@ -148,7 +158,7 @@ public class DataController {
         }
     }
 
-    // test
+    // 동점자 현황
     @RequestMapping(value = "draw.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity draw(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
 
@@ -177,6 +187,7 @@ public class DataController {
             case JSON:
                 return ResponseEntity.ok(dataMapper.scorer(param, pageable));
             default:
+                // 학교에 따라 다르게 진행함
                 if (name.equals("KNU")) {
                     JasperReportBuilder report = dataService.getScorerReport();
                     report.setDataSource(dataMapper.knuScorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());

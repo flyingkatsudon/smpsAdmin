@@ -119,6 +119,7 @@ public class UploadController {
                     exam.setFkExam(tmp);
                 }
 
+                // 가번호 할당 양식에 따라 각각의 항목 입력, 기본값은 '가번호'
                 if (vo.getVirtNoAssignType() != null) {
                     switch (vo.getVirtNoAssignType()) {
                         case "가번호":
@@ -136,8 +137,11 @@ public class UploadController {
                     }
                 } else exam.setVirtNoAssignType("virtNo");
 
+                // 바코드 타입이 공백이거나 null일 시 null로 일괄 조정
                 if (vo.getBarcodeType() != null && vo.getBarcodeType().equals("")) exam.setBarcodeType(null);
+                // 조정 점수가 없을 시 기본값 0
                 if (vo.getAdjust() != null) exam.setAdjust(BigDecimal.ZERO);
+                // 결시값 없을 시 기본값 0
                 if (vo.getAbsentValue() != null && vo.getAbsentValue().isEmpty()) exam.setAbsentValue("0");
 
                 exam.setAdmission(admission);
@@ -186,7 +190,7 @@ public class UploadController {
                     Hall hall = mapper.convertValue(vo, Hall.class);
                     hall = hallRepository.save(hall);
 
-                    // TODO: try 나중에 삭제해야함
+                    // TODO: try 나중에 삭제해야함 - examHall은 기존에 사용했지만 현재는 사용하지 않는 테이블이기 때
                     try {
                         // 3. 응시고사실 생성
                         ExamHall examHall = new ExamHall();
@@ -356,6 +360,7 @@ public class UploadController {
         }
     }
 
+    // 평가앱에서 점수 전송할때 들어오는 메서드이므로 함부로 이름을 수정하지 않도록 한
     @RequestMapping(value = "scoreEndData", method = RequestMethod.POST)
     public ResponseEntity<String> scoreEndData(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
         File file = FileUtils.saveFile(new File(pathRoot, "data"), multipartFile);
@@ -486,6 +491,7 @@ public class UploadController {
         }
     }
 
+    // 가번호앱에서 전송할 때 사용하는 메서드이므로 함부로 변경하지 않는다
     @RequestMapping(value = "manager", method = RequestMethod.POST)
     public ResponseEntity<String> manager(@RequestPart("file") MultipartFile multipartFile) throws ZipException, IOException {
         File file = FileUtils.saveFile(new File(pathRoot, "smpsMgr"), multipartFile);

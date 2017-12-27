@@ -45,6 +45,7 @@ public class DataService {
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
     private final DataMapper mapper;
 
+    // application.properties에서 어떤 학교 버전으로 선택했는지 가져옴
     @Value("${name}")
     public String name;
 
@@ -348,6 +349,7 @@ public class DataService {
                 .setIgnorePageWidth(true)
                 .setIgnorePagination(true);
 
+        // 학교별로 column을 다르게 생성
         if(name.equals("KNU")){
             report.addTitle(cmp.text("경북대학교 채점자별 상세(세로)").setStyle(columnTitleStyle));
             report.addColumn(col.column("전형", "admissionNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(13));

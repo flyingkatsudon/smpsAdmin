@@ -11,6 +11,7 @@ define(function (require) {
             this.param = o.param;
             this.baseName = o.baseName;
 
+            // baseName을 이용해 html을 require
             var Template = require('text!/tpl/' + this.baseName + '.html');
 
             $('#page-wrapper').html(Template);
@@ -19,6 +20,7 @@ define(function (require) {
 
         }, viewGrid: function (o) {
 
+            // baseName을 이용해 grid와 toolbar를 require
             var List = require('./grid/' + this.baseName + '.js');
             var Toolbar = require('./toolbar/' + this.baseName + '.js');
 
@@ -39,6 +41,7 @@ define(function (require) {
 
         }, search: function (o) {
 
+            // 필터에 undefined로 인한 에러를 사전 방지
             if (o.deptNm == undefined) o.deptNm = '';
             if (o.majorNm == undefined) o.majorNm = '';
             if (o.headNm == undefined) o.headNm = '';
@@ -70,6 +73,7 @@ define(function (require) {
                 filter: window.param.filter
             };
 
+            // 상단필터와 toolbar의 필터가 동시에 쓰인다면
             if (_param.filter == 'with') {
                 _param.admissionNm = $('#admissionNm').val();
                 _param.typeNm = $('#typeNm').val();
