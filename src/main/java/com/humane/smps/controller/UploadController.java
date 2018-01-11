@@ -45,9 +45,7 @@ public class UploadController {
     private final UploadService uploadService;
     private final AdmissionRepository admissionRepository;
     private final ExamRepository examRepository;
-    private final DeviRepository deviRepository;
     private final HallRepository hallRepository;
-    private final ExamHallRepository examHallRepository;
     private final HallDateRepository hallDateRepository;
     private final DebateHallRepository debateHallRepository;
     private final ExamineeRepository examineeRepository;
@@ -113,34 +111,6 @@ public class UploadController {
         } catch (Throwable throwable) {
             log.debug("{}", throwable.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요.");
-        }
-    }
-
-    @RequestMapping(value = "devi", method = RequestMethod.POST)
-    public void devi(@RequestPart("file") MultipartFile multipartFile) throws Throwable {
-        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        try {
-            // 1 엑셀 파징
-            List<FormDeviVo> deviList = ExOM.mapFromExcel(file).to(FormDeviVo.class).map(1);
-
-            // 2. 편차 생성
-            deviList.forEach(vo -> {
-                        // 2.1 편차 변환
-                        Devi devi = mapper.convertValue(vo, Devi.class);
-                        // 2.2 fk 설정
-                        Devi fkDevi = deviRepository.findOne(vo.getFkDeviCd());
-                        if (fkDevi != null) devi.setFkDevi(fkDevi);
-
-                        // 2.3 편차 저장
-                        deviRepository.save(devi);
-                    }
-            );
-        } catch (Throwable throwable) {
-            log.debug("{}", throwable.getMessage());
         }
     }
 
@@ -244,30 +214,6 @@ public class UploadController {
                     // 2. 고사실정보 생성
                     Hall hall = mapper.convertValue(vo, Hall.class);
                     hall = hallRepository.save(hall);
-
-                    // TODO: try 나중에 삭제해야함 - examHall은 기존에 사용했지만 현재는 사용하지 않는 테이블이기 때
-                    try {
-                        // 3. 응시고사실 생성
-                        ExamHall examHall = new ExamHall();
-                        examHall.setExam(exam);
-                        examHall.setHall(hall);
-
-                        // 4. 응시고사실 확인
-                        ExamHall tmp2 = examHallRepository.findOne(new BooleanBuilder()
-                                .and(QExamHall.examHall.hall.hallCd.eq(examHall.getHall().getHallCd()))
-                                .and(QExamHall.examHall.exam.examCd.eq(examHall.getExam().getExamCd()))
-                        );
-
-                        if (tmp2 != null) examHall.set_id(tmp2.get_id());
-
-                        // 5. 응시고사실 저장
-                        examHallRepository.save(examHall);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body("'평가항목 양식'에서 일치하는 시험을 찾지 못했습니다. 시험코드와 일자를 확인하세요<br><br>시험코드: " + vo.getExamCd() + " / 시험일자: " + vo.getExamDate());
-                    }
 
                     // 3. 응시고사실(exam_hall_date) 채우기
                     ExamHallDate hallDate = new ExamHallDate();

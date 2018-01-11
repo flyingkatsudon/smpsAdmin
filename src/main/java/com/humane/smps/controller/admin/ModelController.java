@@ -35,11 +35,4 @@ public class ModelController {
         log.debug("{}", list);
         return ResponseEntity.ok(list);
     }
-
-    @RequestMapping(value = "getExamInfoToolbar.json")
-    public ResponseEntity getExamInfoToolbar(ExamInfoDto examInfoDto) {
-        List<ExamInfoDto> list = mapper.getExamInfoToolbar(examInfoDto);
-        log.debug("{}", list);
-        return ResponseEntity.ok(list);
-    }
 }

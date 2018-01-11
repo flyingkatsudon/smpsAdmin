@@ -33,4 +33,8 @@ public class ExamineeDto extends BasicDto{
 
     private String attendance;
     private String exmAdmNm;
+
+    private String groupOrder;
+    private String debateNm;
+    private String debateOrder;
 }

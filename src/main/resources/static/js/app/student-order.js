@@ -12,7 +12,7 @@ define(function (require) {
     var admissionList = [];
 
     var InnerTemplate = require('text!tpl/student-updateOrder.html');
-    var Common = require('./common.js');
+    var LoadPage = require('../loadPage.js');
 
     require('../grid/student-order.js');
     // 미완성
@@ -25,7 +25,7 @@ define(function (require) {
             this.parent = o.parent;
 
             this.onStart();
-            new Common().render();
+            new LoadPage({baseName: location.hash.substring(1, location.hash.length), param: window.param}).render();
 
         }, render: function () {
             var _this = this;
