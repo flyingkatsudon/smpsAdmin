@@ -9,6 +9,7 @@ define(function (require) {
     return Backbone.View.extend({
         render: function (o) {
 
+            // 초기에 툴바 나타냄
             $(window.document).ready(function () {
                 headerToolbar('');
             });
@@ -35,7 +36,6 @@ define(function (require) {
 
                 window.$('#exDate').html(toolbar.getOptions(ToolbarModel.getExamDate(param)));
             });
-
             // $('#admissionNm).val()가 가지는 admissionCd로 실제 admissionNm을 구함
             var getAdmissionNm = function (e) {
                 var admissionNm = window.$('#admNm').val();
@@ -55,7 +55,7 @@ define(function (require) {
                 var toolbar = new Toolbar();
 
                 $.ajax({
-                    url: 'model/reportToolbar.json',
+                    url: 'model/toolbar.json',
                     async: false,
                     success: function (response) {
                         var flag = true;
@@ -122,14 +122,15 @@ define(function (require) {
                 if(location.hash != '') var baseName = location.hash.substring(1, location.hash.length);
                 else var baseName = 'data-virtNo';
 
+                // '산출물 다운로드' 페이지는 grid/data-report.js 가 존재하지 않기 때문에 강제로 require
                 if (baseName == 'data-report') {
                     var Report = require('./app/data-report.js');
-                    new Report({param: window.param}).render();
+                    new Report({param: window.param, baseName: baseName}).render();
                 }
+                // 일반적인 경우 각 파일의 baseName을 가지고 loadPage.js를 호출함
                 else {
                     var LoadPage = require('./loadPage.js');
-                    // when: grid가 로딩되는 때, 'before'이면 페이지 로딩 시 함께 로딩 - default
-                    new LoadPage({param: window.param, baseName: baseName, when: 'before'}).render();
+                    new LoadPage({param: window.param, baseName: baseName}).render();
                 }
             });
         }

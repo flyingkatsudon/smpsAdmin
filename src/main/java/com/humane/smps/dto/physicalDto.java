@@ -12,33 +12,14 @@ import java.util.Date;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class physicalDto {
-    private String userAdmissions;
-    private String admissionNm;
-    private String typeNm;
+public class physicalDto extends BasicDto{
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date examDate;
-
-    private String examTime;
-
-    private String deptNm;
-    private String majorNm;
-
-    private String headNm;
-    private String bldgNm;
-    private String hallNm;
-
-    private String examineeCd;
-    private String examineeNm;
     private String virtNo;
-    private String groupNm;
 
     private Long scorerCnt;
 
+    private String examTime;
     private String examCd1;
-    private String examNm;
 
     private String scorerNm11;
     private String scorerNm12;

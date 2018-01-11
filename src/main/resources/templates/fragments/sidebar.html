@@ -40,8 +40,8 @@
                     상세(세로)</a></li>
                 <!-- TODO: 임시로 주석처리, 미술과 에리카 체육때 나타나면 됨 -->
                 <!--<li sec:authorize="hasRole('ADMIN')"><a href="#data-draw"><img src="images/menu/M03_6.png"/> 동점자 현황</a>
-                </li>
-                <li sec:authorize="hasRole('ADMIN')"><a href="#data-physical"><img src="images/menu/M03_6.png"/> 한양대 에리카
+                </li>-->
+                <!--<li sec:authorize="hasRole('ADMIN')"><a href="#data-physical"><img src="images/menu/M03_6.png"/> 한양대 에리카
                     체육고사</a>
                 </li>-->
                 <li sec:authorize="hasRole('ADMIN')"><a href="#data-report"><img src="images/menu/M03_5.png"/> 산출물 다운로드</a>
@@ -54,6 +54,10 @@
             <li>
                 <a href="#"><img src="images/menu/M04.png"/> 시스템 설정<span class="fa arrow"></span></a>
             </li>
+            <ul sec:authorize="hasRole('ADMIN')" class="nav nav-second-level">
+                <li><a href="#setting-data"><img src="images/menu/M04_1.png"/> 데이터 관리</a>
+                    <a href="#system-account"><img src="images/menu/M04_3.png"/> 계정 관리</a></li>
+                <li><a href="#print-idCard"><img src="images/menu/M04_2.png"/> 수험표 출력</a></li>
             <ul class="nav nav-second-level">
                 <!-- TODO: 면접 조 배정 -->
                 <li><a href="#student-order"><img src="images/menu/M04_5.png"/> 면접 조 배정</a></li>
@@ -68,13 +72,13 @@
     <div sec:authorize="hasRole('ADMIN')" class="sidebar-nav navbar-collapse">
         <ul class="nav">
             <li>
-                <a href="#"><img src="images/menu/M05.png"/> 데이터 검증<span class="fa arrow"></span></a>
+                <a href="#"><img src="images/menu/M05.png"/> 데이터<span class="fa arrow"></span></a>
             </li>
             <ul class="nav nav-second-level">
-                <li><a href="#check-item"><img src="images/menu/M05_2.png"/> 검증1</a></li>
-                <li><a href="#check-scoredCnt"><img src="images/menu/M05_3.png"/> 검증2</a></li>
-                <li><a href="#check-scorer"><img src="images/menu/M05_1.png"/> 검증3</a></li>
-                <li><a href="#check-scoredF"><img src="images/menu/M05_3.png"/> 검증4</a></li>
+                <li><a href="#check-item"><img src="images/menu/M05_2.png"/> 채점항목</a></li>
+                <li><a href="#check-scoredCnt"><img src="images/menu/M05_3.png"/> 채점인원</a></li>
+                <li><a href="#check-scorer"><img src="images/menu/M05_1.png"/> 평가위원</a></li>
+                <li><a href="#check-scoredF"><img src="images/menu/M05_3.png"/> 결시항목</a></li>
             </ul>
         </ul>
     </div>

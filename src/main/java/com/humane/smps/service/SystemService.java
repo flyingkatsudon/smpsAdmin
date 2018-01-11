@@ -60,6 +60,7 @@ public class SystemService {
             queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QExamHallDate.examHallDate).where(QExamHallDate.examHallDate.exam.examCd.eq(examCd)).execute();
+            queryFactory.delete(QExamHall.examHall).where(QExamHall.examHall.exam.examCd.eq(examCd)).execute();
 
             // 고려대 면접고사용
             queryFactory.delete(QExamDebateHall.examDebateHall).execute();
@@ -153,6 +154,7 @@ public class SystemService {
             queryFactory.delete(QScore.score).execute();
             queryFactory.delete(QScoreLog.scoreLog).execute();
             queryFactory.delete(QExamHallDate.examHallDate).execute();
+            queryFactory.delete(QExamHall.examHall).execute();
 
             QExaminee examinee = QExaminee.examinee;
             QExamMap examMap = QExamMap.examMap;
@@ -244,7 +246,7 @@ public class SystemService {
             queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();
 
-            log.debug("{}", examMap.exam.virtNoAssignType);
+            log.debug("{}", virtNoAssignType);
 
             // 가번호 할당 방식이 '수험번호'라면 -> 가번호를 초기화시키지 않는다
             if (virtNoAssignType.equals("examineeCd") || virtNoAssignType.equals("manageNo")) {
@@ -271,12 +273,17 @@ public class SystemService {
             // 시험 리스트 전체를 가져와서
             List<Exam> examList = examRepository.findAll();
 
+            queryFactory.delete(QSheet.sheet).execute();
+            queryFactory.delete(QScoreLog.scoreLog).execute();
+            queryFactory.delete(QScore.score).execute();
+
             // for문으로 반복하며 가번호 할당 방식이 '수험번호' 혹은 '관리번호'인 시험은 가번호 제거하지 않음
             for (int i = 0; i < examList.size(); i++) {
                 Exam exam = examList.get(i);
+                log.debug("{}", exam);
                 String virtNoAssignType = exam.getVirtNoAssignType();
 
-                if (virtNoAssignType.equals("examineeCd") || virtNoAssignType.equals("manageNo")) {
+                if (virtNoAssignType != null && (virtNoAssignType.equals("examineeCd") || virtNoAssignType.equals("manageNo"))) {
                     queryFactory.update(examMap)
                             .setNull(examMap.scanDttm)
                             .setNull(examMap.photoNm)
@@ -295,56 +302,11 @@ public class SystemService {
                             .execute();
                 }
             }
-
-            queryFactory.delete(QSheet.sheet).execute();
-            queryFactory.delete(QScoreLog.scoreLog).execute();
-            queryFactory.delete(QScore.score).execute();
         }
+
         fileService.deleteFiles(pathJpg, pathPdf);
     }
 
-    // 고려대 면접고사용
-    public void saveExamHallDate(ApiService apiService, DownloadWrapper downloadWrapper) {
-        for (DownloadWrapper.Wrapper wrapper : downloadWrapper.getList()) {
-            String examCd = wrapper.getExamCd();
-
-            Observable.range(0, Integer.MAX_VALUE)
-                    .concatMap(page -> apiService.hallDate(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE))
-                    .takeUntil(page -> page.last)
-                    .flatMap(page -> {
-
-                        for (ExamHallDate examHallDate : page.content) {
-                            admissionRepository.save(examHallDate.getExam().getAdmission());
-
-                            Hall hall = examHallDate.getHall();
-                            Exam exam = examHallDate.getExam();
-
-                            hallRepository.save(examHallDate.getHall());
-                            examRepository.save(examHallDate.getExam());
-
-                            ExamHallDate find = hallDateRepository.findOne(new BooleanBuilder()
-                                    .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
-                                    .and(QExamHallDate.examHallDate.hall.hallCd.eq(hall.getHallCd()))
-                                    .and(QExamHallDate.examHallDate.hallDate.eq(examHallDate.getHallDate()))
-                            );
-
-                            examHallDate.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
-
-                            if (find == null) hallDateRepository.save(examHallDate);
-                            else if (find != null) {
-                                find.setVirtNoStart(examHallDate.getVirtNoStart());
-                                find.setVirtNoEnd(examHallDate.getVirtNoEnd());
-
-                                hallDateRepository.save(find);
-                            }
-                        }
-                        return Observable.from(page.content);
-                    })
-                    .toBlocking().first();
-        }
-    }
-
-    // 고려대 면접고사용으로 수정, 고사실 정보 저장하지 않음
     public void saveExamMap(ApiService apiService, DownloadWrapper downloadWrapper) {
         for (DownloadWrapper.Wrapper wrapper : downloadWrapper.getList()) {
             String examCd = wrapper.getExamCd();
@@ -353,32 +315,58 @@ public class SystemService {
                     .concatMap(page -> apiService.examMap(new QueryBuilder().add("exam.examCd", examCd).getMap(), page, Integer.MAX_VALUE))
                     .takeUntil(page -> page.last)
                     .flatMap(page -> {
+                        // 각 수험생에 대해 반복
                         for (ExamMap examMap : page.content) {
+                            admissionRepository.save(examMap.getExam().getAdmission());
+
+                            Hall hall = examMap.getHall();
                             Exam exam = examMap.getExam();
                             Examinee examinee = examMap.getExaminee();
 
-                            examineeRepository.save(examinee);
+                            hallRepository.save(examMap.getHall());
+                            examRepository.save(examMap.getExam());
 
-                            ExamMap find = examMapRepository.findOne(new BooleanBuilder()
-                                    .and(QExamMap.examMap.examinee.examineeCd.eq(examinee.getExamineeCd()))
-                                    .and(QExamMap.examMap.exam.examCd.eq(exam.getExamCd()))
+                            // exam_hall_date 테이블에서 값을 찾는다
+                            ExamHallDate findExamHallDate = hallDateRepository.findOne(new BooleanBuilder()
+                                    .and(QExamHallDate.examHallDate.exam.examCd.eq(exam.getExamCd()))
+                                    .and(QExamHallDate.examHallDate.hall.hallCd.eq(hall.getHallCd()))
+                                    .and(QExamHallDate.examHallDate.hallDate.eq(examMap.getHallDate()))
                             );
 
-                            // examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
-                            if (find == null) examMapRepository.save(examMap);
-                          //  else setExamMapOrder(examMap, find);
-                            else studentService.setExamMapOrder(examMap, find);
+                            // 찾는 값이 없다면
+                            if (findExamHallDate == null) {
+                                // 각 필드에 대해 값을 입력
+                                ExamHallDate examHallDate = new ExamHallDate();
+                                examHallDate.setExam(exam);
+                                examHallDate.setHall(hall);
+                                examHallDate.setHallDate(examMap.getHallDate());
+
+                                // 입력한 객체를 repository에 저장
+                                hallDateRepository.save(examHallDate);
+                            }
+
+                            examineeRepository.save(examinee);
+
+                            ExamMap findExamMap = examMapRepository.findOne(new BooleanBuilder()
+                                    .and(QExamMap.examMap.examinee.examineeCd.eq(examinee.getExamineeCd()))
+                                    .and(QExamMap.examMap.exam.examCd.eq(exam.getExamCd()))
+                                    .and(QExamMap.examMap.hall.hallCd.eq(hall.getHallCd()))
+                            );
+
+                            examMap.set_id(null); // 서버에서 받아오는 ID가 같으면 덮어씌워버릴 수 있음. ID값 삭제
+                            if (findExamMap == null) examMapRepository.save(examMap);
+
                         }
                         return Observable.from(page.content);
                     })
-                    // TODO: 사진 다운로드 처리해야
-                   /* .flatMap(examMap -> Observable.just(examMap.getExaminee().getExamineeCd() + ".jpg"))
-                    .flatMap(fileName -> imageExaminee(apiService, fileName))
-                    .reduce(new ArrayList<>(), (list, file) -> list)*/
+                    // .flatMap(examMap -> Observable.just(examMap.getExaminee().getExamineeCd() + ".jpg"))
+                    // .flatMap(fileName -> imageExaminee(apiService, fileName))
+                    .reduce(new ArrayList<>(), (list, file) -> list)
                     .toBlocking().first();
         }
     }
 
+    // saveExamMap 참고
     public void saveItem(ApiService apiService, DownloadWrapper wrapper) {
         List<String> examCds = new ArrayList<>();
         wrapper.getList().forEach(examHallWrapper -> {

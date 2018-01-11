@@ -56,5 +56,6 @@ public class Exam implements Serializable{
 
     private String barcodeType;
 
-    @Column(columnDefinition = "decimal(10, 1) default 0") BigDecimal adjust;
+    @Column(columnDefinition = "decimal(10, 1) default 0", nullable = false) BigDecimal adjust;
+    private String absentValue;
 }

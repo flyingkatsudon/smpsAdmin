@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.exception.ZipException;
 import net.sf.dynamicreports.report.exception.DRException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -78,44 +80,29 @@ public class DownloadController {
     }
 
     @RequestMapping(value = "allData.zip", method = RequestMethod.GET)
-    public ResponseEntity allData(StatusDto statusDto) throws IOException, ZipException, DRException {
+    public ResponseEntity allData(BasicDto basicDto) throws IOException, ZipException, DRException {
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
 
-        StatusDeptDto statusDeptDto = new StatusDeptDto();
-        statusDeptDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusDeptDto.setExamDate(statusDto.getExamDate());
-        statusDeptDto.setDeptNm(statusDto.getDeptNm());
-        statusDeptDto.setMajorNm(statusDto.getMajorNm());
-
-        StatusMajorDto statusMajorDto = new StatusMajorDto();
-        statusMajorDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusMajorDto.setExamDate(statusDto.getExamDate());
-        statusMajorDto.setDeptNm(statusDto.getDeptNm());
-        statusMajorDto.setMajorNm(statusDto.getMajorNm());
-
-        StatusHallDto statusHallDto = new StatusHallDto();
-        statusHallDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusHallDto.setExamDate(statusDto.getExamDate());
-        statusHallDto.setDeptNm(statusDto.getDeptNm());
-        statusHallDto.setMajorNm(statusDto.getMajorNm());
-
-        StatusGroupDto statusGroupDto = new StatusGroupDto();
-        statusGroupDto.setAdmissionNm(statusDto.getAdmissionNm());
-        statusGroupDto.setExamDate(statusDto.getExamDate());
-        statusGroupDto.setDeptNm(statusDto.getDeptNm());
-        statusGroupDto.setMajorNm(statusDto.getMajorNm());
+        StatusDto statusDto = new StatusDto();
+        statusDto.setAdmissionNm(basicDto.getAdmissionNm());
+        statusDto.setTypeNm(basicDto.getTypeNm());
+        statusDto.setExamDate(basicDto.getExamDate());
+        statusDto.setDeptNm(basicDto.getDeptNm());
+        statusDto.setMajorNm(basicDto.getMajorNm());
 
         ScoreDto scoreDto = new ScoreDto();
-        scoreDto.setAdmissionNm(statusDto.getAdmissionNm());
-        scoreDto.setExamDate(statusDto.getExamDate());
-        scoreDto.setDeptNm(statusDto.getDeptNm());
-        scoreDto.setMajorNm(statusDto.getMajorNm());
+        scoreDto.setAdmissionNm(basicDto.getAdmissionNm());
+        scoreDto.setTypeNm(basicDto.getTypeNm());
+        scoreDto.setExamDate(basicDto.getExamDate());
+        scoreDto.setDeptNm(basicDto.getDeptNm());
+        scoreDto.setMajorNm(basicDto.getMajorNm());
 
         ExamineeDto examineeDto = new ExamineeDto();
-        examineeDto.setAdmissionNm(statusDto.getAdmissionNm());
-        examineeDto.setExamDate(statusDto.getExamDate());
-        examineeDto.setDeptNm(statusDto.getDeptNm());
-        examineeDto.setMajorNm(statusDto.getMajorNm());
+        examineeDto.setAdmissionNm(basicDto.getAdmissionNm());
+        examineeDto.setTypeNm(basicDto.getTypeNm());
+        examineeDto.setExamDate(basicDto.getExamDate());
+        examineeDto.setDeptNm(basicDto.getDeptNm());
+        examineeDto.setMajorNm(basicDto.getMajorNm());
 
         // 압축파일 생성
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -123,44 +110,45 @@ public class DownloadController {
         ZipFile zipFile = new ZipFile(file);
         zipFile.setFileNameCharset("EUC-KR");
 
-        // entry 생성
-        File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(statusDeptDto, pageable).getContent());
-        zipFile.addFile(fileDept);
-        fileDept.delete();
+        try {
+            // entry 생성
+            File fileDept = JasperReportsExportHelper.toXlsxFile("jrxml/status-dept.jrxml", statusMapper.dept(statusDto, pageable).getContent());
+            zipFile.addFile(fileDept);
+            fileDept.delete();
 
-        File fileMajor = JasperReportsExportHelper.toXlsxFile("jrxml/status-major.jrxml", statusMapper.major(statusMajorDto, pageable).getContent());
-        zipFile.addFile(fileMajor);
-        fileMajor.delete();
+            File fileMajor = JasperReportsExportHelper.toXlsxFile("jrxml/status-major.jrxml", statusMapper.major(statusDto, pageable).getContent());
+            zipFile.addFile(fileMajor);
+            fileMajor.delete();
 
-        //1. xlsx 파일 생성
-        File fileHall = JasperReportsExportHelper.toXlsxFile("jrxml/status-hall.jrxml", statusMapper.hall(statusHallDto, pageable).getContent());
-        zipFile.addFile(fileHall);
-        fileHall.delete();
+            //1. xlsx 파일 생성
+            File fileHall = JasperReportsExportHelper.toXlsxFile("jrxml/status-hall.jrxml", statusMapper.hall(statusDto, pageable).getContent());
+            zipFile.addFile(fileHall);
+            fileHall.delete();
 
-        // 1. xlsx 파일 생성
-        File fileGroup = JasperReportsExportHelper.toXlsxFile("jrxml/status-group.jrxml", statusMapper.group(statusGroupDto, pageable).getContent());
-        zipFile.addFile(fileGroup);
-        fileGroup.delete();
+            // 1. xlsx 파일 생성
+            File fileGroup = JasperReportsExportHelper.toXlsxFile("jrxml/status-group.jrxml", statusMapper.group(statusDto, pageable).getContent());
+            zipFile.addFile(fileGroup);
+            fileGroup.delete();
 
         /*File fileExamineeReport = JasperReportsExportHelper.toXlsxFile("수험생별 종합", dataService.getExamineeReport(), dataMapper.examinee(new ExamineeDto(), pageable).getContent());
         zipFile.addFile(fileExamineeReport);
         fileExamineeReport.delete();*/
 
-        File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examMap(scoreDto, pageable).getContent());
-        zipFile.addFile(fileVirtNoReport);
-        fileVirtNoReport.delete();
+            File fileVirtNoReport = JasperReportsExportHelper.toXlsxFile("가번호 배정 현황", dataService.getVirtNoReport(), dataMapper.examinee(examineeDto, pageable).getContent());
+            zipFile.addFile(fileVirtNoReport);
+            fileVirtNoReport.delete();
 
-        File fileScorerHReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(가로)", dataService.getScorerHReport(), dataService.getScorerHData(scoreDto, pageable).getContent());
-        zipFile.addFile(fileScorerHReport);
-        fileScorerHReport.delete();
+            File fileScorerHReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(가로)", dataService.getScorerHReport(), dataService.getScorerHData(scoreDto, pageable).getContent());
+            zipFile.addFile(fileScorerHReport);
+            fileScorerHReport.delete();
 
-        File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(scoreDto, pageable).getContent());
-        zipFile.addFile(fileScorerReport);
-        fileScorerReport.delete();
+            File fileScorerReport = JasperReportsExportHelper.toXlsxFile("채점자별 상세(세로)", dataService.getScorerReport(), dataMapper.scorer(scoreDto, pageable).getContent());
+            zipFile.addFile(fileScorerReport);
+            fileScorerReport.delete();
 
-        File fileAttendanceReport = JasperReportsExportHelper.toXlsxFile("출결현황 리스트", dataService.attendanceReport(), dataMapper.attendance(examineeDto, pageable).getContent());
-        zipFile.addFile(fileAttendanceReport);
-        fileAttendanceReport.delete();
+            File fileAttendanceReport = JasperReportsExportHelper.toXlsxFile("출결현황 리스트", dataService.attendanceReport(), dataMapper.attendance(examineeDto, pageable).getContent());
+            zipFile.addFile(fileAttendanceReport);
+            fileAttendanceReport.delete();
 /*
         File fileScoreUploadReport = JasperReportsExportHelper.toXlsxFile("글로벌인재_성적업로드양식", dataService.getScoreUploadReport(), dataMapper.scoreUpload(new ScoreUploadDto(), pageable).getContent());
         zipFile.addFile(fileScoreUploadReport);
@@ -182,58 +170,72 @@ public class DownloadController {
         zipFile.addFile(fileDrawReport);
         fileDrawReport.delete();
 */
-        // 나머지 가져오기
-        // 0. 폴더위치 지정
-        String jpgPath = pathRoot + "/jpg";
-        // 1. 사진 폴더 생성
-        File jpgFolder = new File(jpgPath);
+            // 나머지 가져오기
+            // 0. 폴더위치 지정
+            String jpgPath = pathRoot + "/jpg";
+            // 1. 사진 폴더 생성
+            File jpgFolder = new File(jpgPath);
 
-        if (jpgFolder.exists()) {
-            // 1.1 사진 가져옴
-            File[] jpgList = jpgFolder.listFiles();
-            if (jpgList != null) {
-                // 1.2 사진 저장
-                for (File f : jpgList) {
-                    if (f.isFile())
-                        zipFile.addFile("수험생서명", f);
-                }
-            }
-        } else jpgFolder.mkdirs();
-
-        String pdfPath = pathRoot + "/pdf";
-        // 2. pdf 폴더 생성
-        File pdfFolder = new File(pdfPath);
-        // 2.1 pdf 가져옴
-        File[] pdfList = pdfFolder.listFiles();
-
-        if (pdfList != null) {
-            // 2.2 pdf 저장
-            if (statusDto.getDeptNm() != null) {
-                for (int i = 0; i < pdfList.length; i++) {
-
-                    String str = pdfList[i].getName().trim();
-                    String deptNm = statusDto.getDeptNm().trim();
-
-                    if (str.contains(deptNm)) {
-                        File f = new File(pdfPath + "/" + pdfList[i].getName());
-                        zipFile.addFile("평가위원 평가표", f);
+            if (jpgFolder.exists()) {
+                // 1.1 사진 가져옴
+                File[] jpgList = jpgFolder.listFiles();
+                if (jpgList != null) {
+                    // 1.2 사진 저장
+                    for (File f : jpgList) {
+                        if (f.isFile())
+                            zipFile.addFile("수험생서명", f);
                     }
                 }
-            } else {
-                for (File f : pdfList) {
-                    if (f.isFile())
-                        zipFile.addFile("평가위원 평가표", f);
+            } else jpgFolder.mkdirs();
+
+            String pdfPath = pathRoot + "/pdf";
+            // 2. pdf 폴더 생성
+            File pdfFolder = new File(pdfPath);
+            // 2.1 pdf 가져옴
+            File[] pdfList = pdfFolder.listFiles();
+
+            if (pdfList != null) {
+                // 2.2 pdf 저장
+                if (statusDto.getDeptNm() != null) {
+                    for (int i = 0; i < pdfList.length; i++) {
+
+                        String str = pdfList[i].getName().trim();
+                        String deptNm = statusDto.getDeptNm().trim();
+
+                        if (str.contains(deptNm)) {
+                            File f = new File(pdfPath + "/" + pdfList[i].getName());
+                            zipFile.addFile("평가위원 평가표", f);
+                        }
+                    }
+                } else {
+                    for (File f : pdfList) {
+                        if (f.isFile())
+                            zipFile.addFile("평가위원 평가표", f);
+                    }
                 }
             }
+
+        } catch(Exception e){
+            e.printStackTrace();
         }
 
-        byte[] ba = FileUtils.getByteArray(zipFile.getFile());
+        byte[] ba = null;
+
+        // 압축파일 내보내기
+        try (FileInputStream fis = new FileInputStream(file)) {
+            ba = IOUtils.toByteArray(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            file.delete();
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.setContentType(MediaType.parseMediaType("application/zip"));
         headers.setContentLength(ba.length);
         headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물_평가.zip"));
+
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 

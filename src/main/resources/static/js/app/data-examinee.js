@@ -1,18 +1,16 @@
 define(function (require) {
     "use strict";
     var Backbone = require('backbone');
+    var LoadPage = require('../loadPage.js');
 
-    var List = require('../grid/data-examinee.js');
-    var Toolbar = require('../toolbar/data-examinee.js');
-    var Template = require('text!/tpl/data-examinee.html');
+    // 초기에 그릴 때 필요, loadPage.js의 같은 부분은 필터 시 다시 그릴 때 require 된다
+    require('../grid/data-examinee.js');
+    require('../toolbar/data-examinee.js');
+    require('text!/tpl/data-examinee.html');
 
     return Backbone.View.extend({
-        render: function () {
-            this.$el.html(Template);
-            this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
-            this.list = new List({el: '.hm-ui-grid'}).render();
-        }, search: function (o) {
-            this.list.search(o);
+        initialize: function () {
+            new LoadPage({baseName: location.hash.substring(1, location.hash.length), param: window.param}).render();
         }
     });
 });

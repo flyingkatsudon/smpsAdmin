@@ -37,7 +37,7 @@
         </where>
     </select>
 
-    <select id="fix" resultType="com.humane.smps.dto.ScoreFixDto">
+    <select id="fix" resultType="com.humane.smps.dto.ScoreDto">
         SELECT
             admission.admission_nm,
             exam.exam_cd,

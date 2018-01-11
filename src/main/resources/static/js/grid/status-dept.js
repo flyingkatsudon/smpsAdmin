@@ -13,9 +13,11 @@ define(function (require) {
             this.param = options.param;
             this.baseName = options.baseName;
 
+            // grid의 열(column) 이름
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
+                {name: 'period', hidden: true},
                 {name: 'examDate', label: '시험일자'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'examineeCnt', label: '지원자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
@@ -32,6 +34,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
+                    // url로 데이터를 호출하고 colModel에 맞게 데이터를 나타낸다
                     url: new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl(),
                     colModel: colModel
                 }

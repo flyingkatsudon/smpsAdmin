@@ -29,9 +29,11 @@ public class ModelController {
         return ResponseEntity.ok(mapper.toolbar(statusDto));
     }
 
-    @RequestMapping(value = "reportToolbar.json")
-    public ResponseEntity reportToolbar(StatusDto statusDto){
-        return ResponseEntity.ok(mapper.reportToolbar(statusDto));
+    @RequestMapping(value = "examInfoToolbar.json")
+    public ResponseEntity examInfoToolbar(ExamInfoDto examInfoDto) {
+        List<ExamInfoDto> list = mapper.examToolbar(examInfoDto);
+        log.debug("{}", list);
+        return ResponseEntity.ok(list);
     }
 
     @RequestMapping(value = "getExamInfoToolbar.json")

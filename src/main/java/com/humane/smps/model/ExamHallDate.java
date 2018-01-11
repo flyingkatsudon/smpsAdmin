@@ -25,4 +25,6 @@ public class ExamHallDate {
 
     @Column String virtNoStart;
     @Column String virtNoEnd;
+
+    @Column String scorerList;
 }

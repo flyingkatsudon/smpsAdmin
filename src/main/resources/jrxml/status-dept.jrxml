@@ -10,7 +10,6 @@
 	<field name="typeNm" class="java.lang.String"/>
 	<field name="deptNm" class="java.lang.String"/>
 	<field name="examDate" class="java.util.Date"/>
-	<field name="examTime" class="java.util.Date"/>
 	<field name="examineeCnt" class="java.lang.Long"/>
 	<field name="attendPer" class="java.math.BigDecimal"/>
 	<field name="absentCnt" class="java.lang.Long"/>

@@ -40,7 +40,7 @@ public class CheckService {
     public static StyleBuilder columnStyle = DynamicReports.stl.style()
             .setBorder(DynamicReports.stl.penThin())
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
-    private final CheckMapper mapper;
+    private final CheckMapper checkMapper;
 
     public JasperReportBuilder getScoredCntReport() {
         JasperReportBuilder report = report()
@@ -58,7 +58,7 @@ public class CheckService {
                 .setIgnorePageWidth(true)
                 .setIgnorePagination(true);
 
-        long scorerCnt = mapper.getScorerCnt();
+        long scorerCnt = checkMapper.getScorerCnt();
 
         for (int i = 1; i <= scorerCnt; i++) {
             report.addColumn(col.column("평가위원" + i, "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
@@ -85,7 +85,7 @@ public class CheckService {
     }
 
     public Page<Map<String, Object>> getScoredCntData(ScoreDto param, Pageable pageable) {
-        return mapper.scoredCnt(param, pageable);
+        return checkMapper.scoredCnt(param, pageable);
     }
 
     // 평가위원 당 채점인원 수 검증
@@ -99,7 +99,7 @@ public class CheckService {
         colModels.add(new ColModel("bldgNm", "고사건물"));
         colModels.add(new ColModel("hallNm", "고사실"));
 
-        long scorerCnt = mapper.getScorerCnt(); // 채점자수
+        long scorerCnt = checkMapper.getScorerCnt(); // 채점자수
 
         colModels.add(new ColModel("scorerCnt", "배정위원"));
         colModels.add(new ColModel("scoredCnt", "실제위원"));
@@ -113,7 +113,7 @@ public class CheckService {
 
     // 가번호 당 평가위원의 F 점수 검증
     public Page<Map<String, Object>> getScoredFData(ScoreDto param, Pageable pageable) {
-        return mapper.scoredF(param, pageable);
+        return checkMapper.scoredF(param, pageable);
     }
 
     public List<ColModel> getScoredFModel() {
@@ -128,7 +128,7 @@ public class CheckService {
         colModels.add(new ColModel("virtNo", "가번호"));
         colModels.add(new ColModel("cnt", "결시 항목 수"));
 
-        long scorerCnt = mapper.getScorerCnt(); // 채점자수
+        long scorerCnt = checkMapper.getScorerCnt(); // 채점자수
 
         for (int i = 1; i <= scorerCnt; i++) {
             colModels.add(new ColModel("scorerNm" + i, "평가위원" + i, false));
@@ -154,7 +154,7 @@ public class CheckService {
                 .setIgnorePageWidth(true)
                 .setIgnorePagination(true);
 
-        long scorerCnt = mapper.getScorerCnt();
+        long scorerCnt = checkMapper.getScorerCnt();
 
         for (int i = 1; i <= scorerCnt; i++) {
             report.addColumn(col.column("평가위원" + i, "scorerNm" + i, type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));

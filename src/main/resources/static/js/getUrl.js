@@ -12,6 +12,7 @@ define(function (require) {
             var param = this.param;
             var url = this.url;
 
+            // 상단 필터를 사용한다고 하면
             if (param.filter == 'header') {
                 if (!param.empty) {
                     if (param.admissionCd != '' && param.typeNm != undefined) {

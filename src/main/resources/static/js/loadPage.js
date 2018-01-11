@@ -5,75 +5,43 @@ define(function (require) {
     "use strict";
 
     var Backbone = require('backbone');
-    var GetUrl = require('./getUrl.js');
-
-    var JSON = '.json';
-    var XLSX = '.xlsx';
 
     return Backbone.View.extend({
         initialize: function (o) {
-            var _this = this;
             this.param = o.param;
             this.baseName = o.baseName;
-            this.when = o.when;
 
+            // baseName을 이용해 html을 require
             var Template = require('text!/tpl/' + this.baseName + '.html');
-            var InnerTemplate = require('text!/tpl/status-summary.html');
 
             $('#page-wrapper').html(Template);
-            $('#hm-ui-summary').html(InnerTemplate);
 
-            var param = this.param;
-            var url = new GetUrl({baseName: this.baseName, suffix: JSON, param: this.param}).getUrl();
+            this.viewGrid(this.param);
 
-            var afterUrlList = [
-                'data-scorerH', 'data-scorer', 'data-draw', 'data-physical',
-                'check-item', 'check-scoredCnt', 'check-scorer', 'check-scoredF'
-            ];
-            for (var i = 0; i < afterUrlList.length; i++) {
-                if (param.typeNm != '' && param.typeNm != undefined) {
-                    if (param.examDate != '' && param.examDate != undefined) {
-                        url += '?admissionNm=' + param.admissionNm + '&typeNm=' + param.typeNm + '&examDate=' + param.examDate;
-                    }
-                    else
-                        url += '?admissionNm=' + param.admissionNm + '&typeNm=' + param.typeNm;
-                }
-                else {
-                    if (param.examDate != '' && param.examDate != undefined)
-                        url += '?admissionNm=' + param.admissionNm + '&examDate=' + param.examDate;
-                    else
-                        url += '?admissionNm=' + param.admissionNm;
-                }
-                if (this.baseName == afterUrlList[i]) {
-                    this.when = 'after';
-                    break;
-                }
-            }
+        }, viewGrid: function (o) {
 
-            _this.viewGrid(param, this.when);
-
-        }, viewGrid: function (o, when) {
-
+            // baseName을 이용해 grid와 toolbar를 require
             var List = require('./grid/' + this.baseName + '.js');
-            var Summary = require('./grid/status-summary.js');
             var Toolbar = require('./toolbar/' + this.baseName + '.js');
 
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this, param: o}).render();
-            this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: o});
-            this.summary.render();
             this.list = new List({el: '.hm-ui-grid', parent: this, param: o, baseName: this.baseName}).render();
 
-            // TODO: 필터링 후 로딩 페이지 완성해야
-            /*if (when == 'before') this.list = new List({
-             el: '.hm-ui-grid',
-             parent: this,
-             param: o,
-             baseName: this.baseName
-             }).render();
-             else $('.hm-ui-grid').html("<div align='center'><h3>" + "필터를 설정하고 '검색' 버튼을 눌러서 실행하세요" + "</h3></div>");*/
+            // '응시율 통계' 메뉴 혹은 '가번호 배정 현황' 페이지의 경우 summary를 표시한다
+            if (this.baseName.includes('status-') || this.baseName.includes('data-virtNo')) {
+
+                var Summary = require('./grid/status-summary.js');
+                var InnerTemplate = require('text!/tpl/status-summary.html');
+
+                $('#hm-ui-summary').html(InnerTemplate);
+
+                this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all', param: o});
+                this.summary.render();
+            }
 
         }, search: function (o) {
 
+            // 필터에 undefined로 인한 에러를 사전 방지
             if (o.deptNm == undefined) o.deptNm = '';
             if (o.majorNm == undefined) o.majorNm = '';
             if (o.headNm == undefined) o.headNm = '';
@@ -86,9 +54,7 @@ define(function (require) {
             if (o.examineeNm == undefined) o.examineeNm == '';
             if (o.roleName == undefined) o.roleName == '';
             if (o.examNm == undefined) o.examNm == '';
-            if (o.groupOrder == undefined) o.groupOrder = '';
-            if (o.debateNm == undefined) o.debateNm = '';
-            if (o.debateOrder == undefined) o.debateOrder = '';
+            if (o.isAttend == undefined) o.isAttend = '';
 
             var _param = {
                 deptNm: o.deptNm,
@@ -103,12 +69,11 @@ define(function (require) {
                 examineeNm: o.examineeNm,
                 roleName: o.roleName,
                 examNm: o.examNm,
-                groupOrder: o.groupOrder,
-                debateNm: o.debateNm,
-                debateOrder: o.debateOrder,
+                isAttend: o.isAttend,
                 filter: window.param.filter
             };
 
+            // 상단필터와 toolbar의 필터가 동시에 쓰인다면
             if (_param.filter == 'with') {
                 _param.admissionNm = $('#admissionNm').val();
                 _param.typeNm = $('#typeNm').val();
@@ -125,22 +90,13 @@ define(function (require) {
                 _param.examineeNm = $('#examineeNm').val();
                 _param.roleName = $('#roleName').val();
                 _param.examNm = $('#examNm').val();
-                _param.groupOrder = $('#groupOrder').val();
-                _param.debateNm = $('#debateNm').val();
-                _param.debateOrder = $('#debateOrder').val();
+                _param.isAttend = $('#isAttend').val();
             }
-/*
-            if (this.when == 'after') {
-                var List = require('./grid/' + this.baseName + '.js');
-                this.list = new List({
-                    el: '.hm-ui-grid',
-                    parent: this,
-                    param: _param,
-                    baseName: this.baseName
-                }).render();
-            }*/
+
             this.list.search(_param);
-            this.summary.render(_param);
+
+            if (this.baseName.includes('status-') || this.baseName.includes('data-virtNo')) this.summary.render(_param);
+
         }
     });
 });

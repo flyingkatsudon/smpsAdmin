@@ -39,7 +39,7 @@ define(function (require) {
 
                         for (var i = 0; i < ids.length; i++) {
                             var rowData = $(this).getRowData(ids[i]);
-                            if (rowData.cnt > 1) $(this).setRowData(ids[i], false, {background: "#f5a7a4"});
+                            if (rowData.cnt > 0) $(this).setRowData(ids[i], false, {background: "#f5a7a4"});
                         }
                     }
                 },

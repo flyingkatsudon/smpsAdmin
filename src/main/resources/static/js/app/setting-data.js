@@ -23,6 +23,7 @@ define(function (require) {
             this.parent = o.parent;
         }, render: function () {
             this.$el.html(Template);
+            this.uploadForm('#frmUploadDevi');
             this.uploadForm('#frmUploadItem');
             this.uploadForm('#frmUploadHall');
             this.uploadForm('#frmUploadExaminee');
@@ -256,7 +257,7 @@ define(function (require) {
 
             var _this = this;
             var dialog = new BootstrapDialog({
-                message: '<h5 style="margin-left:10%">초기화할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getExamList(text) + '</h5>',
+                message: '<h5 style="margin-left:10%">초기화할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + _this.getOnlyExamList(text) + '</h5>',
                 closable: true,
                 buttons: [
                     {
@@ -322,8 +323,8 @@ define(function (require) {
             var text = '<select id="examCd"><option value="">선택하세요</option>';
 
             var dialog = new BootstrapDialog({
-                title: '<h4>가번호 / 답안지 번호 / 점수</h4>',
-                message: '<h5 style="margin-left: 10%">입력할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getExamList(text) + '</h5>',
+                title: '<h4>가번호 / 캔버스 번호 / 점수</h4>',
+                message: '<h5 style="margin-left: 10%">입력할 시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + this.getOnlyExamList(text) + '</h5>',
                 closable: true,
                 buttons: [
                     {
@@ -528,7 +529,7 @@ define(function (require) {
             dialog.getModalHeader().hide();
             dialog.open();
         },
-        getAdmissionList: function (text){
+        getAdmissionList: function (text) {
             $.ajax({
                 url: 'system/examInfo',
                 async: false,
@@ -552,7 +553,7 @@ define(function (require) {
                     }
 
                     for (var i = 0; i < tmp.length; i++) {
-                        text += '<option value="' + tmp[i].admissionCd + '">' + tmp[i].admissionNm + '</option>';
+                        text += '<option value="' + tmp[i].admissionCd + '">[' + tmp[i].admissionCd + ']&nbsp;&nbsp;' + tmp[i].admissionNm + '</option>';
                         admissionList.push({admissionCd: tmp[i].admissionCd, admissionNm: tmp[i].admissionNm});
                     }
                     text += '</select>';
@@ -573,6 +574,20 @@ define(function (require) {
             return admissionNm;
 
         },
+        getOnlyExamList: function (text) {
+            $.ajax({
+                url: 'system/examInfo',
+                async: false,
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        text += '<option value="' + response[i].examCd + '">[' + response[i].examCd + ']&nbsp;&nbsp;' + response[i].examNm + '</option>';
+                        examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
+                    }
+                    text += '</select>';
+                }
+            });
+            return text;
+        },
         getExamList: function (admissionCd, text) {
             $.ajax({
                 url: 'system/examInfo',
@@ -580,7 +595,7 @@ define(function (require) {
                 success: function (response) {
                     for (var i = 0; i < response.length; i++) {
                         if (response[i].admissionCd == admissionCd) {
-                            text += '<option value="' + response[i].examCd + '">' + response[i].examNm + '</option>';
+                            text += '<option value="' + response[i].examCd + '">[' + response[i].examCd + ']&nbsp;&nbsp;' + response[i].examNm + '</option>';
                             examList.push({examCd: response[i].examCd, examNm: response[i].examNm});
                         }
                     }

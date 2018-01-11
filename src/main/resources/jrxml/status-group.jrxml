@@ -10,7 +10,6 @@
 	<field name="admissionNm" class="java.lang.String"/>
 	<field name="typeNm" class="java.lang.String"/>
 	<field name="examDate" class="java.util.Date"/>
-	<field name="examTime" class="java.util.Date"/>
 	<field name="majorNm" class="java.lang.String"/>
 	<field name="groupNm" class="java.lang.String"/>
 	<field name="headNm" class="java.lang.String"/>

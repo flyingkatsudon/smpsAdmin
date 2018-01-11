@@ -47,49 +47,64 @@ public class UploadService {
             String keypadType = (String) new PropertyDescriptor("keypadType" + i, FormItemVo.class).getReadMethod().invoke(dto);
             String scoreMap = (String) new PropertyDescriptor("scoreMap" + i, FormItemVo.class).getReadMethod().invoke(dto);
 
-            Item item = itemRepository.findOne(new BooleanBuilder()
-                    .and(qItem.exam.examCd.eq(exam.getExamCd()))
-                    .and(qItem.itemNo.eq(itemNo))
-            );
+            String deviCd = (String) new PropertyDescriptor("deviCd" + i, FormItemVo.class).getReadMethod().invoke(dto);
 
-            if (item == null) { // insert
-                item = new Item();
-                item.setItemNo(itemNo);
-                item.setItemNm(itemNm);
-                item.setExam(exam);
-                item.setOrderby(i);
+            try {
+                Item item = itemRepository.findOne(new BooleanBuilder()
+                        .and(qItem.exam.examCd.eq(exam.getExamCd()))
+                        .and(qItem.itemNo.eq(itemNo))
+                );
 
-                // min, max 값이 반드시 존재하면 Long으로 변환 후 저장
-                item.setMaxScore(validate(maxScore));
-                item.setMinScore(validate(minScore));
+                if (item == null) { // insert
+                    item = new Item();
+                    item.setItemNo(itemNo);
+                    item.setItemNm(itemNm);
+                    item.setExam(exam);
+                    item.setOrderby(i);
 
-                // keypadType이 null이면 기본값으로 0
-                if (keypadType == null) item.setKeypadType("0");
+                    // min, max 값이 반드시 존재하면 Long으로 변환 후 저장
+                    item.setMaxScore(validate(maxScore));
+                    item.setMinScore(validate(minScore));
 
-                // keypadType이 0이면 기본값으로 min: 0, max: 100을 입력
-                item.setKeypadType(keypadType);
-                if (keypadType.equals("0")) {
-                    item.setMaxScore(validate("100"));
-                    item.setMinScore(validate("0"));
-                    item.setMaxWarning(validate("9"));
-                    item.setMinWarning(validate("0"));
+                    // keypadType이 null이면 기본값으로 0
+                    if (keypadType == null) item.setKeypadType("0");
+
+                    // 키패드에 따라 변환점수를 코드를 입력해준다
+                    // keypadType이 0이면 기본값으로 min: 0, max: 100을 입력
+                    item.setKeypadType(keypadType);
+                    if (keypadType.equals("0")) {
+                        item.setMaxScore(validate("100"));
+                        item.setMinScore(validate("0"));
+                        item.setMaxWarning(validate("9"));
+                        item.setMinWarning(validate("0"));
+                        item.setDeviCd(null);
+                    } else if (keypadType.equals("4") || keypadType.equals("5")) {
+                        item.setDeviCd(deviCd);
+                    } else {
+                        item.setDeviCd(null);
+                    }
+
+                    item.setScoreMap(scoreMap);
+                    if (scoreMap.equals("")) item.setScoreMap(null);
+
+                } else { // update
+                    item.setItemNm(itemNm);
+                    item.setOrderby(i);
+
+                    item.setMaxScore(validate(maxScore));
+                    item.setMinScore(validate(minScore));
+                    item.setKeypadType(keypadType);
+
+                    item.setScoreMap(scoreMap);
+                    item.setDeviCd(deviCd);
+                    if (scoreMap.equals("")) item.setScoreMap(null);
                 }
+                itemRepository.save(item);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
 
-                item.setScoreMap(scoreMap);
-                if (scoreMap.equals("")) item.setScoreMap(null);
-
-            } else { // update
-                item.setItemNm(itemNm);
-                item.setOrderby(i);
-
-                item.setMaxScore(validate(maxScore));
-                item.setMinScore(validate(minScore));
-                item.setKeypadType(keypadType);
-
-                item.setScoreMap(scoreMap);
-                if (scoreMap.equals("")) item.setScoreMap(null);
             }
-            itemRepository.save(item);
         }
         return itemRepository.count(new BooleanBuilder().and(qItem.exam.examCd.eq(dto.getExamCd())));
     }

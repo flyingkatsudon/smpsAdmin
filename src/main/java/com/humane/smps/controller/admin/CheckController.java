@@ -1,8 +1,6 @@
 package com.humane.smps.controller.admin;
 
-import com.humane.smps.dto.CheckItemDto;
-import com.humane.smps.dto.CheckScorerDto;
-import com.humane.smps.dto.CheckSendDto;
+import com.humane.smps.dto.CheckDto;
 import com.humane.smps.dto.ScoreDto;
 import com.humane.smps.mapper.CheckMapper;
 import com.humane.smps.service.CheckService;
@@ -30,44 +28,31 @@ public class CheckController {
     private static final String JSON = "json";
     private static final String COLMODEL = "colmodel";
     private final CheckService checkService;
-    private final CheckMapper mapper;
-
-    @RequestMapping(value = "send.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity send(@PathVariable String format, CheckSendDto param, Pageable pageable) {
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.send(param, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/check-send.jrxml"
-                        , format
-                        , mapper.send(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
-        }
-    }
+    private final CheckMapper checkMapper;
 
     @RequestMapping(value = "item.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity item(@PathVariable String format, CheckItemDto param, Pageable pageable) {
+    public ResponseEntity item(@PathVariable String format, CheckDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.item(param, pageable));
+                return ResponseEntity.ok(checkMapper.item(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-item.jrxml"
                         , format
-                        , mapper.item(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , checkMapper.item(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
     @RequestMapping(value = "scorer.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity scorer(@PathVariable String format, CheckScorerDto param, Pageable pageable) {
+    public ResponseEntity scorer(@PathVariable String format, CheckDto param, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.scorer(param, pageable));
+                return ResponseEntity.ok(checkMapper.scorer(param, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-scorer.jrxml"
                         , format
-                        , mapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+                        , checkMapper.scorer(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 
@@ -91,6 +76,9 @@ public class CheckController {
 
     @RequestMapping(value = "scoredF.{format:colmodel|json|xls|xlsx}")
     public ResponseEntity scoredF(@PathVariable String format, ScoreDto param, Pageable pageable) throws DRException, JRException {
+
+        // '결시'를 어떤 값으로 할 것 인지 사전에 설정 - 예정
+
         switch (format) {
             case COLMODEL:
                 return ResponseEntity.ok(checkService.getScoredFModel());
@@ -101,7 +89,7 @@ public class CheckController {
                 report.setDataSource(checkService.getScoredFData(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
                 JasperPrint jasperPrint = report.toJasperPrint();
-                jasperPrint.setName("F 항목 불일치 리스트");
+                jasperPrint.setName("결시 항목 불일치 리스트");
 
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }

@@ -133,6 +133,7 @@
         , exam.virt_no_assign_type
         , exam.fk_exam_cd
         , exam.admission_cd
+        , exam.absent_value
         , admission.admission_nm
         FROM exam
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
@@ -193,7 +194,8 @@
                 <if test="param.totScore != null">tot_score = #{param.totScore},</if>
                 <if test="param.virtNoDigits != null">virt_no_digits = #{param.virtNoDigits},</if>
                 <if test="param.virtNoType != null">virt_no_type = #{param.virtNoType},</if>
-                <if test="param.virtNoAssignType != null">virt_no_assign_type = #{param.virtNoAssignType}</if>
+                <if test="param.virtNoAssignType != null">virt_no_assign_type = #{param.virtNoAssignType},</if>
+                <if test="param.absentValue != null">absent_value = #{param.absentValue}</if>
             </set>
             WHERE exam_cd = #{param.examCd}
         </if>
@@ -236,45 +238,4 @@
             and item_no = #{param._itemNo}
         </if>
     </update>
-
-    <select id="orderCnt" resultType="java.lang.Long">
-        select count(*)
-        from exam_map
-        inner join exam on exam.exam_cd = exam_map.exam_cd
-        inner join admission on admission.admission_cd = exam.admission_cd
-        <where>
-            AND group_nm is not null
-            <if test="param != null">
-                AND admission.admission_cd = #{param}
-            </if>
-        </where>
-    </select>
-
-    <select id="order" resultType="com.humane.smps.dto.ExamineeDto">
-        select result.*
-        from (select admission.admission_cd, admission.admission_nm, exam.type_nm
-                    , examinee.examinee_cd, examinee.examinee_nm, exam_hall_date.hall_date as exam_date
-                    , (case when exam_map.group_nm is null then false else true end) as is_attend
-                    , max(case when exam_map.examinee_cd = examinee.examinee_cd then exam_map.group_nm end) as group_nm
-                    , max(case when exam_map.examinee_cd = examinee.examinee_cd then exam_map.group_order end) as group_order
-                    , max(case when exam_map.examinee_cd = examinee.examinee_cd then exam_map.debate_nm end) as debate_nm
-                    , max(case when exam_map.examinee_cd = examinee.examinee_cd then exam_map.debate_order end) as debate_order
-                from exam_map
-                inner join examinee on examinee.examinee_cd = exam_map.examinee_cd
-                inner join exam on exam.exam_cd = exam_map.exam_cd
-                inner join admission on admission.admission_cd = exam.admission_cd
-                inner join exam_hall_date on exam_hall_date.exam_cd = exam_map.exam_cd and exam_hall_date.hall_date = exam_map.hall_date
-                group by admission.admission_cd, exam_map.examinee_cd) result
-        <where>
-            <if test="param != null">
-                <if test="param.admissionNm != null"> and result.admission_nm = #{param.admissionNm} </if>
-                <if test="param.typeNm != null"> and result.type_nm = #{param.typeNm} </if>
-                <if test="param.examDate != null"> and result.hall_date = #{param.examDate} </if>
-                <if test="param.groupNm != null"> and result.group_nm = #{param.groupNm} </if>
-                <if test="param.groupOrder != null"> and result.group_order = #{param.groupOrder} </if>
-                <if test="param.debateNm != null"> and result.debate_nm = #{param.debateNm} </if>
-                <if test="param.debateOrder != null"> and result.debate_order = #{param.debateOrder} </if>
-            </if>
-        </where>
-    </select>
 </mapper>

@@ -13,6 +13,22 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <label>변환점수</label>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-3">
+                        <a href="download/devi.xlsx" class="btn btn-primary pull-left">양식 다운로드</a>
+                    </div>
+                    <div class="col-md-9">
+                        <form id="frmUploadDevi" action="upload/devi" method="post" enctype="multipart/form-data">
+                            <input type="file" name="file" class="pull-left chosen"/>
+                            <input type="submit" class="btn btn-regist pull-right" value="등록"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     <label>평가항목</label>
                 </div>
                 <div class="panel-body">
@@ -136,7 +152,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-7">
-                        <label>가번호 / 답안지 번호 / 점수</label>
+                        <label>가번호 / 캔버스 번호 / 점수</label>
                     </div>
                     <div class="col-md-5">
                         <div class="col-sm-9"></div>

@@ -11,17 +11,9 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ExamInfoDto{
+public class ExamInfoDto extends BasicDto{
     // exam
     private String id;
-    private String userAdmissions;
-    private String admissionCd;
-    private String admissionNm;
-
-    private String typeNm;
-
-    private String examCd;
-    private String examNm;
 
     private BigDecimal adjust;
     private String barcodeType;
@@ -60,11 +52,6 @@ public class ExamInfoDto{
     private String virtNoEnd;
     private String virtNoStart;
 
-    private String hallCd;
-    private String headNm;
-    private String bldgNm;
-    private String hallNm;
-
     // 수정 시 비교용 (기존 데이터)
     private String _virtNoStart;
     private String _virtNoEnd;
@@ -82,6 +69,7 @@ public class ExamInfoDto{
     private String minWarning;
     private String keypadType;
     private String scoreMap;
+    private String absentValue;
 
     private String _itemNm;
     private String _itemNo;

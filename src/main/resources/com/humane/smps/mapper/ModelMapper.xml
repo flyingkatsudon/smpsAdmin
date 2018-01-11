@@ -5,9 +5,11 @@
 <mapper namespace="com.humane.smps.mapper.ModelMapper">
     <select id="toolbar" resultType="com.humane.smps.dto.StatusDto">
         SELECT
+        admission.admission_cd,
         admission.admission_nm,
         exam.type_nm,
         exam.exam_nm,
+        exam.period,
         exam_hall_date.hall_date AS exam_date,
         hall.head_nm,
         hall.bldg_nm,
@@ -25,6 +27,7 @@
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                <if test="param.period != null">AND exam.period = #{param.period}</if>
                 <if test="param.examDate != null">AND exam_hall_date.hall_date = #{param.examDate}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
@@ -41,27 +44,53 @@
         , examinee.dept_nm, examinee.major_nm
     </select>
 
-    <!-- TODO: exam_map.hall_date, exam_hall_date.hall_date 나중에 제대로 판단해야함 -->
-    <select id="reportToolbar" resultType="com.humane.smps.dto.StatusDto">
-        SELECT
-        admission.admission_cd,
-        admission.admission_nm,
-        exam.type_nm,
-        exam_hall_date.hall_date AS exam_date
-        FROM exam_map
-        INNER JOIN exam ON exam.exam_cd = exam_map.exam_cd
-        INNER JOIN hall ON hall.hall_cd = exam_map.hall_cd
-        INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd AND exam_hall_date.hall_cd = hall.hall_cd
+    <select id="examToolbar" resultType="com.humane.smps.dto.ExamInfoDto">
+        SELECT exam.exam_cd
+            , exam.adjust
+            , exam.barcode_type
+            , exam.exam_nm
+            , exam.examinee_len
+            , exam.is_absence
+            , exam.is_closed_view
+            , exam.is_horizontal
+            , exam.is_mgr_auto
+            , exam.is_move
+            , exam.item_cnt
+            , exam.period
+            , exam.print_content1
+            , exam.print_content2
+            , exam.print_sign
+            , exam.print_title1
+            , exam.print_title2
+            , exam.scorer_cnt
+            , exam.tot_score
+            , exam.type_nm
+            , exam.virt_no_digits
+            , exam.virt_no_type
+            , exam.fk_exam_cd
+            , exam.admission_cd
+
+            , admission.admission_nm
+
+            , exam_hall_date.hall_date
+            , exam_hall_date.virt_no_end
+            , exam_hall_date.virt_no_start
+            , exam_hall_date.hall_cd
+
+            , hall.head_nm
+            , hall.bldg_nm
+            , hall.hall_nm
+        FROM exam
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
+        INNER JOIN exam_hall_date ON exam_hall_date.exam_cd = exam.exam_cd
+        INNER JOIN hall ON hall.hall_cd = exam_hall_date.hall_cd
         <where>
             <if test="param != null">
-                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
-                <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
-                <if test="param.examDate != null">AND exam_hall_date.exam_date = #{param.examDate}</if>
-                <if test="param.userAdmissions != null">AND exam.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.admissionNm">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.examCd">AND exam.exam_cd = #{param.examCd}</if>
+                <if test="param.examNm">AND exam.exam_nm = #{param.examNm}</if>
             </if>
         </where>
-        GROUP BY admission.admission_cd
     </select>
 
     <select id="getExamInfoToolbar" resultType="com.humane.smps.dto.ExamInfoDto">

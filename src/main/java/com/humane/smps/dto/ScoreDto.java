@@ -2,40 +2,16 @@ package com.humane.smps.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.humane.util.jackson.TimeSerializer;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ScoreDto {
-    private String userAdmissions;
-    private String admissionNm;
-    private String typeNm;
-    private String examNm;
-    private String examineeCd;
-    private String examineeNm;
-    private String examCd;
-    private String groupNm;
-    private String headNm;
-    private String bldgNm;
-    private String hallNm;
+public class ScoreDto extends BasicDto{
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date examDate;
-
-    @DateTimeFormat(pattern = "HH:mm")
-    @JsonSerialize(using = TimeSerializer.class)
-    private Date examTime;
-
-    private String deptNm;
-    private String majorNm;
+    private BasicDto basicDto;
 
     private String virtNo;
     private String sheetNo;
@@ -69,14 +45,15 @@ public class ScoreDto {
 
     private Boolean isVirtNo;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date birth;
-
     private String grade01;
     private String grade02;
     private String grade03;
     private String grade04;
     private String grade05;
-    private String exmAdmNm;
+
+    private Long updateCnt;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date birth;
 }
