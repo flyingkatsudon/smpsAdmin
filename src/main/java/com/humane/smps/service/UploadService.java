@@ -77,11 +77,11 @@ public class UploadService {
                         item.setMinScore(validate("0"));
                         item.setMaxWarning(validate("9"));
                         item.setMinWarning(validate("0"));
-                        item.setDeviCd(null);
+                        item.setDeviCd("");
                     } else if (keypadType.equals("4") || keypadType.equals("5")) {
                         item.setDeviCd(deviCd);
                     } else {
-                        item.setDeviCd(null);
+                        item.setDeviCd("");
                     }
 
                     item.setScoreMap(scoreMap);

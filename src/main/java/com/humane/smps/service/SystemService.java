@@ -58,7 +58,6 @@ public class SystemService {
             queryFactory.delete(QScore.score).where(QScore.score.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QExamHallDate.examHallDate).where(QExamHallDate.examHallDate.exam.examCd.eq(examCd)).execute();
-            queryFactory.delete(QExamHall.examHall).where(QExamHall.examHall.exam.examCd.eq(examCd)).execute();
 
             QExaminee examinee = QExaminee.examinee;
             QExamMap examMap = QExamMap.examMap;
@@ -149,7 +148,6 @@ public class SystemService {
             queryFactory.delete(QScore.score).execute();
             queryFactory.delete(QScoreLog.scoreLog).execute();
             queryFactory.delete(QExamHallDate.examHallDate).execute();
-            queryFactory.delete(QExamHall.examHall).execute();
 
             QExaminee examinee = QExaminee.examinee;
             QExamMap examMap = QExamMap.examMap;
