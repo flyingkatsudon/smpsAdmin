@@ -117,8 +117,9 @@ define(function (require) {
 
                                     var admissionCd = $('#admissionCd').val();
 
+                                    // TODO: 순번 불러올 URL 설정
                                     var param = {
-                                        url: "http://erica.humanesystem.com:9000",
+                                        url: "http://test.humanesystem.com:9000",
                                         admissionCd: admissionCd
                                     };
 

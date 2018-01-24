@@ -47,7 +47,6 @@ public class UploadController {
     private final ExamRepository examRepository;
     private final HallRepository hallRepository;
     private final HallDateRepository hallDateRepository;
-    private final DebateHallRepository debateHallRepository;
     private final ExamineeRepository examineeRepository;
     private final ExamMapRepository examMapRepository;
     private final SheetRepository sheetRepository;
@@ -262,22 +261,6 @@ public class UploadController {
 
                         hallDateRepository.save(hallDate);
 
-                        // 고려대 면접고사용
-                        ExamDebateHall examDebateHall = new ExamDebateHall();
-
-                        ExamDebateHall t = debateHallRepository.findOne(new BooleanBuilder()
-                                .and(QExamDebateHall.examDebateHall.hallCd.eq(vo.getHallCd()))
-                                .and(QExamDebateHall.examDebateHall.groupNm.eq(vo.getGroupNm()))
-                        );
-
-                        if (t != null) {
-                            examDebateHall.set_id(t.get_id());
-                        }
-
-                        examDebateHall.setGroupNm(vo.getGroupNm());
-                        examDebateHall.setHallCd(vo.getHallCd());
-
-                        debateHallRepository.save(examDebateHall);
                     } catch (Exception e) {
                         e.printStackTrace();
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -61,9 +61,6 @@ public class SystemService {
             queryFactory.delete(QScoreLog.scoreLog).where(QScoreLog.scoreLog.exam.examCd.eq(examCd)).execute();
             queryFactory.delete(QExamHallDate.examHallDate).where(QExamHallDate.examHallDate.exam.examCd.eq(examCd)).execute();
 
-            // 고려대 면접고사용
-            queryFactory.delete(QExamDebateHall.examDebateHall).execute();
-
             QExaminee examinee = QExaminee.examinee;
             QExamMap examMap = QExamMap.examMap;
 
