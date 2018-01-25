@@ -691,6 +691,7 @@
         , exam.type_nm
         , exam_map.hall_date as exam_date
         , exam_map.eval_cd
+        , exam.absent_value
         , examinee.dept_nm
         , examinee.major_nm
         , examinee.examinee_cd
