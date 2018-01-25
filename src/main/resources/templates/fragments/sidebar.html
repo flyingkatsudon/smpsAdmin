@@ -41,9 +41,8 @@
                 <!-- TODO: 임시로 주석처리, 미술과 에리카 체육때 나타나면 됨 -->
                 <!--<li sec:authorize="hasRole('ADMIN')"><a href="#data-draw"><img src="images/menu/M03_6.png"/> 동점자 현황</a>
                 </li>-->
-                <!--<li sec:authorize="hasRole('ADMIN')"><a href="#data-physical"><img src="images/menu/M03_6.png"/> 한양대 에리카
-                    체육고사</a>
-                </li>-->
+                <li sec:authorize="hasRole('ADMIN')"><a href="#data-physical"><img src="images/menu/M03_6.png"/> ERICA 체육고사</a>
+                </li>
                 <li sec:authorize="hasRole('ADMIN')"><a href="#data-report"><img src="images/menu/M03_5.png"/> 산출물 다운로드</a>
                 </li>
             </ul>
@@ -61,7 +60,7 @@
             </ul>
             <ul class="nav nav-second-level">
                 <!-- TODO: 면접 조 배정 -->
-                <li><a href="#student-order"><img src="images/menu/M04_5.png"/> 면접 조 배정</a></li>
+                <!--<li><a href="#student-order"><img src="images/menu/M04_5.png"/> 면접 조 배정</a></li>-->
                 <li sec:authorize="hasRole('ADMIN')">
                     <a href="#setting-data"><img src="images/menu/M04_1.png"/> 데이터 관리</a>
                     <a href="#system-account"><img src="images/menu/M04_3.png"/> 계정 관리</a>
