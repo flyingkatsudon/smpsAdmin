@@ -22,9 +22,9 @@ define(function (require) {
                 this.$('#examDate').html(this.selected(this.param.examDate));
 
                 var tmp = {
-                    admissionNm: this.$('#admissionNm').val(),
-                    typeNm: this.$('#typeNm').val(),
-                    examDate: this.$('#examDate').val()
+                    admissionNm: this.param.admissionNm,
+                    typeNm: this.param.typeNm,
+                    examDate: this.param.examDate
                 };
 
                 this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(tmp)));
