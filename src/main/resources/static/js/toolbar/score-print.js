@@ -20,11 +20,18 @@ define(function (require) {
                 this.$('#admissionNm').html(this.selected(this.param.admissionNm));
                 this.$('#typeNm').html(this.selected(this.param.typeNm));
                 this.$('#examDate').html(this.selected(this.param.examDate));
-
+                /*
+                 // 기존 하단 필터 적용 시
+                 var tmp = {
+                 admissionNm: this.$('#admissionNm').val(),
+                 typeNm: this.$('#typeNm').val(),
+                 examDate: this.$('#examDate').val()
+                 };
+                 */
                 var tmp = {
-                    admissionNm: this.$('#admissionNm').val(),
-                    typeNm: this.$('#typeNm').val(),
-                    examDate: this.$('#examDate').val()
+                    admissionNm: this.param.admissionNm,
+                    typeNm: this.param.typeNm,
+                    examDate: this.param.examDate
                 };
 
                 this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(tmp)));

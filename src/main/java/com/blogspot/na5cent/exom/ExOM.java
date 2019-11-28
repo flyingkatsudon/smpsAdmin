@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * https://github.com/jittagornp/excel-object-mapping
+ * https://github.com/pramoth/excel-object-mapping
  *
  * @author redcrow
  *         <p>
