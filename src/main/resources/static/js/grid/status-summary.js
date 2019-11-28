@@ -15,6 +15,7 @@ define(function (require) {
                 this.param.admissionNm = $('#admissionNm').val();
                 this.param.typeNm = $('#typeNm').val();
                 this.param.examDate = $('#examDate').val();
+                this.param.examNm = $('#examNm').val();
                 this.param.deptNm = $('#deptNm').val();
                 this.param.majorNm = $('#majorNm').val();
                 this.param.headNm = $('#headNm').val();

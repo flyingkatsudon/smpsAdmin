@@ -6,14 +6,12 @@ import com.humane.smps.repository.ExamMapRepository;
 import com.humane.smps.service.DataService;
 import com.humane.smps.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +32,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 @RestController
 @RequestMapping(value = "data", method = RequestMethod.GET)
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+// @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DataController {
     private static final String JSON = "json";
     private static final String COLMODEL = "colmodel";
@@ -47,6 +45,13 @@ public class DataController {
     // application.properties에서 어떤 학교 버전으로 선택했는지 가져옴
     @Value("${name}")
     public String name;
+
+    public DataController(DataService dataService, DataMapper dataMapper, ImageService imageService, ExamMapRepository examMapRepository) {
+        this.dataService = dataService;
+        this.dataMapper = dataMapper;
+        this.imageService = imageService;
+        this.examMapRepository = examMapRepository;
+    }
 
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto param, Pageable pageable) {
@@ -124,6 +129,28 @@ public class DataController {
                 jasperPrint.setName("가번호 배정 현황");
 
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        }
+    }
+
+    // 가번호 배정 현황
+    @RequestMapping(value = "virtNoDoc.{format:json|xls|xlsx|pdf}")
+    public ResponseEntity virtNoDoc(@PathVariable String format, ExamineeDto param, Pageable pageable) throws ClassNotFoundException, JRException, DRException {
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(dataMapper.virtNoDoc(param, pageable));
+//            default:
+//                JasperReportBuilder report = dataService.getVirtNoDocReport();
+//                report.setDataSource(dataMapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+//
+//                JasperPrint jasperPrint = report.toJasperPrint();
+//                jasperPrint.setName("가번호 배정 명부");
+//
+//                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/data-virtNoDoc.jrxml"
+                        , "pdf_new"
+                        , dataMapper.virtNoDoc(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
         }
     }
 

@@ -104,6 +104,62 @@
                 , examinee.examinee_nm
     </select>
 
+    <!-- 가번호 배정 명부 -->
+    <select id="virtNoDoc" resultType="com.humane.smps.dto.ExamineeDto">
+        SELECT @rownum := @rownum+1 AS row_num, a.*
+        FROM(
+                SELECT
+                (SELECT @rownum :=0),
+                admission.admission_nm,
+                exam.type_nm,
+                exam_map.hall_date AS exam_date,
+                examinee.college_nm, examinee.exm_adm_nm,
+                examinee.dept_nm, examinee.major_nm,
+                exam.exam_nm,
+                hall.head_nm, hall.bldg_nm, hall.hall_nm,
+                examinee.examinee_cd, examinee.examinee_nm,
+                exam_map.virt_no,
+                exam_map.group_nm
+                <if test="param != null">
+                    <if test="param.mainTitle != null">, #{param.mainTitle} AS mainTitle </if>
+                    <if test="param.subTitle != null">, #{param.subTitle} AS subTitle </if>
+                </if>
+                FROM exam_map
+                INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
+                INNER JOIN hall ON exam_map.hall_cd = hall.hall_cd
+                INNER JOIN examinee ON exam_map.examinee_cd = examinee.examinee_cd
+                INNER JOIN admission ON exam.admission_cd = admission.admission_cd
+                <where>
+                    AND exam_map.virt_no IS NOT NULL
+                    <if test="param != null">
+                        <if test="param.userAdmissions != null">AND admission.admission_cd IN (${param.userAdmissions})</if>
+                        <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                        <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm}</if>
+                        <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm}</if>
+                        <if test="param.examDate != null">AND exam_map.hall_date = #{param.examDate}</if>
+                        <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                        <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                        <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
+                        <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                        <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                        <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                        <if test="param.groupNm != null">AND exam_map.group_nm = #{param.groupNm}</if>
+                        <if test="param.virtNo != null">AND exam_map.virt_no = #{param.virtNo} '%'</if>
+                        <if test="param.examineeCd != null">AND examinee.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
+                        <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
+                    </if>
+                </where>
+                GROUP BY
+                admission.admission_cd
+                , exam.exam_cd
+                , examinee.examinee_cd
+                , examinee.examinee_nm
+                , exam_map.group_nm
+                ORDER BY
+                exam_map.virt_no
+        ) a
+    </select>
+
     <!-- 경북대용 -->
     <select id="knuScorer" resultType="com.humane.smps.dto.ScoreDto">
           select '면접' as admission_nm,

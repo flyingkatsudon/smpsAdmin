@@ -1,8 +1,10 @@
 package com.humane.smps.mapper;
 
 import com.humane.smps.dto.*;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -46,6 +48,8 @@ public interface DataMapper {
      */
 
     Page<ExamineeDto> examinee(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
+
+    Page<ExamineeDto> virtNoDoc(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 
     Page<ScoreDto> scorer(@Param("param") ScoreDto param, @Param("pageable") Pageable pageable);
 

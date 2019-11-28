@@ -8,10 +8,10 @@ require.config({
         'morris': {deps: ['css!bower_components/morris.js/morris']},
         'bootstrap-select': {deps: ['bootstrap', 'css!bower_components/bootstrap-select/dist/css/bootstrap-select.min']},
         'jquery.ajaxForm':{deps:['jquery']},
-        'jquery-simple-datetimepicker': {deps: ['css!bower_components/jquery-simple-datetimepicker-master/jquery.simple-dtpicker']}
+        'jquery-simple-datetimepicker': {deps: ['css!bower_components/jquery-simple-datetimepicker/jquery.simple-dtpicker']}
     },
     paths: {
-        'jquery-simple-datetimepicker': 'bower_components/jquery-simple-datetimepicker-master/jquery.simple-dtpicker',
+        'jquery-simple-datetimepicker': 'bower_components/jquery-simple-datetimepicker/jquery.simple-dtpicker',
         'jquery': 'bower_components/jquery/dist/jquery.min',
         'bootstrap': 'bower_components/bootstrap/dist/js/bootstrap.min',
         'metisMenu': 'bower_components/metisMenu/dist/metisMenu.min',

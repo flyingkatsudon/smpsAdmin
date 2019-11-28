@@ -41,6 +41,7 @@ public class JasperReportsExportHelper {
     public static final String EXT_PDF = "pdf";
     public static final String EXT_XLS = "xls";
     public static final String EXT_XLSX = "xlsx";
+    public static final String EXT_PDF_NEW = "pdf_new";
 
     private static JasperReportsExportHelper instance;
 
@@ -64,6 +65,14 @@ public class JasperReportsExportHelper {
             headers.set("Set-Cookie", "fileDownload=true; path=/");
             headers.setContentType(MediaType.parseMediaType(PDF));
             headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        }
+        else if (format.equals(EXT_PDF_NEW)) {
+            instance.exportReportToPdf(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(PDF));
+            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_PDF));
             return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
         } else if (format.equals(EXT_XLS)) {
             instance.exportReportToXls(jasperPrint, baos);

@@ -4,6 +4,7 @@ define(function (require) {
     require('jqgrid');
 
     var DlgDownload = require('./dlg-download.js');
+    var BootstrapDialog = require('bootstrap-dialog');
     var Backbone = require('backbone');
     var uuid = require('uuid');
 
@@ -125,6 +126,49 @@ define(function (require) {
                 });
                 return this;
             }
+        }, addPdf: function (url) {
+                if (url && url != '') {
+                    var _this = this;
+                    this.$grid.jqGrid('navButtonAdd', _this.$grid.getGridParam('pager'), {
+                        caption: '내보내기',
+                        onClickButton: function (e) {
+                            var step1 = new BootstrapDialog({
+                                title: false,
+                                closable: true,
+                                onshown: function (dialogRef) {
+                                    var body = dialogRef.$modalBody;
+
+                                    // 평가표 설정값
+                                    var detail4Html = '<div style="padding: 2% 0 0 2%">&nbsp;상위&nbsp;제목&nbsp;<input type="text" id="mainTitle" class="sheet" value=""/></div>';
+                                    detail4Html += '<div style="padding: 2% 0 0 2%">&nbsp;하위&nbsp;제목&nbsp;<input type="text" id="subTitle" class="sheet"  value=""/></div>';
+
+                                    body.append(detail4Html);
+                                }, // onShown
+                                buttons: [{
+                                    label: '출력',
+                                    cssClass: 'btn-primary',
+                                    action: function () {
+
+                                        _this.param.mainTitle = $('#mainTitle').val();
+                                        _this.param.subTitle = $('#subTitle').val();
+
+                                        new DlgDownload({
+                                            url: url,
+                                            data: _this.param
+                                        }).render();
+                                    }
+                                }] // buttons
+                            }); // BootstrapDialog
+
+                            step1.realize();
+                            step1.getModalDialog().css('width', '70%');
+                            step1.open();
+
+                            return false;
+                        }
+                    });
+                    return this;
+                }
         }, search: function (o) {
             var postData = this.$grid[0].p.postData;
             this.$grid[0].p.postData = $.extend(postData, o);

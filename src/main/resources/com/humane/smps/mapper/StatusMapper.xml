@@ -7,10 +7,10 @@
     <select id="all" resultType="com.humane.smps.dto.StatusDto">
         SELECT
         COUNT(*)                                                AS examinee_cnt,
-        COUNT(exam_map.scan_dttm)                               AS attend_cnt,
-        COUNT(*) - COUNT(exam_map.scan_dttm)                    AS absent_cnt,
-        COUNT(exam_map.scan_dttm) * 100 / COUNT(*)              AS attend_per,
-        (COUNT(*) - COUNT(exam_map.scan_dttm)) * 100 / COUNT(*) AS absent_per
+        COUNT(exam_map.virt_no)                               AS attend_cnt,
+        COUNT(*) - COUNT(exam_map.virt_no)                    AS absent_cnt,
+        COUNT(exam_map.virt_no) * 100 / COUNT(*)              AS attend_per,
+        (COUNT(*) - COUNT(exam_map.virt_no)) * 100 / COUNT(*) AS absent_per
         FROM exam_map
         INNER JOIN exam ON exam_map.exam_cd = exam.exam_cd
         INNER JOIN admission ON admission.admission_cd = exam.admission_cd
@@ -23,6 +23,7 @@
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND exam.type_nm = #{param.typeNm} </if>
                 <if test="param.examDate != null">AND exam_hall_date.hall_date = #{param.examDate} </if>
+                <if test="param.examNm != null">AND exam.exam_nm = #{param.examNm} </if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm} </if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm} </if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm} </if>
