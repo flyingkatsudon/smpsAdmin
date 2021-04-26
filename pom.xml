@@ -27,7 +27,7 @@
         <mybatis-starter.version>1.3.0</mybatis-starter.version>
         <retrofit2.version>2.2.0</retrofit2.version>
         <okhttp3.version>3.7.0</okhttp3.version>
-        <commons-io.version>2.5</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <rxjava.version>1.2.9</rxjava.version>
         <poi.version>3.16</poi.version>
